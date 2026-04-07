@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui;
 
 namespace EduDev_Tracker
 {
@@ -7,8 +8,10 @@ namespace EduDev_Tracker
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -18,8 +21,14 @@ namespace EduDev_Tracker
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-
+            RegisterServices(builder.Services);
             return builder.Build();
         }
+
+        static void RegisterServices(IServiceCollection services)
+        {
+
+        }
+
     }
 }

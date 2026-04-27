@@ -1,12 +1,467 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EduDev_Tracker.Features.Dashboard.Views.DashboardPage"
-             Title="DashboardPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Dashboard.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    SafeAreaEdges="All"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+
+        <Grid>
+
+            <Image
+                Aspect="Fill"
+                Opacity="80"
+                Source="background_gradient.jpg" />
+
+            <Grid
+                Padding="16"
+                RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                RowSpacing="14">
+
+                <Grid ColumnDefinitions="Auto, *, Auto">
+                    <Image
+                        HeightRequest="45"
+                        HorizontalOptions="Start"
+                        Source="menu.png"
+                        VerticalOptions="Start"
+                        WidthRequest="45" />
+
+                    <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                        <Image
+                            HeightRequest="100"
+                            HorizontalOptions="Center"
+                            Source="logo.png"
+                            WidthRequest="100" />
+
+                        <Label
+                            FontFamily="Comfortaa"
+                            FontSize="40"
+                            HorizontalTextAlignment="Center"
+                            Text="EduDev Tracker"
+                            TextColor="White" />
+
+                        <Label
+                            FontFamily="Comfortaa"
+                            FontSize="11"
+                            HorizontalTextAlignment="Start"
+                            Text="by svvvlyxv"
+                            TextColor="White" />
+                    </VerticalStackLayout>
+
+                    <Image
+                        Grid.Column="2"
+                        HeightRequest="45"
+                        HorizontalOptions="End"
+                        Source="options.png"
+                        VerticalOptions="Start"
+                        WidthRequest="45" />
+                </Grid>
+
+                <Border
+                    Grid.Row="1"
+                    Margin="210,20,236,0"
+                    Padding="20"
+                    BackgroundColor="#40101428"
+                    Stroke="#66FFFFFF"
+                    StrokeShape="RoundRectangle 16"
+                    StrokeThickness="1">
+
+                    <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+
+                        <VerticalStackLayout>
+
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="32"
+                                Text="Прогресс недели"
+                                TextColor="White" />
+
+                            <Label
+                                Grid.Row="1"
+                                Margin="0,0,0,0"
+                                FontFamily="Comfortaa"
+                                FontSize="16"
+                                Opacity="0.41"
+                                Text="Привычки, задачи и Помодоро"
+                                TextColor="White" />
+
+                        </VerticalStackLayout>
+
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="Comfortaa"
+                            FontSize="32"
+                            Text="1%"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+
+                        <ProgressBar
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Margin="0,20,0,0"
+                            BackgroundColor="White"
+                            Progress="0.01"
+                            ProgressColor="#019301" />
+                    </Grid>
+                </Border>
+
+                <Grid
+                    Grid.Row="2"
+                    Margin="210,20,236,0"
+                    ColumnDefinitions="*, *, *"
+                    ColumnSpacing="20">
+
+                    <Border
+                        Grid.Column="0"
+                        Padding="20"
+                        BackgroundColor="#40101428"
+                        Stroke="#66FFFFFF"
+                        StrokeShape="RoundRectangle 15"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="*, Auto">
+
+                            <VerticalStackLayout Grid.Column="0" Spacing="10">
+
+                                <Label
+                                    Margin="0,0,0,0"
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    Opacity="0.6"
+                                    Text="У Вас ни одной привычки :("
+                                    TextColor="White" />
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="32"
+                                    Text="Привычки"
+                                    TextColor="White" />
+                                <Image Source="dividing_strip.png" />
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    Opacity="0.6"
+                                    Text="Пора повышать свою продуктивность! Смело добавляйте новые привычки и отмечайте выполнение!"
+                                    TextColor="White" />
+
+                                <Border
+                                    Margin="0,150,0,0"
+                                    BackgroundColor="#2B2B2E"
+                                    HeightRequest="48"
+                                    HorizontalOptions="Start"
+                                    StrokeShape="RoundRectangle 15"
+                                    WidthRequest="147">
+                                    <HorizontalStackLayout HorizontalOptions="Center">
+
+                                        <Image
+                                            HeightRequest="13"
+                                            Source="transition_icon.png"
+                                            WidthRequest="13" />
+
+                                        <Button
+                                            BackgroundColor="Transparent"
+                                            FontFamily="Comfortaa"
+                                            FontSize="16"
+                                            Text="Перейти"
+                                            TextColor="White" />
+
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1">
+
+                                <Image
+                                    HeightRequest="35"
+                                    Source="habits_logo.png"
+                                    WidthRequest="35" />
+
+                                <Image
+                                    Margin="0,266,0,0"
+                                    HeightRequest="35"
+                                    Source="add_icon.png"
+                                    WidthRequest="35" />
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="20"
+                        BackgroundColor="#40101428"
+                        Stroke="#66FFFFFF"
+                        StrokeShape="RoundRectangle 15"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="*, Auto">
+
+                            <VerticalStackLayout Grid.Column="0" Spacing="10">
+
+
+                                <Label
+                                    Margin="0,0,0,0"
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    Opacity="0.6"
+                                    Text="У Вас ни одной задачи :("
+                                    TextColor="White" />
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="32"
+                                    Text="Задачи"
+                                    TextColor="White" />
+                                <Image Source="dividing_strip.png" />
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    Opacity="0.6"
+                                    Text="У Вас есть задачи, которые нужно отслеживать? Создавайте умный список задач и следите за своей работой!"
+                                    TextColor="White" />
+
+                                <Border
+                                    Margin="0,150,0,0"
+                                    BackgroundColor="#2B2B2E"
+                                    HeightRequest="48"
+                                    HorizontalOptions="Start"
+                                    StrokeShape="RoundRectangle 15"
+                                    WidthRequest="147">
+                                    <HorizontalStackLayout HorizontalOptions="Center">
+
+                                        <Image
+                                            HeightRequest="13"
+                                            Source="transition_icon.png"
+                                            WidthRequest="13" />
+
+                                        <Button
+                                            BackgroundColor="Transparent"
+                                            FontFamily="Comfortaa"
+                                            FontSize="16"
+                                            Text="Перейти"
+                                            TextColor="White" />
+
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1">
+
+                                <Image
+                                    HeightRequest="35"
+                                    Source="tasks_logo.png"
+                                    WidthRequest="35" />
+
+                                <Image
+                                    Margin="0,266,0,0"
+                                    HeightRequest="35"
+                                    Source="add_icon.png"
+                                    WidthRequest="35" />
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                    </Border>
+
+                    <Border
+                        Grid.Column="2"
+                        Padding="20"
+                        BackgroundColor="#40101428"
+                        Stroke="#66FFFFFF"
+                        StrokeShape="RoundRectangle 15"
+                        StrokeThickness="1">
+
+                        <Grid RowDefinitions="Auto, *">
+
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="32"
+                                Text="Сегодняшние задачи"
+                                TextColor="White" />
+
+                            <Border
+                                Grid.Row="1"
+                                Margin="0,10,0,0"
+                                Padding="20"
+                                BackgroundColor="#900F121C"
+                                StrokeShape="RoundRectangle 15"
+                                StrokeThickness="0">
+
+                                <VerticalStackLayout>
+
+                                    <Label
+                                        Margin="0,100,0,0"
+                                        FontFamily="Comfortaa"
+                                        FontSize="20"
+                                        HorizontalTextAlignment="Center"
+                                        Opacity="0.6"
+                                        Text="Задач пока нет :("
+                                        TextColor="White" />
+
+                                </VerticalStackLayout>
+
+                            </Border>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+                <Grid
+                    Grid.Row="3"
+                    Margin="210,20,236,0"
+                    ColumnDefinitions="1203, *"
+                    ColumnSpacing="20">
+
+                    <Border
+                        Padding="20"
+                        BackgroundColor="#40101428"
+                        Stroke="#66FFFFFF"
+                        StrokeShape="RoundRectangle 15"
+                        StrokeThickness="1">
+
+                        <Grid RowDefinitions="Auto, *">
+
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="16"
+                                Text="Продуктивность за 7 дней"
+                                TextColor="White" />
+
+                            <Border
+                                Grid.Row="1"
+                                Margin="0,20,0,0"
+                                HeightRequest="153"
+                                Stroke="#66FFFFFF"
+                                StrokeDashArray="10, 10">
+
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="20"
+                                    HorizontalTextAlignment="Center"
+                                    Opacity="0.6"
+                                    Text="Здесь будет график =)"
+                                    TextColor="White"
+                                    VerticalTextAlignment="Center" />
+
+                            </Border>
+
+                        </Grid>
+
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="10"
+                        BackgroundColor="#40101428"
+                        Stroke="#66FFFFFF"
+                        StrokeShape="RoundRectangle 15"
+                        StrokeThickness="1">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="16"
+                                Text="Фокус"
+                                TextColor="White" />
+
+                            <Image Source="dividing_strip.png" />
+
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="13"
+                                    Opacity="0.5"
+                                    Text="Сегодня"
+                                    TextColor="White" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    FontFamily="Comfortaa"
+                                    FontSize="13"
+                                    Text="0"
+                                    TextColor="White" />
+
+                            </Grid>
+
+                            <Image Source="dividing_strip.png" />
+
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="13"
+                                    Opacity="0.5"
+                                    Text="Сессий"
+                                    TextColor="White" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    FontFamily="Comfortaa"
+                                    FontSize="13"
+                                    Text="0"
+                                    TextColor="White" />
+
+                            </Grid>
+
+                            <Image Source="dividing_strip.png" />
+
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="13"
+                                    Opacity="0.5"
+                                    Text="Активный цикл"
+                                    TextColor="White" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    FontFamily="Comfortaa"
+                                    FontSize="13"
+                                    HorizontalOptions="End"
+                                    Text="25/5"
+                                    TextColor="White" />
+                            </Grid>
+
+                            <Image Source="dividing_strip.png" />
+
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="13"
+                                    Opacity="0.5"
+                                    Text="Запустить Помодоро"
+                                    TextColor="White" />
+
+                                <Image
+                                    Grid.Column="1"
+                                    HeightRequest="12"
+                                    Source="start_icon.png"
+                                    WidthRequest="11" />
+
+                            </Grid>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+
+    </ScrollView>
+
 </ContentPage>

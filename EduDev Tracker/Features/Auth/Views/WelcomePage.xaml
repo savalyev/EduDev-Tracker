@@ -5,7 +5,7 @@
              Title="WelcomePage">
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text="..."
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>

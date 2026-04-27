@@ -5,12 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:EduDev_Tracker"
     xmlns:dashboard="clr-namespace:EduDev_Tracker.Features.Dashboard.Views"
+    xmlns:welcome="clr-namespace:EduDev_Tracker.Features.Auth.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="EduDev_Tracker">
 
     <ShellContent
-        Title="Главная страница"
+        Title="Велком"
         ContentTemplate="{DataTemplate dashboard:DashboardPage}"
-        Route="DashboardPage" />
+        Route="DasboardPage" />
 
 </Shell>

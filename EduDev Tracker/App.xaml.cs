@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-
 namespace EduDev_Tracker
 {
     public partial class App : Application
@@ -11,7 +10,8 @@ namespace EduDev_Tracker
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            var window = new Window(new AppShell());
+            return window;
         }
     }
 }

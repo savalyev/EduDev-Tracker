@@ -1,6 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EduDev_Tracker.Resources.Styles.Labels">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Style x:Key="EduAppTitleLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="FontSize" Value="40" />
+        <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+
+    <Style x:Key="EduAppSubtitleLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
+    </Style>
+
+
+    <Style x:Key="EduCardTitleLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
+    </Style>
+
+
+    <Style x:Key="EduCardSubtitleLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="TextColor" Value="{StaticResource EduSecondaryText}" />
+        <Setter Property="Opacity" Value="0.6" />
+    </Style>
+
+
+    <Style x:Key="EduProgressSubtitleLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
+        <Setter Property="Opacity" Value="0.4" />
+    </Style>
+
+    <Style x:Key="EduCardTitle16" TargetType="Label">
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
+    </Style>
+
+
+    <Style x:Key="EduSmallLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
+    </Style>
+
+    <Style
+        x:Key="EduSmallLabelMuted"
+        BasedOn="{StaticResource EduSmallLabel}"
+        TargetType="Label">
+        <Setter Property="Opacity" Value="0.5" />
+    </Style>
 
 </ResourceDictionary>

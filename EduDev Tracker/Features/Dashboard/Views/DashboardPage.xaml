@@ -13,7 +13,7 @@
 
             <Image
                 Aspect="Fill"
-                Opacity="80"
+                Opacity="0.8"
                 Source="background_gradient.jpg" />
 
             <Grid
@@ -36,19 +36,9 @@
                             Source="logo.png"
                             WidthRequest="100" />
 
-                        <Label
-                            FontFamily="Comfortaa"
-                            FontSize="40"
-                            HorizontalTextAlignment="Center"
-                            Text="EduDev Tracker"
-                            TextColor="White" />
+                        <Label Style="{StaticResource EduAppTitleLabel}" Text="EduDev Tracker" />
 
-                        <Label
-                            FontFamily="Comfortaa"
-                            FontSize="11"
-                            HorizontalTextAlignment="Start"
-                            Text="by svvvlyxv"
-                            TextColor="White" />
+                        <Label Style="{StaticResource EduAppSubtitleLabel}" Text="by svvvlyxv" />
                     </VerticalStackLayout>
 
                     <Image
@@ -63,39 +53,25 @@
                 <Border
                     Grid.Row="1"
                     Margin="210,20,236,0"
-                    Padding="20"
-                    BackgroundColor="#40101428"
-                    Stroke="#66FFFFFF"
-                    StrokeShape="RoundRectangle 16"
-                    StrokeThickness="1">
+                    Style="{StaticResource EduCardBorder}">
 
                     <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
 
                         <VerticalStackLayout>
 
-                            <Label
-                                FontFamily="Comfortaa"
-                                FontSize="32"
-                                Text="Прогресс недели"
-                                TextColor="White" />
+                            <Label Style="{StaticResource EduCardTitleLabel}" Text="Прогресс недели" />
 
                             <Label
                                 Grid.Row="1"
-                                Margin="0,0,0,0"
-                                FontFamily="Comfortaa"
-                                FontSize="16"
-                                Opacity="0.41"
-                                Text="Привычки, задачи и Помодоро"
-                                TextColor="White" />
+                                Style="{StaticResource EduProgressSubtitleLabel}"
+                                Text="Привычки, задачи и Помодоро" />
 
                         </VerticalStackLayout>
 
                         <Label
                             Grid.Column="1"
-                            FontFamily="Comfortaa"
-                            FontSize="32"
+                            Style="{StaticResource EduCardTitleLabel}"
                             Text="1%"
-                            TextColor="White"
                             VerticalOptions="Center" />
 
                         <ProgressBar
@@ -114,58 +90,30 @@
                     ColumnDefinitions="*, *, *"
                     ColumnSpacing="20">
 
-                    <Border
-                        Grid.Column="0"
-                        Padding="20"
-                        BackgroundColor="#40101428"
-                        Stroke="#66FFFFFF"
-                        StrokeShape="RoundRectangle 15"
-                        StrokeThickness="1">
+                    <Border Grid.Column="0" Style="{StaticResource EduCardBorder}">
 
                         <Grid ColumnDefinitions="*, Auto">
 
                             <VerticalStackLayout Grid.Column="0" Spacing="10">
 
-                                <Label
-                                    Margin="0,0,0,0"
-                                    FontFamily="Comfortaa"
-                                    FontSize="15"
-                                    Opacity="0.6"
-                                    Text="У Вас ни одной привычки :("
-                                    TextColor="White" />
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="32"
-                                    Text="Привычки"
-                                    TextColor="White" />
+                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="У Вас ни одной привычки :(" />
+                                <Label Style="{StaticResource EduCardTitleLabel}" Text="Привычки" />
                                 <Image Source="dividing_strip.png" />
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="15"
-                                    Opacity="0.6"
-                                    Text="Пора повышать свою продуктивность! Смело добавляйте новые привычки и отмечайте выполнение!"
-                                    TextColor="White" />
+                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Пора повышать свою продуктивность! Смело добавляйте новые привычки и отмечайте выполнение!" />
 
                                 <Border
                                     Margin="0,150,0,0"
-                                    BackgroundColor="#2B2B2E"
-                                    HeightRequest="48"
-                                    HorizontalOptions="Start"
-                                    StrokeShape="RoundRectangle 15"
+                                    Style="{StaticResource EduPrimaryButtonBorder}"
                                     WidthRequest="147">
                                     <HorizontalStackLayout HorizontalOptions="Center">
 
                                         <Image
+                                            Margin="0,0,10,0"
                                             HeightRequest="13"
                                             Source="transition_icon.png"
                                             WidthRequest="13" />
 
-                                        <Button
-                                            BackgroundColor="Transparent"
-                                            FontFamily="Comfortaa"
-                                            FontSize="16"
-                                            Text="Перейти"
-                                            TextColor="White" />
+                                        <Button Style="{StaticResource EduPrimaryButton}" Text="Перейти" />
 
                                     </HorizontalStackLayout>
                                 </Border>
@@ -191,59 +139,31 @@
 
                     </Border>
 
-                    <Border
-                        Grid.Column="1"
-                        Padding="20"
-                        BackgroundColor="#40101428"
-                        Stroke="#66FFFFFF"
-                        StrokeShape="RoundRectangle 15"
-                        StrokeThickness="1">
+                    <Border Grid.Column="1" Style="{StaticResource EduCardBorder}">
 
                         <Grid ColumnDefinitions="*, Auto">
 
                             <VerticalStackLayout Grid.Column="0" Spacing="10">
 
 
-                                <Label
-                                    Margin="0,0,0,0"
-                                    FontFamily="Comfortaa"
-                                    FontSize="15"
-                                    Opacity="0.6"
-                                    Text="У Вас ни одной задачи :("
-                                    TextColor="White" />
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="32"
-                                    Text="Задачи"
-                                    TextColor="White" />
+                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="У Вас ни одной задачи :(" />
+                                <Label Style="{StaticResource EduCardTitleLabel}" Text="Задачи" />
                                 <Image Source="dividing_strip.png" />
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="15"
-                                    Opacity="0.6"
-                                    Text="У Вас есть задачи, которые нужно отслеживать? Создавайте умный список задач и следите за своей работой!"
-                                    TextColor="White" />
+                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="У Вас есть задачи, которые нужно отслеживать? Создавайте умный список задач и следите за своей работой!" />
 
                                 <Border
                                     Margin="0,150,0,0"
-                                    BackgroundColor="#2B2B2E"
-                                    HeightRequest="48"
-                                    HorizontalOptions="Start"
-                                    StrokeShape="RoundRectangle 15"
+                                    Style="{StaticResource EduPrimaryButtonBorder}"
                                     WidthRequest="147">
                                     <HorizontalStackLayout HorizontalOptions="Center">
 
                                         <Image
+                                            Margin="0,0,10,0"
                                             HeightRequest="13"
                                             Source="transition_icon.png"
                                             WidthRequest="13" />
 
-                                        <Button
-                                            BackgroundColor="Transparent"
-                                            FontFamily="Comfortaa"
-                                            FontSize="16"
-                                            Text="Перейти"
-                                            TextColor="White" />
+                                        <Button Style="{StaticResource EduPrimaryButton}" Text="Перейти" />
 
                                     </HorizontalStackLayout>
                                 </Border>
@@ -269,29 +189,16 @@
 
                     </Border>
 
-                    <Border
-                        Grid.Column="2"
-                        Padding="20"
-                        BackgroundColor="#40101428"
-                        Stroke="#66FFFFFF"
-                        StrokeShape="RoundRectangle 15"
-                        StrokeThickness="1">
+                    <Border Grid.Column="2" Style="{StaticResource EduCardBorder}">
 
                         <Grid RowDefinitions="Auto, *">
 
-                            <Label
-                                FontFamily="Comfortaa"
-                                FontSize="32"
-                                Text="Сегодняшние задачи"
-                                TextColor="White" />
+                            <Label Style="{StaticResource EduCardTitleLabel}" Text="Сегодняшние задачи" />
 
                             <Border
                                 Grid.Row="1"
                                 Margin="0,10,0,0"
-                                Padding="20"
-                                BackgroundColor="#900F121C"
-                                StrokeShape="RoundRectangle 15"
-                                StrokeThickness="0">
+                                Style="{StaticResource EduEmptyStateBorder}">
 
                                 <VerticalStackLayout>
 
@@ -320,20 +227,11 @@
                     ColumnDefinitions="1203, *"
                     ColumnSpacing="20">
 
-                    <Border
-                        Padding="20"
-                        BackgroundColor="#40101428"
-                        Stroke="#66FFFFFF"
-                        StrokeShape="RoundRectangle 15"
-                        StrokeThickness="1">
+                    <Border Style="{StaticResource EduCardBorder}">
 
                         <Grid RowDefinitions="Auto, *">
 
-                            <Label
-                                FontFamily="Comfortaa"
-                                FontSize="16"
-                                Text="Продуктивность за 7 дней"
-                                TextColor="White" />
+                            <Label Style="{StaticResource EduCardTitle16}" Text="Продуктивность за 7 дней" />
 
                             <Border
                                 Grid.Row="1"
@@ -360,36 +258,22 @@
                     <Border
                         Grid.Column="1"
                         Padding="10"
-                        BackgroundColor="#40101428"
-                        Stroke="#66FFFFFF"
-                        StrokeShape="RoundRectangle 15"
-                        StrokeThickness="1">
+                        Style="{StaticResource EduCardBorder}">
 
                         <VerticalStackLayout Spacing="10">
 
-                            <Label
-                                FontFamily="Comfortaa"
-                                FontSize="16"
-                                Text="Фокус"
-                                TextColor="White" />
+                            <Label Style="{StaticResource EduCardTitle16}" Text="Фокус" />
 
                             <Image Source="dividing_strip.png" />
 
                             <Grid ColumnDefinitions="*, Auto">
 
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="13"
-                                    Opacity="0.5"
-                                    Text="Сегодня"
-                                    TextColor="White" />
+                                <Label Style="{StaticResource EduSmallLabelMuted}" Text="Сегодня" />
 
                                 <Label
                                     Grid.Column="1"
-                                    FontFamily="Comfortaa"
-                                    FontSize="13"
-                                    Text="0"
-                                    TextColor="White" />
+                                    Style="{StaticResource EduSmallLabel}"
+                                    Text="0" />
 
                             </Grid>
 
@@ -397,19 +281,12 @@
 
                             <Grid ColumnDefinitions="*, Auto">
 
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="13"
-                                    Opacity="0.5"
-                                    Text="Сессий"
-                                    TextColor="White" />
+                                <Label Style="{StaticResource EduSmallLabelMuted}" Text="Сессий" />
 
                                 <Label
                                     Grid.Column="1"
-                                    FontFamily="Comfortaa"
-                                    FontSize="13"
-                                    Text="0"
-                                    TextColor="White" />
+                                    Style="{StaticResource EduSmallLabel}"
+                                    Text="0" />
 
                             </Grid>
 
@@ -417,32 +294,19 @@
 
                             <Grid ColumnDefinitions="*, Auto">
 
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="13"
-                                    Opacity="0.5"
-                                    Text="Активный цикл"
-                                    TextColor="White" />
+                                <Label Style="{StaticResource EduSmallLabelMuted}" Text="Активный цикл" />
 
                                 <Label
                                     Grid.Column="1"
-                                    FontFamily="Comfortaa"
-                                    FontSize="13"
-                                    HorizontalOptions="End"
-                                    Text="25/5"
-                                    TextColor="White" />
+                                    Style="{StaticResource EduSmallLabel}"
+                                    Text="25/5" />
                             </Grid>
 
                             <Image Source="dividing_strip.png" />
 
                             <Grid ColumnDefinitions="*, Auto">
 
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="13"
-                                    Opacity="0.5"
-                                    Text="Запустить Помодоро"
-                                    TextColor="White" />
+                                <Label Style="{StaticResource EduSmallLabelMuted}" Text="Запустить Помодоро" />
 
                                 <Image
                                     Grid.Column="1"

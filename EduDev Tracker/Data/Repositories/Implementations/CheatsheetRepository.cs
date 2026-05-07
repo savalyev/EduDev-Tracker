@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduDev_Tracker.Data.Repositories.Implementations
 {
-    internal class UserRepository
+    internal class CheatsheetRepository
     {
     }
 }

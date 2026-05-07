@@ -1,17 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using EduDev_Tracker.Data;
+using Microsoft.Extensions.DependencyInjection;
 namespace EduDev_Tracker
 {
     public partial class App : Application
     {
-        public App()
+        public App(DatabaseService db)
         {
             InitializeComponent();
-        }
-
-        protected override Window CreateWindow(IActivationState? activationState)
-        {
-            var window = new Window(new AppShell());
-            return window;
+            MainPage = new AppShell();
+            _ = db.InitAsync();
         }
     }
 }

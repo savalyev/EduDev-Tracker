@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduDev_Tracker.Data.Repositories.Interfaces
 {
-    internal class IUserRepository
+    internal class IProfileRepository
     {
     }
 }

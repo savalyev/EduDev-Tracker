@@ -9,6 +9,23 @@
         <Setter Property="Padding" Value="0" />
     </Style>
 
+    <Style x:Key="EduButtonHorizontalSelect" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="FontFamily" Value="Comfortaa" />
+    </Style>
+
+    <Style x:Key="EduDarkButtonSelection" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="#14182E" />
+        <Setter Property="BorderColor" Value="#FFFFFF" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="CornerRadius" Value="15" />
+        <Setter Property="TextColor" Value="#99FFFFFF" />
+
+    </Style>
+
     <Style x:Key="EduPrimaryButton" TargetType="Button">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="Comfortaa" />

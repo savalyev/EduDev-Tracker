@@ -1,12 +1,147 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EduDev_Tracker.Features.Habits.Views.HabitsPage"
-             Title="HabitsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Habits.Views.HabitsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    SafeAreaEdges="All"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+
+        <Grid>
+
+            <Image
+                Aspect="Fill"
+                Opacity="0.8"
+                Source="background_gradient.jpg" />
+
+            <Grid
+                MaximumWidthRequest="1500"
+                RowDefinitions="Auto, *"
+                RowSpacing="40">
+
+                <Grid
+                    Grid.Row="0"
+                    Padding="40"
+                    ColumnDefinitions="Auto, *, Auto"
+                    VerticalOptions="Center">
+
+                    <Image
+                        HeightRequest="45"
+                        HorizontalOptions="Start"
+                        Source="menu.png"
+                        VerticalOptions="Start"
+                        WidthRequest="45">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuTapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start">
+
+                        <Label Style="{StaticResource EduCardTitleLabel}" Text="Привычки" />
+                        <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Отслеживайте ежедневные действия, серии и прогресс по целям" />
+
+                    </VerticalStackLayout>
+
+                    <Border
+                        Grid.Column="2"
+                        HorizontalOptions="End"
+                        Style="{StaticResource EduPrimaryButtonBorder}"
+                        VerticalOptions="Start"
+                        WidthRequest="205">
+                        <HorizontalStackLayout HorizontalOptions="Center">
+
+                            <Image
+                                Margin="0,0,10,0"
+                                HeightRequest="13"
+                                Source="transition_icon.png"
+                                WidthRequest="13" />
+
+                            <Button Style="{StaticResource EduPrimaryButton}" Text="Перейти в архив" />
+
+                        </HorizontalStackLayout>
+                    </Border>
+
+                </Grid>
+
+                <Grid
+                    Grid.Row="1"
+                    Padding="40,0,40,0"
+                    ColumnDefinitions="Auto, Auto"
+                    ColumnSpacing="20"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Start">
+
+                    <Border
+                        Grid.Column="0"
+                        MaximumHeightRequest="500"
+                        Style="{StaticResource EduCardBorder}">
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, *">
+
+                            <Label Style="{StaticResource EduCardTitleLabel}" Text="Список привычек" />
+                            <Label
+                                Grid.Row="1"
+                                Style="{StaticResource EduCardSubtitleLabel}"
+                                Text="Сегодня активных: 0, выполнено: 0" />
+                            <Border
+                                Grid.Column="1"
+                                BackgroundColor="#14182E"
+                                Stroke="White"
+                                StrokeShape="RoundRectangle 15"
+                                StrokeThickness="0.5">
+                                <HorizontalStackLayout Padding="10,8,10,8" Spacing="10">
+                                    <Button Style="{StaticResource EduButtonHorizontalSelect}" Text="Сегодня" />
+                                    <Button Style="{StaticResource EduButtonHorizontalSelect}" Text="Неделя" />
+                                    <Button Style="{StaticResource EduButtonHorizontalSelect}" Text="Все" />
+                                </HorizontalStackLayout>
+                            </Border>
+                            <HorizontalStackLayout
+                                Grid.Row="2"
+                                Margin="0,10,0,0"
+                                Spacing="5">
+                                <Button Style="{StaticResource EduDarkButtonSelection}" Text="Все типы" />
+                                <Button Style="{StaticResource EduDarkButtonSelection}" Text="Бинарные" />
+                                <Button Style="{StaticResource EduDarkButtonSelection}" Text="Количественные" />
+                                <Button Style="{StaticResource EduDarkButtonSelection}" Text="По времени" />
+                                <Button Style="{StaticResource EduDarkButtonSelection}" Text="Только с напоминаниями" />
+                            </HorizontalStackLayout>
+
+
+                            <ScrollView Grid.Row="3" Margin="0,20,0,0">
+                                <VerticalStackLayout Spacing="10">
+                                    <Button
+                                        HeightRequest="39"
+                                        Style="{StaticResource EduDarkButtonSelection}"
+                                        Text="+ Добавьте ещё привычку, чтобы усилить прогресс недели" />
+                                </VerticalStackLayout>
+                            </ScrollView>
+
+                        </Grid>
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1">
+                        <Border Style="{StaticResource EduCardBorder}">
+                            <VerticalStackLayout>
+                                <Label Style="{StaticResource EduCardTitleLabel}" Text="Календарь выполнения" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+
+
+
+                </Grid>
+
+
+
+            </Grid>
+
+        </Grid>
+    </ScrollView>
+
+
 </ContentPage>

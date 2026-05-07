@@ -1,12 +1,750 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EduDev_Tracker.Features.Tasks.Views.TasksPage"
-             Title="TasksPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Tasks.Views.TasksPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="TasksPage">
+    <ScrollView>
+        <Grid
+            Padding="24"
+            RowDefinitions="Auto,Auto"
+            RowSpacing="20">
+
+            <!--  ============ Header ============  -->
+            <Grid
+                Grid.Row="0"
+                ColumnDefinitions="Auto,*,Auto"
+                ColumnSpacing="16"
+                VerticalOptions="Center">
+
+                <!--  Иконка-меню  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="12"
+                    Style="{StaticResource EduCardBorder}"
+                    VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="4">
+                        <BoxView
+                            HeightRequest="2"
+                            WidthRequest="22"
+                            Color="{StaticResource EduSecondaryText}" />
+                        <BoxView
+                            HeightRequest="2"
+                            WidthRequest="22"
+                            Color="{StaticResource EduSecondaryText}" />
+                        <BoxView
+                            HeightRequest="2"
+                            WidthRequest="22"
+                            Color="{StaticResource EduSecondaryText}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                    <Label
+                        HorizontalTextAlignment="Start"
+                        Style="{StaticResource EduAppTitleLabel}"
+                        Text="Привычки" />
+                    <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Отслеживайте ежедневные действия, серии и прогресс по целям" />
+                </VerticalStackLayout>
+
+                <Border
+                    Grid.Column="2"
+                    Padding="16,10"
+                    HeightRequest="44"
+                    Style="{StaticResource EduPrimaryButtonBorder}"
+                    VerticalOptions="Center">
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <Label Style="{StaticResource EduSmallLabel}" Text="↗" />
+                        <Label Style="{StaticResource EduSmallLabel}" Text="Перейти в архив" />
+                    </HorizontalStackLayout>
+                </Border>
+            </Grid>
+
+            <!--  ============ Контент ============  -->
+            <Grid
+                Grid.Row="1"
+                ColumnDefinitions="2*,*"
+                ColumnSpacing="20">
+
+                <!--  ===============================================  -->
+                <!--  Левая колонка: Список привычек  -->
+                <!--  ===============================================  -->
+                <Border Grid.Column="0" Style="{StaticResource EduCardBorder}">
+                    <VerticalStackLayout Spacing="16">
+
+                        <!--  Шапка карточки  -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                <Label Style="{StaticResource EduCardTitleLabel}" Text="Список привычек" />
+                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Сегодня активных: 5, выполнено: 3" />
+                            </VerticalStackLayout>
+
+                            <!--  Сегмент Сегодня / Неделя / Все  -->
+                            <Border
+                                Grid.Column="1"
+                                Padding="4"
+                                Style="{StaticResource EduCardBorder}"
+                                VerticalOptions="Center">
+                                <HorizontalStackLayout Spacing="2">
+                                    <Button
+                                        Padding="14,4"
+                                        HeightRequest="34"
+                                        MinimumWidthRequest="80"
+                                        Style="{StaticResource EduDarkButtonSelection}"
+                                        Text="Сегодня" />
+                                    <Button
+                                        Padding="14,4"
+                                        FontSize="14"
+                                        HeightRequest="34"
+                                        MinimumWidthRequest="80"
+                                        Style="{StaticResource EduButtonHorizontalSelect}"
+                                        Text="Неделя"
+                                        TextColor="{StaticResource EduSecondaryText}" />
+                                    <Button
+                                        Padding="14,4"
+                                        FontSize="14"
+                                        HeightRequest="34"
+                                        MinimumWidthRequest="60"
+                                        Style="{StaticResource EduButtonHorizontalSelect}"
+                                        Text="Все"
+                                        TextColor="{StaticResource EduSecondaryText}" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </Grid>
+
+                        <!--  Чипы фильтров  -->
+                        <FlexLayout
+                            AlignItems="Center"
+                            Direction="Row"
+                            JustifyContent="Start"
+                            Wrap="Wrap">
+                            <Button
+                                Margin="0,0,8,8"
+                                Padding="12,4"
+                                HeightRequest="32"
+                                Style="{StaticResource EduDarkButtonSelection}"
+                                Text="Все типы" />
+                            <Button
+                                Margin="0,0,8,8"
+                                Padding="12,4"
+                                BackgroundColor="Transparent"
+                                HeightRequest="32"
+                                Style="{StaticResource EduDarkButtonSelection}"
+                                Text="Бинарные" />
+                            <Button
+                                Margin="0,0,8,8"
+                                Padding="12,4"
+                                BackgroundColor="Transparent"
+                                HeightRequest="32"
+                                Style="{StaticResource EduDarkButtonSelection}"
+                                Text="Количественные" />
+                            <Button
+                                Margin="0,0,8,8"
+                                Padding="12,4"
+                                BackgroundColor="Transparent"
+                                HeightRequest="32"
+                                Style="{StaticResource EduDarkButtonSelection}"
+                                Text="По времени" />
+                            <Button
+                                Margin="0,0,8,8"
+                                Padding="12,4"
+                                BackgroundColor="Transparent"
+                                HeightRequest="32"
+                                Style="{StaticResource EduDarkButtonSelection}"
+                                Text="Только с напоминаниями" />
+                        </FlexLayout>
+
+                        <!--  ===== Привычка: Чтение книги =====  -->
+                        <Border Padding="16" Style="{StaticResource EduCardBorder}">
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="16">
+
+                                <Border
+                                    Grid.Column="0"
+                                    BackgroundColor="{StaticResource EduButtonBackground}"
+                                    HeightRequest="48"
+                                    Stroke="{StaticResource EduCardBorder}"
+                                    StrokeShape="RoundRectangle 12"
+                                    VerticalOptions="Center"
+                                    WidthRequest="48">
+                                    <Label
+                                        FontSize="22"
+                                        HorizontalOptions="Center"
+                                        Text="📖"
+                                        VerticalOptions="Center" />
+                                </Border>
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="6"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontSize="18"
+                                        Style="{StaticResource EduCardTitle16}"
+                                        Text="Чтение книги" />
+                                    <Label Style="{StaticResource EduSmallLabelMuted}" Text="Цель: 30 минут в день · Тип: время" />
+                                    <FlexLayout Direction="Row" Wrap="Wrap">
+                                        <Button
+                                            Margin="0,0,6,0"
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Ежедневно" />
+                                        <Button
+                                            Margin="0,0,6,0"
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Утро 07:30" />
+                                        <Button
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Фокус" />
+                                    </FlexLayout>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout
+                                    Grid.Column="2"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label Style="{StaticResource EduSmallLabel}" Text="Сегодня: 20 / 30 мин" />
+                                    <Label Style="{StaticResource EduSmallLabel}" Text="Неделя: 4 / 7 дней" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout
+                                    Grid.Column="3"
+                                    HorizontalOptions="End"
+                                    Spacing="4"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        HorizontalTextAlignment="End"
+                                        Style="{StaticResource EduSmallLabelMuted}"
+                                        Text="Серия" />
+                                    <HorizontalStackLayout HorizontalOptions="End" Spacing="6">
+                                        <Label
+                                            FontSize="18"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="12 дней" />
+                                        <Label FontSize="16" Text="🔥" />
+                                        <Switch
+                                            IsToggled="True"
+                                            OnColor="{StaticResource EduAccent}"
+                                            ThumbColor="White" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        FontSize="10"
+                                        HorizontalTextAlignment="End"
+                                        Style="{StaticResource EduSmallLabelMuted}"
+                                        Text="Пн Вт Ср Чт Пт Сб Вс" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <!--  ===== Привычка: Пробежка =====  -->
+                        <Border Padding="16" Style="{StaticResource EduCardBorder}">
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="16">
+                                <Border
+                                    Grid.Column="0"
+                                    BackgroundColor="{StaticResource EduButtonBackground}"
+                                    HeightRequest="48"
+                                    Stroke="{StaticResource EduCardBorder}"
+                                    StrokeShape="RoundRectangle 12"
+                                    VerticalOptions="Center"
+                                    WidthRequest="48">
+                                    <Label
+                                        FontSize="22"
+                                        HorizontalOptions="Center"
+                                        Text="🏃"
+                                        VerticalOptions="Center" />
+                                </Border>
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="6"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontSize="18"
+                                        Style="{StaticResource EduCardTitle16}"
+                                        Text="Пробежка" />
+                                    <Label Style="{StaticResource EduSmallLabelMuted}" Text="Цель: 3 раза в неделю · Тип: количество" />
+                                    <FlexLayout Direction="Row" Wrap="Wrap">
+                                        <Button
+                                            Margin="0,0,6,0"
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Пн, Ср, Пт" />
+                                        <Button
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Вечер 19:00" />
+                                    </FlexLayout>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout
+                                    Grid.Column="2"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label Style="{StaticResource EduSmallLabel}" Text="На этой неделе: 2 / 3 сессий" />
+                                    <Label Style="{StaticResource EduSmallLabel}" Text="Последний раз: вчера" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout
+                                    Grid.Column="3"
+                                    HorizontalOptions="End"
+                                    Spacing="4"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        HorizontalTextAlignment="End"
+                                        Style="{StaticResource EduSmallLabelMuted}"
+                                        Text="Серия" />
+                                    <HorizontalStackLayout HorizontalOptions="End" Spacing="6">
+                                        <Label
+                                            FontSize="18"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="4 недели" />
+                                        <Switch
+                                            IsToggled="True"
+                                            OnColor="{StaticResource EduAccent}"
+                                            ThumbColor="White" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        FontSize="10"
+                                        HorizontalTextAlignment="End"
+                                        Style="{StaticResource EduSmallLabelMuted}"
+                                        Text="Пн Вт Ср Чт Пт Сб Вс" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <!--  ===== Привычка: Пить воду =====  -->
+                        <Border Padding="16" Style="{StaticResource EduCardBorder}">
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="16">
+                                <Border
+                                    Grid.Column="0"
+                                    BackgroundColor="{StaticResource EduButtonBackground}"
+                                    HeightRequest="48"
+                                    Stroke="{StaticResource EduCardBorder}"
+                                    StrokeShape="RoundRectangle 12"
+                                    VerticalOptions="Center"
+                                    WidthRequest="48">
+                                    <Label
+                                        FontSize="22"
+                                        HorizontalOptions="Center"
+                                        Text="💧"
+                                        VerticalOptions="Center" />
+                                </Border>
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="6"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontSize="18"
+                                        Style="{StaticResource EduCardTitle16}"
+                                        Text="Пить воду" />
+                                    <Label Style="{StaticResource EduSmallLabelMuted}" Text="Цель: 8 стаканов · Тип: количество" />
+                                    <FlexLayout Direction="Row" Wrap="Wrap">
+                                        <Button
+                                            Margin="0,0,6,0"
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Ежедневно" />
+                                        <Button
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Напоминания каждый 1 ч" />
+                                    </FlexLayout>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout
+                                    Grid.Column="2"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label Style="{StaticResource EduSmallLabel}" Text="Сегодня: 5 / 8 стаканов" />
+                                    <Label Style="{StaticResource EduSmallLabel}" Text="Текущий день ещё активен" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout
+                                    Grid.Column="3"
+                                    HorizontalOptions="End"
+                                    Spacing="4"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        HorizontalTextAlignment="End"
+                                        Style="{StaticResource EduSmallLabelMuted}"
+                                        Text="Серия" />
+                                    <HorizontalStackLayout HorizontalOptions="End" Spacing="6">
+                                        <Label
+                                            FontSize="18"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="7 дней" />
+                                        <Switch
+                                            IsToggled="True"
+                                            OnColor="{StaticResource EduAccent}"
+                                            ThumbColor="White" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        FontSize="10"
+                                        HorizontalTextAlignment="End"
+                                        Style="{StaticResource EduSmallLabelMuted}"
+                                        Text="Пн Вт Ср Чт Пт Сб Вс" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <!--  ===== Привычка: Английский =====  -->
+                        <Border Padding="16" Style="{StaticResource EduCardBorder}">
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="16">
+                                <Border
+                                    Grid.Column="0"
+                                    BackgroundColor="{StaticResource EduButtonBackground}"
+                                    HeightRequest="48"
+                                    Stroke="{StaticResource EduCardBorder}"
+                                    StrokeShape="RoundRectangle 12"
+                                    VerticalOptions="Center"
+                                    WidthRequest="48">
+                                    <Label
+                                        HorizontalOptions="Center"
+                                        Style="{StaticResource EduCardTitle16}"
+                                        Text="EN"
+                                        VerticalOptions="Center" />
+                                </Border>
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="6"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontSize="18"
+                                        Style="{StaticResource EduCardTitle16}"
+                                        Text="Английский" />
+                                    <Label Style="{StaticResource EduSmallLabelMuted}" Text="Цель: 20 слов · Тип: количество" />
+                                    <FlexLayout Direction="Row" Wrap="Wrap">
+                                        <Button
+                                            Margin="0,0,6,0"
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Будни" />
+                                        <Button
+                                            Margin="0,0,6,0"
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Вечер" />
+                                        <Button
+                                            Padding="10,2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="12"
+                                            HeightRequest="28"
+                                            Style="{StaticResource EduDarkButtonSelection}"
+                                            Text="Курс 30 дней" />
+                                    </FlexLayout>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout
+                                    Grid.Column="2"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label Style="{StaticResource EduSmallLabel}" Text="Сегодня: 0 / 20 слов" />
+                                    <Label Style="{StaticResource EduSmallLabel}" Text="Курс: день 14 / 30" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout
+                                    Grid.Column="3"
+                                    HorizontalOptions="End"
+                                    Spacing="4"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        HorizontalTextAlignment="End"
+                                        Style="{StaticResource EduSmallLabelMuted}"
+                                        Text="Серия" />
+                                    <HorizontalStackLayout HorizontalOptions="End" Spacing="6">
+                                        <Label
+                                            FontSize="18"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="3 дня" />
+                                        <Switch
+                                            IsToggled="True"
+                                            OnColor="{StaticResource EduAccent}"
+                                            ThumbColor="White" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        FontSize="10"
+                                        HorizontalTextAlignment="End"
+                                        Style="{StaticResource EduSmallLabelMuted}"
+                                        Text="Пн Вт Ср Чт Пт Сб Вс" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <!--  Кнопка добавить  -->
+                        <Border Padding="16,12" Style="{StaticResource EduEmptyStateBorder}">
+                            <Label
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource EduSmallLabelMuted}"
+                                Text="+ Добавьте ещё привычку, чтобы усилить прогресс недели" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  ===============================================  -->
+                <!--  Правая колонка  -->
+                <!--  ===============================================  -->
+                <VerticalStackLayout Grid.Column="1" Spacing="20">
+
+                    <!--  Календарь выполнения  -->
+                    <Border Style="{StaticResource EduCardBorder}">
+                        <VerticalStackLayout Spacing="14">
+                            <Label
+                                FontSize="22"
+                                Style="{StaticResource EduCardTitleLabel}"
+                                Text="Календарь выполнения" />
+                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Нажмите день, чтобы открыть подробную историю и примечания" />
+
+                            <!--  Дни недели  -->
+                            <Grid ColumnDefinitions="*,*,*,*,*,*,*" ColumnSpacing="6">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="6,8"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout HorizontalOptions="Center">
+                                        <Label
+                                            FontSize="14"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="11" />
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduSmallLabelMuted}"
+                                            Text="Пн" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="6,8"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout HorizontalOptions="Center">
+                                        <Label
+                                            FontSize="14"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="12" />
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduSmallLabelMuted}"
+                                            Text="Вт" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="6,8"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout HorizontalOptions="Center">
+                                        <Label
+                                            FontSize="14"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="13" />
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduSmallLabelMuted}"
+                                            Text="Ср" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="3"
+                                    Padding="6,8"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout HorizontalOptions="Center">
+                                        <Label
+                                            FontSize="14"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="14" />
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduSmallLabelMuted}"
+                                            Text="Чт" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="4"
+                                    Padding="6,8"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout HorizontalOptions="Center">
+                                        <Label
+                                            FontSize="14"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="15" />
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduSmallLabelMuted}"
+                                            Text="Пт" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="5"
+                                    Padding="6,8"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout HorizontalOptions="Center">
+                                        <Label
+                                            FontSize="14"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="16" />
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduSmallLabelMuted}"
+                                            Text="Сб" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="6"
+                                    Padding="6,8"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout HorizontalOptions="Center">
+                                        <Label
+                                            FontSize="14"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="17" />
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalTextAlignment="Center"
+                                            Style="{StaticResource EduSmallLabelMuted}"
+                                            Text="Вс" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+
+                            <!--  Легенда  -->
+                            <HorizontalStackLayout Spacing="14">
+                                <HorizontalStackLayout Spacing="6">
+                                    <Ellipse
+                                        Fill="{StaticResource EduAccent}"
+                                        HeightRequest="8"
+                                        VerticalOptions="Center"
+                                        WidthRequest="8" />
+                                    <Label Style="{StaticResource EduSmallLabelMuted}" Text="выполнено" />
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Spacing="6">
+                                    <Ellipse
+                                        Fill="#EF4444"
+                                        HeightRequest="8"
+                                        VerticalOptions="Center"
+                                        WidthRequest="8" />
+                                    <Label Style="{StaticResource EduSmallLabelMuted}" Text="пропуск" />
+                                </HorizontalStackLayout>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Аналитика  -->
+                    <Border Style="{StaticResource EduCardBorder}">
+                        <VerticalStackLayout Spacing="14">
+                            <Label
+                                FontSize="22"
+                                Style="{StaticResource EduCardTitleLabel}"
+                                Text="Аналитика по привычкам" />
+                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Выберите период и посмотрите эффективность и слабые дни" />
+
+                            <Grid
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="10"
+                                RowDefinitions="Auto,Auto"
+                                RowSpacing="10">
+
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Padding="14,12"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label
+                                            FontSize="22"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="86%" />
+                                        <Label Style="{StaticResource EduSmallLabelMuted}" Text="За последние 7 дней" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Padding="14,12"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label
+                                            FontSize="22"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="15" />
+                                        <Label Style="{StaticResource EduSmallLabelMuted}" Text="Текущие активные привычки" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Padding="14,12"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label
+                                            FontSize="22"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="Пн–Ср" />
+                                        <Label Style="{StaticResource EduSmallLabelMuted}" Text="Самые сильные дни" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Padding="14,12"
+                                    Style="{StaticResource EduProgressBorder}">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label
+                                            FontSize="22"
+                                            Style="{StaticResource EduCardTitle16}"
+                                            Text="Пт" />
+                                        <Label Style="{StaticResource EduSmallLabelMuted}" Text="Больше всего пропусков" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </Grid>
+        </Grid>
+    </ScrollView>
 </ContentPage>

@@ -3,15 +3,33 @@
     x:Class="EduDev_Tracker.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:EduDev_Tracker"
     xmlns:dashboard="clr-namespace:EduDev_Tracker.Features.Dashboard.Views"
+    xmlns:local="clr-namespace:EduDev_Tracker"
+    xmlns:views="clr-namespace:EduDev_Tracker.Features"
     xmlns:welcome="clr-namespace:EduDev_Tracker.Features.Auth.Views"
-    Shell.FlyoutBehavior="Disabled"
     Title="EduDev_Tracker">
 
-    <ShellContent
-        Title="Велком"
-        ContentTemplate="{DataTemplate dashboard:DashboardPage}"
-        Route="DasboardPage" />
+    <Shell.FlyoutBehavior>Flyout</Shell.FlyoutBehavior>
+
+    <FlyoutItem Title="Главная страница" Route="Dashboard">
+        <ShellContent
+            Title="Главная страница"
+            ContentTemplate="{DataTemplate views:Dashboard.Views.DashboardPage}"
+            Route="DashboardPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Привычки" Route="Habits">
+        <ShellContent
+            Title="Привычки"
+            ContentTemplate="{DataTemplate views:Habits.Views.HabitsPage}"
+            Route="HabitsPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Задачи" Route="Tasks">
+        <ShellContent
+            Title="Задачи"
+            ContentTemplate="{DataTemplate views:Tasks.Views.TasksPage}"
+            Route="TasksPage" />
+    </FlyoutItem>
 
 </Shell>

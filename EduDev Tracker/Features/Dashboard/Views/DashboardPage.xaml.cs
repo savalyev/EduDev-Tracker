@@ -22,4 +22,12 @@ public partial class DashboardPage : ContentPage
             VisualStateManager.GoToState(CardsGrid, "Wide");
         }
     }
+
+    private void OnMenuTapped(object? sender, EventArgs e)
+    {
+        if (Shell.Current != null)
+        {
+            Shell.Current.FlyoutIsPresented = !Shell.Current.FlyoutIsPresented;
+        }
+    }
 }

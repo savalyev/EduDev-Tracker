@@ -1,5 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
+using EduDev_Tracker.Data;
+using EduDev_Tracker.Data.Repositories.Implementations;
+using EduDev_Tracker.Features.Habits.ViewModels;
+using EduDev_Tracker.Features.Habits.Views;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 
 #if WINDOWS
@@ -25,6 +29,18 @@ namespace EduDev_Tracker
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("Comfortaa.ttf", "Comfortaa");
                 });
+
+            builder.Services.AddSingleton<DatabaseService>();
+
+            builder.Services.AddSingleton<HabitRepository>();
+            builder.Services.AddSingleton<TaskRepository>();
+            builder.Services.AddSingleton<NoteRepository>();
+            builder.Services.AddSingleton<PomodoroRepository>();
+            builder.Services.AddSingleton<CheatsheetRepository>();
+            builder.Services.AddSingleton<ProfileRepository>();
+
+            builder.Services.AddTransient<HabitsViewModel>();
+            builder.Services.AddTransient<HabitsPage>();
 
             //#if WINDOWS
             //            builder.ConfigureLifecycleEvents(events =>

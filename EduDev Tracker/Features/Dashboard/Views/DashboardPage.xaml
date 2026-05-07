@@ -31,7 +31,11 @@
                         HorizontalOptions="Start"
                         Source="menu.png"
                         VerticalOptions="Start"
-                        WidthRequest="45" />
+                        WidthRequest="45">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuTapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
 
                     <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
                         <Image

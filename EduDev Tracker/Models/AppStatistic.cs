@@ -6,5 +6,6 @@ namespace EduDev_Tracker.Models
 {
     internal class AppStatistic
     {
+        
     }
 }

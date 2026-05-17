@@ -3,6 +3,7 @@ using EduDev_Tracker.Data;
 using EduDev_Tracker.Data.Repositories.Implementations;
 using EduDev_Tracker.Features.Habits.ViewModels;
 using EduDev_Tracker.Features.Habits.Views;
+using EduDev_Tracker.Services.Navigation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 
@@ -75,6 +76,9 @@ namespace EduDev_Tracker
 
         static void RegisterServices(IServiceCollection services)
         {
+            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddTransient<CreateHabitViewModel>();
+            services.AddTransient<CreateHabitPage>();
         }
     }
 }

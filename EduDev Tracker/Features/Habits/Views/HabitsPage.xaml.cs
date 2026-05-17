@@ -1,10 +1,14 @@
+using EduDev_Tracker.Features.Habits.ViewModels;
+
 namespace EduDev_Tracker.Features.Habits.Views;
 
 public partial class HabitsPage : ContentPage
 {
-    public HabitsPage()
+    public HabitsPage(HabitsViewModel viewModel)
     {
         InitializeComponent();
+        BindingContext = viewModel;
+
     }
 
     private void OnMenuTapped(object? sender, EventArgs e)
@@ -13,10 +17,5 @@ public partial class HabitsPage : ContentPage
         {
             Shell.Current.FlyoutIsPresented = !Shell.Current.FlyoutIsPresented;
         }
-    }
-
-    private void OnAddHabitTapped(object? sender, EventArgs e)
-    {
-
     }
 }

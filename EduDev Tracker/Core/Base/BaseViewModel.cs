@@ -9,10 +9,10 @@ namespace EduDev_Tracker.Core.Base
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsNotBusy))]
-        private bool _isBusy;
+        private bool isBusy;
 
         [ObservableProperty]
-        private string _title = string.Empty;
+        private string title = string.Empty;
 
         public bool IsNotBusy => !IsBusy;
 

@@ -18,7 +18,6 @@ namespace EduDev_Tracker.Data.Models
         [NotNull, MaxLength(200)] public string Title { get; set; } = "";
         public string? Description { get; set; }
         public string? Icon { get; set; }
-        public string? Color { get; set; }
 
         [Ignore] public HabitType Type { get; set; } = HabitType.Binary;
 

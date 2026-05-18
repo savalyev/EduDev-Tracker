@@ -18,6 +18,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         {
             _navigation = navigation;
             _services = services;
+            //System.Diagnostics.Debug.WriteLine("HabitsViewModel создан!");
         }
 
         [RelayCommand]

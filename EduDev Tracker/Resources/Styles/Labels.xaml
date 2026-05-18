@@ -58,4 +58,13 @@
         <Setter Property="Opacity" Value="0.5" />
     </Style>
 
+    <Style x:Key="EduDayCheckLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="#99FFFFFF" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="Margin" Value="8,4" />
+    </Style>
+
 </ResourceDictionary>

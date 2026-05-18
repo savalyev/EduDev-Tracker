@@ -9,4 +9,34 @@ public partial class CreateHabitPage : ContentPage
 		InitializeComponent();
 		BindingContext = viewModel;
 	}
+
+    private readonly HashSet<string> _selectedDays = new();
+
+    private void OnDayTapped(object? sender, TappedEventArgs e)
+    {
+        if (sender is not Border border) return;
+
+        var day = e.Parameter?.ToString() ?? string.Empty;
+        var label = border.Content as Label;
+
+        if (_selectedDays.Contains(day))
+        {
+            _selectedDays.Remove(day);
+            border.BackgroundColor = Color.FromArgb("#14182E");
+            border.Stroke = new SolidColorBrush(Colors.White);
+            if (label != null)
+                label.TextColor = Color.FromArgb("#99FFFFFF");
+        }
+        else
+        {
+            _selectedDays.Add(day);
+            border.BackgroundColor = Color.FromArgb("#4F6EF7");
+            border.Stroke = new SolidColorBrush(Color.FromArgb("#4F6EF7"));
+            if (label != null)
+                label.TextColor = Colors.White;
+
+            if (BindingContext is CreateHabitViewModel vm)
+                vm.SelectedDays = _selectedDays.ToList();
+        }
+    }
 }

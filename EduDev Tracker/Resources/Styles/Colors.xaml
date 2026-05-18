@@ -10,4 +10,10 @@
     <Color x:Key="EduAccent">#019301</Color>
     <Color x:Key="EduButtonBackground">#2B2B2E</Color>
     <Color x:Key="EduDarkOverlay">#171C30</Color>
+
+    <Color x:Key="CheckboxUnselectedBg">#14182E</Color>
+    <Color x:Key="CheckboxSelectedBg">#4F6EF7</Color>
+    <Color x:Key="CheckboxBorderColor">#FFFFFF</Color>
+    <Color x:Key="CheckboxTextColor">#99FFFFFF</Color>
+    <Color x:Key="CheckboxTextSelectedColor">#FFFFFF</Color>
 </ResourceDictionary>

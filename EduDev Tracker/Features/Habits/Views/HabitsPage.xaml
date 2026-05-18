@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:EduDev_Tracker.Features.Habits.ViewModels"
     Title=""
+    x:DataType="vm:HabitsViewModel"
     SafeAreaEdges="All"
     Shell.NavBarIsVisible="False">
 
@@ -113,15 +114,16 @@
                             </HorizontalStackLayout>
 
 
-                            <ScrollView Grid.Row="3" Margin="0,20,0,0">
-                                <VerticalStackLayout Spacing="10">
-                                    <Button
-                                        Command="{Binding OpenAddHabitAsyncCommand}"
-                                        HeightRequest="39"
-                                        Style="{StaticResource EduDarkButtonSelection}"
-                                        Text="+ Добавьте ещё привычку, чтобы усилить прогресс недели" />
-                                </VerticalStackLayout>
-                            </ScrollView>
+                            <VerticalStackLayout
+                                Grid.Row="3"
+                                Margin="0,20,0,0"
+                                Spacing="10">
+                                <Button
+                                    Command="{Binding OpenAddHabitCommand}"
+                                    HeightRequest="39"
+                                    Style="{StaticResource EduDarkButtonSelection}"
+                                    Text="+ Добавьте ещё привычку, чтобы усилить прогресс недели" />
+                            </VerticalStackLayout>
 
                         </Grid>
                     </Border>

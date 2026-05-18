@@ -40,9 +40,6 @@ namespace EduDev_Tracker
             builder.Services.AddSingleton<CheatsheetRepository>();
             builder.Services.AddSingleton<ProfileRepository>();
 
-            builder.Services.AddTransient<HabitsViewModel>();
-            builder.Services.AddTransient<HabitsPage>();
-
             //#if WINDOWS
             //            builder.ConfigureLifecycleEvents(events =>
             //            {
@@ -79,6 +76,8 @@ namespace EduDev_Tracker
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddTransient<CreateHabitViewModel>();
             services.AddTransient<CreateHabitPage>();
+            services.AddTransient<HabitsPage>();
+            services.AddTransient<HabitsViewModel>();
         }
     }
 }

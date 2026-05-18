@@ -24,4 +24,23 @@
         <Setter Property="Padding" Value="20" />
     </Style>
 
+    <Style x:Key="EduDarkButtonSelectionBorder" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="#14182E" />
+        <Setter Property="Stroke" Value="#FFFFFF" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="15" />
+        </Setter>
+    </Style>
+
+    <Style x:Key="EduDayCheckBorder" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="#14182E" />
+        <Setter Property="Stroke" Value="#FFFFFF" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="10" />
+        </Setter>
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
 </ResourceDictionary>

@@ -2,7 +2,8 @@
 <ContentPage
     x:Class="EduDev_Tracker.Features.Habits.Views.CreateHabitPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundImageSource="background_gradient.jpg">
 
     <Grid HorizontalOptions="Center" VerticalOptions="Center">
 
@@ -11,29 +12,27 @@
             Style="{StaticResource EduCardBorder}"
             WidthRequest="520">
 
-            <VerticalStackLayout Spacing="18">
+            <VerticalStackLayout Spacing="10">
 
                 <Label
                     FontSize="28"
                     Style="{StaticResource EduCardTitleLabel}"
                     Text="Добавить привычку" />
-                <Label Style="{StaticResource EduProgressSubtitleLabel}" Text="Выберите привычку из списка или создайте новую" />
+                <Label Style="{StaticResource EduProgressSubtitleLabel}" Text="Создайте новую привычку" />
 
                 <Image HeightRequest="2" Source="dividing_strip.png" />
 
-                <Label Style="{StaticResource EduCardTitle16}" Text="Умное добавление" />
-                <Border Style="{StaticResource EduEmptyStateBorder}">
-                    <HorizontalStackLayout Spacing="10">
-                        <Image
-                            HeightRequest="20"
-                            Source="smart_add_icon.png"
-                            WidthRequest="20" />
-                        <VerticalStackLayout Spacing="2">
-                            <Label Style="{StaticResource EduSmallLabel}" Text="«Чтение книги» уже есть, хотите обновить цель?" />
-                            <Label Style="{StaticResource EduSmallLabelMuted}" Text="Также популярны: «Бег», «Английский», «Медитация»" />
-                        </VerticalStackLayout>
-                    </HorizontalStackLayout>
-                </Border>
+                <Label Style="{StaticResource EduCardTitle16}" Text="Название привычки" />
+                <Editor
+                    BackgroundColor="#14182E"
+                    FontFamily="Comfortaa"
+                    FontSize="14"
+                    HeightRequest="35"
+                    Placeholder="Например: утренняя зарядка"
+                    PlaceholderColor="#66FFFFFF"
+                    Text="{Binding Title}"
+                    TextColor="White"
+                    VerticalTextAlignment="Center" />
 
                 <Label Style="{StaticResource EduCardTitle16}" Text="Описание" />
                 <Editor
@@ -46,166 +45,121 @@
                     Text="{Binding Description}"
                     TextColor="White" />
 
-                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
-                    <Label
-                        Style="{StaticResource EduCardTitle16}"
-                        Text="Тип"
-                        VerticalOptions="Center" />
-                    <Picker
-                        Grid.Column="1"
-                        BackgroundColor="#14182E"
-                        FontFamily="Comfortaa"
-                        FontSize="14"
-                        HeightRequest="48"
-                        SelectedItem="{Binding SelectedType}"
-                        TextColor="White"
-                        TitleColor="#66FFFFFF">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Бинарная</x:String>
-                                <x:String>Количественная</x:String>
-                                <x:String>По времени</x:String>
-                                <x:String>Курс</x:String>
-                                <x:String>Категория</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
-                </Grid>
-
-                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
-                    <Label
-                        Style="{StaticResource EduCardTitle16}"
-                        Text="Частота"
-                        VerticalOptions="Center" />
-                    <Picker
-                        Grid.Column="1"
-                        BackgroundColor="#14182E"
-                        FontFamily="Comfortaa"
-                        FontSize="14"
-                        HeightRequest="48"
-                        SelectedItem="{Binding SelectedFrequency}"
-                        TextColor="White"
-                        TitleColor="#66FFFFFF">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Ежедневно</x:String>
-                                <x:String>Несколько раз в неделю</x:String>
-                                <x:String>Еженедельно</x:String>
-                                <x:String>По выходным</x:String>
-                                <x:String>По будням</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
-                </Grid>
+                <Label
+                    Style="{StaticResource EduCardTitle16}"
+                    Text="Тип привычки"
+                    VerticalOptions="Center" />
+                <Picker
+                    Grid.Column="1"
+                    BackgroundColor="#14182E"
+                    FontFamily="Comfortaa"
+                    FontSize="14"
+                    HeightRequest="48"
+                    SelectedItem="{Binding SelectedType}"
+                    TextColor="White"
+                    TitleColor="#66FFFFFF">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Бинарная</x:String>
+                            <x:String>Количественная</x:String>
+                            <x:String>По времени</x:String>
+                            <x:String>Курс</x:String>
+                            <x:String>Категория</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
 
                 <Label Style="{StaticResource EduCardTitle16}" Text="Повторяемость" />
-                <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="8">
-                    <Border Style="{StaticResource EduDarkButtonSelection}">
-                        <Label
-                            Margin="8,4"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource EduSmallLabel}"
-                            Text="Пн" />
+                <Grid ColumnDefinitions="*,*,*,*,*,*,*" ColumnSpacing="8">
+                    <Border Style="{StaticResource EduDayCheckBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="Пн" Tapped="OnDayTapped" />
+                        </Border.GestureRecognizers>
+                        <Label Style="{StaticResource EduDayCheckLabel}" Text="Пн" />
                     </Border>
-                    <Border Grid.Column="1" Style="{StaticResource EduDarkButtonSelection}">
-                        <Label
-                            Margin="8,4"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource EduSmallLabel}"
-                            Text="Вт" />
+                    <Border Grid.Column="1" Style="{StaticResource EduDayCheckBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="Вт" Tapped="OnDayTapped" />
+                        </Border.GestureRecognizers>
+                        <Label Style="{StaticResource EduDayCheckLabel}" Text="Вт" />
                     </Border>
-                    <Border Grid.Column="2" Style="{StaticResource EduDarkButtonSelection}">
-                        <Label
-                            Margin="8,4"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource EduSmallLabel}"
-                            Text="Ср" />
+                    <Border Grid.Column="2" Style="{StaticResource EduDayCheckBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="Ср" Tapped="OnDayTapped" />
+                        </Border.GestureRecognizers>
+                        <Label Style="{StaticResource EduDayCheckLabel}" Text="Ср" />
                     </Border>
-                    <Border Grid.Column="3" Style="{StaticResource EduDarkButtonSelection}">
-                        <Label
-                            Margin="8,4"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource EduSmallLabel}"
-                            Text="Чт" />
+                    <Border Grid.Column="3" Style="{StaticResource EduDayCheckBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="Чт" Tapped="OnDayTapped" />
+                        </Border.GestureRecognizers>
+                        <Label Style="{StaticResource EduDayCheckLabel}" Text="Чт" />
                     </Border>
-                    <Border Grid.Column="4" Style="{StaticResource EduDarkButtonSelection}">
-                        <Label
-                            Margin="8,4"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource EduSmallLabel}"
-                            Text="Пт" />
+                    <Border Grid.Column="4" Style="{StaticResource EduDayCheckBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="Пт" Tapped="OnDayTapped" />
+                        </Border.GestureRecognizers>
+                        <Label Style="{StaticResource EduDayCheckLabel}" Text="Пт" />
+                    </Border>
+                    <Border Grid.Column="5" Style="{StaticResource EduDayCheckBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="Сб" Tapped="OnDayTapped" />
+                        </Border.GestureRecognizers>
+                        <Label Style="{StaticResource EduDayCheckLabel}" Text="Сб" />
+                    </Border>
+                    <Border Grid.Column="6" Style="{StaticResource EduDayCheckBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="Вс" Tapped="OnDayTapped" />
+                        </Border.GestureRecognizers>
+                        <Label Style="{StaticResource EduDayCheckLabel}" Text="Вс" />
                     </Border>
                 </Grid>
-
                 <Grid
-                    Margin="0,8,0,0"
-                    ColumnDefinitions="*,*,*,*"
-                    ColumnSpacing="8">
-                    <Border Style="{StaticResource EduDarkButtonSelection}">
-                        <Label
-                            Margin="8,4"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource EduSmallLabel}"
-                            Text="Сб" />
-                    </Border>
-                    <Border Grid.Column="1" Style="{StaticResource EduDarkButtonSelection}">
-                        <Label
-                            Margin="8,4"
-                            HorizontalTextAlignment="Center"
-                            Style="{StaticResource EduSmallLabel}"
-                            Text="Вс" />
-                    </Border>
-                </Grid>
-                <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12">
+                    ColumnDefinitions="Auto, Auto"
+                    ColumnSpacing="10"
+                    RowDefinitions="*, *"
+                    RowSpacing="10">
                     <Label
                         Style="{StaticResource EduCardTitle16}"
                         Text="Напоминание"
                         VerticalOptions="Center" />
                     <DatePicker
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        BackgroundColor="#14182E"
+                        Date="{Binding ReminderDate}"
+                        FontFamily="Comfortaa"
+                        FontSize="16"
+                        HeightRequest="50"
+                        MaximumDate="{Binding MaxDate}"
+                        MinimumDate="{Binding MinDate}"
+                        TextColor="White"
+                        WidthRequest="200" />
+                    <TimePicker
+                        Grid.Row="1"
                         Grid.Column="1"
                         BackgroundColor="#14182E"
                         FontFamily="Comfortaa"
-                        FontSize="14"
-                        HeightRequest="48"
-                        TextColor="White" />
-                    <TimePicker
-                        Grid.Column="2"
-                        BackgroundColor="#14182E"
-                        FontFamily="Comfortaa"
-                        FontSize="14"
-                        HeightRequest="48"
+                        FontSize="16"
+                        Format="HH:mm"
+                        HeightRequest="36"
                         TextColor="White"
-                        Time="08:00:00" />
+                        Time="{Binding ReminderTime}" />
                 </Grid>
 
                 <Image HeightRequest="2" Source="dividing_strip.png" />
 
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
-                    <Border Grid.Column="0" Style="{StaticResource EduPrimaryButtonBorder}">
-                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
-                            <Image
-                                HeightRequest="18"
-                                Source="cancel_icon.png"
-                                WidthRequest="18" />
-                            <Button
-                                Command="{Binding CancelCommand}"
-                                Style="{StaticResource EduPrimaryButton}"
-                                Text="Отменить" />
-                        </HorizontalStackLayout>
-                    </Border>
+                    <Button
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource EduPrimaryButton}"
+                        Text="Отменить" />
 
-                    <Border Grid.Column="1" Style="{StaticResource EduPrimaryButtonBorder}">
-                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
-                            <Image
-                                HeightRequest="18"
-                                Source="save_icon.png"
-                                WidthRequest="18" />
-                            <Button
-                                Command="{Binding SaveCommand}"
-                                Style="{StaticResource EduPrimaryButton}"
-                                Text="Сохранить" />
-                        </HorizontalStackLayout>
-                    </Border>
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource EduPrimaryButton}"
+                        Text="Сохранить" />
                 </Grid>
             </VerticalStackLayout>
         </Border>

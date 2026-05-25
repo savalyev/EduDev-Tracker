@@ -15,18 +15,22 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public Task<HabitSchedule> GetScheduleAsync(int habitId)
+        {
+            return Connection.Table<HabitSchedule>().FirstOrDefaultAsync(h => h.HabitId == habitId);
+        }
+
         public async Task<int> LogAsync(int habitId, DateTime? date = null, double value = 1, string? note = null)
         {
-            var d = (date ?? DateTime.Now).Date;
-            var dateKey = d.ToString("yyyy-MM-dd");
+            var dateKey = (date ?? DateTime.Now.Date).ToString("yyyy-MM-dd");
 
             await Connection.ExecuteAsync(@"
-INSERT INTO habit_logs (HabitId, LogDate, Value, Note, CompletedAt
-VALUES (?, ?, ?, ?, ?)
-ON CONFLICT(HabitId, LogDate) DO UPDATE SET
-Value = excluded.Value,
-Note = excluded.Note,
-CompletedAt = excluded.CompletedAt;", habitId, dateKey, value, note, DateTime.UtcNow);
+                INSERT INTO habit_logs (HabitId, LogDate, Value, Note, CompletedAt)
+                VALUES (?, ?, ?, ?, ?)
+                ON CONFLICT(HabitId, LogDate) DO UPDATE SET
+                Value = excluded.Value,
+                Note = excluded.Note,
+                CompletedAt = excluded.CompletedAt;", habitId, dateKey, value, note, DateTime.UtcNow);
 
             return 1;
         }
@@ -60,5 +64,15 @@ CompletedAt = excluded.CompletedAt;", habitId, dateKey, value, note, DateTime.Ut
                 await Connection.UpdateWithChildrenAsync(habit);
             }
         }
+
+        public async Task<bool> IsCompletedTodayAsync(int habitId)
+        {
+            var today = DateTime.Now.Date.ToString("yyyy-MM-dd");
+            var cnt = await Connection.ExecuteScalarAsync<int>(
+                "SELECT COUNT(*) FROM habit_logs WHERE HabitId = ? AND LogDate = ?",
+                habitId, today);
+            return cnt > 0;
+        }
+
     }
 }

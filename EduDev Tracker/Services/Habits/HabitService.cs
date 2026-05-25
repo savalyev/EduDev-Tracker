@@ -6,7 +6,7 @@ using System.Text;
 
 namespace EduDev_Tracker.Services.Habits
 {
-    public class HabitService: IHabitService
+    public class HabitService : IHabitService
     {
         private readonly HabitRepository _repo;
 
@@ -18,10 +18,20 @@ namespace EduDev_Tracker.Services.Habits
         public Task<List<Habit>> GetActiveAsync(int profileId)
             => _repo.GetActiveAsync(profileId);
 
+        public Task<HabitSchedule> GetScheduleAsync(int habitId)
+            => _repo.GetScheduleAsync(habitId);
+
         public Task<Habit?> GetByIdAsync(int id)
             => _repo.GetByIdAsync(id);
 
-        public async Task<Habit> CreateAsync(int profileId, string title, HabitType type, string? description = null)
+        public async Task<Habit> CreateAsync(
+            int profileId,
+            string title,
+            HabitType type,
+            HabitSchedule schedule,
+            double targetValue,
+            string targetUnit,
+            string? description = null)
         {
             if (string.IsNullOrWhiteSpace(title))
             {
@@ -35,7 +45,10 @@ namespace EduDev_Tracker.Services.Habits
                 Type = type,
                 Description = description?.Trim(),
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow,
+                TargetValue = targetValue,
+                TargetUnit = targetUnit,
+                Schedules = new List<HabitSchedule> { schedule }
             };
 
             await _repo.SaveWithChildrenAsync(habit);
@@ -45,13 +58,15 @@ namespace EduDev_Tracker.Services.Habits
         public Task UpdateAsync(Habit habit)
             => _repo.SaveWithChildrenAsync(habit);
 
-        public Task MarkDoneAsync(int habitId, DateTime? date = null, double value = 1, string? note = null)
+        public Task LogAsync(int habitId, DateTime? date = null, double value = 1, string? note = null)
             => _repo.LogAsync(habitId, date, value, note);
 
-        public Task UndoDoneAsync(int habitId, DateTime date)
+        public Task UnlogAsync(int habitId, DateTime date)
             => _repo.UnlogAsync(habitId, date);
 
         public Task ArchiveAsync(int habitId, bool archived = true)
             => _repo.ArchiveAsync(habitId, archived);
+        public Task<bool> IsCompletedTodayAsync(int habitId)
+            => _repo.IsCompletedTodayAsync(habitId);
     }
 }

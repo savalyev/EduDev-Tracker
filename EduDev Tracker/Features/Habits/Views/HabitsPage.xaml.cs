@@ -18,4 +18,14 @@ public partial class HabitsPage : ContentPage
             Shell.Current.FlyoutIsPresented = !Shell.Current.FlyoutIsPresented;
         }
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if(BindingContext is HabitsViewModel vm)
+        {
+            vm.LoadCommand.Execute(null);
+        }
+    }
 }

@@ -21,27 +21,70 @@ namespace EduDev_Tracker.Data
             try
             {
                 if (_connection is not null) return;
-
+                System.Diagnostics.Debug.WriteLine(Constants.DatabasePath);
                 _connection = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
+                System.Diagnostics.Debug.WriteLine("DB: opened");
 
-                await _connection.ExecuteAsync("PRAGMA foreign_keys = ON;");
-                await _connection.ExecuteAsync("PRAGMA journal_mode = WAL;");
-                await _connection.ExecuteAsync("PRAGMA synchronous = NORMAL;");
+                //await _connection.ExecuteAsync("PRAGMA foreign_keys = ON;");
+                //System.Diagnostics.Debug.WriteLine("DB: foreign_keys");
+
+                //await _connection.ExecuteAsync("PRAGMA journal_mode = WAL;");
+                //System.Diagnostics.Debug.WriteLine("DB: WAL");
+
+                //await _connection.ExecuteAsync("PRAGMA synchronous = NORMAL;");
+                //System.Diagnostics.Debug.WriteLine("DB: sync");
 
                 await _connection.CreateTableAsync<Profile>();
+                System.Diagnostics.Debug.WriteLine("DB: Profile");
+
                 await _connection.CreateTableAsync<Tag>();
+                System.Diagnostics.Debug.WriteLine("DB: Tag");
+
                 await _connection.CreateTableAsync<Habit>();
+                System.Diagnostics.Debug.WriteLine("DB: Habit");
+
                 await _connection.CreateTableAsync<HabitSchedule>();
-                await _connection.CreateTableAsync<HabitLog>();
+                System.Diagnostics.Debug.WriteLine("DB: HabitSchedule");
+
+                await _connection.ExecuteAsync(@"
+                CREATE TABLE IF NOT EXISTS habit_logs (
+                    Id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                    HabitId     INTEGER NOT NULL REFERENCES habits(Id) ON DELETE CASCADE,
+                    LogDate     TEXT    NOT NULL,
+                    Value       REAL    NOT NULL DEFAULT 1,
+                    Note        TEXT,
+                    CompletedAt TEXT    NOT NULL,
+                    UNIQUE(HabitId, LogDate)
+                )");
+                System.Diagnostics.Debug.WriteLine("DB: HabitLog");
+
                 await _connection.CreateTableAsync<HabitTag>();
+                System.Diagnostics.Debug.WriteLine("DB: HabitTag");
+
                 await _connection.CreateTableAsync<Project>();
+                System.Diagnostics.Debug.WriteLine("DB: Project");
+
                 await _connection.CreateTableAsync<TaskItem>();
+                System.Diagnostics.Debug.WriteLine("DB: TaskItem");
+
                 await _connection.CreateTableAsync<TaskRecurrence>();
+                System.Diagnostics.Debug.WriteLine("DB: TaskRecurrence");
+
                 await _connection.CreateTableAsync<TaskTag>();
+                System.Diagnostics.Debug.WriteLine("DB: TaskTag");
+
                 await _connection.CreateTableAsync<NoteCategory>();
+                System.Diagnostics.Debug.WriteLine("DB: NoteCategory");
+
                 await _connection.CreateTableAsync<Note>();
+                System.Diagnostics.Debug.WriteLine("DB: Note");
+
                 await _connection.CreateTableAsync<NoteAttachment>();
+                System.Diagnostics.Debug.WriteLine("DB: NoteAttachment");
+
                 await _connection.CreateTableAsync<NoteTag>();
+                System.Diagnostics.Debug.WriteLine("DB: NoteTag");
+
                 await _connection.CreateTableAsync<PomodoroPreset>();
                 await _connection.CreateTableAsync<PomodoroSession>();
                 await _connection.CreateTableAsync<CheatsheetCategory>();
@@ -50,9 +93,13 @@ namespace EduDev_Tracker.Data
                 await _connection.CreateTableAsync<ConversionHistory>();
                 await _connection.CreateTableAsync<Reminder>();
 
+                System.Diagnostics.Debug.WriteLine("DB: tables done");
+
                 await CreateFtsAsync();
+                System.Diagnostics.Debug.WriteLine("DB: fts done");
 
                 await MigrateAsync();
+                System.Diagnostics.Debug.WriteLine("DB: migrate done");
 
 #if DEBUG
                 _connection.Tracer = msg => System.Diagnostics.Debug.WriteLine("[SQL] " + msg);

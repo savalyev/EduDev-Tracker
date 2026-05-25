@@ -27,7 +27,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private string description = string.Empty;
 
         [ObservableProperty]
-        private HabitType selectedType = HabitType.Binary;
+        private HabitTypeItem? selectedHabitType;
 
         [ObservableProperty]
         private DateTime minDate = DateTime.Today;
@@ -41,10 +41,26 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [ObservableProperty]
         private TimeSpan reminderTime = TimeSpan.FromHours(8);
 
+        [ObservableProperty]
+        private string targetValue = string.Empty;
+
+        [ObservableProperty]
+        private string targetUnit = string.Empty;
+
+        public double ParsedTargerValue =>
+            double.TryParse(TargetValue, out var v) ? v : 0;
+
         public List<string> SelectedDays =>
             WeekDays.Where(d => d.IsSelected)
             .Select(d => d.Name)
             .ToList();
+
+        public ObservableCollection<HabitTypeItem> HabitTypes { get; } = new()
+        {
+            new() { Type = HabitType.Binary, Title = "Бинарная" },
+            new() { Type = HabitType.Quantitative, Title = "Количественная" },
+            new() { Type = HabitType.Time, Title = "По времени" }
+        };
 
         public ObservableCollection<DayItem> WeekDays { get; } = new()
         {
@@ -107,21 +123,25 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand(CanExecute = nameof(CanSave))]
         private async Task SaveAsync()
         {
-            IsBusy = true;
+            if (IsBusy) return;
             try
             {
+                IsBusy = true;
+                var Schedule = new HabitSchedule
+                {
+                    DayMask = BuildDaysMask(),
+                    TimeOfDay = $"{ReminderTime.Hours:00}:{ReminderTime.Minutes:00}"
+                };
+
                 var habit = await _habitService.CreateAsync(
                     profileId: 1,
                     title: Title,
-                    type: SelectedType,
-                    description: Description);
-
-                var schedule = new HabitSchedule
-                {
-                    HabitId = habit.Id,
-                    DayMask = BuildDaysMask(),
-                    TimeOfDay = ReminderTime.ToString(@"hh\:mm")
-                };
+                    type: SelectedHabitType?.Type ?? HabitType.Binary,
+                    schedule: Schedule,
+                    targetUnit: TargetUnit,
+                    targetValue: ParsedTargerValue,
+                    description: Description
+                    );
 
                 await _navigation.GoBackModalAsync();
             }
@@ -139,30 +159,47 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         }
 
         [RelayCommand]
-        private void ToggleDay(string day)
+        private void ToggleDay(string dayName)
         {
-            if (SelectedDays.Contains(day))
+            var day = WeekDays.FirstOrDefault(d => d.Name == dayName);
+            if(day is not null)
             {
-                SelectedDays.Remove(day);
-            }
-            else
-            {
-                SelectedDays.Add(day);
+                day.IsSelected = !day.IsSelected;
             }
         }
-
-
     }
 
-    public partial class DayItem: ObservableObject
+    public partial class DayItem : ObservableObject
     {
         public string Name { get; }
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(BackgroundColor))]
+        [NotifyPropertyChangedFor(nameof(TextColor))]
+        [NotifyPropertyChangedFor(nameof(BorderColor))]
         private bool _isSelected;
+
+        public Color BackgroundColor => IsSelected
+            ? Color.FromArgb("#4F6EF7")
+            : Color.FromArgb("#14182E");
+
+        public Color TextColor => IsSelected
+            ? Colors.White
+            : Color.FromArgb("#99FFFFFF");
+
+        public Color BorderColor => IsSelected
+            ? Color.FromArgb("#4F6EF7")
+            : Colors.White;
 
         public DayItem(string name)
         {
             Name = name;
         }
+    }
+
+    public class HabitTypeItem
+    {
+        public HabitType Type {  get; set; }
+        public string Title { get; set; } = "";
+    }
 }

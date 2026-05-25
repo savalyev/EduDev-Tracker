@@ -1,10 +1,11 @@
-﻿using SQLite;
+﻿using EduDev_Tracker.Data.Models.Joins;
+using SQLite;
 using SQLiteNetExtensions.Attributes;
 
 namespace EduDev_Tracker.Data.Models
 {
 
-    public enum HabitType { Binary, Quentitative, Time, Negative}
+    public enum HabitType { Binary, Quantitative, Time}
     public enum HabitPeriod {Day, Week, Month }
 
     [Table("habits")]
@@ -32,14 +33,14 @@ namespace EduDev_Tracker.Data.Models
         [Ignore] public HabitPeriod TargetPeriod { get; set; } = HabitPeriod.Day;
 
         [Column("TargetPeriod")]
-        public string TargetPerionString
+        public string TargetPeriodString
         {
             get => TargetPeriod.ToString();
             set => TargetPeriod = Enum.Parse<HabitPeriod>(value);
         }
         public bool IsArchived { get; set; }
         public bool IsFrozen { get; set; }
-        public DateTime FronzenUntil { get; set; }
+        public DateTime FrozenUntil { get; set; }
         public int SortOrder { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
@@ -47,8 +48,11 @@ namespace EduDev_Tracker.Data.Models
         [OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<HabitLog> Logs { get; set; } = new();
 
-        [ManyToMany(typeof(HabitLog))]
+        [ManyToMany(typeof(HabitTag))]
         public List<Tag> Tags { get; set; } = new();
+
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<HabitSchedule> Schedules { get; set; } = new();
 
 
 

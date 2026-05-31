@@ -99,6 +99,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Features\Habits\Views\ArchivedHabitsPage.xaml.cs">
+	    <DependentUpon>ArchivedHabitsPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Features\Auth\Views\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -141,7 +147,7 @@
 	  <MauiXaml Update="Features\Habits\Views\CreateHabitPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Features\Habits\Views\EditHabitPage.xaml">
+	  <MauiXaml Update="Features\Habits\Views\ArchivedHabitsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Habits\Views\HabitDetailsPage.xaml">

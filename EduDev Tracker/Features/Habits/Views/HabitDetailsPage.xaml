@@ -1,12 +1,239 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EduDev_Tracker.Features.Habits.Views.HabitDetailsPage"
-             Title="HabitDetailsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Habits.Views.HabitDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:EduDev_Tracker.Features.Habits.ViewModels"
+    Title=""
+    x:DataType="vm:HabitDetailsViewModel"
+    Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <Image
+            Aspect="Fill"
+            Opacity="0.8"
+            Source="background_gradient.jpg" />
+
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="16">
+
+                <!--  Шапка  -->
+                <Grid ColumnDefinitions="*, Auto">
+                    <Label
+                        Grid.Column="0"
+                        FontFamily="Comfortaa"
+                        FontSize="20"
+                        Text="Детали привычки"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding CloseCommand}"
+                        FontFamily="Comfortaa"
+                        FontSize="13"
+                        Style="{StaticResource EduPrimaryButton}"
+                        Text="✕ Закрыть" />
+                </Grid>
+
+                <!--  Карточка с иконкой и названием  -->
+                <Border Padding="16" Style="{StaticResource EduCardBorder}">
+                    <Grid ColumnDefinitions="64, *" ColumnSpacing="16">
+                        <Border
+                            Padding="12"
+                            Background="#1D3A3A"
+                            HeightRequest="64"
+                            Stroke="#996EE7B7"
+                            WidthRequest="64">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="18" />
+                            </Border.StrokeShape>
+                            <Image Aspect="Fill" Source="{Binding Icon}" />
+                        </Border>
+
+                        <!--  Режим просмотра  -->
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            IsVisible="{Binding IsViewing}"
+                            Spacing="4"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="18"
+                                Text="{Binding TitleHabit}"
+                                TextColor="White" />
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="12"
+                                Text="{Binding Description}"
+                                TextColor="#99FFFFFF" />
+                        </VerticalStackLayout>
+
+                        <!--  Режим редактирования  -->
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            IsVisible="{Binding IsEditing}"
+                            Spacing="8"
+                            VerticalOptions="Center">
+                            <Entry
+                                BackgroundColor="#14182E"
+                                FontFamily="Comfortaa"
+                                FontSize="16"
+                                Placeholder="Название привычки"
+                                PlaceholderColor="#99FFFFFF"
+                                Text="{Binding EditTitle}"
+                                TextColor="White" />
+                            <Entry
+                                BackgroundColor="#14182E"
+                                FontFamily="Comfortaa"
+                                FontSize="12"
+                                Placeholder="Описание"
+                                PlaceholderColor="#99FFFFFF"
+                                Text="{Binding EditDescription}"
+                                TextColor="White" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!--  Инфо-теги  -->
+                <Border Padding="16" Style="{StaticResource EduCardBorder}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label
+                            FontFamily="Comfortaa"
+                            FontSize="14"
+                            Text="Параметры"
+                            TextColor="#99FFFFFF" />
+                        <FlexLayout Direction="Row" Wrap="Wrap">
+                            <Border
+                                Margin="0,0,8,8"
+                                Padding="10,4"
+                                Background="#182333"
+                                Stroke="#4A5A6A"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    Text="{Binding Schedule}"
+                                    TextColor="#99FFFFFF" />
+                            </Border>
+                            <Border
+                                Margin="0,0,8,8"
+                                Padding="10,4"
+                                Background="#182333"
+                                Stroke="#4A5A6A"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    Text="{Binding TimeOfDay}"
+                                    TextColor="#99FFFFFF" />
+                            </Border>
+                            <Border
+                                Margin="0,0,8,8"
+                                Padding="10,4"
+                                Background="#182333"
+                                Stroke="#4A5A6A"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    Text="{Binding Type}"
+                                    TextColor="#99FFFFFF" />
+                            </Border>
+                        </FlexLayout>
+
+                        <!--  Серия  -->
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="28"
+                                Text="{Binding StreakText}"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    Text="Текущая серия"
+                                    TextColor="#99FFFFFF" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Кнопки действий — режим просмотра  -->
+                <VerticalStackLayout IsVisible="{Binding IsViewing}" Spacing="10">
+
+                    <Button
+                        Command="{Binding StartEditingCommand}"
+                        Style="{StaticResource EduPrimaryButton}"
+                        Text="✏️ Редактировать" />
+
+                    <Button
+                        BorderColor="#4A5A6A"
+                        BorderWidth="1"
+                        Command="{Binding FreezeHabitCommand}"
+                        CornerRadius="12"
+                        FontFamily="Comfortaa"
+                        FontSize="14"
+                        HeightRequest="44"
+                        Style="{StaticResource NoActiveEduPrimaryButton}"
+                        Text="{Binding FreezeButtonText}"
+                        TextColor="White" />
+
+                    <Button
+                        BackgroundColor="#14182E"
+                        BorderColor="#4A5A6A"
+                        BorderWidth="1"
+                        Command="{Binding ArchiveHabitCommand}"
+                        CornerRadius="12"
+                        FontFamily="Comfortaa"
+                        FontSize="14"
+                        HeightRequest="44"
+                        Style="{StaticResource NoActiveEduPrimaryButton}"
+                        Text="📦 Архивировать"
+                        TextColor="#FFCC44" />
+
+                    <Button
+                        BorderColor="#7A2040"
+                        BorderWidth="1"
+                        Command="{Binding DeleteHabitCommand}"
+                        FontSize="14"
+                        HeightRequest="44"
+                        Style="{StaticResource NoActiveEduPrimaryButtonRed}"
+                        Text="🗑️ Удалить привычку" />
+
+
+                </VerticalStackLayout>
+
+                <!--  Кнопки — режим редактирования  -->
+                <Grid
+                    ColumnDefinitions="*, *"
+                    ColumnSpacing="10"
+                    IsVisible="{Binding IsEditing}">
+                    <Button
+                        Grid.Column="0"
+                        BorderColor="#4A5A6A"
+                        Command="{Binding CancelEditingCommand}"
+                        HeightRequest="44"
+                        Style="{StaticResource NoActiveEduPrimaryButton}"
+                        Text="Отмена" />
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding SaveEditCommand}"
+                        Style="{StaticResource EduPrimaryButton}"
+                        Text="💾 Сохранить" />
+                </Grid>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

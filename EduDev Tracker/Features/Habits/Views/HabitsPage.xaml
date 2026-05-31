@@ -4,7 +4,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:EduDev_Tracker.Features.Habits.ViewModels"
     Title=""
     x:DataType="vm:HabitsViewModel"
@@ -15,129 +14,216 @@
         <mct:EventToCommandBehavior Command="{Binding LoadCommand}" EventName="Appearing" />
     </ContentPage.Behaviors>
 
-    <ScrollView>
+    <Grid>
+        <Image
+            Aspect="Fill"
+            Opacity="0.8"
+            Source="background_gradient.jpg" />
 
-        <Grid>
-
-            <Image
-                Aspect="Fill"
-                Opacity="0.8"
-                Source="background_gradient.jpg" />
-
+        <ScrollView>
             <Grid
+                Padding="0,0,0,24"
                 MaximumWidthRequest="1500"
-                RowDefinitions="Auto, *"
-                RowSpacing="40">
+                RowDefinitions="Auto, Auto"
+                RowSpacing="24">
 
+                <!--  Шапка  -->
                 <Grid
                     Grid.Row="0"
-                    Padding="40"
-                    ColumnDefinitions="Auto, *, Auto"
-                    VerticalOptions="Center">
+                    Padding="16,16,16,0"
+                    RowDefinitions="{OnIdiom Phone='Auto,Auto',
+                                             Default='Auto'}"
+                    RowSpacing="10">
 
-                    <Image
-                        HeightRequest="45"
-                        HorizontalOptions="Start"
-                        Source="menu.png"
-                        VerticalOptions="Start"
-                        WidthRequest="45">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnMenuTapped" />
-                        </Image.GestureRecognizers>
-                    </Image>
+                    <!--  Иконка + заголовок  -->
+                    <Grid
+                        Grid.Row="0"
+                        ColumnDefinitions="44, *, Auto"
+                        ColumnSpacing="12">
 
-                    <VerticalStackLayout
-                        Grid.Column="1"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Start">
+                        <Image
+                            HeightRequest="36"
+                            HorizontalOptions="Start"
+                            Source="menu.png"
+                            VerticalOptions="Center"
+                            WidthRequest="36">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnMenuTapped" />
+                            </Image.GestureRecognizers>
+                        </Image>
 
-                        <Label Style="{StaticResource EduCardTitleLabel}" Text="Привычки" />
-                        <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Отслеживайте ежедневные действия, серии и прогресс по целям" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Style="{StaticResource EduCardTitleLabel}" Text="Привычки" />
+                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Отслеживайте ежедневные действия, серии и прогресс по целям" />
+                        </VerticalStackLayout>
 
-                    </VerticalStackLayout>
+                        <!--  На десктопе кнопка в той же строке справа  -->
+                        <Button
+                            Grid.Column="2"
+                            Command="{Binding OpenArchiveCommand}"
+                            IsVisible="{OnIdiom Phone=False,
+                                                Default=True}"
+                            Style="{StaticResource EduPrimaryButton}"
+                            Text="Перейти в архив"
+                            VerticalOptions="Center" />
+                    </Grid>
 
-                    <Border
-                        Grid.Column="2"
-                        HorizontalOptions="End"
-                        Style="{StaticResource EduPrimaryButtonBorder}"
-                        VerticalOptions="Start"
-                        WidthRequest="205">
-                        <HorizontalStackLayout HorizontalOptions="Center">
-
-                            <Button Style="{StaticResource EduPrimaryButton}" Text="Перейти в архив" />
-
-                        </HorizontalStackLayout>
-                    </Border>
-
+                    <!--  На телефоне кнопка отдельной строкой  -->
+                    <Button
+                        Grid.Row="1"
+                        HorizontalOptions="Fill"
+                        IsVisible="{OnIdiom Phone=True,
+                                            Default=False}"
+                        Style="{StaticResource EduPrimaryButton}"
+                        Text="Перейти в архив" />
                 </Grid>
 
+                <!--  Основной контент  -->
                 <Grid
                     Grid.Row="1"
-                    Padding="40,0,40,0"
-                    ColumnDefinitions="Auto, Auto"
-                    ColumnSpacing="20"
-                    HorizontalOptions="Start"
+                    Padding="16,0,16,0"
+                    ColumnDefinitions="{OnIdiom Phone='*',
+                                                Default='*, 400'}"
+                    ColumnSpacing="16"
+                    RowDefinitions="{OnIdiom Phone='Auto,Auto',
+                                             Default='Auto'}"
+                    RowSpacing="16"
                     VerticalOptions="Start">
 
+                    <!--  Левая карточка: список привычек  -->
                     <Border
+                        Grid.Row="0"
                         Grid.Column="0"
-                        MaximumHeightRequest="500"
+                        Padding="16"
                         Style="{StaticResource EduCardBorder}">
-                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, *, Auto">
+                        <VerticalStackLayout Spacing="0">
 
+                            <!--  Заголовок карточки  -->
                             <Label Style="{StaticResource EduCardTitleLabel}" Text="Список привычек" />
-                            <Label
-                                Grid.Row="1"
-                                Style="{StaticResource EduCardSubtitleLabel}"
-                                Text="Сегодня активных: 0, выполнено: 0" />
+                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="{Binding Title}" />
+
+                            <!--  Фильтр периода — отдельной строкой под заголовком  -->
                             <Border
-                                Grid.Column="1"
+                                Margin="0,10,0,0"
                                 BackgroundColor="#14182E"
+                                HorizontalOptions="Start"
                                 Stroke="White"
                                 StrokeShape="RoundRectangle 15"
                                 StrokeThickness="0.5">
-                                <HorizontalStackLayout Padding="10,8,10,8" Spacing="10">
-                                    <Button Style="{StaticResource EduButtonHorizontalSelect}" Text="Сегодня" />
-                                    <Button Style="{StaticResource EduButtonHorizontalSelect}" Text="Неделя" />
-                                    <Button Style="{StaticResource EduButtonHorizontalSelect}" Text="Все" />
+                                <HorizontalStackLayout Padding="10,6" Spacing="6">
+                                    <Button
+                                        Command="{Binding SelectPeriodCommand}"
+                                        CommandParameter="Сегодня"
+                                        Style="{StaticResource EduFilterButton}"
+                                        Text="Сегодня">
+                                        <Button.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding SelectedPeriod}"
+                                                TargetType="Button"
+                                                Value="Сегодня">
+                                                <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                                <Setter Property="TextColor" Value="White" />
+                                                <Setter Property="BorderColor" Value="#7B7FFF" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                    <Button
+                                        Command="{Binding SelectPeriodCommand}"
+                                        CommandParameter="Неделя"
+                                        Style="{StaticResource EduFilterButton}"
+                                        Text="Неделя">
+                                        <Button.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding SelectedPeriod}"
+                                                TargetType="Button"
+                                                Value="Неделя">
+                                                <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                                <Setter Property="TextColor" Value="White" />
+                                                <Setter Property="BorderColor" Value="#7B7FFF" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                    <Button
+                                        Command="{Binding SelectPeriodCommand}"
+                                        CommandParameter="Все"
+                                        Style="{StaticResource EduFilterButton}"
+                                        Text="Все">
+                                        <Button.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding SelectedPeriod}"
+                                                TargetType="Button"
+                                                Value="Все">
+                                                <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                                <Setter Property="TextColor" Value="White" />
+                                                <Setter Property="BorderColor" Value="#7B7FFF" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
                                 </HorizontalStackLayout>
                             </Border>
-                            <HorizontalStackLayout
-                                Grid.Row="2"
+
+                            <!--  Фильтр по типу  -->
+                            <FlexLayout
                                 Margin="0,10,0,0"
-                                Spacing="5">
-                                <Button Style="{StaticResource EduDarkButtonSelection}" Text="Все типы" />
-                                <Button Style="{StaticResource EduDarkButtonSelection}" Text="Бинарные" />
-                                <Button Style="{StaticResource EduDarkButtonSelection}" Text="Количественные" />
-                                <Button Style="{StaticResource EduDarkButtonSelection}" Text="По времени" />
-                            </HorizontalStackLayout>
+                                BindableLayout.ItemsSource="{Binding FilterTypes}"
+                                Direction="Row"
+                                Wrap="Wrap">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:FilterItem">
+                                        <Button
+                                            Margin="0,0,6,6"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HabitsViewModel}}, Path=SelectFilterCommand}"
+                                            CommandParameter="{Binding Title}"
+                                            Style="{StaticResource EduFilterButton}"
+                                            Text="{Binding Title}">
+                                            <Button.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding IsSelected}"
+                                                    TargetType="Button"
+                                                    Value="True">
+                                                    <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                                    <Setter Property="TextColor" Value="White" />
+                                                    <Setter Property="BorderColor" Value="#7B7FFF" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                        </Button>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
+
+                            <!--  Список привычек  -->
                             <CollectionView
-                                Grid.Row="3"
-                                Margin="0,20,0,0"
+                                x:Name="HabitsCollectionView"
+                                Margin="0,12,0,0"
                                 ItemsSource="{Binding Habits}"
                                 SelectionMode="None">
                                 <CollectionView.ItemsLayout>
-                                    <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
+                                    <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
                                 </CollectionView.ItemsLayout>
-
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="vm:HabitItemViewModel">
                                         <Border
                                             Background="#10172A"
                                             Stroke="#495061"
                                             StrokeThickness="1">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HabitsViewModel}}, Path=OpenHabitDetailsCommand}" CommandParameter="{Binding HabitId}" />
+                                            </Border.GestureRecognizers>
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="16" />
                                             </Border.StrokeShape>
-
-                                            <Grid ColumnDefinitions="Auto, Auto, Auto, Auto, Auto" RowDefinitions="Auto">
+                                            <Grid
+                                                Padding="12,10"
+                                                ColumnDefinitions="52, *, Auto, Auto, 60"
+                                                ColumnSpacing="8"
+                                                RowDefinitions="Auto">
 
                                                 <Border
                                                     Grid.Column="0"
-                                                    Margin="20,0,0,0"
                                                     Padding="10"
                                                     Background="#1D3A3A"
                                                     HeightRequest="52"
+                                                    HorizontalOptions="Center"
                                                     Stroke="#996EE7B7"
                                                     VerticalOptions="Center"
                                                     WidthRequest="52">
@@ -147,142 +233,331 @@
                                                     <Image Aspect="Fill" Source="{Binding Icon}" />
                                                 </Border>
 
-                                                <VerticalStackLayout
-                                                    Grid.Column="1"
-                                                    Margin="10,10,0,10"
-                                                    VerticalOptions="Start">
+                                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                                                     <Label
                                                         FontFamily="Comfortaa"
-                                                        FontSize="20"
+                                                        FontSize="15"
+                                                        LineBreakMode="TailTruncation"
                                                         Text="{Binding TitleHabit}"
                                                         TextColor="White" />
                                                     <Label
                                                         FontFamily="Comfortaa"
                                                         FontSize="10"
+                                                        LineBreakMode="TailTruncation"
                                                         Text="{Binding Description}"
                                                         TextColor="#99FFFFFF" />
-
-                                                    <HorizontalStackLayout Margin="0,5,0,0" Spacing="5">
+                                                    <FlexLayout
+                                                        Margin="0,4,0,0"
+                                                        Direction="Row"
+                                                        Wrap="Wrap">
                                                         <Border
-                                                            Padding="8,3"
+                                                            Margin="0,0,4,4"
+                                                            Padding="6,2"
                                                             Background="#182333"
                                                             Stroke="#4A5A6A"
                                                             StrokeThickness="1">
                                                             <Border.StrokeShape>
-                                                                <RoundRectangle CornerRadius="12" />
+                                                                <RoundRectangle CornerRadius="10" />
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="13"
+                                                                FontSize="10"
                                                                 Text="{Binding Schedule}"
                                                                 TextColor="#99FFFFFF" />
                                                         </Border>
                                                         <Border
-                                                            Padding="8,3"
+                                                            Margin="0,0,4,4"
+                                                            Padding="6,2"
                                                             Background="#182333"
                                                             Stroke="#4A5A6A"
                                                             StrokeThickness="1">
                                                             <Border.StrokeShape>
-                                                                <RoundRectangle CornerRadius="12" />
+                                                                <RoundRectangle CornerRadius="10" />
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="13"
+                                                                FontSize="10"
                                                                 Text="{Binding TimeOfDay}"
                                                                 TextColor="#99FFFFFF" />
                                                         </Border>
                                                         <Border
-                                                            Padding="8,3"
+                                                            Margin="0,0,4,4"
+                                                            Padding="6,2"
                                                             Background="#182333"
                                                             Stroke="#4A5A6A"
                                                             StrokeThickness="1">
                                                             <Border.StrokeShape>
-                                                                <RoundRectangle CornerRadius="12" />
+                                                                <RoundRectangle CornerRadius="10" />
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="13"
+                                                                FontSize="10"
                                                                 Text="{Binding Type}"
                                                                 TextColor="#99FFFFFF" />
                                                         </Border>
-                                                    </HorizontalStackLayout>
-
+                                                    </FlexLayout>
                                                 </VerticalStackLayout>
 
-                                                <VerticalStackLayout Grid.Column="2" Margin="0,10,0,0">
-                                                    <Label
-                                                        FontFamily="Comfortaa"
-                                                        FontSize="15"
-                                                        Text="{Binding TodayProgressText}"
-                                                        TextColor="#99FFFFFF" />
-                                                </VerticalStackLayout>
+                                                <Label
+                                                    Grid.Column="2"
+                                                    FontFamily="Comfortaa"
+                                                    FontSize="12"
+                                                    Text="{Binding TodayProgressText}"
+                                                    TextColor="#99FFFFFF"
+                                                    VerticalOptions="Center" />
 
                                                 <VerticalStackLayout
                                                     Grid.Column="3"
-                                                    Margin="0,10,0,0"
-                                                    Spacing="5">
+                                                    HorizontalOptions="End"
+                                                    Spacing="2"
+                                                    VerticalOptions="Center">
                                                     <Label
                                                         FontFamily="Comfortaa"
-                                                        FontSize="15"
+                                                        FontSize="10"
+                                                        HorizontalOptions="End"
                                                         Text="Серия"
                                                         TextColor="#99FFFFFF" />
                                                     <Label
                                                         FontFamily="Comfortaa"
-                                                        FontSize="15"
+                                                        FontSize="16"
+                                                        HorizontalOptions="End"
                                                         Text="{Binding StreakText}"
-                                                        TextColor="#99FFFFFF" />
-                                                    <Label
-                                                        FontFamily="Comfortaa"
-                                                        FontSize="15"
-                                                        Text="Календарь выполнения"
-                                                        TextColor="#99FFFFFF" />
-                                                </VerticalStackLayout>
-                                                <VerticalStackLayout
-                                                    Grid.Column="4"
-                                                    Margin="0,10,0,0"
-                                                    Spacing="5"
-                                                    VerticalOptions="Center">
-                                                    <Switch
-                                                        IsToggled="{Binding IsCompleted, Mode=TwoWay}"
-                                                        OffColor="Gray"
-                                                        OnColor="Green"
-                                                        ThumbColor="White" />
+                                                        TextColor="#FFFFFF" />
                                                 </VerticalStackLayout>
 
+                                                <Switch
+                                                    Grid.Column="4"
+                                                    HorizontalOptions="End"
+                                                    IsToggled="{Binding IsCompleted, Mode=TwoWay}"
+                                                    OffColor="Gray"
+                                                    OnColor="Green"
+                                                    ThumbColor="White"
+                                                    VerticalOptions="Center" />
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
-                            <Button
-                                Grid.Row="4"
-                                Margin="0,20,0,0"
-                                Command="{Binding OpenAddHabitCommand}"
-                                HeightRequest="39"
-                                Style="{StaticResource EduPrimaryButton}"
-                                Text="+ Добавьте ещё привычку, чтобы усилить прогресс недели" />
 
-                        </Grid>
+                            <!--  Кнопка добавления  -->
+                            <Button
+                                Margin="0,12,0,0"
+                                Command="{Binding OpenAddHabitCommand}"
+                                HeightRequest="40"
+                                Style="{StaticResource EduPrimaryButton}"
+                                Text="+ Добавьте ещё привычку" />
+
+                        </VerticalStackLayout>
                     </Border>
 
-                    <VerticalStackLayout Grid.Column="1">
-                        <Border Style="{StaticResource EduCardBorder}">
-                            <VerticalStackLayout>
+                    <!--  Правая колонка: календарь + аналитика  -->
+                    <VerticalStackLayout
+                        Grid.Row="{OnIdiom Phone=1,
+                                           Default=0}"
+                        Grid.Column="{OnIdiom Phone=0,
+                                              Default=1}"
+                        Spacing="16">
+
+                        <!--  Календарь выполнения  -->
+                        <Border Padding="16" Style="{StaticResource EduCardBorder}">
+                            <VerticalStackLayout Spacing="12">
                                 <Label Style="{StaticResource EduCardTitleLabel}" Text="Календарь выполнения" />
+                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Нажмите день, чтобы открыть подробную историю и примечания" />
+
+                                <HorizontalStackLayout
+                                    BindableLayout.ItemsSource="{Binding DaysItems}"
+                                    HorizontalOptions="Fill"
+                                    Spacing="6">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:DayItemStats">
+                                            <Border
+                                                Margin="0,0,6,6"
+                                                Padding="0"
+                                                BackgroundColor="#14182E"
+                                                MinimumHeightRequest="40"
+                                                Stroke="#FFFFFF"
+                                                StrokeThickness="0.5">
+
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="10" />
+                                                </Border.StrokeShape>
+
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HabitsViewModel}}, Path=OpenDelailsDayCommand}" CommandParameter="{Binding Date}" />
+                                                </Border.GestureRecognizers>
+
+                                                <Label
+                                                    Padding="12,8"
+                                                    HorizontalOptions="Fill"
+                                                    HorizontalTextAlignment="Center"
+                                                    Text="{Binding Title}"
+                                                    TextColor="White"
+                                                    VerticalOptions="Fill"
+                                                    VerticalTextAlignment="Center" />
+
+                                                <Border.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding Done}"
+                                                        TargetType="Border"
+                                                        Value="True">
+                                                        <Setter Property="Background">
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                <GradientStop Offset="0.0" Color="#666EE7B7" />
+                                                                <GradientStop Offset="1.0" Color="#E60E121E" />
+                                                            </LinearGradientBrush>
+                                                        </Setter>
+                                                        <Setter Property="Stroke" Value="#996EE7B7" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Done}"
+                                                        TargetType="Border"
+                                                        Value="False">
+                                                        <Setter Property="Background">
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                <GradientStop Offset="0.0" Color="#F93B3B" />
+                                                                <GradientStop Offset="1.0" Color="#E60E121E" />
+                                                            </LinearGradientBrush>
+                                                        </Setter>
+                                                        <Setter Property="Stroke" Value="White" />
+                                                    </DataTrigger>
+                                                </Border.Triggers>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </HorizontalStackLayout>
+
+                                <HorizontalStackLayout Spacing="12">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <BoxView
+                                            BackgroundColor="#6EE7B7"
+                                            CornerRadius="4"
+                                            HeightRequest="12"
+                                            VerticalOptions="Center"
+                                            WidthRequest="12" />
+                                        <Label
+                                            FontFamily="Comfortaa"
+                                            FontSize="12"
+                                            Text="Выполнено"
+                                            TextColor="#99FFFFFF"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Spacing="6">
+                                        <BoxView
+                                            BackgroundColor="#EF4444"
+                                            CornerRadius="4"
+                                            HeightRequest="12"
+                                            VerticalOptions="Center"
+                                            WidthRequest="12" />
+                                        <Label
+                                            FontFamily="Comfortaa"
+                                            FontSize="12"
+                                            Text="Пропуск"
+                                            TextColor="#99FFFFFF"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  Аналитика  -->
+                        <Border Padding="16" Style="{StaticResource EduCardBorder}">
+                            <VerticalStackLayout Spacing="12">
+                                <Label Style="{StaticResource EduCardTitleLabel}" Text="Аналитика по привычкам" />
+                                <Grid
+                                    ColumnDefinitions="*, *"
+                                    ColumnSpacing="10"
+                                    RowDefinitions="Auto, Auto"
+                                    RowSpacing="10">
+
+                                    <Border
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Padding="12,10"
+                                        BackgroundColor="#14182E"
+                                        StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="0">
+                                        <VerticalStackLayout>
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="20"
+                                                Text="{Binding AnalyticsCompletionRate}"
+                                                TextColor="White" />
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="10"
+                                                Text="За последние 7 дней"
+                                                TextColor="#99FFFFFF" />
+                                        </VerticalStackLayout>
+                                    </Border>
+
+                                    <Border
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Padding="12,10"
+                                        BackgroundColor="#14182E"
+                                        StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="0">
+                                        <VerticalStackLayout>
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="20"
+                                                Text="{Binding AnalyticsTotalActive}"
+                                                TextColor="White" />
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="10"
+                                                Text="Активные привычки"
+                                                TextColor="#99FFFFFF" />
+                                        </VerticalStackLayout>
+                                    </Border>
+
+                                    <Border
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Padding="12,10"
+                                        BackgroundColor="#14182E"
+                                        StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="0">
+                                        <VerticalStackLayout>
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="16"
+                                                Text="{Binding AnalyticsBestDays}"
+                                                TextColor="White" />
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="10"
+                                                Text="Сильные дни"
+                                                TextColor="#99FFFFFF" />
+                                        </VerticalStackLayout>
+                                    </Border>
+
+                                    <Border
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Padding="12,10"
+                                        BackgroundColor="#14182E"
+                                        StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="0">
+                                        <VerticalStackLayout>
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="16"
+                                                Text="{Binding AnalyticsWorstDay}"
+                                                TextColor="White" />
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="10"
+                                                Text="Больше всего пропусков"
+                                                TextColor="#99FFFFFF" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </Grid>
                             </VerticalStackLayout>
                         </Border>
                     </VerticalStackLayout>
-
-
-
                 </Grid>
-
-
-
             </Grid>
-
-        </Grid>
-    </ScrollView>
-
-
+        </ScrollView>
+    </Grid>
 </ContentPage>

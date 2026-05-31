@@ -15,6 +15,12 @@ namespace EduDev_Tracker.Services.Habits
         Task LogAsync(int habitId, DateTime? date = null, double value = 1, string? note = null);
         Task UnlogAsync(int habitId, DateTime date);
         Task ArchiveAsync(int habitId, bool archived = true);
+        Task<bool> IsCompletedTodayAsync(int habitId, DateTime date);
         Task<bool> IsCompletedTodayAsync(int habitId);
+        Task DeleteAsync(int habitId);
+        Task<int> GetStreakAsync(int habitId);
+        public Task<Habit> GetByIdWithChildrenAsync(int id);
+
+        Task<List<Habit>> GetArchivedAsync(int profileId);
     }
 }

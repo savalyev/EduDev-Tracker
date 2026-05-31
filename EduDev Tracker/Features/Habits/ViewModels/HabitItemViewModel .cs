@@ -13,13 +13,13 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
     {
         private readonly Habit _habit;
         private HabitSchedule _habitSchedule;
-        private readonly Func<int, bool, Task>? _onToggled;
+        private readonly Func<int, bool, string, Task>? _onToggled;
         private bool _suppressCallback;
 
         public HabitItemViewModel(
             Habit habit, 
             HabitSchedule habitSchedule, 
-            Func<int, bool, Task>? onToggled = null)
+            Func<int, bool, string, Task>? onToggled = null)
         {
             _habit = habit;
             _habitSchedule = habitSchedule;
@@ -44,7 +44,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         partial void OnIsCompletedChanged(bool value)
         {
             if (_suppressCallback) return;
-            _onToggled?.Invoke(HabitId, value);
+            _onToggled?.Invoke(HabitId, value, Type);
         }
 
         public void SetCompletedSilently(bool value)

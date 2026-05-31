@@ -51,8 +51,8 @@ namespace EduDev_Tracker.Data.Models
         [ManyToMany(typeof(HabitTag))]
         public List<Tag> Tags { get; set; } = new();
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<HabitSchedule> Schedules { get; set; } = new();
+        [OneToOne(CascadeOperations = CascadeOperation.All)]
+        public HabitSchedule Schedules { get; set; } = new();
 
 
 

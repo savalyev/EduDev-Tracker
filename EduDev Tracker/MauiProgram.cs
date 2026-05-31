@@ -80,6 +80,10 @@ namespace EduDev_Tracker
             services.AddTransient<CreateHabitPage>();
             services.AddTransient<HabitsPage>();
             services.AddTransient<HabitsViewModel>();
+            services.AddTransient<HabitDetailsPage>();
+            services.AddTransient<HabitDetailsViewModel>();
+            services.AddTransient<ArchivedHabitsPage>();
+            services.AddTransient<ArchivedHabitsViewModel>();
         }
     }
 }

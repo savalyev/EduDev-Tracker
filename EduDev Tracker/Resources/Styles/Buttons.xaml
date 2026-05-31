@@ -1,6 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <Style x:Key="EduBaseButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="Comfortaa" />
+        <Setter Property="Scale" Value="1" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="1" />
+                            <Setter Property="Opacity" Value="1" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="1.03" />
+                            <Setter Property="Opacity" Value="0.9" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.97" />
+                            <Setter Property="Opacity" Value="0.85" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.4" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!--  Остальные наследуют BasedOn  -->
+
     <Style x:Key="EduPrimaryButtonBorder" TargetType="Border">
         <Setter Property="BackgroundColor" Value="{StaticResource EduButtonBackground}" />
         <Setter Property="StrokeShape" Value="RoundRectangle 15" />
@@ -9,75 +46,70 @@
         <Setter Property="Padding" Value="0" />
     </Style>
 
-    <Style x:Key="EduButtonHorizontalSelect" TargetType="Button">
+    <Style
+        x:Key="EduButtonHorizontalSelect"
+        BasedOn="{StaticResource EduBaseButton}"
+        TargetType="Button">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="BorderColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Comfortaa" />
     </Style>
 
-    <Style x:Key="EduDarkButtonSelection" TargetType="Button">
+    <Style
+        x:Key="EduDarkButtonSelection"
+        BasedOn="{StaticResource EduBaseButton}"
+        TargetType="Button">
         <Setter Property="BackgroundColor" Value="#14182E" />
         <Setter Property="BorderColor" Value="#FFFFFF" />
         <Setter Property="BorderWidth" Value="1" />
-        <Setter Property="FontFamily" Value="Comfortaa" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="CornerRadius" Value="15" />
         <Setter Property="TextColor" Value="#99FFFFFF" />
-
     </Style>
 
-    <Style x:Key="EduPrimaryButton" TargetType="Button">
+    <Style
+        x:Key="EduPrimaryButton"
+        BasedOn="{StaticResource EduBaseButton}"
+        TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource EduButtonBackground}" />
-        <Setter Property="FontFamily" Value="Comfortaa" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
         <Setter Property="CornerRadius" Value="15" />
         <Setter Property="HeightRequest" Value="48" />
-        <Setter Property="Scale" Value="1" />
-        <Setter Property="Opacity" Value="1" />
-
-        <Setter Property="VisualStateManager.VisualStateGroups">
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="CommonStates">
-
-                    <VisualState x:Name="Normal">
-                        <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="{StaticResource EduButtonBackground}" />
-                            <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
-                            <Setter Property="Scale" Value="1" />
-                            <Setter Property="Opacity" Value="1" />
-                        </VisualState.Setters>
-                    </VisualState>
-
-                    <VisualState x:Name="PointerOver">
-                        <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="#5B7CFF" />
-                            <Setter Property="Scale" Value="1.03" />
-                            <Setter Property="Opacity" Value="1" />
-                        </VisualState.Setters>
-                    </VisualState>
-
-                    <VisualState x:Name="Pressed">
-                        <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="#3E5FE0" />
-                            <Setter Property="Scale" Value="0.97" />
-                            <Setter Property="Opacity" Value="0.95" />
-                        </VisualState.Setters>
-                    </VisualState>
-
-                    <VisualState x:Name="Disabled">
-                        <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="#2D314A" />
-                            <Setter Property="TextColor" Value="#66FFFFFF" />
-                            <Setter Property="Opacity" Value="0.7" />
-                        </VisualState.Setters>
-                    </VisualState>
-
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </Setter>
     </Style>
 
+    <Style
+        x:Key="NoActiveEduPrimaryButton"
+        BasedOn="{StaticResource EduBaseButton}"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="#14182E" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
+        <Setter Property="CornerRadius" Value="15" />
+        <Setter Property="HeightRequest" Value="48" />
+    </Style>
 
+    <Style
+        x:Key="NoActiveEduPrimaryButtonRed"
+        BasedOn="{StaticResource EduBaseButton}"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="#2A1020" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="#FF6B8A" />
+        <Setter Property="CornerRadius" Value="15" />
+        <Setter Property="HeightRequest" Value="48" />
+    </Style>
+
+    <Style
+        x:Key="EduFilterButton"
+        BasedOn="{StaticResource EduBaseButton}"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="#14182E" />
+        <Setter Property="TextColor" Value="#99FFFFFF" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="BorderWidth" Value="1" />
+    </Style>
 
 </ResourceDictionary>

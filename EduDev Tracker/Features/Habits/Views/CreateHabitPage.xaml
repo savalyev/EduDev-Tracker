@@ -6,159 +6,165 @@
     xmlns:viewmodels="clr-namespace:EduDev_Tracker.Features.Habits.ViewModels"
     BackgroundImageSource="background_gradient.jpg">
 
-    <Grid HorizontalOptions="Center" VerticalOptions="Center">
+    <ScrollView>
+        <Grid
+            Padding="16"
+            HorizontalOptions="Center"
+            VerticalOptions="Start">
 
-        <Border
-            Padding="32"
-            Style="{StaticResource EduCardBorder}"
-            WidthRequest="520">
+            <Border
+                Padding="24"
+                HorizontalOptions="Fill"
+                MaximumWidthRequest="520"
+                Style="{StaticResource EduCardBorder}">
 
-            <VerticalStackLayout Spacing="10">
+                <VerticalStackLayout Spacing="10">
 
-                <Label
-                    FontSize="28"
-                    Style="{StaticResource EduCardTitleLabel}"
-                    Text="Добавить привычку" />
-                <Label Style="{StaticResource EduProgressSubtitleLabel}" Text="Создайте новую привычку" />
+                    <Label
+                        FontSize="24"
+                        Style="{StaticResource EduCardTitleLabel}"
+                        Text="Добавить привычку" />
+                    <Label Style="{StaticResource EduProgressSubtitleLabel}" Text="Создайте новую привычку" />
 
-                <Image HeightRequest="2" Source="dividing_strip.png" />
+                    <Image HeightRequest="2" Source="dividing_strip.png" />
 
-                <Label Style="{StaticResource EduCardTitle16}" Text="Название привычки" />
-                <Editor
-                    BackgroundColor="#14182E"
-                    FontFamily="Comfortaa"
-                    FontSize="14"
-                    HeightRequest="35"
-                    Placeholder="Например: утренняя зарядка"
-                    PlaceholderColor="#66FFFFFF"
-                    Text="{Binding Title}"
-                    TextColor="White"
-                    VerticalTextAlignment="Center" />
+                    <Label Style="{StaticResource EduCardTitle16}" Text="Название привычки" />
+                    <Editor
+                        BackgroundColor="#14182E"
+                        FontFamily="Comfortaa"
+                        FontSize="14"
+                        HeightRequest="40"
+                        Placeholder="Например: утренняя зарядка"
+                        PlaceholderColor="#66FFFFFF"
+                        Text="{Binding Title}"
+                        TextColor="White"
+                        VerticalTextAlignment="Center" />
 
-                <Label Style="{StaticResource EduCardTitle16}" Text="Описание" />
-                <Editor
-                    BackgroundColor="#14182E"
-                    FontFamily="Comfortaa"
-                    FontSize="14"
-                    HeightRequest="64"
-                    Placeholder="Цель: 30 минут в день перед сном"
-                    PlaceholderColor="#66FFFFFF"
-                    Text="{Binding Description}"
-                    TextColor="White" />
+                    <Label Style="{StaticResource EduCardTitle16}" Text="Описание" />
+                    <Editor
+                        BackgroundColor="#14182E"
+                        FontFamily="Comfortaa"
+                        FontSize="14"
+                        HeightRequest="72"
+                        Placeholder="Цель: 30 минут в день перед сном"
+                        PlaceholderColor="#66FFFFFF"
+                        Text="{Binding Description}"
+                        TextColor="White" />
 
-                <Label
-                    Style="{StaticResource EduCardTitle16}"
-                    Text="Тип привычки"
-                    VerticalOptions="Center" />
-                <Picker
-                    Grid.Column="1"
-                    BackgroundColor="#14182E"
-                    FontFamily="Comfortaa"
-                    FontSize="14"
-                    HeightRequest="48"
-                    ItemDisplayBinding="{Binding Title}"
-                    ItemsSource="{Binding HabitTypes}"
-                    SelectedIndexChanged="Picker_SelectedIndexChanged"
-                    SelectedItem="{Binding SelectedHabitType, Mode=TwoWay}"
-                    TextColor="White"
-                    TitleColor="#66FFFFFF" />
+                    <Label
+                        Style="{StaticResource EduCardTitle16}"
+                        Text="Тип привычки"
+                        VerticalOptions="Center" />
+                    <Picker
+                        BackgroundColor="#14182E"
+                        FontFamily="Comfortaa"
+                        FontSize="14"
+                        HeightRequest="48"
+                        ItemDisplayBinding="{Binding Title}"
+                        ItemsSource="{Binding HabitTypes}"
+                        SelectedIndexChanged="Picker_SelectedIndexChanged"
+                        SelectedItem="{Binding SelectedHabitType, Mode=TwoWay}"
+                        TextColor="White"
+                        TitleColor="#66FFFFFF" />
 
-                <Label Style="{StaticResource EduCardTitle16}" Text="Повторяемость" />
-                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding WeekDays}" Spacing="8">
+                    <Label Style="{StaticResource EduCardTitle16}" Text="Повторяемость" />
+                    <FlexLayout
+                        AlignItems="Center"
+                        BindableLayout.ItemsSource="{Binding WeekDays}"
+                        Direction="Row"
+                        JustifyContent="Start"
+                        Wrap="Wrap">
 
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="viewmodels:DayItem">
-                            <Border
-                                BackgroundColor="{Binding BackgroundColor}"
-                                HeightRequest="42"
-                                Stroke="{Binding BorderColor}"
-                                StrokeShape="RoundRectangle 8"
-                                StrokeThickness="1"
-                                WidthRequest="42">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodels:DayItem">
+                                <Border
+                                    Margin="0,0,8,8"
+                                    BackgroundColor="{Binding BackgroundColor}"
+                                    HeightRequest="42"
+                                    Stroke="{Binding BorderColor}"
+                                    StrokeShape="RoundRectangle 8"
+                                    StrokeThickness="1"
+                                    WidthRequest="42">
 
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CreateHabitViewModel}}, Path=ToggleDayCommand}" CommandParameter="{Binding Name}" />
-                                </Border.GestureRecognizers>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CreateHabitViewModel}}, Path=ToggleDayCommand}" CommandParameter="{Binding Name}" />
+                                    </Border.GestureRecognizers>
 
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="13"
-                                    HorizontalOptions="Center"
-                                    Text="{Binding Name}"
-                                    TextColor="{Binding TextColor}"
-                                    VerticalOptions="Center" />
+                                    <Label
+                                        FontFamily="Comfortaa"
+                                        FontSize="13"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding Name}"
+                                        TextColor="{Binding TextColor}"
+                                        VerticalOptions="Center" />
 
-                            </Border>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </HorizontalStackLayout>
-                <Grid
-                    ColumnSpacing="10"
-                    RowDefinitions="*, *"
-                    RowSpacing="10">
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+
                     <Label
                         Style="{StaticResource EduCardTitle16}"
                         Text="Напоминание"
                         VerticalOptions="Center" />
                     <TimePicker
-                        Grid.Row="1"
-                        Grid.Column="1"
                         BackgroundColor="#14182E"
                         FontFamily="Comfortaa"
                         FontSize="16"
                         Format="HH:mm"
-                        HeightRequest="36"
+                        HeightRequest="48"
                         HorizontalOptions="Start"
                         TextColor="White"
                         Time="{Binding ReminderTime}" />
-                </Grid>
 
-                <Label
-                    x:Name="LabelTargetValue"
-                    Style="{StaticResource EduCardTitle16}"
-                    Text="Целевое значение" />
-                <Editor
-                    x:Name="EditorTargetValue"
-                    BackgroundColor="#14182E"
-                    FontFamily="Comfortaa"
-                    FontSize="14"
-                    HeightRequest="35"
-                    Placeholder="Например: 20"
-                    PlaceholderColor="#66FFFFFF"
-                    Text="{Binding TargetValue}"
-                    TextColor="White"
-                    VerticalTextAlignment="Center" />
-                <Label
-                    x:Name="LabelTargetUnit"
-                    Style="{StaticResource EduCardTitle16}"
-                    Text="Единица измерения" />
-                <Editor
-                    x:Name="EditorTargetUnit"
-                    BackgroundColor="#14182E"
-                    FontFamily="Comfortaa"
-                    FontSize="14"
-                    HeightRequest="35"
-                    Placeholder="Например: отжиманий"
-                    PlaceholderColor="#66FFFFFF"
-                    Text="{Binding TargetUnit}"
-                    TextColor="White"
-                    VerticalTextAlignment="Center" />
+                    <Label
+                        x:Name="LabelTargetValue"
+                        Style="{StaticResource EduCardTitle16}"
+                        Text="Целевое значение" />
+                    <Editor
+                        x:Name="EditorTargetValue"
+                        BackgroundColor="#14182E"
+                        FontFamily="Comfortaa"
+                        FontSize="14"
+                        HeightRequest="40"
+                        Placeholder="Например: 20"
+                        PlaceholderColor="#66FFFFFF"
+                        Text="{Binding TargetValue}"
+                        TextColor="White"
+                        VerticalTextAlignment="Center" />
 
-                <Image HeightRequest="2" Source="dividing_strip.png" />
+                    <Label
+                        x:Name="LabelTargetUnit"
+                        Style="{StaticResource EduCardTitle16}"
+                        Text="Единица измерения" />
+                    <Editor
+                        x:Name="EditorTargetUnit"
+                        BackgroundColor="#14182E"
+                        FontFamily="Comfortaa"
+                        FontSize="14"
+                        HeightRequest="40"
+                        Placeholder="Например: отжиманий"
+                        PlaceholderColor="#66FFFFFF"
+                        Text="{Binding TargetUnit}"
+                        TextColor="White"
+                        VerticalTextAlignment="Center" />
 
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
-                    <Button
-                        Command="{Binding CancelCommand}"
-                        Style="{StaticResource EduPrimaryButton}"
-                        Text="Отменить" />
+                    <Image HeightRequest="2" Source="dividing_strip.png" />
 
-                    <Button
-                        Grid.Column="1"
-                        Command="{Binding SaveCommand}"
-                        Style="{StaticResource EduPrimaryButton}"
-                        Text="Сохранить" />
-                </Grid>
-            </VerticalStackLayout>
-        </Border>
-    </Grid>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                        <Button
+                            Command="{Binding CancelCommand}"
+                            Style="{StaticResource EduPrimaryButton}"
+                            Text="Отменить" />
+
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding SaveCommand}"
+                            Style="{StaticResource EduPrimaryButton}"
+                            Text="Сохранить" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </ScrollView>
 </ContentPage>

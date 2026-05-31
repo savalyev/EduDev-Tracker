@@ -15,6 +15,15 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public Task<List<Habit>> GetArchivedAsync(int profileId)
+            => Connection.Table<Habit>()
+        .Where(h => h.ProfileId == profileId && h.IsArchived)
+        .OrderByDescending(h => h.UpdatedAt)
+        .ToListAsync();
+
+        public Task<Habit> GetByIdWithChildrenAsync(int id)
+            => Connection.GetWithChildrenAsync<Habit>(id, recursive: true);
+
         public Task<HabitSchedule> GetScheduleAsync(int habitId)
         {
             return Connection.Table<HabitSchedule>().FirstOrDefaultAsync(h => h.HabitId == habitId);
@@ -73,6 +82,48 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
                 habitId, today);
             return cnt > 0;
         }
+
+        public async Task<bool> IsCompletedTodayAsync(int habitId, DateTime date)
+        {
+            var logDate = date.ToString("yyyy-MM-dd");
+            var cnt = await Connection.ExecuteScalarAsync<int>(
+                "SELECT COUNT(*) FROM habit_logs WHERE HabitId = ? AND LogDate = ?",
+                habitId, logDate);
+            return cnt > 0;
+        }
+
+        public Task DeleteAsync(int habitId)
+            => Connection.ExecuteAsync("DELETE FROM habits WHERE Id = ?", habitId);
+
+        public async Task<int> GetStreakAsync(int habitId)
+        {
+            var logs = await Connection.QueryAsync<HabitLog>(
+                "SELECT LogDate FROM habit_logs WHERE HabitId = ? ORDER BY LogDate DESC",
+                habitId);
+
+            if (logs.Count == 0) return 0;
+
+            int streak = 0;
+            var expected = DateTime.Today;
+
+            foreach (var log in logs)
+            {
+                if (!DateTime.TryParse(log.LogDate, out var logDate)) break;
+
+                if (logDate.Date == expected.Date)
+                {
+                    streak++;
+                    expected = expected.AddDays(-1);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return streak;
+        }
+
 
     }
 }

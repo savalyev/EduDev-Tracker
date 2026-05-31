@@ -48,7 +48,7 @@ namespace EduDev_Tracker.Services.Habits
                 UpdatedAt = DateTime.UtcNow,
                 TargetValue = targetValue,
                 TargetUnit = targetUnit,
-                Schedules = new List<HabitSchedule> { schedule }
+                Schedules = schedule
             };
 
             await _repo.SaveWithChildrenAsync(habit);
@@ -68,5 +68,15 @@ namespace EduDev_Tracker.Services.Habits
             => _repo.ArchiveAsync(habitId, archived);
         public Task<bool> IsCompletedTodayAsync(int habitId)
             => _repo.IsCompletedTodayAsync(habitId);
+        public Task<bool> IsCompletedTodayAsync(int habitId, DateTime date)
+            => _repo.IsCompletedTodayAsync(habitId, date);
+        public Task DeleteAsync(int habitId)
+            => _repo.DeleteAsync(habitId);
+        public Task<int> GetStreakAsync(int habitId)
+            => _repo.GetStreakAsync(habitId);
+        public Task<Habit> GetByIdWithChildrenAsync(int id)
+            => _repo.GetByIdWithChildrenAsync(id);
+        public Task<List<Habit>> GetArchivedAsync(int profileId)
+            => _repo.GetArchivedAsync(profileId);
     }
 }

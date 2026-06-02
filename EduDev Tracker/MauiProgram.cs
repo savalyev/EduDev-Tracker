@@ -5,6 +5,8 @@ using EduDev_Tracker.Features.Dashboard.ViewModels;
 using EduDev_Tracker.Features.Dashboard.Views;
 using EduDev_Tracker.Features.Habits.ViewModels;
 using EduDev_Tracker.Features.Habits.Views;
+using EduDev_Tracker.Features.Tasks.ViewModels;
+using EduDev_Tracker.Features.Tasks.Views;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Notification;
@@ -97,6 +99,9 @@ namespace EduDev_Tracker
 
             services.AddTransient<DashboardPage>();
             services.AddTransient<DashboardViewModel>();
+
+            services.AddTransient<TasksPage>();
+            services.AddTransient<TasksViewModel>();
         }
     }
 }

@@ -13,7 +13,6 @@ namespace EduDev_Tracker.Data.Models
         [PrimaryKey, AutoIncrement] public int Id { get; set; }
         [ForeignKey(typeof(Profile)), Indexed] public int ProfileId { get; set; }
         [ForeignKey(typeof(Project))] public int? ProjectId { get; set; }
-        [ForeignKey(typeof(TaskItem))] public int? ParentTaskId { get; set; }
 
         [NotNull, MaxLength(300)] public string Title { get; set; } = "";
         public string? Description { get; set; }
@@ -30,16 +29,12 @@ namespace EduDev_Tracker.Data.Models
 
         public DateTime? DueAt { get; set; }
         public DateTime? CompletedAt { get; set; }
-        public int? EstimatedMinutes { get; set; }
 
         public bool IsArchived { get; set; }
         public int SortOrder { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<TaskItem> Subtasks { get; set; } = new();
 
         [OneToOne(CascadeOperations = CascadeOperation.All)]
         public TaskRecurrence? Recurrence { get; set; }

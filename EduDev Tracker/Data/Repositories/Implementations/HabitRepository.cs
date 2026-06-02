@@ -95,33 +95,78 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
         public Task DeleteAsync(int habitId)
             => Connection.ExecuteAsync("DELETE FROM habits WHERE Id = ?", habitId);
 
-        public async Task<int> GetStreakAsync(int habitId)
+        public async Task<int> GetCurrentStreakAsync(int habitId)
         {
+            var schedule = await GetScheduleAsync(habitId);
+            if (schedule == null) return 0;
+
             var logs = await Connection.QueryAsync<HabitLog>(
-                "SELECT LogDate FROM habit_logs WHERE HabitId = ? ORDER BY LogDate DESC",
+                "SELECT DISTINCT LogDate FROM habit_logs WHERE HabitId = ? ORDER BY LogDate DESC",
                 habitId);
 
-            if (logs.Count == 0) return 0;
+            if (logs == null || logs.Count == 0) return 0;
+
+            var completedDates = logs
+                .Select(l => DateTime.Parse(l.LogDate).Date)
+                .ToHashSet();
 
             int streak = 0;
-            var expected = DateTime.Today;
+            var checkDate = DateTime.Today;
 
-            foreach (var log in logs)
+            bool todayScheduled = IsDateScheduled(checkDate, schedule.DayMask);
+            bool todayCompleted = completedDates.Contains(checkDate);
+
+            if (todayScheduled && !todayCompleted)
+                checkDate = checkDate.AddDays(-1);
+
+            while (true)
             {
-                if (!DateTime.TryParse(log.LogDate, out var logDate)) break;
+                bool scheduled = IsDateScheduled(checkDate, schedule.DayMask);
 
-                if (logDate.Date == expected.Date)
+                if (!scheduled)
                 {
-                    streak++;
-                    expected = expected.AddDays(-1);
+                    checkDate = checkDate.AddDays(-1);
+
+                    if ((DateTime.Today - checkDate).TotalDays > 365) break;
+                    continue;
                 }
-                else
-                {
+
+                if (!completedDates.Contains(checkDate))
                     break;
-                }
+
+                streak++;
+                checkDate = checkDate.AddDays(-1);
+
+                if ((DateTime.Today - checkDate).TotalDays > 365) break;
             }
 
             return streak;
+        }
+
+        private bool IsDateScheduled(DateTime date, int dayMask)
+        {
+            return date.DayOfWeek switch
+            {
+                DayOfWeek.Monday => (dayMask & 1) != 0,
+                DayOfWeek.Tuesday => (dayMask & 2) != 0,
+                DayOfWeek.Wednesday => (dayMask & 4) != 0,
+                DayOfWeek.Thursday => (dayMask & 8) != 0,
+                DayOfWeek.Friday => (dayMask & 16) != 0,
+                DayOfWeek.Saturday => (dayMask & 32) != 0,
+                DayOfWeek.Sunday => (dayMask & 64) != 0,
+                _ => false
+            };
+        }
+
+        public async Task<double> GetTodayProgressAsync(int habitId)
+        {
+            var today = DateTime.Today.ToString("yyyy-MM-dd");
+
+            var result = await Connection.ExecuteScalarAsync<double>(
+                "SELECT COALESCE(SUM(Value), 0) FROM habit_logs WHERE HabitId = ? AND LogDate = ?",
+                habitId, today);
+
+            return result;
         }
 
 

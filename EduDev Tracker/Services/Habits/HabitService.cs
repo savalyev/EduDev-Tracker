@@ -2,6 +2,7 @@
 using EduDev_Tracker.Data.Repositories.Implementations;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace EduDev_Tracker.Services.Habits
@@ -72,8 +73,10 @@ namespace EduDev_Tracker.Services.Habits
             => _repo.IsCompletedTodayAsync(habitId, date);
         public Task DeleteAsync(int habitId)
             => _repo.DeleteAsync(habitId);
-        public Task<int> GetStreakAsync(int habitId)
-            => _repo.GetStreakAsync(habitId);
+        public Task<int> GetCurrentStreakAsync(int habitId)
+            => _repo.GetCurrentStreakAsync(habitId);
+        public Task<double> GetTodayProgressAsync(int habitId)
+            => _repo.GetTodayProgressAsync(habitId);
         public Task<Habit> GetByIdWithChildrenAsync(int id)
             => _repo.GetByIdWithChildrenAsync(id);
         public Task<List<Habit>> GetArchivedAsync(int profileId)

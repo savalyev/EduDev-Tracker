@@ -116,6 +116,9 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                     var item = new HabitItemViewModel(habit, _scheduleCache.GetValueOrDefault(habit.Id), OnHabitToggled);
                     var completed = await _habitService.IsCompletedTodayAsync(habit.Id);
                     item.SetCompletedSilently(completed);
+                    var progress = await _habitService.GetTodayProgressAsync(habit.Id);
+                    var streak = await _habitService.GetCurrentStreakAsync(habit.Id);
+                    item.SetProgressSilently(progress, streak);
                     Habits.Add(item);
                 }
             }

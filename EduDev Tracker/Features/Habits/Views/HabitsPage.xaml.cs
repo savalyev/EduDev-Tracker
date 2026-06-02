@@ -13,6 +13,10 @@ public partial class HabitsPage : ContentPage
 
         _vm.Habits.CollectionChanged += OnHabitsCollectionChanged;
 
+#if WINDOWS
+        HabitsCollectionView.ChildAdded += OnHabitCardAdded;
+#endif
+
     }
 
     private bool _isFading = false;
@@ -50,4 +54,35 @@ public partial class HabitsPage : ContentPage
             vm.LoadCommand.Execute(null);
         }
     }
+
+#if WINDOWS
+    private void OnHabitCardAdded(object sender, ElementEventArgs e)
+    {
+        if (e.Element is Border card)
+        {
+            var pointer = new PointerGestureRecognizer();
+            pointer.PointerEntered += OnCardPointerEntered;
+            pointer.PointerExited += OnCardPointerExited;
+            card.GestureRecognizers.Add(pointer);
+        }
+    }
+
+    private void OnCardPointerEntered(object sender, PointerEventArgs e)
+    {
+        if (sender is PointerGestureRecognizer { Parent: Border card })
+        {
+            card.ScaleToAsync(1.02, 150, Easing.CubicOut);
+            card.Stroke = new SolidColorBrush(Color.FromArgb("#886EE7B7"));
+        }
+    }
+
+    private void OnCardPointerExited(object sender, PointerEventArgs e)
+    {
+        if (sender is PointerGestureRecognizer { Parent: Border card })
+        {
+            card.ScaleToAsync(1.0, 150, Easing.CubicOut);
+            card.Stroke = new SolidColorBrush(Color.FromArgb("#495061"));
+        }
+    }
+#endif
 }

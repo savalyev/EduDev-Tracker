@@ -1,8 +1,9 @@
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Features.Habits.ViewModels;
 
 namespace EduDev_Tracker.Features.Habits.Views;
 
-public partial class CreateHabitPage : ContentPage
+public partial class CreateHabitPage : AnimatedModalPage
 {
 	public CreateHabitPage(CreateHabitViewModel viewModel)
 	{

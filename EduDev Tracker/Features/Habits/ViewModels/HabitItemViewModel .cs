@@ -16,6 +16,10 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private readonly Func<int, bool, string, Task>? _onToggled;
         private bool _suppressCallback;
 
+        private double _todayProgress = 0;
+        private int _currentStreak = 0;
+
+
         public HabitItemViewModel(
             Habit habit, 
             HabitSchedule habitSchedule, 
@@ -34,12 +38,19 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         public string Schedule => ParseDaysMask(_habitSchedule.DayMask);
         public string TimeOfDay => _habitSchedule.TimeOfDay;
         public string Type => _habit.TypeString;
-        public double TodayProress => 0; //временнйы костыль
         public string TodayProgressText => ParseProgress();
-        public string StreakText => "-";
+        public string StreakText => _currentStreak > 0 ? $"🔥 {_currentStreak}" : "-";
 
         [ObservableProperty]
         private bool isCompleted;
+
+        public void SetProgressSilently(double progress, int streak)
+        {
+            _todayProgress = progress;
+            _currentStreak = streak;
+            OnPropertyChanged(nameof(TodayProgressText));
+            OnPropertyChanged(nameof(StreakText));
+        }
 
         partial void OnIsCompletedChanged(bool value)
         {
@@ -87,15 +98,10 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
         private string ParseProgress()
         {
-
             if (_habitSchedule.DayMask == 127)
-            {
-                return $"Сегодня: 0/{_habit.TargetValue} {_habit.TargetUnit}";
-            }
+                return $"Сегодня: {_todayProgress}/{_habit.TargetValue} {_habit.TargetUnit}";
             else
-            {
-                return $"На этой неделе: 0/{CountDays(_habitSchedule.DayMask)} сессий";
-            }
+                return $"На этой неделе: {_todayProgress}/{CountDays(_habitSchedule.DayMask)} сессий";
         }
 
     }

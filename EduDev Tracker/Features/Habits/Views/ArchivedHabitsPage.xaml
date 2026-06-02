@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<local:AnimatedModalPage
     x:Class="EduDev_Tracker.Features.Habits.Views.ArchivedHabitsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:EduDev_Tracker.Core.Helpers"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:EduDev_Tracker.Features.Habits.ViewModels"
     Title=""
@@ -190,4 +191,4 @@
             </Grid>
         </Grid>
     </Grid>
-</ContentPage>
+</local:AnimatedModalPage>

@@ -1,12 +1,16 @@
 ﻿using CommunityToolkit.Maui;
 using EduDev_Tracker.Data;
 using EduDev_Tracker.Data.Repositories.Implementations;
+using EduDev_Tracker.Features.Dashboard.ViewModels;
+using EduDev_Tracker.Features.Dashboard.Views;
 using EduDev_Tracker.Features.Habits.ViewModels;
 using EduDev_Tracker.Features.Habits.Views;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
+using EduDev_Tracker.Services.Notification;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
+using Plugin.LocalNotification;
 
 #if WINDOWS
 using Microsoft.UI.Windowing;
@@ -24,6 +28,7 @@ namespace EduDev_Tracker
 
             builder
                 .UseMauiApp<App>()
+                .UseLocalNotification()
                 .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
@@ -76,14 +81,22 @@ namespace EduDev_Tracker
         {
             services.AddSingleton<IHabitService, HabitService>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IHabitNotificationService, HabitNotificationService>();
+
             services.AddTransient<CreateHabitViewModel>();
             services.AddTransient<CreateHabitPage>();
+
             services.AddTransient<HabitsPage>();
             services.AddTransient<HabitsViewModel>();
+
             services.AddTransient<HabitDetailsPage>();
             services.AddTransient<HabitDetailsViewModel>();
+
             services.AddTransient<ArchivedHabitsPage>();
             services.AddTransient<ArchivedHabitsViewModel>();
+
+            services.AddTransient<DashboardPage>();
+            services.AddTransient<DashboardViewModel>();
         }
     }
 }

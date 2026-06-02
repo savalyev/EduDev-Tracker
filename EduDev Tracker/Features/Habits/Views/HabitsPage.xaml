@@ -26,16 +26,12 @@
                 MaximumWidthRequest="1500"
                 RowDefinitions="Auto, Auto"
                 RowSpacing="24">
-
-                <!--  Шапка  -->
                 <Grid
                     Grid.Row="0"
                     Padding="16,16,16,0"
                     RowDefinitions="{OnIdiom Phone='Auto,Auto',
                                              Default='Auto'}"
                     RowSpacing="10">
-
-                    <!--  Иконка + заголовок  -->
                     <Grid
                         Grid.Row="0"
                         ColumnDefinitions="44, *, Auto"
@@ -44,6 +40,8 @@
                         <Image
                             HeightRequest="36"
                             HorizontalOptions="Start"
+                            IsVisible="{OnIdiom Phone=True,
+                                                Default=False}"
                             Source="menu.png"
                             VerticalOptions="Center"
                             WidthRequest="36">
@@ -56,8 +54,6 @@
                             <Label Style="{StaticResource EduCardTitleLabel}" Text="Привычки" />
                             <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Отслеживайте ежедневные действия, серии и прогресс по целям" />
                         </VerticalStackLayout>
-
-                        <!--  На десктопе кнопка в той же строке справа  -->
                         <Button
                             Grid.Column="2"
                             Command="{Binding OpenArchiveCommand}"
@@ -67,10 +63,9 @@
                             Text="Перейти в архив"
                             VerticalOptions="Center" />
                     </Grid>
-
-                    <!--  На телефоне кнопка отдельной строкой  -->
                     <Button
                         Grid.Row="1"
+                        Command="{Binding OpenArchiveCommand}"
                         HorizontalOptions="Fill"
                         IsVisible="{OnIdiom Phone=True,
                                             Default=False}"
@@ -78,7 +73,6 @@
                         Text="Перейти в архив" />
                 </Grid>
 
-                <!--  Основной контент  -->
                 <Grid
                     Grid.Row="1"
                     Padding="16,0,16,0"
@@ -90,20 +84,25 @@
                     RowSpacing="16"
                     VerticalOptions="Start">
 
-                    <!--  Левая карточка: список привычек  -->
                     <Border
                         Grid.Row="0"
                         Grid.Column="0"
                         Padding="16"
                         Style="{StaticResource EduCardBorder}">
-                        <VerticalStackLayout Spacing="0">
 
-                            <!--  Заголовок карточки  -->
-                            <Label Style="{StaticResource EduCardTitleLabel}" Text="Список привычек" />
-                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="{Binding Title}" />
+                        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto" RowSpacing="0">
 
-                            <!--  Фильтр периода — отдельной строкой под заголовком  -->
+                            <Label
+                                Grid.Row="0"
+                                Style="{StaticResource EduCardTitleLabel}"
+                                Text="Список привычек" />
+                            <Label
+                                Grid.Row="1"
+                                Style="{StaticResource EduCardSubtitleLabel}"
+                                Text="{Binding Title}" />
+
                             <Border
+                                Grid.Row="2"
                                 Margin="0,10,0,0"
                                 BackgroundColor="#14182E"
                                 HorizontalOptions="Start"
@@ -162,8 +161,8 @@
                                 </HorizontalStackLayout>
                             </Border>
 
-                            <!--  Фильтр по типу  -->
                             <FlexLayout
+                                Grid.Row="3"
                                 Margin="0,10,0,0"
                                 BindableLayout.ItemsSource="{Binding FilterTypes}"
                                 Direction="Row"
@@ -191,9 +190,9 @@
                                 </BindableLayout.ItemTemplate>
                             </FlexLayout>
 
-                            <!--  Список привычек  -->
                             <CollectionView
                                 x:Name="HabitsCollectionView"
+                                Grid.Row="4"
                                 Margin="0,12,0,0"
                                 ItemsSource="{Binding Habits}"
                                 SelectionMode="None">
@@ -298,10 +297,13 @@
                                                     </FlexLayout>
                                                 </VerticalStackLayout>
 
+                                                <!--  Скрываем прогресс и серию на телефоне — мало места  -->
                                                 <Label
                                                     Grid.Column="2"
                                                     FontFamily="Comfortaa"
                                                     FontSize="12"
+                                                    IsVisible="{OnIdiom Phone=False,
+                                                                        Default=True}"
                                                     Text="{Binding TodayProgressText}"
                                                     TextColor="#99FFFFFF"
                                                     VerticalOptions="Center" />
@@ -309,6 +311,8 @@
                                                 <VerticalStackLayout
                                                     Grid.Column="3"
                                                     HorizontalOptions="End"
+                                                    IsVisible="{OnIdiom Phone=False,
+                                                                        Default=True}"
                                                     Spacing="2"
                                                     VerticalOptions="Center">
                                                     <Label
@@ -339,15 +343,15 @@
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
 
-                            <!--  Кнопка добавления  -->
                             <Button
+                                Grid.Row="5"
                                 Margin="0,12,0,0"
                                 Command="{Binding OpenAddHabitCommand}"
                                 HeightRequest="40"
                                 Style="{StaticResource EduPrimaryButton}"
                                 Text="+ Добавьте ещё привычку" />
 
-                        </VerticalStackLayout>
+                        </Grid>
                     </Border>
 
                     <!--  Правая колонка: календарь + аналитика  -->
@@ -363,68 +367,69 @@
                             <VerticalStackLayout Spacing="12">
                                 <Label Style="{StaticResource EduCardTitleLabel}" Text="Календарь выполнения" />
                                 <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Нажмите день, чтобы открыть подробную историю и примечания" />
+                                <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                                    <HorizontalStackLayout
+                                        BindableLayout.ItemsSource="{Binding DaysItems}"
+                                        HorizontalOptions="Fill"
+                                        Spacing="6">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:DayItemStats">
+                                                <Border
+                                                    Margin="0,0,6,6"
+                                                    Padding="0"
+                                                    BackgroundColor="#14182E"
+                                                    MinimumHeightRequest="40"
+                                                    Stroke="#FFFFFF"
+                                                    StrokeThickness="0.5">
 
-                                <HorizontalStackLayout
-                                    BindableLayout.ItemsSource="{Binding DaysItems}"
-                                    HorizontalOptions="Fill"
-                                    Spacing="6">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate x:DataType="vm:DayItemStats">
-                                            <Border
-                                                Margin="0,0,6,6"
-                                                Padding="0"
-                                                BackgroundColor="#14182E"
-                                                MinimumHeightRequest="40"
-                                                Stroke="#FFFFFF"
-                                                StrokeThickness="0.5">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="10" />
+                                                    </Border.StrokeShape>
 
-                                                <Border.StrokeShape>
-                                                    <RoundRectangle CornerRadius="10" />
-                                                </Border.StrokeShape>
+                                                    <Border.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HabitsViewModel}}, Path=OpenDelailsDayCommand}" CommandParameter="{Binding Date}" />
+                                                    </Border.GestureRecognizers>
 
-                                                <Border.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HabitsViewModel}}, Path=OpenDelailsDayCommand}" CommandParameter="{Binding Date}" />
-                                                </Border.GestureRecognizers>
+                                                    <Label
+                                                        Padding="12,8"
+                                                        HorizontalOptions="Fill"
+                                                        HorizontalTextAlignment="Center"
+                                                        Text="{Binding Title}"
+                                                        TextColor="White"
+                                                        VerticalOptions="Fill"
+                                                        VerticalTextAlignment="Center" />
 
-                                                <Label
-                                                    Padding="12,8"
-                                                    HorizontalOptions="Fill"
-                                                    HorizontalTextAlignment="Center"
-                                                    Text="{Binding Title}"
-                                                    TextColor="White"
-                                                    VerticalOptions="Fill"
-                                                    VerticalTextAlignment="Center" />
-
-                                                <Border.Triggers>
-                                                    <DataTrigger
-                                                        Binding="{Binding Done}"
-                                                        TargetType="Border"
-                                                        Value="True">
-                                                        <Setter Property="Background">
-                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                                                <GradientStop Offset="0.0" Color="#666EE7B7" />
-                                                                <GradientStop Offset="1.0" Color="#E60E121E" />
-                                                            </LinearGradientBrush>
-                                                        </Setter>
-                                                        <Setter Property="Stroke" Value="#996EE7B7" />
-                                                    </DataTrigger>
-                                                    <DataTrigger
-                                                        Binding="{Binding Done}"
-                                                        TargetType="Border"
-                                                        Value="False">
-                                                        <Setter Property="Background">
-                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                                                <GradientStop Offset="0.0" Color="#F93B3B" />
-                                                                <GradientStop Offset="1.0" Color="#E60E121E" />
-                                                            </LinearGradientBrush>
-                                                        </Setter>
-                                                        <Setter Property="Stroke" Value="White" />
-                                                    </DataTrigger>
-                                                </Border.Triggers>
-                                            </Border>
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </HorizontalStackLayout>
+                                                    <Border.Triggers>
+                                                        <DataTrigger
+                                                            Binding="{Binding Done}"
+                                                            TargetType="Border"
+                                                            Value="True">
+                                                            <Setter Property="Background">
+                                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                    <GradientStop Offset="0.0" Color="#666EE7B7" />
+                                                                    <GradientStop Offset="1.0" Color="#E60E121E" />
+                                                                </LinearGradientBrush>
+                                                            </Setter>
+                                                            <Setter Property="Stroke" Value="#996EE7B7" />
+                                                        </DataTrigger>
+                                                        <DataTrigger
+                                                            Binding="{Binding Done}"
+                                                            TargetType="Border"
+                                                            Value="False">
+                                                            <Setter Property="Background">
+                                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                    <GradientStop Offset="0.0" Color="#F93B3B" />
+                                                                    <GradientStop Offset="1.0" Color="#E60E121E" />
+                                                                </LinearGradientBrush>
+                                                            </Setter>
+                                                            <Setter Property="Stroke" Value="White" />
+                                                        </DataTrigger>
+                                                    </Border.Triggers>
+                                                </Border>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </HorizontalStackLayout>
+                                </ScrollView>
 
                                 <HorizontalStackLayout Spacing="12">
                                     <HorizontalStackLayout Spacing="6">
@@ -559,5 +564,15 @@
                 </Grid>
             </Grid>
         </ScrollView>
+        <Button
+            Margin="16,0,16,16"
+            Command="{Binding OpenAddHabitCommand}"
+            HeightRequest="48"
+            HorizontalOptions="Fill"
+            IsVisible="{OnIdiom Phone=True,
+                                Default=False}"
+            Style="{StaticResource EduPrimaryButton}"
+            Text="+ Добавьте ещё привычку"
+            VerticalOptions="End" />
     </Grid>
 </ContentPage>

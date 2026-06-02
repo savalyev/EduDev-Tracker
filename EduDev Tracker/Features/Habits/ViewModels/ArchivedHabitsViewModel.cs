@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Services.Habits;
+using EduDev_Tracker.Services.Notification;
 using System.Collections.ObjectModel;
 
 namespace EduDev_Tracker.Features.Habits.ViewModels
@@ -10,6 +11,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
     public partial class ArchivedHabitsViewModel : BaseViewModel
     {
         private readonly IHabitService _habitService;
+        private readonly IHabitNotificationService _habitNotificationService;
 
         public ObservableCollection<ArchivedHabitItem> ArchivedHabits { get; } = new();
 
@@ -19,9 +21,10 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
         public bool IsNotEmpty => !IsEmpty;
 
-        public ArchivedHabitsViewModel(IHabitService habitService)
+        public ArchivedHabitsViewModel(IHabitService habitService, IHabitNotificationService habitNotificationService)
         {
             _habitService = habitService;
+            _habitNotificationService = habitNotificationService;
         }
 
         [RelayCommand]

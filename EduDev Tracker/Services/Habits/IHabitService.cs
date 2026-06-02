@@ -18,9 +18,9 @@ namespace EduDev_Tracker.Services.Habits
         Task<bool> IsCompletedTodayAsync(int habitId, DateTime date);
         Task<bool> IsCompletedTodayAsync(int habitId);
         Task DeleteAsync(int habitId);
-        Task<int> GetStreakAsync(int habitId);
+        Task<double> GetTodayProgressAsync(int habitId);
+        Task<int> GetCurrentStreakAsync(int habitId);
         public Task<Habit> GetByIdWithChildrenAsync(int id);
-
         Task<List<Habit>> GetArchivedAsync(int profileId);
     }
 }

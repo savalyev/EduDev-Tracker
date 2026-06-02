@@ -4,6 +4,7 @@ using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
+using EduDev_Tracker.Services.Notification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
     {
         private readonly INavigationService _navigation;
         private readonly IHabitService _habitService;
+        private readonly IHabitNotificationService _habitNotificationService;
 
 
         [ObservableProperty]
@@ -73,10 +75,12 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             new DayItem("Вс"),
         };
 
-        public CreateHabitViewModel(INavigationService navigation, IHabitService habitService)
+        public CreateHabitViewModel(INavigationService navigation, IHabitService habitService,
+            IHabitNotificationService habitNotificationService)
         {
             _navigation = navigation;
             _habitService = habitService;
+            _habitNotificationService = habitNotificationService;
 
             foreach (var day in WeekDays)
                 day.PropertyChanged += Day_PropertyChanged;
@@ -142,7 +146,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                     targetValue: ParsedTargerValue,
                     description: Description
                     );
-
+                await _habitNotificationService.ScheduleHabitNotificationAsync(habit, Schedule);
                 await _navigation.GoBackModalAsync();
             }
             finally

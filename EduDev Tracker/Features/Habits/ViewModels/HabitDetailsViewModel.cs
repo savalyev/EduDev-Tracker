@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Services.Habits;
+using EduDev_Tracker.Services.Notification;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
     public partial class HabitDetailsViewModel: BaseViewModel
     {
         private readonly IHabitService _habitService;
+        private readonly IHabitNotificationService _habitNotificationService;
         private Habit _habit;
 
         [ObservableProperty] private string titleHabit;
@@ -38,9 +40,10 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [ObservableProperty] private string editTitle;
         [ObservableProperty] private string editDescription;
 
-        public HabitDetailsViewModel(IHabitService habitService)
+        public HabitDetailsViewModel(IHabitService habitService, IHabitNotificationService habitNotificationService)
         {
             _habitService = habitService;
+            _habitNotificationService = habitNotificationService;
         }
 
         public async Task InitializeAsync(int habitId)
@@ -58,7 +61,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             Schedule = schedule?.GetFormattedDays() ?? "—";
             TimeOfDay = schedule?.TimeOfDay ?? "—";
 
-            var streak = await _habitService.GetStreakAsync(habitId);
+            var streak = await _habitService.GetCurrentStreakAsync(habitId);
             StreakText = streak > 0 ? $"🔥 {streak}" : "—";
 
             Icon = _habit.Icon ?? "habit_icon.png";
@@ -102,7 +105,9 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
             if (!confirm) return;
 
+
             await _habitService.DeleteAsync(_habit.Id);
+            await _habitNotificationService.CancelHabitNotificationAsync(_habit.Id);
             await CloseAsync();
         }
 
@@ -154,6 +159,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
             _habit.IsArchived = true;
             await _habitService.UpdateAsync(_habit);
+            await _habitNotificationService.CancelHabitNotificationAsync(_habit.Id);
             await CloseAsync();
         }
 

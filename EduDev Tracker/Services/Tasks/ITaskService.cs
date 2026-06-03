@@ -1,10 +1,19 @@
-﻿using System;
+﻿using EduDev_Tracker.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace EduDev_Tracker.Services.Tasks
 {
-    internal class ITaskService
+    public interface ITaskService
     {
+        public Task<List<TaskItem>> GetActiveAsync(int profileId);
+        public Task<List<TaskItem>> GetByDateAsync(int profileId, DateTime date);
+        public Task<TaskItem> GetByIdWithChildrenAsync(int id);
+        public Task SaveWithChildrenAsync(TaskItem task);
+        public Task CompleteAsync(int id);
+        public Task ArchiveAsync(int id, bool archived = true);
+        public Task DeleteAsync(int id);
+        public Task<TaskRecurrence> GetRecurrenceAsync(int id);
     }
 }

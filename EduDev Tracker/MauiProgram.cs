@@ -10,6 +10,7 @@ using EduDev_Tracker.Features.Tasks.Views;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Notification;
+using EduDev_Tracker.Services.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using Plugin.LocalNotification;
@@ -82,6 +83,7 @@ namespace EduDev_Tracker
         static void RegisterServices(IServiceCollection services)
         {
             services.AddSingleton<IHabitService, HabitService>();
+            services.AddSingleton<ITaskService, TaskService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IHabitNotificationService, HabitNotificationService>();
 

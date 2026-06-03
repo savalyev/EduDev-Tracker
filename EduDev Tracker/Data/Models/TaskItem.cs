@@ -17,7 +17,14 @@ namespace EduDev_Tracker.Data.Models
         [NotNull, MaxLength(300)] public string Title { get; set; } = "";
         public string? Description { get; set; }
         public string? Category { get; set; }
-        public TaskPriority Priority { get; set; } = TaskPriority.Medium;
+        [Ignore] public TaskPriority Priority { get; set; } = TaskPriority.Medium;
+
+        [Column("Priority")]
+        public string PriorityString
+        {
+            get => Priority.ToString();
+            set => Priority = Enum.Parse<TaskPriority>(value);
+        }
         [Ignore] public TaskStatus Status { get; set; } = TaskStatus.Open;
 
         [Column("Status")]
@@ -36,7 +43,7 @@ namespace EduDev_Tracker.Data.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        [OneToOne(CascadeOperations = CascadeOperation.All)]
+        [Ignore]
         public TaskRecurrence? Recurrence { get; set; }
 
         [ManyToMany(typeof(TaskTag))]

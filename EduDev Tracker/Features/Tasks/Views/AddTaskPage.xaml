@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Tasks.Views.AddTaskPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:EduDev_Tracker.Features.Tasks.ViewModels"
+    Title=""
+    x:DataType="vm:AddTaskViewModel"
+    SafeAreaEdges="All"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <mct:EventToCommandBehavior Command="{Binding InitCommand}" EventName="Appearing" />
+    </ContentPage.Behaviors>
+
+    <Grid>
+        <Image
+            Aspect="Fill"
+            Opacity="0.8"
+            Source="background_gradient.jpg" />
+
+        <ScrollView>
+            <Grid
+                Padding="16"
+                HorizontalOptions="Center"
+                MaximumWidthRequest="800"
+                RowDefinitions="Auto, Auto"
+                RowSpacing="16">
+
+                <Grid
+                    Grid.Row="0"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="12">
+
+                    <Border
+                        Grid.Column="0"
+                        BackgroundColor="#14182E"
+                        HeightRequest="36"
+                        Stroke="#495061"
+                        StrokeThickness="1"
+                        VerticalOptions="Center"
+                        WidthRequest="36">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CloseCommand}" />
+                        </Border.GestureRecognizers>
+                        <Label
+                            FontSize="18"
+                            HorizontalOptions="Center"
+                            Text="←"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                        <Label Style="{StaticResource EduCardTitleLabel}" Text="Новая задача" />
+                        <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Заполните информацию о задаче" />
+                    </VerticalStackLayout>
+
+                    <Button
+                        Grid.Column="2"
+                        Command="{Binding SaveCommand}"
+                        IsEnabled="{Binding IsNotBusy}"
+                        Style="{StaticResource EduPrimaryButton}"
+                        Text="Сохранить"
+                        VerticalOptions="Center" />
+                </Grid>
+
+                <Border
+                    Grid.Row="1"
+                    Padding="20"
+                    Style="{StaticResource EduCardBorder}">
+                    <VerticalStackLayout Spacing="20">
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Название *" />
+                            <Border
+                                Padding="12,10"
+                                BackgroundColor="#14182E"
+                                Stroke="#495061"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Entry
+                                    FontFamily="Comfortaa"
+                                    FontSize="14"
+                                    MaxLength="300"
+                                    Placeholder="Например: Сдать лабораторную по C#"
+                                    PlaceholderColor="#55FFFFFF"
+                                    Text="{Binding TaskTitle}"
+                                    TextColor="White" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Описание" />
+                            <Border
+                                Padding="12,10"
+                                BackgroundColor="#14182E"
+                                Stroke="#495061"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Editor
+                                    AutoSize="TextChanges"
+                                    FontFamily="Comfortaa"
+                                    FontSize="14"
+                                    MinimumHeightRequest="80"
+                                    Placeholder="Подробности, ссылки, заметки..."
+                                    PlaceholderColor="#55FFFFFF"
+                                    Text="{Binding Description}"
+                                    TextColor="White" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Дедлайн" />
+                                <Border
+                                    Padding="12,10"
+                                    BackgroundColor="#14182E"
+                                    Stroke="#495061"
+                                    StrokeThickness="1">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <DatePicker
+                                        Date="{Binding DueDate}"
+                                        FontFamily="Comfortaa"
+                                        FontSize="14"
+                                        Format="d MMMM yyyy"
+                                        HorizontalOptions="Center"
+                                        MinimumDate="{Binding Today}"
+                                        TextColor="White" />
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Время" />
+                                <Border
+                                    Padding="12,10"
+                                    BackgroundColor="#14182E"
+                                    Stroke="#495061"
+                                    StrokeThickness="1">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <TimePicker
+                                        FontFamily="Comfortaa"
+                                        FontSize="14"
+                                        Format="HH:mm"
+                                        HorizontalOptions="Center"
+                                        TextColor="White"
+                                        Time="{Binding DueTime}" />
+                                </Border>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Категория" />
+                            <Border
+                                Padding="12,10"
+                                BackgroundColor="#14182E"
+                                Stroke="#495061"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Entry
+                                    FontFamily="Comfortaa"
+                                    FontSize="14"
+                                    MaxLength="100"
+                                    Placeholder="Учёба, Работа, Личное..."
+                                    PlaceholderColor="#55FFFFFF"
+                                    Text="{Binding Category}"
+                                    TextColor="White" />
+                            </Border>
+                        </VerticalStackLayout>
+
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Приоритет" />
+                            <FlexLayout Direction="Row" Wrap="Wrap">
+                                <Button
+                                    Margin="0,0,8,8"
+                                    Command="{Binding SelectPriorityCommand}"
+                                    CommandParameter="Low"
+                                    Style="{StaticResource EduFilterButton}"
+                                    Text="Низкий">
+                                    <Button.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding SelectedPriority}"
+                                            TargetType="Button"
+                                            Value="Low">
+                                            <Setter Property="BackgroundColor" Value="#27AE60" />
+                                            <Setter Property="TextColor" Value="White" />
+                                            <Setter Property="BorderColor" Value="#2ECC71" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button
+                                    Margin="0,0,8,8"
+                                    Command="{Binding SelectPriorityCommand}"
+                                    CommandParameter="Medium"
+                                    Style="{StaticResource EduFilterButton}"
+                                    Text="Средний">
+                                    <Button.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding SelectedPriority}"
+                                            TargetType="Button"
+                                            Value="Medium">
+                                            <Setter Property="BackgroundColor" Value="#2980B9" />
+                                            <Setter Property="TextColor" Value="White" />
+                                            <Setter Property="BorderColor" Value="#3498DB" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button
+                                    Margin="0,0,8,8"
+                                    Command="{Binding SelectPriorityCommand}"
+                                    CommandParameter="High"
+                                    Style="{StaticResource EduFilterButton}"
+                                    Text="Высокий">
+                                    <Button.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding SelectedPriority}"
+                                            TargetType="Button"
+                                            Value="High">
+                                            <Setter Property="BackgroundColor" Value="#E67E22" />
+                                            <Setter Property="TextColor" Value="White" />
+                                            <Setter Property="BorderColor" Value="#F39C12" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button
+                                    Margin="0,0,8,8"
+                                    Command="{Binding SelectPriorityCommand}"
+                                    CommandParameter="Urgent"
+                                    Style="{StaticResource EduFilterButton}"
+                                    Text="Критичный">
+                                    <Button.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding SelectedPriority}"
+                                            TargetType="Button"
+                                            Value="Urgent">
+                                            <Setter Property="BackgroundColor" Value="#C0392B" />
+                                            <Setter Property="TextColor" Value="White" />
+                                            <Setter Property="BorderColor" Value="#E74C3C" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </FlexLayout>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="12">
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="14"
+                                    Text="Повторяемость"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                                <Switch
+                                    IsToggled="{Binding IsRecurring}"
+                                    OffColor="Gray"
+                                    OnColor="#5B5FEF"
+                                    ThumbColor="White"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    Text="{Binding RecurringHint}"
+                                    TextColor="#99FFFFFF"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                            <Border
+                                Padding="16"
+                                BackgroundColor="#0D1525"
+                                IsVisible="{Binding IsRecurring}"
+                                Stroke="#5B5FEF"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="14" />
+                                </Border.StrokeShape>
+                                <VerticalStackLayout Spacing="16">
+
+                                    <VerticalStackLayout Spacing="8">
+                                        <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Тип повторения" />
+                                        <FlexLayout Direction="Row" Wrap="Wrap">
+                                            <Button
+                                                Margin="0,0,8,8"
+                                                Command="{Binding SelectRuleTypeCommand}"
+                                                CommandParameter="daily"
+                                                Style="{StaticResource EduFilterButton}"
+                                                Text="Ежедневно">
+                                                <Button.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding SelectedRuleType}"
+                                                        TargetType="Button"
+                                                        Value="daily">
+                                                        <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                                        <Setter Property="TextColor" Value="White" />
+                                                        <Setter Property="BorderColor" Value="#7B7FFF" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                            <Button
+                                                Margin="0,0,8,8"
+                                                Command="{Binding SelectRuleTypeCommand}"
+                                                CommandParameter="weekly"
+                                                Style="{StaticResource EduFilterButton}"
+                                                Text="Еженедельно">
+                                                <Button.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding SelectedRuleType}"
+                                                        TargetType="Button"
+                                                        Value="weekly">
+                                                        <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                                        <Setter Property="TextColor" Value="White" />
+                                                        <Setter Property="BorderColor" Value="#7B7FFF" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                            <Button
+                                                Margin="0,0,8,8"
+                                                Command="{Binding SelectRuleTypeCommand}"
+                                                CommandParameter="monthly"
+                                                Style="{StaticResource EduFilterButton}"
+                                                Text="Ежемесячно">
+                                                <Button.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding SelectedRuleType}"
+                                                        TargetType="Button"
+                                                        Value="monthly">
+                                                        <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                                        <Setter Property="TextColor" Value="White" />
+                                                        <Setter Property="BorderColor" Value="#7B7FFF" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                        </FlexLayout>
+                                    </VerticalStackLayout>
+
+                                    <Grid ColumnDefinitions="*, Auto" ColumnSpacing="12">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="{Binding IntervalLabel}" />
+                                            <Border
+                                                Padding="12,8"
+                                                BackgroundColor="#14182E"
+                                                Stroke="#495061"
+                                                StrokeThickness="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="10" />
+                                                </Border.StrokeShape>
+                                                <Stepper
+                                                    Maximum="30"
+                                                    Minimum="1"
+                                                    Value="{Binding IntervalN}" />
+                                            </Border>
+                                        </VerticalStackLayout>
+                                        <Label
+                                            Grid.Column="1"
+                                            Margin="0,0,0,10"
+                                            FontFamily="Comfortaa"
+                                            FontSize="22"
+                                            Text="{Binding IntervalN}"
+                                            TextColor="White"
+                                            VerticalOptions="End" />
+                                    </Grid>
+
+                                    <VerticalStackLayout IsVisible="{Binding IsWeekly}" Spacing="8">
+                                        <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Дни недели" />
+                                        <HorizontalStackLayout Spacing="8">
+                                            <Border
+                                                Padding="8,6"
+                                                BackgroundColor="{Binding MonColor}"
+                                                Stroke="{Binding MonBorder}"
+                                                StrokeThickness="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8" />
+                                                </Border.StrokeShape>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="1" />
+                                                </Border.GestureRecognizers>
+                                                <Label
+                                                    FontFamily="Comfortaa"
+                                                    FontSize="12"
+                                                    HorizontalOptions="Center"
+                                                    Text="Пн"
+                                                    TextColor="White" />
+                                            </Border>
+                                            <Border
+                                                Padding="8,6"
+                                                BackgroundColor="{Binding TueColor}"
+                                                Stroke="{Binding TueBorder}"
+                                                StrokeThickness="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8" />
+                                                </Border.StrokeShape>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="2" />
+                                                </Border.GestureRecognizers>
+                                                <Label
+                                                    FontFamily="Comfortaa"
+                                                    FontSize="12"
+                                                    HorizontalOptions="Center"
+                                                    Text="Вт"
+                                                    TextColor="White" />
+                                            </Border>
+                                            <Border
+                                                Padding="8,6"
+                                                BackgroundColor="{Binding WedColor}"
+                                                Stroke="{Binding WedBorder}"
+                                                StrokeThickness="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8" />
+                                                </Border.StrokeShape>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="4" />
+                                                </Border.GestureRecognizers>
+                                                <Label
+                                                    FontFamily="Comfortaa"
+                                                    FontSize="12"
+                                                    HorizontalOptions="Center"
+                                                    Text="Ср"
+                                                    TextColor="White" />
+                                            </Border>
+                                            <Border
+                                                Padding="8,6"
+                                                BackgroundColor="{Binding ThuColor}"
+                                                Stroke="{Binding ThuBorder}"
+                                                StrokeThickness="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8" />
+                                                </Border.StrokeShape>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="8" />
+                                                </Border.GestureRecognizers>
+                                                <Label
+                                                    FontFamily="Comfortaa"
+                                                    FontSize="12"
+                                                    HorizontalOptions="Center"
+                                                    Text="Чт"
+                                                    TextColor="White" />
+                                            </Border>
+                                            <Border
+                                                Padding="8,6"
+                                                BackgroundColor="{Binding FriColor}"
+                                                Stroke="{Binding FriBorder}"
+                                                StrokeThickness="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8" />
+                                                </Border.StrokeShape>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="16" />
+                                                </Border.GestureRecognizers>
+                                                <Label
+                                                    FontFamily="Comfortaa"
+                                                    FontSize="12"
+                                                    HorizontalOptions="Center"
+                                                    Text="Пт"
+                                                    TextColor="White" />
+                                            </Border>
+                                            <Border
+                                                Padding="8,6"
+                                                BackgroundColor="{Binding SatColor}"
+                                                Stroke="{Binding SatBorder}"
+                                                StrokeThickness="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8" />
+                                                </Border.StrokeShape>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="32" />
+                                                </Border.GestureRecognizers>
+                                                <Label
+                                                    FontFamily="Comfortaa"
+                                                    FontSize="12"
+                                                    HorizontalOptions="Center"
+                                                    Text="Сб"
+                                                    TextColor="#6699FF" />
+                                            </Border>
+                                            <Border
+                                                Padding="8,6"
+                                                BackgroundColor="{Binding SunColor}"
+                                                Stroke="{Binding SunBorder}"
+                                                StrokeThickness="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8" />
+                                                </Border.StrokeShape>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ToggleDayCommand}" CommandParameter="64" />
+                                                </Border.GestureRecognizers>
+                                                <Label
+                                                    FontFamily="Comfortaa"
+                                                    FontSize="12"
+                                                    HorizontalOptions="Center"
+                                                    Text="Вс"
+                                                    TextColor="#FF6B6B" />
+                                            </Border>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <Grid
+                                        ColumnDefinitions="*, Auto"
+                                        ColumnSpacing="12"
+                                        IsVisible="{Binding IsMonthly}">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                                            <Label Style="{StaticResource EduCardSubtitleLabel}" Text="День месяца" />
+                                            <Border
+                                                Padding="12,8"
+                                                BackgroundColor="#14182E"
+                                                Stroke="#495061"
+                                                StrokeThickness="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="10" />
+                                                </Border.StrokeShape>
+                                                <Stepper
+                                                    Maximum="31"
+                                                    Minimum="1"
+                                                    Value="{Binding DayOfMonth}" />
+                                            </Border>
+                                        </VerticalStackLayout>
+                                        <Label
+                                            Grid.Column="1"
+                                            Margin="0,0,0,10"
+                                            FontFamily="Comfortaa"
+                                            FontSize="22"
+                                            Text="{Binding DayOfMonth}"
+                                            TextColor="White"
+                                            VerticalOptions="End" />
+                                    </Grid>
+
+                                    <VerticalStackLayout Spacing="6">
+                                        <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Повторять до (необязательно)" />
+                                        <Border
+                                            Padding="12,10"
+                                            BackgroundColor="#14182E"
+                                            Stroke="#495061"
+                                            StrokeThickness="1">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="12" />
+                                            </Border.StrokeShape>
+                                            <DatePicker
+                                                Date="{Binding RecurrenceEndDate}"
+                                                FontFamily="Comfortaa"
+                                                FontSize="14"
+                                                Format="d MMMM yyyy"
+                                                MinimumDate="{Binding Today}"
+                                                TextColor="White" />
+                                        </Border>
+                                    </VerticalStackLayout>
+
+                                    <Border
+                                        Padding="12,10"
+                                        BackgroundColor="#1A1A3E"
+                                        Stroke="#5B5FEF"
+                                        StrokeThickness="0.5">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontFamily="Comfortaa"
+                                            FontSize="13"
+                                            Text="{Binding RecurrenceSummary}"
+                                            TextColor="#AAAAFF" />
+                                    </Border>
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <Button
+                            Command="{Binding SaveCommand}"
+                            HeightRequest="48"
+                            HorizontalOptions="Fill"
+                            IsVisible="{OnIdiom Phone=True,
+                                                Default=False}"
+                            Style="{StaticResource EduPrimaryButton}"
+                            Text="Сохранить задачу" />
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

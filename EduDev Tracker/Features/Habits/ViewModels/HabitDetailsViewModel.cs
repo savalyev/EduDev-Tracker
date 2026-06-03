@@ -13,7 +13,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
     public partial class HabitDetailsViewModel: BaseViewModel
     {
         private readonly IHabitService _habitService;
-        private readonly IHabitNotificationService _habitNotificationService;
+        private readonly INotificationService _habitNotificationService;
         private Habit _habit;
 
         [ObservableProperty] private string titleHabit;
@@ -40,7 +40,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [ObservableProperty] private string editTitle;
         [ObservableProperty] private string editDescription;
 
-        public HabitDetailsViewModel(IHabitService habitService, IHabitNotificationService habitNotificationService)
+        public HabitDetailsViewModel(IHabitService habitService, INotificationService habitNotificationService)
         {
             _habitService = habitService;
             _habitNotificationService = habitNotificationService;

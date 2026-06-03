@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using EduDev_Tracker.Data.Models;
 using Plugin.LocalNotification;
 using Plugin.LocalNotification.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace EduDev_Tracker.Services.Notification
 {
-    public class HabitNotificationService: IHabitNotificationService
+    public class NotificationService: INotificationService
     {
         public async Task RequestPermissionAsync()
         {

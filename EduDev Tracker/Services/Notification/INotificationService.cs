@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EduDev_Tracker.Services.Notification
 {
-    public interface IHabitNotificationService
+    public interface INotificationService
     {
         Task ScheduleHabitNotificationAsync(Habit habit, HabitSchedule schedule);
         Task CancelHabitNotificationAsync(int habitId);

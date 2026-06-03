@@ -11,7 +11,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
     public partial class ArchivedHabitsViewModel : BaseViewModel
     {
         private readonly IHabitService _habitService;
-        private readonly IHabitNotificationService _habitNotificationService;
+        private readonly INotificationService _habitNotificationService;
 
         public ObservableCollection<ArchivedHabitItem> ArchivedHabits { get; } = new();
 
@@ -21,7 +21,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
         public bool IsNotEmpty => !IsEmpty;
 
-        public ArchivedHabitsViewModel(IHabitService habitService, IHabitNotificationService habitNotificationService)
+        public ArchivedHabitsViewModel(IHabitService habitService, INotificationService habitNotificationService)
         {
             _habitService = habitService;
             _habitNotificationService = habitNotificationService;

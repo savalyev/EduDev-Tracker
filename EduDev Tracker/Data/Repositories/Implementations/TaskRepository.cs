@@ -11,12 +11,29 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
     {
         public TaskRepository(DatabaseService db) : base(db) { }
 
-        public Task<List<TaskItem>> GetActiveAsync(int profileId)
+        public async Task<List<TaskItem>> GetActiveAsync(int profileId)
         {
-            return Connection.Table<TaskItem>()
-                .Where(h => h.ProfileId == profileId && !h.IsArchived)
-                .OrderBy(h => h.DueAt)
-                .ToListAsync();
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("[GetActiveAsync] Start");
+
+                var result = await Connection.Table<TaskItem>()
+                    .Where(h => h.ProfileId == profileId && !h.IsArchived)
+                    .OrderBy(h => h.DueAt)
+                    .ToListAsync();
+
+                System.Diagnostics.Debug.WriteLine($"[GetActiveAsync] Got {result.Count} items");
+
+                foreach (var t in result)
+                    System.Diagnostics.Debug.WriteLine($"[GetActiveAsync] Task Id={t.Id} Title={t.Title} DueAt={t.DueAt}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[GetActiveAsync] CRASH: {ex}");
+                throw;
+            }
         }
 
         public Task<List<TaskItem>> GetByDateAsync(int profileId, DateTime date)
@@ -33,21 +50,6 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
         public Task<TaskItem> GetByIdWithChildrenAsync(int id)
         {
             return Connection.GetWithChildrenAsync<TaskItem>(id, recursive: true);
-        }
-
-        public async Task SaveWithChildrenAsync(TaskItem task)
-        {
-            task.UpdatedAt = DateTime.UtcNow;
-
-            if (task.Id == 0)
-            {
-                task.CreatedAt = DateTime.UtcNow;
-                await Connection.InsertWithChildrenAsync(task, recursive: true);
-            }
-            else
-            {
-                await Connection.UpdateWithChildrenAsync(task);
-            }
         }
 
         public async Task CompleteAsync(int id)
@@ -74,6 +76,11 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
         public Task<TaskRecurrence> GetRecurrenceAsync(int id)
         {
             return Connection.Table<TaskRecurrence>().FirstOrDefaultAsync(h => h.TaskId == id);
+        }
+
+        public Task SaveRecurrenceAsync(TaskRecurrence recurrence)
+        {
+            return Connection.InsertOrReplaceAsync(recurrence);
         }
     }
 }

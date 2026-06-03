@@ -6,11 +6,16 @@ using System.Text;
 
 namespace EduDev_Tracker.Features.Tasks.ViewModels
 {
-    public partial class TaskGroup: ObservableObject
+    public class TaskGroup : ObservableCollection<TaskItemViewModel>
     {
-        [ObservableProperty] private string groupTitle = string.Empty;
-        [ObservableProperty] private string groupColor = "#AAAAAA";
+        public string GroupTitle { get; }
+        public string GroupColor { get; }
 
-        public ObservableCollection<TaskItemViewModel> Items { get; } = new();
+        public TaskGroup(string title, string color, IEnumerable<TaskItemViewModel> items)
+            : base(items)
+        {
+            GroupTitle = title;
+            GroupColor = color;
+        }
     }
 }

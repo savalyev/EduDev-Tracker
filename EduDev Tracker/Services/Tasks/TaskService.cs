@@ -15,14 +15,15 @@ namespace EduDev_Tracker.Services.Tasks
             _repo = repo;
         }
 
+        public Task SaveAsync(TaskItem task)
+            => _repo.SaveAsync(task);
+
         public Task<List<TaskItem>> GetActiveAsync(int profileId)
             => _repo.GetActiveAsync(profileId);
         public Task<List<TaskItem>> GetByDateAsync(int profileId, DateTime date) 
             => _repo.GetByDateAsync(profileId, date);
         public Task<TaskItem> GetByIdWithChildrenAsync(int id)
             => _repo.GetByIdWithChildrenAsync(id);
-        public Task SaveWithChildrenAsync(TaskItem task) 
-            => _repo.SaveWithChildrenAsync(task);
         public Task CompleteAsync(int id)
             => _repo.CompleteAsync(id);
         public Task ArchiveAsync(int id, bool archived)
@@ -31,5 +32,7 @@ namespace EduDev_Tracker.Services.Tasks
             => _repo.DeleteAsync(id);
         public Task<TaskRecurrence> GetRecurrenceAsync(int id)
             => _repo.GetRecurrenceAsync(id);
+        public Task SaveRecurrenceAsync(TaskRecurrence recurrence)
+            => _repo.SaveRecurrenceAsync(recurrence);
     }
 }

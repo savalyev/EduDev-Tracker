@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Data.Models;
+using EduDev_Tracker.Features.Tasks.Views;
+using EduDev_Tracker.Services.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +14,17 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 {
     public partial class TasksViewModel: BaseViewModel
     {
+
+        private readonly IServiceProvider _services;
+        private readonly ITaskService _taskService;
+
+        public TasksViewModel(ITaskService taskService, IServiceProvider provider)
+        {
+            _taskService = taskService;
+            _services = provider;
+        }
+
+
         private List<TaskItem> _allTasks = new();
 
         [ObservableProperty]
@@ -92,11 +105,22 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         private void AddGroup(string title, string color, List<TaskItem> items)
         {
-            if (!items.Any()) return;
-            var group = new TaskGroup { GroupTitle = title, GroupColor = color };
-            foreach (var t in items)
-                group.Items.Add(TaskItemViewModel.FromModel(t));
-            GroupedTasks.Add(group);
+            System.Diagnostics.Debug.WriteLine($"[AddGroup] '{title}' items={items?.Count}");
+
+            if (items == null || !items.Any()) return;
+
+            var vmItems = items
+                .Where(t => t != null)
+                .Select(t =>
+                {
+                    System.Diagnostics.Debug.WriteLine($"[AddGroup] FromModel TaskId={t.Id}");
+                    return TaskItemViewModel.FromModel(t);
+                })
+                .ToList();
+
+            System.Diagnostics.Debug.WriteLine($"[AddGroup] Adding group with {vmItems.Count} vmItems");
+            GroupedTasks.Add(new TaskGroup(title, color, vmItems));
+            System.Diagnostics.Debug.WriteLine($"[AddGroup] '{title}' added OK");
         }
 
         public ObservableCollection<TaskItemViewModel> TodoTasks { get; } = new();
@@ -280,8 +304,8 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [RelayCommand]
         private async Task OpenAddTask()
         {
-            // TODO: await Shell.Current.GoToAsync("addtask");
-            await Task.CompletedTask;
+            var page = _services.GetRequiredService<AddTaskPage>();
+            await Shell.Current.CurrentPage.Navigation.PushModalAsync(page);
         }
 
         [RelayCommand]
@@ -291,8 +315,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             IsBusy = true;
             try
             {
-                // TODO: _allTasks = await _taskRepository.GetAllAsync(profileId);
-                _allTasks = new List<TaskItem>(); // заглушка
+                _allTasks = await _taskService.GetActiveAsync(0);
                 ApplyFilters();
             }
             finally

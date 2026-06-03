@@ -10,10 +10,11 @@ namespace EduDev_Tracker.Services.Tasks
         public Task<List<TaskItem>> GetActiveAsync(int profileId);
         public Task<List<TaskItem>> GetByDateAsync(int profileId, DateTime date);
         public Task<TaskItem> GetByIdWithChildrenAsync(int id);
-        public Task SaveWithChildrenAsync(TaskItem task);
         public Task CompleteAsync(int id);
         public Task ArchiveAsync(int id, bool archived = true);
         public Task DeleteAsync(int id);
         public Task<TaskRecurrence> GetRecurrenceAsync(int id);
+        public Task SaveAsync(TaskItem task);
+        public Task SaveRecurrenceAsync(TaskRecurrence recurrence);
     }
 }

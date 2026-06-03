@@ -23,24 +23,30 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         public static TaskItemViewModel FromModel(TaskItem task)
         {
-            var isOverdue = task.DueAt.HasValue && task.DueAt.Value < DateTime.Now && task.Status != Data.Models.TaskStatus.Done;
-            var isToday = task.DueAt.HasValue && task.DueAt.Value.Date == DateTime.Today;
+            try {
+                var isOverdue = task.DueAt.HasValue && task.DueAt.Value < DateTime.Now && task.Status != Data.Models.TaskStatus.Done;
+                var isToday = task.DueAt.HasValue && task.DueAt.Value.Date == DateTime.Today;
 
-            return new TaskItemViewModel
+                return new TaskItemViewModel
+                {
+                    TaskId = task.Id,
+                    Title = task.Title,
+                    CategoryName = task.Category ?? "Без категории",
+                    PriorityLabel = GetPriorityLabel(task.Priority),
+                    PriorityBgColor = GetPriorityBg(task.Priority),
+                    PriorityBorderColor = GetPriorityBorder(task.Priority),
+                    DeadlineText = FormatDeadline(task.DueAt),
+                    DeadlineBgColor = isOverdue ? "#2A1010" : "#182333",
+                    DeadlineTextColor = isOverdue ? "#FF6B6B" : isToday ? "#FFDD44" : "#99FFFFFF",
+                    IsCompleted = task.Status == Data.Models.TaskStatus.Done,
+                    StatusKey = task.Status.ToString()
+                };
+            } catch(Exception ex)
             {
-                TaskId = task.Id,
-                Title = task.Title,
-                CategoryName = task.Category ?? string.Empty,
-                PriorityLabel = GetPriorityLabel(task.Priority),
-                PriorityBgColor = GetPriorityBg(task.Priority),
-                PriorityBorderColor = GetPriorityBorder(task.Priority),
-                DeadlineText = FormatDeadline(task.DueAt),
-                DeadlineBgColor = isOverdue ? "#2A1010" : "#182333",
-                DeadlineTextColor = isOverdue ? "#FF6B6B" : isToday ? "#FFDD44" : "#99FFFFFF",
-                IsCompleted = task.Status == Data.Models.TaskStatus.Done,
-                StatusKey = task.Status.ToString()
-            };
-        }
+                System.Diagnostics.Debug.WriteLine($"[FromModel ERROR] TaskId={task.Id} | {ex.Message}");
+                throw;
+            }
+            }
         private static string GetPriorityLabel(TaskPriority p) => p switch
         {
             TaskPriority.Urgent => "Критичный",

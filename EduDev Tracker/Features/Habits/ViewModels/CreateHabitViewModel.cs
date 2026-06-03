@@ -18,7 +18,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
     {
         private readonly INavigationService _navigation;
         private readonly IHabitService _habitService;
-        private readonly IHabitNotificationService _habitNotificationService;
+        private readonly INotificationService _habitNotificationService;
 
 
         [ObservableProperty]
@@ -76,7 +76,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         };
 
         public CreateHabitViewModel(INavigationService navigation, IHabitService habitService,
-            IHabitNotificationService habitNotificationService)
+            INotificationService habitNotificationService)
         {
             _navigation = navigation;
             _habitService = habitService;

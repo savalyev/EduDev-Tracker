@@ -6,10 +6,10 @@ namespace EduDev_Tracker.Features.Dashboard.Views;
 public partial class DashboardPage : ContentPage
 {
 
-    private readonly IHabitNotificationService _notificationService;
+    private readonly INotificationService _notificationService;
 
     const double WidthThreshold = 900;
-    public DashboardPage(DashboardViewModel vm, IHabitNotificationService notificationService)
+    public DashboardPage(DashboardViewModel vm, INotificationService notificationService)
     {
         InitializeComponent();
         BindingContext = vm;

@@ -175,7 +175,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand]
         private async Task OpenDelailsDayAsync(DateTime date)
         {
-            await Shell.Current.DisplayAlertAsync("Тестируем", date.ToString(), "Оке");
+           
         }
 
 
@@ -183,7 +183,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private async Task OpenAddHabitAsync()
         {
             var modal = _services.GetRequiredService<CreateHabitPage>();
-            await Shell.Current.CurrentPage.Navigation.PushModalAsync(modal);
+            await _navigation.PushModalAsync(modal);
         }
 
         [RelayCommand]
@@ -336,13 +336,12 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         }
 
         [RelayCommand]
-        private async Task OpenHabitDetailsAsync(int habitId)
+        private async Task OpenHabitDetailsAsync(int id)
         {
-            var page = _services.GetRequiredService<HabitDetailsPage>();
-            var vm = _services.GetRequiredService<HabitDetailsViewModel>();
-            await vm.InitializeAsync(habitId);
-            page.BindingContext = vm;
-            await Shell.Current.CurrentPage.Navigation.PushModalAsync(page);
+            await _navigation.GoToAsync("HabitDetailtPage", new()
+            {
+                {"habitId", id }
+            });
         }
 
         [RelayCommand]
@@ -350,8 +349,8 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         {
             try
             {
-                var page = _services.GetRequiredService<ArchivedHabitsPage>();
-                await Shell.Current.CurrentPage.Navigation.PushModalAsync(page);
+                var modal = _services.GetRequiredService<ArchivedHabitsPage>();
+                await _navigation.PushModalAsync(modal);
             }
             catch (Exception ex)
             {

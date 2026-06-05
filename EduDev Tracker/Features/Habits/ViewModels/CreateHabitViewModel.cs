@@ -147,7 +147,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                     description: Description
                     );
                 await _habitNotificationService.ScheduleHabitNotificationAsync(habit, Schedule);
-                await _navigation.GoBackModalAsync();
+                await _navigation.PopModalAsync();
             }
             finally
             {
@@ -159,7 +159,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand]
         private async Task CancelAsync()
         {
-            await _navigation.GoBackModalAsync();
+            await _navigation.PopModalAsync();
         }
 
         [RelayCommand]

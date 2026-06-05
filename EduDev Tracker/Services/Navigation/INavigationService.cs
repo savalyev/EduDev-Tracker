@@ -6,9 +6,11 @@ namespace EduDev_Tracker.Services.Navigation
 {
     public interface INavigationService
     {
-        Task NavigateAsync(Page page);
-        Task NavigateModalAsync(Page page);
+        Task GoToAsync(string route);
+        Task GoToAsync(string route, Dictionary<string, object> parameters);
         Task GoBackAsync();
-        Task GoBackModalAsync();
+        Task PushModalAsync(Page page);
+        Task PopModalAsync();
+        Task SwitchToModuleAsync(string flyoutRoute);
     }
 }

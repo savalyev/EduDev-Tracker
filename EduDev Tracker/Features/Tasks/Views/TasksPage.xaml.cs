@@ -7,9 +7,12 @@ public partial class TasksPage : ContentPage
     private readonly TasksViewModel _vm;
 	public TasksPage(TasksViewModel vm)
 	{
-		InitializeComponent();
+        System.Diagnostics.Debug.WriteLine("[TasksPage] Constructor START");
+        InitializeComponent();
+        System.Diagnostics.Debug.WriteLine("[TasksPage] InitializeComponent OK");
         BindingContext = vm;
         _vm = vm;
+        System.Diagnostics.Debug.WriteLine("[TasksPage] BindingContext OK");
     }
 
     private void OnMenuTapped(object? sender, EventArgs e)

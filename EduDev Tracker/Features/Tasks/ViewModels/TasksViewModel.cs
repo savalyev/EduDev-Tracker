@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Features.Tasks.Views;
+using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Tasks;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,21 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
     public partial class TasksViewModel: BaseViewModel
     {
 
+        private readonly INavigationService _navigation;
         private readonly IServiceProvider _services;
         private readonly ITaskService _taskService;
+        private readonly RecurrenceProcessorService _recurrenceProcessor;
+        private int _profileId = 0;
 
-        public TasksViewModel(ITaskService taskService, IServiceProvider provider)
+        public TasksViewModel(ITaskService taskService,
+            INavigationService navigation,
+            IServiceProvider provider,
+            RecurrenceProcessorService recurrenceProcessor)
         {
             _taskService = taskService;
             _services = provider;
+            _navigation = navigation;
+            _recurrenceProcessor = recurrenceProcessor;
         }
 
 
@@ -272,10 +281,14 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         }
 
         [RelayCommand]
-        private async Task OpenTaskDetails(int taskId)
+        private async Task OpenTaskDetails(int id)
         {
-            // TODO: await Shell.Current.GoToAsync($"taskdetails?id={taskId}");
-            await Task.CompletedTask;
+            var page = _services.GetRequiredService<TaskDetailsPage>();
+
+            if (page.BindingContext is TaskDetailsViewModel vm)
+                await vm.InitializeAsync(new Dictionary<string, object> { { "taskId", id } });
+
+            await _navigation.PushModalAsync(page);
         }
 
         [RelayCommand]
@@ -304,8 +317,8 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [RelayCommand]
         private async Task OpenAddTask()
         {
-            var page = _services.GetRequiredService<AddTaskPage>();
-            await Shell.Current.CurrentPage.Navigation.PushModalAsync(page);
+            var modal = _services.GetRequiredService<AddTaskPage>();
+            await _navigation.PushModalAsync(modal);
         }
 
         [RelayCommand]
@@ -315,8 +328,13 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             IsBusy = true;
             try
             {
+                await _recurrenceProcessor.ProcessAsync(_profileId);
                 _allTasks = await _taskService.GetActiveAsync(0);
                 ApplyFilters();
+            } catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[TasksViewModel.Load] CRASH: {ex}");
+                await Application.Current.MainPage.DisplayAlertAsync("Ошибка загрузки", ex.Message, "OK");
             }
             finally
             {

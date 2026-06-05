@@ -86,6 +86,7 @@ namespace EduDev_Tracker
             services.AddSingleton<ITaskService, TaskService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<Services.Notification.INotificationService, NotificationService>();
+            services.AddSingleton<RecurrenceProcessorService>();
 
             services.AddTransient<CreateHabitViewModel>();
             services.AddTransient<CreateHabitPage>();
@@ -107,6 +108,9 @@ namespace EduDev_Tracker
 
             services.AddTransient<AddTaskPage>();
             services.AddTransient<AddTaskViewModel>();
+
+            services.AddTransient<TaskDetailsPage>();
+            services.AddTransient<TaskDetailsViewModel>();
         }
     }
 }

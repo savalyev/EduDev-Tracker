@@ -103,8 +103,17 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
                 if (Recurrence.IsRecurring)
                 {
-                    var rec = Recurrence.BuildRecurrence(task.Id);
-                    await _taskService.SaveRecurrenceAsync(rec);
+                    try
+                    {
+                        var rec = Recurrence.BuildRecurrence(task.Id);
+                        rec.NextDue = RecurrenceCalculator.CalcFirstDue(rec, DueDate);
+                        await _taskService.SaveRecurrenceAsync(rec);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[CalcFirstDue] {ex}");
+                        throw;
+                    }
                 }
                 await CloseAsync();
             }
@@ -140,7 +149,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         private async Task CloseAsync()
         {
-            await _navigation.GoBackModalAsync();
+            await _navigation.PopModalAsync();
         }
 
     }

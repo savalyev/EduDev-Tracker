@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Services.Habits;
+using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Notification;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private readonly IHabitService _habitService;
         private readonly INotificationService _habitNotificationService;
         private Habit _habit;
+        private readonly INavigationService _navigation;
 
         [ObservableProperty] private string titleHabit;
         [ObservableProperty] private string description;
@@ -40,10 +42,13 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [ObservableProperty] private string editTitle;
         [ObservableProperty] private string editDescription;
 
-        public HabitDetailsViewModel(IHabitService habitService, INotificationService habitNotificationService)
+        public HabitDetailsViewModel(IHabitService habitService,
+            INotificationService habitNotificationService,
+            INavigationService navigation)
         {
             _habitService = habitService;
             _habitNotificationService = habitNotificationService;
+            _navigation = navigation;
         }
 
         public async Task InitializeAsync(int habitId)
@@ -166,7 +171,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand]
         private async Task CloseAsync()
         {
-            await Shell.Current.CurrentPage.Navigation.PopModalAsync();
+            await _navigation.PopModalAsync();
         }
 
     }

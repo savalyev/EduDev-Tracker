@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Services.Habits;
+using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Notification;
 using System.Collections.ObjectModel;
 
@@ -12,6 +13,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
     {
         private readonly IHabitService _habitService;
         private readonly INotificationService _habitNotificationService;
+        private readonly INavigationService _navigation;
 
         public ObservableCollection<ArchivedHabitItem> ArchivedHabits { get; } = new();
 
@@ -21,10 +23,13 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
         public bool IsNotEmpty => !IsEmpty;
 
-        public ArchivedHabitsViewModel(IHabitService habitService, INotificationService habitNotificationService)
+        public ArchivedHabitsViewModel(IHabitService habitService,
+            INotificationService habitNotificationService,
+            INavigationService navigation)
         {
             _habitService = habitService;
             _habitNotificationService = habitNotificationService;
+            _navigation = navigation;
         }
 
         [RelayCommand]
@@ -83,7 +88,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
         [RelayCommand]
         private async Task CloseAsync()
-            => await Shell.Current.CurrentPage.Navigation.PopModalAsync();
+            => await _navigation.PopModalAsync();
     }
 
     public class ArchivedHabitItem

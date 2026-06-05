@@ -13,7 +13,17 @@ namespace EduDev_Tracker
             InitializeComponent();
             _db = db;
             MainPage = new AppShell();
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+        System.Diagnostics.Debug.WriteLine($"[UNHANDLED] {e.ExceptionObject}");
+
             _ = InitializeDatabaseAsync();
+
+            TaskScheduler.UnobservedTaskException += (s, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"[TASK UNHANDLED] {e.Exception}");
+                e.SetObserved();
+            };
         }
 
         private async Task InitializeDatabaseAsync()

@@ -162,10 +162,7 @@
                                     IsVisible="{Binding IsNotEditing}"
                                     Text="{Binding DeadlineText}"
                                     TextColor="{Binding DeadlineTextColor}" />
-                                <Grid
-                                    ColumnDefinitions="*, *"
-                                    ColumnSpacing="10"
-                                    IsVisible="{Binding IsEditing}">
+                                <VerticalStackLayout IsVisible="{Binding IsEditing}" Spacing="10">
                                     <Border
                                         Grid.Column="0"
                                         Padding="12,10"
@@ -180,6 +177,7 @@
                                             FontFamily="Comfortaa"
                                             FontSize="14"
                                             Format="d MMM yyyy"
+                                            HorizontalOptions="Center"
                                             TextColor="White" />
                                     </Border>
                                     <Border
@@ -195,10 +193,11 @@
                                             FontFamily="Comfortaa"
                                             FontSize="14"
                                             Format="HH:mm"
+                                            HorizontalOptions="Center"
                                             TextColor="White"
                                             Time="{Binding DueTime}" />
                                     </Border>
-                                </Grid>
+                                </VerticalStackLayout>
                             </VerticalStackLayout>
 
                             <!--  Категория  -->

@@ -187,7 +187,6 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         private async Task Delete()
         {
             if (_task is null) return;
-            // TODO: показать подтверждение
             bool confirmation = await Application.Current.MainPage.DisplayAlertAsync("Подтвердите свои действия",
                 "Вы уверены в удалении задачи?", "Да", "Нет");
             if (confirmation)

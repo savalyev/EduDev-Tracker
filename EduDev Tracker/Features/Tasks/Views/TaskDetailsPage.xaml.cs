@@ -21,7 +21,7 @@ public partial class TaskDetailsPage : ContentPage
         this.Opacity = 0;
         this.Scale = 0.95;
         await Task.WhenAll(
-            this.FadeTo(1, 250, Easing.CubicOut),
+            this. FadeTo(1, 250, Easing.CubicOut),
             this.ScaleTo(1, 250, Easing.CubicOut)
             );
     }

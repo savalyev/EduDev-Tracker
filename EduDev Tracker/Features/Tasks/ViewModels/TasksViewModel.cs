@@ -8,6 +8,7 @@ using EduDev_Tracker.Services.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
 using TaskStatus = EduDev_Tracker.Data.Models.TaskStatus;
 
@@ -132,39 +133,68 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             System.Diagnostics.Debug.WriteLine($"[AddGroup] '{title}' added OK");
         }
 
-        public ObservableCollection<TaskItemViewModel> TodoTasks { get; } = new();
+        public ObservableCollection<TaskItemViewModel> OpenTasks { get; } = new();
         public ObservableCollection<TaskItemViewModel> InProgressTasks { get; } = new();
-        public ObservableCollection<TaskItemViewModel> ReviewTasks { get; } = new();
         public ObservableCollection<TaskItemViewModel> DoneTasks { get; } = new();
+        public ObservableCollection<TaskItemViewModel> CancelledTasks { get; } = new();
 
-        [ObservableProperty] private string todoCount = "0";
+        [ObservableProperty] private string openCount = "0";
         [ObservableProperty] private string inProgressCount = "0";
-        [ObservableProperty] private string reviewCount = "0";
         [ObservableProperty] private string doneCount = "0";
+        [ObservableProperty] private string cancelledCount = "0";
 
         private void RebuildKanban(IEnumerable<TaskItem> tasks)
         {
-            TodoTasks.Clear();
+            OpenTasks.Clear();
             InProgressTasks.Clear();
-            ReviewTasks.Clear();
             DoneTasks.Clear();
+            CancelledTasks.Clear();
 
             foreach (var task in tasks)
             {
                 var vm = TaskItemViewModel.FromModel(task);
                 switch (task.Status)
                 {
-                    case TaskStatus.Open: TodoTasks.Add(vm); break;
+                    case TaskStatus.Open: OpenTasks.Add(vm); break;
                     case TaskStatus.InProgress: InProgressTasks.Add(vm); break;
                     case TaskStatus.Done: DoneTasks.Add(vm); break;
-                    case TaskStatus.Cancelled: DoneTasks.Add(vm); break;
+                    case TaskStatus.Cancelled: CancelledTasks.Add(vm); break;
                 }
             }
 
-            TodoCount = TodoTasks.Count.ToString();
+            OpenCount = OpenTasks.Count.ToString();
             InProgressCount = InProgressTasks.Count.ToString();
-            ReviewCount = ReviewTasks.Count.ToString();
             DoneCount = DoneTasks.Count.ToString();
+            CancelledCount = CancelledTasks.Count.ToString();
+        }
+
+        [ObservableProperty]
+        private DateTime? selectedCalendarDate;
+
+        [ObservableProperty]
+        private ObservableCollection<TaskItemViewModel> tasksForSelectedDay = new();
+
+        [ObservableProperty]
+        private string selectedDayTitle = string.Empty;
+
+        [RelayCommand]
+        private void SelectCalendarDay(DateTime date)
+        {
+            foreach (var day in CalendarDays)
+                day.IsSelected = false;
+
+            var selected = CalendarDays.FirstOrDefault(d => d.Date.Date == date.Date);
+            if (selected != null) selected.IsSelected = true;
+
+            SelectedCalendarDate = date;
+            SelectedDayTitle = date.ToString("d MMMM yyyy", new CultureInfo("ru-RU"));
+
+            var filtered = _allTasks
+                .Where(t => t.DueAt.HasValue && t.DueAt.Value.Date == date.Date)
+                .Select(TaskItemViewModel.FromModel)
+                .ToList();
+
+            TasksForSelectedDay = new ObservableCollection<TaskItemViewModel>(filtered);
         }
 
         [ObservableProperty]
@@ -185,14 +215,6 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         {
             _currentMonth = _currentMonth.AddMonths(1);
             RefreshCalendar();
-        }
-
-        [RelayCommand]
-        private void SelectCalendarDay(DateTime date)
-        {
-            foreach (var day in CalendarDays)
-                day.IsSelected = day.Date == date;
-            // TODO: показать задачи на выбранный день (попап / нижний лист)
         }
 
         private void RefreshCalendar()
@@ -276,7 +298,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             task.CompletedAt = task.Status == TaskStatus.Done ? DateTime.UtcNow : null;
             task.UpdatedAt = DateTime.UtcNow;
 
-            // TODO: await _taskRepository.SaveAsync(task);
+            await _taskService.SaveAsync(task);
             ApplyFilters();
         }
 
@@ -294,23 +316,34 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [RelayCommand]
         private async Task EditTask(int taskId)
         {
-            // TODO: await Shell.Current.GoToAsync($"edittask?id={taskId}");
-            await Task.CompletedTask;
+            var page = _services.GetRequiredService<TaskDetailsPage>();
+
+            if (page.BindingContext is TaskDetailsViewModel vm)
+                await vm.InitializeAsync(new Dictionary<string, object> { { "taskId", taskId } });
+
+            await _navigation.PushModalAsync(page);
         }
 
         [RelayCommand]
         private async Task DeleteTask(int taskId)
         {
-            // TODO: показать подтверждение, удалить через репозиторий
-            _allTasks.RemoveAll(t => t.Id == taskId);
-            ApplyFilters();
+            bool confirmation = await Application.Current.MainPage.DisplayAlertAsync("Подтвердите свои действия",
+                "Вы уверены в удалении задачи?", "Да", "Нет");
+            if (confirmation)
+            {
+                await _taskService.DeleteAsync(taskId);
+                _allTasks.RemoveAll(t => t.Id == taskId);
+                ApplyFilters();
+            }
             await Task.CompletedTask;
         }
 
         [RelayCommand]
         private async Task OpenReminder(int taskId)
         {
-            // TODO: открыть диалог настройки напоминания
+            await Application.Current.MainPage.DisplayAlertAsync("Уведомление",
+                "Ожидайте добавление этой функции в будущих обновлениях!", "Жду!");
+
             await Task.CompletedTask;
         }
 
@@ -344,6 +377,34 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         public override async Task InitializeAsync(IDictionary<string, object>? query = null)
         {
             await LoadCommand.ExecuteAsync(null);
+        }
+
+        [RelayCommand]
+        private async Task MoveTaskForward(int taskId)
+        {
+            var task = await _taskService.GetByIdWithChildrenAsync(taskId);
+            task.Status = task.Status switch
+            {
+                TaskStatus.Open => TaskStatus.InProgress,
+                TaskStatus.InProgress => TaskStatus.Done,
+                _ => task.Status
+            };
+            await _taskService.SaveAsync(task);
+            await Load();
+        }
+
+        [RelayCommand]
+        private async Task MoveTaskBack(int taskId)
+        {
+            var task = await _taskService.GetByIdWithChildrenAsync(taskId);
+            task.Status = task.Status switch
+            {
+                TaskStatus.Done => TaskStatus.InProgress,
+                TaskStatus.InProgress => TaskStatus.Open,
+                _ => task.Status
+            };
+            await _taskService.SaveAsync(task);
+            await Load();
         }
 
     }

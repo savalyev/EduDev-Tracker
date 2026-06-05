@@ -407,7 +407,7 @@
                                                             <Label
                                                                 FontFamily="Comfortaa"
                                                                 FontSize="10"
-                                                                Text="{Binding Priority}"
+                                                                Text="{Binding PriorityLabel}"
                                                                 TextColor="#FFFFFF" />
                                                         </Border>
 
@@ -499,7 +499,7 @@
                         IsVisible="{Binding IsCalendarMode}"
                         Style="{StaticResource EduCardBorder}">
 
-                        <Grid RowDefinitions="Auto, Auto, Auto, *" RowSpacing="12">
+                        <Grid RowDefinitions="Auto, Auto, Auto, *, Auto" RowSpacing="12">
 
                             <Label
                                 Grid.Row="0"
@@ -687,6 +687,83 @@
                                     </CollectionView.ItemTemplate>
                                 </CollectionView>
                             </Grid>
+                            <!--  Задачи выбранного дня — вставляешь ПОСЛЕ CollectionView с сеткой дней  -->
+                            <Border
+                                Grid.Row="4"
+                                Padding="12,8"
+                                Background="#0D1525"
+                                IsVisible="{Binding SelectedCalendarDate, Converter={StaticResource IsNotNullConverter}}"
+                                Stroke="#495061"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <VerticalStackLayout Spacing="8">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="Comfortaa"
+                                        FontSize="13"
+                                        Text="{Binding SelectedDayTitle}"
+                                        TextColor="White" />
+                                    <Label
+                                        FontFamily="Comfortaa"
+                                        FontSize="12"
+                                        IsVisible="{Binding TasksForSelectedDay.Count, Converter={StaticResource ZeroConverter}}"
+                                        Text="Задач на этот день нет"
+                                        TextColor="#99FFFFFF" />
+                                    <CollectionView ItemsSource="{Binding TasksForSelectedDay}" SelectionMode="None">
+                                        <CollectionView.ItemsLayout>
+                                            <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:TaskItemViewModel">
+                                                <Border
+                                                    Padding="10,8"
+                                                    Background="#14182A"
+                                                    Stroke="#3D4A5A"
+                                                    StrokeThickness="1">
+                                                    <Border.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
+                                                    </Border.GestureRecognizers>
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="10" />
+                                                    </Border.StrokeShape>
+                                                    <VerticalStackLayout Spacing="4">
+                                                        <Label
+                                                            FontFamily="Comfortaa"
+                                                            FontSize="13"
+                                                            LineBreakMode="TailTruncation"
+                                                            Text="{Binding Title}"
+                                                            TextColor="White" />
+                                                        <HorizontalStackLayout Spacing="4">
+                                                            <Border
+                                                                Padding="5,2"
+                                                                BackgroundColor="{Binding PriorityBgColor}"
+                                                                Stroke="{Binding PriorityBorderColor}"
+                                                                StrokeThickness="1">
+                                                                <Border.StrokeShape>
+                                                                    <RoundRectangle CornerRadius="8" />
+                                                                </Border.StrokeShape>
+                                                                <Label
+                                                                    FontFamily="Comfortaa"
+                                                                    FontSize="9"
+                                                                    Text="{Binding PriorityLabel}"
+                                                                    TextColor="White" />
+                                                            </Border>
+                                                            <Label
+                                                                FontFamily="Comfortaa"
+                                                                FontSize="10"
+                                                                Text="{Binding DeadlineText}"
+                                                                TextColor="{Binding DeadlineTextColor}"
+                                                                VerticalOptions="Center" />
+                                                        </HorizontalStackLayout>
+                                                    </VerticalStackLayout>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </VerticalStackLayout>
+                            </Border>
                         </Grid>
                     </Border>
 
@@ -755,11 +832,11 @@
                                                 <Label
                                                     FontFamily="Comfortaa"
                                                     FontSize="11"
-                                                    Text="{Binding TodoCount}"
+                                                    Text="{Binding OpenCount}"
                                                     TextColor="#CC88FF" />
                                             </Border>
                                         </HorizontalStackLayout>
-                                        <CollectionView ItemsSource="{Binding TodoTasks}" SelectionMode="None">
+                                        <CollectionView ItemsSource="{Binding OpenTasks}" SelectionMode="None">
                                             <CollectionView.ItemsLayout>
                                                 <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
                                             </CollectionView.ItemsLayout>
@@ -772,6 +849,14 @@
                                                         StrokeThickness="1">
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
+                                                            <SwipeGestureRecognizer
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskForwardCommand}"
+                                                                CommandParameter="{Binding TaskId}"
+                                                                Direction="Left" />
+                                                            <SwipeGestureRecognizer
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskBackCommand}"
+                                                                CommandParameter="{Binding TaskId}"
+                                                                Direction="Right" />
                                                         </Border.GestureRecognizers>
                                                         <Border.StrokeShape>
                                                             <RoundRectangle CornerRadius="10" />
@@ -795,7 +880,7 @@
                                                                     <Label
                                                                         FontFamily="Comfortaa"
                                                                         FontSize="9"
-                                                                        Text="{Binding Priority}"
+                                                                        Text="{Binding PriorityLabel}"
                                                                         TextColor="White" />
                                                                 </Border>
                                                                 <Label
@@ -870,6 +955,14 @@
                                                         StrokeThickness="1">
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
+                                                            <SwipeGestureRecognizer
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskForwardCommand}"
+                                                                CommandParameter="{Binding TaskId}"
+                                                                Direction="Left" />
+                                                            <SwipeGestureRecognizer
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskBackCommand}"
+                                                                CommandParameter="{Binding TaskId}"
+                                                                Direction="Right" />
                                                         </Border.GestureRecognizers>
                                                         <Border.StrokeShape>
                                                             <RoundRectangle CornerRadius="10" />
@@ -893,7 +986,7 @@
                                                                     <Label
                                                                         FontFamily="Comfortaa"
                                                                         FontSize="9"
-                                                                        Text="{Binding Priority}"
+                                                                        Text="{Binding PriorityLabel}"
                                                                         TextColor="White" />
                                                                 </Border>
                                                                 <Label
@@ -927,7 +1020,7 @@
                                     <VerticalStackLayout Spacing="8">
                                         <HorizontalStackLayout Spacing="8">
                                             <BoxView
-                                                BackgroundColor="#2980B9"
+                                                BackgroundColor="#27AE60"
                                                 CornerRadius="4"
                                                 HeightRequest="14"
                                                 VerticalOptions="Center"
@@ -936,14 +1029,14 @@
                                                 FontAttributes="Bold"
                                                 FontFamily="Comfortaa"
                                                 FontSize="13"
-                                                Text="На проверке"
+                                                Text="Выполнено"
                                                 TextColor="White"
                                                 VerticalOptions="Center" />
                                             <Border
                                                 Padding="6,2"
                                                 BackgroundColor="#0A1E2E"
                                                 HorizontalOptions="End"
-                                                Stroke="#2980B9"
+                                                Stroke="#27AE60"
                                                 StrokeThickness="1">
                                                 <Border.StrokeShape>
                                                     <RoundRectangle CornerRadius="10" />
@@ -951,11 +1044,11 @@
                                                 <Label
                                                     FontFamily="Comfortaa"
                                                     FontSize="11"
-                                                    Text="{Binding ReviewCount}"
+                                                    Text="{Binding DoneCount}"
                                                     TextColor="#44AAFF" />
                                             </Border>
                                         </HorizontalStackLayout>
-                                        <CollectionView ItemsSource="{Binding ReviewTasks}" SelectionMode="None">
+                                        <CollectionView ItemsSource="{Binding DoneTasks}" SelectionMode="None">
                                             <CollectionView.ItemsLayout>
                                                 <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
                                             </CollectionView.ItemsLayout>
@@ -963,11 +1056,19 @@
                                                 <DataTemplate x:DataType="vm:TaskItemViewModel">
                                                     <Border
                                                         Padding="10,8"
-                                                        Background="#0E1820"
+                                                        Background="#0C1A12"
                                                         Stroke="#3D4A5A"
                                                         StrokeThickness="1">
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
+                                                            <SwipeGestureRecognizer
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskForwardCommand}"
+                                                                CommandParameter="{Binding TaskId}"
+                                                                Direction="Left" />
+                                                            <SwipeGestureRecognizer
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskBackCommand}"
+                                                                CommandParameter="{Binding TaskId}"
+                                                                Direction="Right" />
                                                         </Border.GestureRecognizers>
                                                         <Border.StrokeShape>
                                                             <RoundRectangle CornerRadius="10" />
@@ -991,7 +1092,7 @@
                                                                     <Label
                                                                         FontFamily="Comfortaa"
                                                                         FontSize="9"
-                                                                        Text="{Binding Priority}"
+                                                                        Text="{Binding PriorityLabel}"
                                                                         TextColor="White" />
                                                                 </Border>
                                                                 <Label
@@ -1009,7 +1110,7 @@
                                     </VerticalStackLayout>
                                 </Border>
 
-                                <!--  Колонка: Завершено  -->
+                                <!--  Колонка: Отменено  -->
                                 <Border
                                     Grid.Row="{OnIdiom Phone=3,
                                                        Default=0}"
@@ -1025,7 +1126,7 @@
                                     <VerticalStackLayout Spacing="8">
                                         <HorizontalStackLayout Spacing="8">
                                             <BoxView
-                                                BackgroundColor="#27AE60"
+                                                BackgroundColor="Red"
                                                 CornerRadius="4"
                                                 HeightRequest="14"
                                                 VerticalOptions="Center"
@@ -1034,14 +1135,14 @@
                                                 FontAttributes="Bold"
                                                 FontFamily="Comfortaa"
                                                 FontSize="13"
-                                                Text="Завершено"
+                                                Text="Отменено"
                                                 TextColor="White"
                                                 VerticalOptions="Center" />
                                             <Border
                                                 Padding="6,2"
                                                 BackgroundColor="#0A2018"
                                                 HorizontalOptions="End"
-                                                Stroke="#27AE60"
+                                                Stroke="Red"
                                                 StrokeThickness="1">
                                                 <Border.StrokeShape>
                                                     <RoundRectangle CornerRadius="10" />
@@ -1049,11 +1150,11 @@
                                                 <Label
                                                     FontFamily="Comfortaa"
                                                     FontSize="11"
-                                                    Text="{Binding DoneCount}"
-                                                    TextColor="#44EE88" />
+                                                    Text="{Binding CancelledCount}"
+                                                    TextColor="Red" />
                                             </Border>
                                         </HorizontalStackLayout>
-                                        <CollectionView ItemsSource="{Binding DoneTasks}" SelectionMode="None">
+                                        <CollectionView ItemsSource="{Binding CancelledTasks}" SelectionMode="None">
                                             <CollectionView.ItemsLayout>
                                                 <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
                                             </CollectionView.ItemsLayout>
@@ -1061,11 +1162,19 @@
                                                 <DataTemplate x:DataType="vm:TaskItemViewModel">
                                                     <Border
                                                         Padding="10,8"
-                                                        Background="#0C1A12"
+                                                        Background="#14182A"
                                                         Stroke="#3D4A5A"
                                                         StrokeThickness="1">
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
+                                                            <SwipeGestureRecognizer
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskForwardCommand}"
+                                                                CommandParameter="{Binding TaskId}"
+                                                                Direction="Left" />
+                                                            <SwipeGestureRecognizer
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskBackCommand}"
+                                                                CommandParameter="{Binding TaskId}"
+                                                                Direction="Right" />
                                                         </Border.GestureRecognizers>
                                                         <Border.StrokeShape>
                                                             <RoundRectangle CornerRadius="10" />
@@ -1090,7 +1199,7 @@
                                                                     <Label
                                                                         FontFamily="Comfortaa"
                                                                         FontSize="9"
-                                                                        Text="{Binding Priority}"
+                                                                        Text="{Binding PriorityLabel}"
                                                                         TextColor="White" />
                                                                 </Border>
                                                                 <Label

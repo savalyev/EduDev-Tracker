@@ -15,6 +15,10 @@ namespace EduDev_Tracker.Services.Notes
         public Task<int> SaveAttachmentAsync(NoteAttachment attachment);
         public Task<int> SaveVersionAsync(NoteVersion version);
         public Task<int> SaveAsync(Note note);
-        public Task<Note> SaveWithChildrenAsync(Note note);
+        public Task<Note> SaveNoteDirectAsync(Note note);
+        public Task<int> DeleteAsync(Note note);
+        public Task<int> DeleteAttachmentAsync(NoteAttachment attachment);
+        public Task<int> SaveCategoryAsync(NoteCategory category);
+        public Task<int> DeleteCategoryAsync(NoteCategory category);
     }
 }

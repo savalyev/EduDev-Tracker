@@ -32,13 +32,19 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public Task<int> DeleteAsync(Note note) =>
+            Connection.DeleteAsync(note);
+
+        public Task<int> DeleteAttachmentAsync(NoteAttachment attachment) =>
+            Connection.DeleteAsync(attachment);
+
         public Task<List<Note>> SearchAsync(int profileId, string query)
         {
             var fts = query.Replace("\"", "\"\"");
             return Connection.QueryAsync<Note>(
                 @"SELECT n.* FROM notes n
-                  JOIN notesfts f ON f.rowid = n.Id
-                  WHERE n.ProfileId = ? AND notesfts MATCH ?
+                  JOIN notes_fts f ON f.rowid = n.Id
+                  WHERE n.ProfileId = ? AND notes_fts MATCH ?
                     AND n.IsArchived = 0
                   ORDER BY rank",
                 profileId, $"\"{fts}\"*");
@@ -68,19 +74,27 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
             ? Connection.InsertAsync(note)
             : Connection.UpdateAsync(note);
 
-        public async Task<Note> SaveWithChildrenAsync(Note note)
+        public async Task<Note> SaveNoteDirectAsync(Note note)
         {
             note.UpdatedAt = DateTime.UtcNow;
             if (note.Id == 0)
             {
                 note.CreatedAt = DateTime.UtcNow;
-                await Connection.InsertWithChildrenAsync(note, recursive: true);
+                await Connection.InsertAsync(note);
             }
             else
             {
-                await Connection.UpdateWithChildrenAsync(note);
+                await Connection.UpdateAsync(note);
             }
             return note;
         }
+
+        public Task<int> SaveCategoryAsync(NoteCategory category) =>
+            category.Id == 0
+                ? Connection.InsertAsync(category)
+                : Connection.UpdateAsync(category);
+
+        public Task<int> DeleteCategoryAsync(NoteCategory category) =>
+            Connection.DeleteAsync(category);
     }
 }

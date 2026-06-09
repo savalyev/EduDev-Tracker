@@ -10,6 +10,7 @@ using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using static System.Net.Mime.MediaTypeNames;
@@ -166,7 +167,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
                 UpdatedAt = DateTime.UtcNow
             };
 
-            await _noteService.SaveWithChildrenAsync(note);
+            await _noteService.SaveNoteDirectAsync(note);
             await RefreshNotesAsync();
             SelectedNote = FilteredNotes.FirstOrDefault(n => n.Id == note.Id);
 
@@ -189,7 +190,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
                 if (SelectedNoteCategory is not null)
                     SelectedNote.CategoryId = SelectedNoteCategory.Id;
 
-                await _noteService.SaveWithChildrenAsync(SelectedNote);
+                await _noteService.SaveNoteDirectAsync(SelectedNote);
                 AutosaveStatus = $"Сохранено в {DateTime.Now:HH:mm}";
 
                 await RefreshNotesAsync();
@@ -207,8 +208,19 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
 
         private async Task SaveVersionSnapshotAsync()
         {
-            if (SelectedNote is null) return;
-            if (SelectedNote.Content == EditContent) return;
+            if (SelectedNote is null)
+            {
+                Debug.WriteLine("[VERSION] SKIP: SelectedNote is null");
+                return;
+            }
+
+            if (SelectedNote.Content == EditContent)
+            {
+                Debug.WriteLine($"[VERSION] SKIP: контент не изменился. Content='{SelectedNote.Content[..Math.Min(20, SelectedNote.Content.Length)]}'");
+                return;
+            }
+
+            Debug.WriteLine($"[VERSION] Сохраняю версию. NoteId={SelectedNote.Id}");
 
             var version = new NoteVersion
             {
@@ -216,7 +228,9 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
                 Content = SelectedNote.Content,
                 SavedAt = DateTime.UtcNow
             };
-            await _noteService.SaveVersionAsync(version);
+
+            int result = await _noteService.SaveVersionAsync(version);
+            Debug.WriteLine($"[VERSION] InsertAsync вернул={result}, version.Id={version.Id}");
         }
 
         [RelayCommand]
@@ -231,16 +245,43 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
 
             if (!confirm) return;
 
-            SelectedNote.IsArchived = true;
-            SelectedNote.UpdatedAt = DateTime.UtcNow;
-            await _noteService.SaveAsync(SelectedNote);
+            foreach (var att in SelectedNoteAttachments)
+            {
+                try { if (File.Exists(att.FilePath)) File.Delete(att.FilePath); }
+                catch { }
+            }
+
+            await _noteService.DeleteAsync(SelectedNote);
 
             SelectedNote = null;
             EditTitle = string.Empty;
             EditContent = string.Empty;
+
+            SelectedNoteAttachments.Clear();
+
+            NoteVersions.Clear();
+
             await RefreshNotesAsync();
 
             OnPropertyChanged(nameof(HasSelectedNote));
+        }
+
+        [RelayCommand]
+        private async Task DeleteAttachmentAsync(NoteAttachment attachment)
+        {
+            bool confirm = await Shell.Current.DisplayAlertAsync(
+                "Удалить вложение",
+                $"Удалить файл «{attachment.FileName}»?",
+                "Удалить", "Отмена");
+
+            if (!confirm) return;
+
+            try { if (File.Exists(attachment.FilePath)) File.Delete(attachment.FilePath); }
+            catch { }
+
+            await _noteService.DeleteAttachmentAsync(attachment);
+            SelectedNoteAttachments.Remove(attachment);
+            OnPropertyChanged(nameof(HasNoAttachments));
         }
 
         [RelayCommand]
@@ -391,38 +432,94 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         [RelayCommand]
         private void InsertMd(string type)
         {
-            string insert = type switch
-            {
-                "bold" => "**жирный текст**",
-                "italic" => "*курсив*",
-                "h1" => "\n# Заголовок 1\n",
-                "h2" => "\n## Заголовок 2\n",
-                "h3" => "\n### Заголовок 3\n",
-                "ulist" => "\n- Элемент списка\n",
-                "olist" => "\n1. Элемент списка\n",
-                "todo" => "\n- [ ] Задача\n",
-                "link" => "[текст ссылки](https://)",
-                "code" => "\n```\nкод здесь\n```\n",
-                "divider" => "\n---\n",
-                "tag" => "#тег",
-                _ => string.Empty
-            };
-
-            if (string.IsNullOrEmpty(insert)) return;
-
             var content = EditContent ?? string.Empty;
             int pos = Math.Clamp(CursorPosition, 0, content.Length);
+            int selLen = Math.Clamp(SelectionLength, 0, content.Length - pos);
 
-            if (SelectionLength > 0 && pos + SelectionLength <= content.Length)
+            string selected = selLen > 0 ? content.Substring(pos, selLen) : string.Empty;
+
+            string result;
+            int newCursorPos;
+
+            switch (type)
             {
-                EditContent = content.Remove(pos, SelectionLength).Insert(pos, insert);
-            }
-            else
-            {
-                EditContent = content.Insert(pos, insert);
+                case "bold":
+                    result = selLen > 0
+                        ? content.Remove(pos, selLen).Insert(pos, $"**{selected}**")
+                        : content.Insert(pos, "**жирный текст**");
+                    newCursorPos = selLen > 0 ? pos + selLen + 4 : pos + 16;
+                    break;
+
+                case "italic":
+                    result = selLen > 0
+                        ? content.Remove(pos, selLen).Insert(pos, $"*{selected}*")
+                        : content.Insert(pos, "*курсив*");
+                    newCursorPos = selLen > 0 ? pos + selLen + 2 : pos + 8;
+                    break;
+
+                case "code" when selLen > 0 && !selected.Contains('\n'):
+                    result = content.Remove(pos, selLen).Insert(pos, $"`{selected}`");
+                    newCursorPos = pos + selLen + 2;
+                    break;
+
+                case "h1":
+                    result = content.Insert(pos, $"\n# {selected}");
+                    newCursorPos = pos + 3 + selected.Length;
+                    break;
+
+                case "h2":
+                    result = content.Insert(pos, $"\n## {selected}");
+                    newCursorPos = pos + 4 + selected.Length;
+                    break;
+
+                case "h3":
+                    result = content.Insert(pos, $"\n### {selected}");
+                    newCursorPos = pos + 5 + selected.Length;
+                    break;
+
+                case "ulist":
+                    result = content.Insert(pos, $"\n- {selected}");
+                    newCursorPos = pos + 3 + selected.Length;
+                    break;
+
+                case "olist":
+                    result = content.Insert(pos, $"\n1. {selected}");
+                    newCursorPos = pos + 4 + selected.Length;
+                    break;
+
+                case "todo":
+                    result = content.Insert(pos, $"\n- [ ] {selected}");
+                    newCursorPos = pos + 7 + selected.Length;
+                    break;
+
+                case "link":
+                    result = selLen > 0
+                        ? content.Remove(pos, selLen).Insert(pos, $"[{selected}](https://)")
+                        : content.Insert(pos, "[текст ссылки](https://)");
+                    newCursorPos = selLen > 0 ? pos + selLen + 12 : pos + 24;
+                    break;
+
+                case "code":
+                    result = content.Insert(pos, $"\n```\n{selected}\n```\n");
+                    newCursorPos = pos + 5 + selected.Length;
+                    break;
+
+                case "divider":
+                    result = content.Insert(pos, "\n---\n");
+                    newCursorPos = pos + 5;
+                    break;
+
+                case "tag":
+                    result = content.Insert(pos, "#тег");
+                    newCursorPos = pos + 4;
+                    break;
+
+                default:
+                    return;
             }
 
-            CursorPosition = pos + insert.Length;
+            EditContent = result;
+            CursorPosition = newCursorPos;
             SelectionLength = 0;
 
             OnPropertyChanged(nameof(WordCountText));
@@ -477,6 +574,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         {
             MobileShowEditor = false;
             MobileHeaderTitle = "Заметки";
+            SelectedNote = null;
         }
 
         [ObservableProperty] private bool _isPreviewMode;
@@ -532,6 +630,64 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
                   </script>
                 </body>
                 </html>".Replace("MARKDOWN_CONTENT", escaped);
+        }
+
+        [ObservableProperty] private string _newCategoryName = string.Empty;
+
+        [ObservableProperty] private bool _isAddingCategory;
+
+        [RelayCommand]
+        private void ShowAddCategory()
+        {
+            IsAddingCategory = true;
+            NewCategoryName = string.Empty;
+        }
+
+        [RelayCommand]
+        private void CancelAddCategory()
+        {
+            IsAddingCategory = false;
+            NewCategoryName = string.Empty;
+        }
+
+        [RelayCommand]
+        private async Task CreateCategoryAsync()
+        {
+            if (string.IsNullOrWhiteSpace(NewCategoryName)) return;
+
+            var category = new NoteCategory
+            {
+                Name = NewCategoryName.Trim(),
+                ProfileId = _profileId
+            };
+
+            await _noteService.SaveCategoryAsync(category);
+
+            var cats = await _noteService.GetCategoriesAsync(_profileId);
+            Categories = new ObservableCollection<NoteCategory>(cats);
+
+            NewCategoryName = string.Empty;
+            IsAddingCategory = false;
+        }
+
+        [RelayCommand]
+        private async Task DeleteCategoryAsync(NoteCategory category)
+        {
+            bool confirm = await Shell.Current.DisplayAlertAsync(
+                "Удалить категорию",
+                $"Удалить «{category.Name}»? Заметки останутся, но без категории.",
+                "Удалить", "Отмена");
+
+            if (!confirm) return;
+
+            await _noteService.DeleteCategoryAsync(category);
+
+            if (SelectedCategory?.Id == category.Id)
+                SelectedCategory = null;
+
+            var cats = await _noteService.GetCategoriesAsync(_profileId);
+            Categories = new ObservableCollection<NoteCategory>(cats);
+            await RefreshNotesAsync();
         }
     }
 }

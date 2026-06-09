@@ -338,7 +338,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand]
         private async Task OpenHabitDetailsAsync(int id)
         {
-            await _navigation.GoToAsync("HabitDetailtPage", new()
+            await _navigation.GoToAsync("HabitDetailsPage", new()
             {
                 {"habitId", id }
             });

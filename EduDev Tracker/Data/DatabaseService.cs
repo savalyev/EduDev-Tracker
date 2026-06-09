@@ -144,6 +144,6 @@ namespace EduDev_Tracker.Data
         }
 
         public Task RunInTransactionAsync(Action<SQLiteConnection> action)
-    => Connection.RunInTransactionAsync(action);
+            => Connection.RunInTransactionAsync(action);
     }
 }

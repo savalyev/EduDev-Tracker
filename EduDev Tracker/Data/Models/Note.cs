@@ -10,7 +10,6 @@ namespace EduDev_Tracker.Data.Models
         [PrimaryKey, AutoIncrement] public int Id { get; set; }
         [ForeignKey(typeof(Profile)), Indexed] public int ProfileId { get; set; }
         [ForeignKey(typeof(NoteCategory))] public int? CategoryId { get; set; }
-
         [NotNull, MaxLength(300)] public string Title { get; set; } = "";
         [NotNull] public string Content { get; set; } = "";
         public bool IsPinned { get; set; }
@@ -24,7 +23,7 @@ namespace EduDev_Tracker.Data.Models
         [ManyToMany(typeof(NoteTag))]
         public List<Tag> Tags { get; set; } = new();
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        [OneToMany(CascadeOperations = CascadeOperation.CascadeRead)]
         public List<NoteVersion> Versions { get; set; } = new();
     }
 }

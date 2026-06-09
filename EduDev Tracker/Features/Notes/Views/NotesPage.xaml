@@ -11,14 +11,15 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <!--  ===== ЦВЕТА =====  -->
+
+            <!--  Цвета  -->
             <Color x:Key="BgPrimary">#0F1117</Color>
             <Color x:Key="BgSecondary">#161B27</Color>
             <Color x:Key="BgCard">#1C2333</Color>
             <Color x:Key="BgCardHover">#232B3E</Color>
             <Color x:Key="AccentBlue">#4F8EF7</Color>
             <Color x:Key="AccentBlueMuted">#2A4A8A</Color>
-            <Color x:Key="AccentGreen">#3DDC84</Color>
+            <Color x:Key="AccentGreen">#019301</Color>
             <Color x:Key="TextPrimary">#E8EAF0</Color>
             <Color x:Key="TextSecondary">#8892A4</Color>
             <Color x:Key="TextMuted">#4A5568</Color>
@@ -27,7 +28,7 @@
             <Color x:Key="DangerColor">#EF4444</Color>
             <Color x:Key="ToolbarBg">#1A2035</Color>
 
-            <!--  ===== СТИЛИ ТЕКСТА =====  -->
+            <!--  Стили текста  -->
             <Style x:Key="HeadingStyle" TargetType="Label">
                 <Setter Property="FontFamily" Value="Comfortaa" />
                 <Setter Property="FontSize" Value="20" />
@@ -52,7 +53,7 @@
                 <Setter Property="TextColor" Value="{StaticResource TextMuted}" />
             </Style>
 
-            <!--  ===== КНОПКА TOOLBAR =====  -->
+            <!--  Toolbar button  -->
             <Style x:Key="ToolbarBtnStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource BgCard}" />
                 <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
@@ -62,9 +63,41 @@
                 <Setter Property="HeightRequest" Value="34" />
                 <Setter Property="BorderColor" Value="{StaticResource BorderColor}" />
                 <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#1C2333" />
+                                    <Setter Property="TextColor" Value="#8892A4" />
+                                    <Setter Property="Scale" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#2A3550" />
+                                    <Setter Property="TextColor" Value="#E8EAF0" />
+                                    <Setter Property="Scale" Value="0.95" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#232B3E" />
+                                    <Setter Property="Scale" Value="1.02" />
+                                    <Setter Property="Opacity" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="0.4" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
             </Style>
 
-            <!--  ===== КНОПКА АКЦЕНТ =====  -->
+            <!--  Accent button  -->
             <Style x:Key="AccentBtnStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource AccentBlue}" />
                 <Setter Property="TextColor" Value="White" />
@@ -73,26 +106,64 @@
                 <Setter Property="CornerRadius" Value="8" />
                 <Setter Property="Padding" Value="14,8" />
                 <Setter Property="HeightRequest" Value="36" />
+                <Setter Property="Shadow">
+                    <Shadow
+                        Brush="#4F8EF7"
+                        Opacity="0.3"
+                        Radius="12"
+                        Offset="0,4" />
+                </Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#4F8EF7" />
+                                    <Setter Property="Scale" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#2A4A8A" />
+                                    <Setter Property="Scale" Value="0.96" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="0.5" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#232B3E" />
+                                    <Setter Property="Scale" Value="1.02" />
+                                    <Setter Property="Opacity" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
             </Style>
 
-            <!--  ===== CHIP КАТЕГОРИИ =====  -->
+            <!--  Category chip  -->
             <Style x:Key="CategoryChipStyle" TargetType="Border">
-                <Setter Property="BackgroundColor" Value="{StaticResource BgCard}" />
-                <Setter Property="StrokeShape" Value="RoundRectangle 16" />
-                <Setter Property="Stroke" Value="{StaticResource BorderColor}" />
+                <Setter Property="BackgroundColor" Value="#1C2333" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+                <Setter Property="Stroke" Value="#2A3550" />
                 <Setter Property="Padding" Value="10,5" />
+                <Setter Property="VerticalOptions" Value="Center" />
             </Style>
 
-            <!--  ===== КАРТОЧКА ЗАМЕТКИ =====  -->
+            <!--  Note card  -->
             <Style x:Key="NoteCardStyle" TargetType="Border">
                 <Setter Property="BackgroundColor" Value="{StaticResource BgCard}" />
                 <Setter Property="StrokeShape" Value="RoundRectangle 10" />
                 <Setter Property="Stroke" Value="{StaticResource BorderColor}" />
                 <Setter Property="Padding" Value="12" />
-                <Setter Property="Margin" Value="0,0,0,8" />
+                <Setter Property="Margin" Value="0,0,0,12" />
             </Style>
 
-            <!--  ===== СЕКЦИЯ ПРАВОЙ ПАНЕЛИ =====  -->
+            <!--  Section card  -->
             <Style x:Key="SectionCardStyle" TargetType="Border">
                 <Setter Property="BackgroundColor" Value="{StaticResource BgCard}" />
                 <Setter Property="StrokeShape" Value="RoundRectangle 10" />
@@ -101,15 +172,31 @@
                 <Setter Property="Margin" Value="0,0,0,10" />
             </Style>
 
-            <!--  ===== ПОИСК =====  -->
+            <!--  Search entry  -->
             <Style x:Key="SearchEntryStyle" TargetType="Entry">
                 <Setter Property="BackgroundColor" Value="{StaticResource BgCard}" />
                 <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
                 <Setter Property="PlaceholderColor" Value="{StaticResource TextMuted}" />
                 <Setter Property="FontSize" Value="14" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#1C2333" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Focused">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#232B3E" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
             </Style>
 
-            <!--  ===== РЕДАКТОР ЗАМЕТКИ =====  -->
+            <!--  Editor  -->
             <Style x:Key="NoteEditorStyle" TargetType="Editor">
                 <Setter Property="BackgroundColor" Value="Transparent" />
                 <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
@@ -119,7 +206,7 @@
                 <Setter Property="PlaceholderColor" Value="{StaticResource TextMuted}" />
             </Style>
 
-            <!--  ===== КНОПКА MD-ПАНЕЛИ =====  -->
+            <!--  Markdown button  -->
             <Style x:Key="MdBtnStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="Transparent" />
                 <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
@@ -129,36 +216,52 @@
                 <Setter Property="Padding" Value="8,4" />
                 <Setter Property="HeightRequest" Value="30" />
                 <Setter Property="MinimumWidthRequest" Value="32" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                    <Setter Property="TextColor" Value="#8892A4" />
+                                    <Setter Property="Scale" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#1C2333" />
+                                    <Setter Property="TextColor" Value="#4F8EF7" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#1C2333" />
+                                    <Setter Property="TextColor" Value="#4F8EF7" />
+                                    <Setter Property="Scale" Value="0.9" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
             </Style>
+
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <!--  ===== КОРНЕВОЙ КОНТЕЙНЕР =====  -->
     <Grid BackgroundColor="{StaticResource BgPrimary}">
 
-        <!--
-            ========================================
-            DESKTOP LAYOUT (>= 900px)
-            Grid: 300* | 1* | 280
-            ========================================
-        -->
+        <!--  Desktop  -->
         <Grid
             x:Name="DesktopLayout"
             ColumnDefinitions="300,*,280"
             ColumnSpacing="0"
             IsVisible="{Binding IsDesktopLayout}">
 
-            <!--
-                ══════════════════════════════════
-                ЛЕВАЯ КОЛОНКА: СПИСОК ЗАМЕТОК
-                ══════════════════════════════════
-            -->
+            <!--  Left column  -->
             <Grid
                 Grid.Column="0"
                 BackgroundColor="{StaticResource BgSecondary}"
                 RowDefinitions="Auto,Auto,Auto,*">
 
-                <!--  Заголовок + кнопка новой заметки  -->
                 <Grid
                     Grid.Row="0"
                     Padding="16,16,16,12"
@@ -170,6 +273,7 @@
                             Text="Заметки" />
                         <Label Style="{StaticResource MutedStyle}" Text="{Binding NotesCountText}" />
                     </VerticalStackLayout>
+
                     <Button
                         Grid.Column="1"
                         Command="{Binding CreateNoteCommand}"
@@ -178,7 +282,6 @@
                         VerticalOptions="Center" />
                 </Grid>
 
-                <!--  Поиск FTS5  -->
                 <Border
                     Grid.Row="1"
                     Margin="12,0,12,10"
@@ -186,97 +289,133 @@
                     BackgroundColor="{StaticResource BgCard}"
                     Stroke="{StaticResource BorderColor}"
                     StrokeShape="RoundRectangle 8">
-                    <Grid ColumnDefinitions="Auto,*">
-                        <Label
-                            Grid.Column="0"
-                            Margin="0,0,6,0"
-                            FontSize="14"
-                            Text="🔍"
-                            VerticalOptions="Center" />
-                        <Entry
-                            Grid.Column="1"
-                            HeightRequest="36"
-                            Placeholder="Поиск по заметкам..."
-                            ReturnCommand="{Binding SearchCommand}"
-                            Style="{StaticResource SearchEntryStyle}"
-                            Text="{Binding SearchQuery}" />
-                    </Grid>
+                    <Entry
+                        HeightRequest="36"
+                        Placeholder="Поиск по заметкам..."
+                        ReturnCommand="{Binding SearchCommand}"
+                        Style="{StaticResource SearchEntryStyle}"
+                        Text="{Binding SearchQuery}" />
                 </Border>
 
-                <!--  Категории-чипы  -->
-                <ScrollView
+                <VerticalStackLayout
                     Grid.Row="2"
                     Margin="12,0,12,10"
-                    HorizontalScrollBarVisibility="Never"
-                    Orientation="Horizontal">
-                    <StackLayout Orientation="Horizontal" Spacing="6">
-                        <!--  Чип "Все"  -->
-                        <Border Style="{StaticResource CategoryChipStyle}">
-                            <Border.BackgroundColor>
-                                <Binding Path="SelectedCategory">
-                                    <Binding.Converter>
-                                        <x:Null />
-                                    </Binding.Converter>
-                                </Binding>
-                            </Border.BackgroundColor>
-                            <Label
-                                FontSize="12"
-                                Text="Все"
-                                TextColor="{StaticResource TextPrimary}" />
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SelectCategoryCommand}" CommandParameter="{x:Null}" />
-                            </Border.GestureRecognizers>
-                        </Border>
+                    Spacing="0">
 
-                        <!--  Закреплённые  -->
-                        <Border Style="{StaticResource CategoryChipStyle}">
-                            <Label
-                                FontSize="12"
-                                Text="📌 Закреплённые"
-                                TextColor="{StaticResource TextPrimary}" />
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ShowPinnedCommand}" />
-                            </Border.GestureRecognizers>
-                        </Border>
-
-                        <!--  Динамические категории  -->
-                        <BindableLayout.ItemsSource>
-                            <x:Array Type="{x:Type models:NoteCategory}" />
-                        </BindableLayout.ItemsSource>
+                    <ScrollView HeightRequest="60" Orientation="Horizontal">
                         <StackLayout
-                            BindableLayout.ItemsSource="{Binding Categories}"
+                            Padding="0,0,10,0"
                             Orientation="Horizontal"
                             Spacing="6">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:NoteCategory">
-                                    <Border Style="{StaticResource CategoryChipStyle}">
-                                        <Label
-                                            FontSize="12"
-                                            Text="{Binding Name}"
-                                            TextColor="{StaticResource TextPrimary}" />
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesViewModel}}, Path=SelectCategoryCommand}" CommandParameter="{Binding .}" />
-                                        </Border.GestureRecognizers>
-                                    </Border>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </StackLayout>
-                    </StackLayout>
-                </ScrollView>
 
-                <!--  Список заметок  -->
+                            <Border Style="{StaticResource CategoryChipStyle}">
+                                <Label
+                                    FontSize="12"
+                                    Text="Все"
+                                    TextColor="{StaticResource TextPrimary}" />
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectCategoryCommand}" CommandParameter="{x:Null}" />
+                                </Border.GestureRecognizers>
+                            </Border>
+
+                            <Border Style="{StaticResource CategoryChipStyle}">
+                                <Label
+                                    FontSize="12"
+                                    Text="📌 Закреплённые"
+                                    TextColor="{StaticResource TextPrimary}" />
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ShowPinnedCommand}" />
+                                </Border.GestureRecognizers>
+                            </Border>
+
+                            <StackLayout
+                                BindableLayout.ItemsSource="{Binding Categories}"
+                                Orientation="Horizontal"
+                                Spacing="6">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:NoteCategory">
+                                        <Border Style="{StaticResource CategoryChipStyle}">
+                                            <Label
+                                                FontSize="12"
+                                                Text="{Binding Name}"
+                                                TextColor="{StaticResource TextPrimary}" />
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesViewModel}}, Path=SelectCategoryCommand}" CommandParameter="{Binding .}" />
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesViewModel}}, Path=DeleteCategoryCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    NumberOfTapsRequired="2" />
+                                            </Border.GestureRecognizers>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+
+                            <Border
+                                BackgroundColor="#1A2A4A"
+                                Stroke="#2A4A8A"
+                                Style="{StaticResource CategoryChipStyle}">
+                                <Label
+                                    FontSize="12"
+                                    Text="＋ Категория"
+                                    TextColor="#4F8EF7" />
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ShowAddCategoryCommand}" />
+                                </Border.GestureRecognizers>
+                            </Border>
+                        </StackLayout>
+                    </ScrollView>
+
+                    <Border
+                        Margin="0,6,0,0"
+                        Padding="10,8"
+                        BackgroundColor="#1C2333"
+                        IsVisible="{Binding IsAddingCategory}"
+                        Stroke="#2A3550"
+                        StrokeShape="RoundRectangle 8">
+                        <HorizontalStackLayout Spacing="6">
+                            <Entry
+                                FontSize="13"
+                                HorizontalOptions="FillAndExpand"
+                                Placeholder="Название категории"
+                                PlaceholderColor="#4A5568"
+                                ReturnCommand="{Binding CreateCategoryCommand}"
+                                Text="{Binding NewCategoryName}"
+                                TextColor="#E8EAF0" />
+                            <Button
+                                BackgroundColor="#2A4A8A"
+                                Command="{Binding CreateCategoryCommand}"
+                                CornerRadius="6"
+                                HeightRequest="32"
+                                Text="✓"
+                                TextColor="#4F8EF7"
+                                WidthRequest="36" />
+                            <Button
+                                BackgroundColor="Transparent"
+                                Command="{Binding CancelAddCategoryCommand}"
+                                FontSize="16"
+                                HeightRequest="32"
+                                Text="✕"
+                                TextColor="#8892A4"
+                                WidthRequest="32" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
                 <CollectionView
                     Grid.Row="3"
                     Margin="8,0,8,0"
                     ItemsSource="{Binding FilteredNotes}"
                     SelectedItem="{Binding SelectedNote, Mode=TwoWay}"
                     SelectionMode="Single">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Note">
                             <Border Margin="4,0,4,8" Style="{StaticResource NoteCardStyle}">
-                                <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="4">
-
-                                    <!--  Строка: закреп + заголовок  -->
+                                <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="4">
                                     <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
                                         <Label
                                             Grid.Column="0"
@@ -299,7 +438,6 @@
                                             VerticalOptions="Center" />
                                     </Grid>
 
-                                    <!--  Превью контента  -->
                                     <Label
                                         Grid.Row="1"
                                         FontSize="12"
@@ -307,20 +445,17 @@
                                         MaxLines="2"
                                         Text="{Binding Content}"
                                         TextColor="{StaticResource TextSecondary}" />
-
-                                    <!--  Категория  -->
                                     <Label
                                         Grid.Row="2"
                                         FontSize="11"
                                         IsVisible="{Binding CategoryId, Converter={StaticResource NullToBoolConverter}}"
+                                        Text="{Binding CategoryName}"
                                         TextColor="{StaticResource AccentBlue}" />
-
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
 
-                    <!--  Empty state  -->
                     <CollectionView.EmptyView>
                         <VerticalStackLayout
                             Padding="20"
@@ -346,7 +481,6 @@
                 </CollectionView>
             </Grid>
 
-            <!--  РАЗДЕЛИТЕЛЬ  -->
             <BoxView
                 Grid.Column="0"
                 BackgroundColor="{StaticResource BorderColor}"
@@ -354,22 +488,17 @@
                 VerticalOptions="Fill"
                 WidthRequest="1" />
 
-            <!--
-                ══════════════════════════════════
-                ЦЕНТРАЛЬНАЯ КОЛОНКА: РЕДАКТОР
-                ══════════════════════════════════
-            -->
+            <!--  Center column  -->
             <Grid
                 Grid.Column="1"
                 BackgroundColor="{StaticResource BgPrimary}"
                 IsVisible="{Binding HasSelectedNote}"
                 RowDefinitions="Auto,Auto,Auto,*,Auto">
 
-                <!--  Шапка редактора: title + мета  -->
                 <Grid
                     Grid.Row="0"
                     Padding="20,16,20,0"
-                    ColumnDefinitions="*,Auto,Auto,Auto"
+                    ColumnDefinitions="*,Auto,Auto,Auto,Auto"
                     ColumnSpacing="8">
                     <Entry
                         Grid.Column="0"
@@ -398,9 +527,19 @@
                         Style="{StaticResource AccentBtnStyle}"
                         Text="💾 Сохранить"
                         VerticalOptions="Center" />
+                    <Button
+                        Grid.Column="4"
+                        BackgroundColor="#2A1A1A"
+                        Command="{Binding DeleteNoteCommand}"
+                        CornerRadius="8"
+                        FontSize="16"
+                        HeightRequest="36"
+                        Text="🗑"
+                        TextColor="#E05555"
+                        ToolTipProperties.Text="Удалить заметку"
+                        WidthRequest="40" />
                 </Grid>
 
-                <!--  Мета-информация под заголовком  -->
                 <StackLayout
                     Grid.Row="1"
                     Padding="20,6,20,0"
@@ -411,7 +550,6 @@
                     <Label Style="{StaticResource MutedStyle}" Text="{Binding AutosaveStatus}" />
                 </StackLayout>
 
-                <!--  MD-тулбар  -->
                 <Border
                     Grid.Row="2"
                     Margin="16,8,16,0"
@@ -447,13 +585,14 @@
                                 CommandParameter="h3"
                                 Style="{StaticResource MdBtnStyle}"
                                 Text="H3" />
-                            <!--  Разделитель  -->
+
                             <BoxView
                                 Margin="4,0"
                                 BackgroundColor="{StaticResource BorderColor}"
                                 HeightRequest="20"
                                 VerticalOptions="Center"
                                 WidthRequest="1" />
+
                             <Button
                                 Command="{Binding InsertMdCommand}"
                                 CommandParameter="ulist"
@@ -469,13 +608,14 @@
                                 CommandParameter="todo"
                                 Style="{StaticResource MdBtnStyle}"
                                 Text="[ ]" />
-                            <!--  Разделитель  -->
+
                             <BoxView
                                 Margin="4,0"
                                 BackgroundColor="{StaticResource BorderColor}"
                                 HeightRequest="20"
                                 VerticalOptions="Center"
                                 WidthRequest="1" />
+
                             <Button
                                 Command="{Binding InsertMdCommand}"
                                 CommandParameter="link"
@@ -491,13 +631,14 @@
                                 CommandParameter="divider"
                                 Style="{StaticResource MdBtnStyle}"
                                 Text="— Divider" />
-                            <!--  Разделитель  -->
+
                             <BoxView
                                 Margin="4,0"
                                 BackgroundColor="{StaticResource BorderColor}"
                                 HeightRequest="20"
                                 VerticalOptions="Center"
                                 WidthRequest="1" />
+
                             <Button
                                 Command="{Binding InsertMdCommand}"
                                 CommandParameter="tag"
@@ -516,7 +657,6 @@
                     </ScrollView>
                 </Border>
 
-                <!--  Редактор текста  -->
                 <ScrollView
                     Grid.Row="3"
                     Padding="20,10,20,0"
@@ -530,6 +670,7 @@
                         Style="{StaticResource NoteEditorStyle}"
                         Text="{Binding EditContent}" />
                 </ScrollView>
+
                 <WebView
                     Grid.Row="3"
                     Margin="16,10"
@@ -539,7 +680,6 @@
                     </WebView.Source>
                 </WebView>
 
-                <!--  Статус бар снизу  -->
                 <Border
                     Grid.Row="4"
                     Padding="20,6"
@@ -559,7 +699,6 @@
                 </Border>
             </Grid>
 
-            <!--  Placeholder когда заметка не выбрана  -->
             <VerticalStackLayout
                 Grid.Column="1"
                 HorizontalOptions="Center"
@@ -582,7 +721,6 @@
                     Text="или создайте новую" />
             </VerticalStackLayout>
 
-            <!--  РАЗДЕЛИТЕЛЬ  -->
             <BoxView
                 Grid.Column="1"
                 BackgroundColor="{StaticResource BorderColor}"
@@ -590,19 +728,14 @@
                 VerticalOptions="Fill"
                 WidthRequest="1" />
 
-            <!--
-                ══════════════════════════════════
-                ПРАВАЯ КОЛОНКА: МЕТА + ВЛОЖЕНИЯ
-                ══════════════════════════════════
-            -->
+            <!--  Right column  -->
             <ScrollView
                 Grid.Column="2"
-                Padding="14,14,14,14"
+                Padding="14"
                 BackgroundColor="{StaticResource BgSecondary}"
                 IsVisible="{Binding HasSelectedNote}">
                 <VerticalStackLayout Spacing="0">
 
-                    <!--  Свойства заметки  -->
                     <Border Style="{StaticResource SectionCardStyle}">
                         <VerticalStackLayout Spacing="10">
                             <Label
@@ -611,7 +744,6 @@
                                 Text="Свойства заметки"
                                 TextColor="{StaticResource TextPrimary}" />
 
-                            <!--  Категория  -->
                             <Grid ColumnDefinitions="*,Auto">
                                 <Label
                                     Grid.Column="0"
@@ -629,9 +761,9 @@
                                     TextColor="{StaticResource TextPrimary}"
                                     WidthRequest="120" />
                             </Grid>
+
                             <BoxView BackgroundColor="{StaticResource BorderColor}" HeightRequest="1" />
 
-                            <!--  Теги  -->
                             <Grid ColumnDefinitions="*,Auto">
                                 <Label
                                     Grid.Column="0"
@@ -645,9 +777,9 @@
                                     Text="{Binding TagsDisplay}"
                                     TextColor="{StaticResource AccentBlue}" />
                             </Grid>
+
                             <BoxView BackgroundColor="{StaticResource BorderColor}" HeightRequest="1" />
 
-                            <!--  Напоминание  -->
                             <Grid ColumnDefinitions="*,Auto">
                                 <Label
                                     Grid.Column="0"
@@ -661,9 +793,9 @@
                                     Text="{Binding ReminderDisplay}"
                                     TextColor="{StaticResource TextSecondary}" />
                             </Grid>
+
                             <BoxView BackgroundColor="{StaticResource BorderColor}" HeightRequest="1" />
 
-                            <!--  Формат  -->
                             <Grid ColumnDefinitions="*,Auto">
                                 <Label
                                     Grid.Column="0"
@@ -680,7 +812,6 @@
                         </VerticalStackLayout>
                     </Border>
 
-                    <!--  Вложения  -->
                     <Border Style="{StaticResource SectionCardStyle}">
                         <VerticalStackLayout Spacing="8">
                             <Grid ColumnDefinitions="*,Auto">
@@ -697,13 +828,9 @@
                                     FontSize="11"
                                     HeightRequest="28"
                                     Style="{StaticResource ToolbarBtnStyle}"
-                                    Text="+ Добавить" />
+                                    Text="+ Файл" />
                             </Grid>
 
-                            <!--  Список вложений  -->
-                            <BindableLayout.ItemsSource>
-                                <x:Array Type="{x:Type models:NoteAttachment}" />
-                            </BindableLayout.ItemsSource>
                             <VerticalStackLayout BindableLayout.ItemsSource="{Binding SelectedNoteAttachments}" Spacing="6">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="models:NoteAttachment">
@@ -712,14 +839,13 @@
                                             BackgroundColor="{StaticResource BgSecondary}"
                                             Stroke="{StaticResource BorderColor}"
                                             StrokeShape="RoundRectangle 6">
-                                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-                                                <!--  Иконка типа  -->
+                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8">
                                                 <Label
                                                     Grid.Column="0"
                                                     FontSize="18"
                                                     Text="{Binding MimeType, Converter={StaticResource MimeToIconConverter}}"
                                                     VerticalOptions="Center" />
-                                                <!--  Имя + размер  -->
+
                                                 <VerticalStackLayout Grid.Column="1" Spacing="2">
                                                     <Label
                                                         FontSize="12"
@@ -728,7 +854,7 @@
                                                         TextColor="{StaticResource TextPrimary}" />
                                                     <Label Style="{StaticResource MutedStyle}" Text="{Binding SizeBytes, Converter={StaticResource FileSizeConverter}}" />
                                                 </VerticalStackLayout>
-                                                <!--  Кнопка открыть  -->
+
                                                 <Button
                                                     Grid.Column="2"
                                                     Padding="8,4"
@@ -738,13 +864,22 @@
                                                     HeightRequest="28"
                                                     Style="{StaticResource ToolbarBtnStyle}"
                                                     Text="Открыть" />
+
+                                                <Button
+                                                    Grid.Column="3"
+                                                    Padding="4"
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesViewModel}}, Path=DeleteAttachmentCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    FontSize="14"
+                                                    Text="🗑"
+                                                    TextColor="#E05555" />
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                             </VerticalStackLayout>
 
-                            <!--  Empty вложения  -->
                             <Label
                                 Padding="0,8"
                                 HorizontalOptions="Center"
@@ -754,13 +889,12 @@
                         </VerticalStackLayout>
                     </Border>
 
-                    <!--  История изменений  -->
                     <Border Style="{StaticResource SectionCardStyle}">
                         <VerticalStackLayout Spacing="8">
                             <Label
                                 FontAttributes="Bold"
                                 FontSize="13"
-                                Text="История изменений"
+                                Text="История версий"
                                 TextColor="{StaticResource TextPrimary}" />
 
                             <VerticalStackLayout BindableLayout.ItemsSource="{Binding NoteVersions}" Spacing="4">
@@ -770,7 +904,6 @@
                                             Padding="0,4"
                                             ColumnDefinitions="Auto,*,Auto"
                                             ColumnSpacing="8">
-                                            <!--  Версия  -->
                                             <Border
                                                 Grid.Column="0"
                                                 Padding="6,3"
@@ -781,13 +914,13 @@
                                                     Text="{Binding VersionLabel}"
                                                     TextColor="{StaticResource AccentBlue}" />
                                             </Border>
-                                            <!--  Дата  -->
+
                                             <Label
                                                 Grid.Column="1"
                                                 Style="{StaticResource MutedStyle}"
                                                 Text="{Binding SavedAt, StringFormat='{0:dd MMM, HH:mm}'}"
                                                 VerticalOptions="Center" />
-                                            <!--  Восстановить  -->
+
                                             <Button
                                                 Grid.Column="2"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesViewModel}}, Path=RestoreVersionCommand}"
@@ -808,7 +941,6 @@
                         </VerticalStackLayout>
                     </Border>
 
-                    <!--  Экспорт  -->
                     <Border Style="{StaticResource SectionCardStyle}">
                         <VerticalStackLayout Spacing="10">
                             <Label
@@ -838,26 +970,17 @@
                             </StackLayout>
                         </VerticalStackLayout>
                     </Border>
-
                 </VerticalStackLayout>
             </ScrollView>
-
         </Grid>
-        <!--  /DesktopLayout  -->
 
-
-        <!--
-            ========================================
-            MOBILE LAYOUT (< 900px)
-            Одна колонка с навигацией
-            ========================================
-        -->
+        <!--  Mobile  -->
         <Grid
             x:Name="MobileLayout"
             IsVisible="{Binding IsMobileLayout}"
             RowDefinitions="Auto,*">
 
-            <!--  Мобильный хедер  -->
+            <!--  Header  -->
             <Grid
                 Grid.Row="0"
                 Padding="12,10"
@@ -869,6 +992,19 @@
                     IsVisible="{Binding MobileShowEditor}"
                     Style="{StaticResource MdBtnStyle}"
                     Text="←" />
+
+                <Image
+                    HeightRequest="36"
+                    HorizontalOptions="Start"
+                    IsVisible="{Binding MobileShowEditor, Converter={StaticResource InverseBoolConverter}}"
+                    Source="menu.png"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMenuTapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
                 <Label
                     Grid.Column="1"
                     FontSize="16"
@@ -876,130 +1012,210 @@
                     Style="{StaticResource HeadingStyle}"
                     Text="{Binding MobileHeaderTitle}"
                     VerticalOptions="Center" />
+
                 <Button
                     Grid.Column="2"
                     Padding="10,6"
                     Command="{Binding CreateNoteCommand}"
                     IsVisible="{Binding MobileShowEditor, Converter={StaticResource InverseBoolConverter}}"
                     Style="{StaticResource AccentBtnStyle}"
-                    Text="+" />
+                    Text="+ Новая" />
+
                 <Button
                     Grid.Column="2"
                     Padding="10,6"
                     Command="{Binding SaveNoteCommand}"
                     IsVisible="{Binding MobileShowEditor}"
                     Style="{StaticResource AccentBtnStyle}"
-                    Text="💾" />
+                    Text="Сохранить" />
             </Grid>
 
-            <!--  СПИСОК (мобиль)  -->
-            <Grid Grid.Row="1" IsVisible="{Binding MobileShowEditor, Converter={StaticResource InverseBoolConverter}}">
-                <Grid RowDefinitions="Auto,Auto,*">
-                    <!--  Поиск  -->
-                    <Border
-                        Grid.Row="0"
-                        Margin="12,8"
-                        Padding="10,4"
-                        BackgroundColor="{StaticResource BgCard}"
-                        Stroke="{StaticResource BorderColor}"
-                        StrokeShape="RoundRectangle 8">
-                        <Entry
-                            HeightRequest="36"
-                            Placeholder="Поиск..."
-                            ReturnCommand="{Binding SearchCommand}"
-                            Style="{StaticResource SearchEntryStyle}"
-                            Text="{Binding SearchQuery}" />
-                    </Border>
+            <!--  Mobile list  -->
+            <Grid
+                Grid.Row="1"
+                IsVisible="{Binding MobileShowEditor, Converter={StaticResource InverseBoolConverter}}"
+                RowDefinitions="Auto,Auto,Auto,*">
 
-                    <!--  Категории  -->
-                    <ScrollView
-                        Grid.Row="1"
-                        Margin="12,0,12,8"
-                        HorizontalScrollBarVisibility="Never"
-                        Orientation="Horizontal">
-                        <StackLayout Orientation="Horizontal" Spacing="6">
-                            <Border Style="{StaticResource CategoryChipStyle}">
-                                <Label
-                                    FontSize="12"
-                                    Text="Все"
-                                    TextColor="{StaticResource TextPrimary}" />
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SelectCategoryCommand}" CommandParameter="{x:Null}" />
-                                </Border.GestureRecognizers>
-                            </Border>
-                            <Border Style="{StaticResource CategoryChipStyle}">
-                                <Label
-                                    FontSize="12"
-                                    Text="📌 Закреплённые"
-                                    TextColor="{StaticResource TextPrimary}" />
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding ShowPinnedCommand}" />
-                                </Border.GestureRecognizers>
-                            </Border>
-                        </StackLayout>
-                    </ScrollView>
+                <Border
+                    Grid.Row="0"
+                    Margin="12,8"
+                    Padding="10,4"
+                    BackgroundColor="{StaticResource BgCard}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeShape="RoundRectangle 8">
+                    <Entry
+                        HeightRequest="36"
+                        Placeholder="Поиск..."
+                        ReturnCommand="{Binding SearchCommand}"
+                        Style="{StaticResource SearchEntryStyle}"
+                        Text="{Binding SearchQuery}" />
+                </Border>
 
-                    <!--  Список заметок  -->
-                    <CollectionView
-                        Grid.Row="2"
-                        ItemsSource="{Binding FilteredNotes}"
-                        SelectedItem="{Binding SelectedNote, Mode=TwoWay}"
-                        SelectionMode="Single">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:Note">
-                                <Border Margin="12,0,12,8" Style="{StaticResource NoteCardStyle}">
-                                    <Grid RowDefinitions="Auto,Auto" RowSpacing="4">
-                                        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
-                                            <Label
-                                                Grid.Column="0"
-                                                Margin="0,0,4,0"
-                                                FontSize="11"
-                                                IsVisible="{Binding IsPinned}"
-                                                Text="📌"
-                                                VerticalOptions="Center" />
-                                            <Label
-                                                Grid.Column="1"
-                                                FontAttributes="Bold"
-                                                FontSize="14"
-                                                LineBreakMode="TailTruncation"
-                                                Text="{Binding Title}"
-                                                TextColor="{StaticResource TextPrimary}" />
-                                            <Label
-                                                Grid.Column="2"
-                                                Style="{StaticResource MutedStyle}"
-                                                Text="{Binding UpdatedAt, StringFormat='{0:dd MMM}'}"
-                                                VerticalOptions="Center" />
-                                        </Grid>
+                <ScrollView
+                    Grid.Row="1"
+                    Margin="12,0,12,8"
+                    Orientation="Horizontal">
+                    <StackLayout Orientation="Horizontal" Spacing="6">
+
+                        <Border Style="{StaticResource CategoryChipStyle}">
+                            <Label
+                                FontSize="12"
+                                Text="Все"
+                                TextColor="{StaticResource TextPrimary}" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectCategoryCommand}" CommandParameter="{x:Null}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <Border Style="{StaticResource CategoryChipStyle}">
+                            <Label
+                                FontSize="12"
+                                Text="📌 Закреплённые"
+                                TextColor="{StaticResource TextPrimary}" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowPinnedCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <StackLayout
+                            BindableLayout.ItemsSource="{Binding Categories}"
+                            Orientation="Horizontal"
+                            Spacing="6">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:NoteCategory">
+                                    <Border Style="{StaticResource CategoryChipStyle}">
                                         <Label
-                                            Grid.Row="1"
                                             FontSize="12"
+                                            Text="{Binding Name}"
+                                            TextColor="{StaticResource TextPrimary}" />
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesViewModel}}, Path=SelectCategoryCommand}" CommandParameter="{Binding .}" />
+                                            <TapGestureRecognizer
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesViewModel}}, Path=DeleteCategoryCommand}"
+                                                CommandParameter="{Binding .}"
+                                                NumberOfTapsRequired="2" />
+                                        </Border.GestureRecognizers>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+
+                        <Border
+                            BackgroundColor="#1A2A4A"
+                            Stroke="#2A4A8A"
+                            Style="{StaticResource CategoryChipStyle}">
+                            <Label
+                                FontSize="12"
+                                Text="＋ Категория"
+                                TextColor="#4F8EF7" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowAddCategoryCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </StackLayout>
+                </ScrollView>
+
+                <Border
+                    Grid.Row="2"
+                    Margin="12,0,12,8"
+                    Padding="10,8"
+                    BackgroundColor="#1C2333"
+                    IsVisible="{Binding IsAddingCategory}"
+                    Stroke="#2A3550"
+                    StrokeShape="RoundRectangle 8">
+                    <HorizontalStackLayout Spacing="6">
+                        <Entry
+                            FontSize="13"
+                            HorizontalOptions="FillAndExpand"
+                            Placeholder="Название категории"
+                            PlaceholderColor="#4A5568"
+                            ReturnCommand="{Binding CreateCategoryCommand}"
+                            Text="{Binding NewCategoryName}"
+                            TextColor="#E8EAF0" />
+                        <Button
+                            BackgroundColor="#2A4A8A"
+                            Command="{Binding CreateCategoryCommand}"
+                            CornerRadius="6"
+                            HeightRequest="32"
+                            Text="✓"
+                            TextColor="#4F8EF7"
+                            WidthRequest="36" />
+                        <Button
+                            BackgroundColor="Transparent"
+                            Command="{Binding CancelAddCategoryCommand}"
+                            FontSize="16"
+                            HeightRequest="32"
+                            Text="✕"
+                            TextColor="#8892A4"
+                            WidthRequest="32" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <CollectionView
+                    Grid.Row="3"
+                    ItemsSource="{Binding FilteredNotes}"
+                    SelectedItem="{Binding SelectedNote, Mode=TwoWay}"
+                    SelectionMode="Single">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Note">
+                            <Border Margin="12,0,12,8" Style="{StaticResource NoteCardStyle}">
+                                <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="4">
+                                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+                                        <Label
+                                            Grid.Column="0"
+                                            Margin="0,0,4,0"
+                                            FontSize="11"
+                                            IsVisible="{Binding IsPinned}"
+                                            Text="📌"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Grid.Column="1"
+                                            FontAttributes="Bold"
+                                            FontSize="14"
                                             LineBreakMode="TailTruncation"
-                                            MaxLines="2"
-                                            Text="{Binding Content}"
-                                            TextColor="{StaticResource TextSecondary}" />
+                                            Text="{Binding Title}"
+                                            TextColor="{StaticResource TextPrimary}" />
+                                        <Label
+                                            Grid.Column="2"
+                                            Style="{StaticResource MutedStyle}"
+                                            Text="{Binding UpdatedAt, StringFormat='{0:dd MMM}'}" />
                                     </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </Grid>
+
+                                    <Label
+                                        Grid.Row="1"
+                                        FontSize="12"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="2"
+                                        Text="{Binding Content}"
+                                        TextColor="{StaticResource TextSecondary}" />
+
+                                    <Label
+                                        Grid.Row="2"
+                                        FontSize="11"
+                                        IsVisible="{Binding CategoryId, Converter={StaticResource NullToBoolConverter}}"
+                                        Text="{Binding CategoryName}"
+                                        TextColor="{StaticResource AccentBlue}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </Grid>
 
-            <!--  РЕДАКТОР (мобиль)  -->
+            <!--  Mobile editor  -->
             <Grid
                 Grid.Row="1"
                 IsVisible="{Binding MobileShowEditor}"
-                RowDefinitions="Auto,Auto,*">
+                RowDefinitions="Auto,Auto,Auto,*,Auto">
 
-                <!--  MD тулбар  -->
                 <Border
                     Grid.Row="0"
-                    Margin="8,6"
+                    Margin="8,6,8,4"
                     Padding="6,4"
                     BackgroundColor="{StaticResource ToolbarBg}"
                     Stroke="{StaticResource BorderColor}"
                     StrokeShape="RoundRectangle 8">
-                    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                    <ScrollView Orientation="Horizontal">
                         <StackLayout Orientation="Horizontal" Spacing="2">
                             <Button
                                 Command="{Binding InsertMdCommand}"
@@ -1019,60 +1235,166 @@
                                 Text="H1" />
                             <Button
                                 Command="{Binding InsertMdCommand}"
+                                CommandParameter="h2"
+                                Style="{StaticResource MdBtnStyle}"
+                                Text="H2" />
+                            <Button
+                                Command="{Binding InsertMdCommand}"
+                                CommandParameter="h3"
+                                Style="{StaticResource MdBtnStyle}"
+                                Text="H3" />
+
+                            <BoxView
+                                Margin="4,0"
+                                BackgroundColor="{StaticResource BorderColor}"
+                                HeightRequest="20"
+                                VerticalOptions="Center"
+                                WidthRequest="1" />
+
+                            <Button
+                                Command="{Binding InsertMdCommand}"
                                 CommandParameter="ulist"
                                 Style="{StaticResource MdBtnStyle}"
                                 Text="• List" />
                             <Button
                                 Command="{Binding InsertMdCommand}"
+                                CommandParameter="olist"
+                                Style="{StaticResource MdBtnStyle}"
+                                Text="1. List" />
+                            <Button
+                                Command="{Binding InsertMdCommand}"
                                 CommandParameter="todo"
                                 Style="{StaticResource MdBtnStyle}"
                                 Text="[ ]" />
+
+                            <BoxView
+                                Margin="4,0"
+                                BackgroundColor="{StaticResource BorderColor}"
+                                HeightRequest="20"
+                                VerticalOptions="Center"
+                                WidthRequest="1" />
+
+                            <Button
+                                Command="{Binding InsertMdCommand}"
+                                CommandParameter="link"
+                                Style="{StaticResource MdBtnStyle}"
+                                Text="🔗 Link" />
                             <Button
                                 Command="{Binding InsertMdCommand}"
                                 CommandParameter="code"
                                 Style="{StaticResource MdBtnStyle}"
                                 Text="``` Code" />
                             <Button
+                                Command="{Binding InsertMdCommand}"
+                                CommandParameter="divider"
+                                Style="{StaticResource MdBtnStyle}"
+                                Text="— Divider" />
+
+                            <BoxView
+                                Margin="4,0"
+                                BackgroundColor="{StaticResource BorderColor}"
+                                HeightRequest="20"
+                                VerticalOptions="Center"
+                                WidthRequest="1" />
+
+                            <Button
+                                Command="{Binding InsertMdCommand}"
+                                CommandParameter="tag"
+                                Style="{StaticResource MdBtnStyle}"
+                                Text="#tag" />
+                            <Button
                                 Command="{Binding AddAttachmentCommand}"
                                 FontSize="16"
                                 Style="{StaticResource MdBtnStyle}"
                                 Text="📎" />
+                            <Button
+                                Command="{Binding TogglePreviewCommand}"
+                                Style="{StaticResource ToolbarBtnStyle}"
+                                Text="{Binding IsPreviewMode, Converter={StaticResource BoolToPreviewLabelConverter}}" />
                         </StackLayout>
                     </ScrollView>
                 </Border>
 
-                <!--  Заголовок заметки  -->
-                <Entry
+                <Border
                     Grid.Row="1"
+                    Margin="12,0,12,4"
+                    Padding="8,4"
+                    BackgroundColor="{StaticResource BgCard}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeShape="RoundRectangle 6">
+                    <Grid ColumnDefinitions="*,Auto,Auto">
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource MutedStyle}"
+                            Text="{Binding SelectedNote.UpdatedAt, StringFormat='обновлено {0:dd MMM, HH:mm}'}"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="8,0"
+                            Style="{StaticResource MutedStyle}"
+                            Text="{Binding AutosaveStatus}" />
+                        <Label
+                            Grid.Column="2"
+                            Style="{StaticResource MutedStyle}"
+                            Text="{Binding WordCountText}" />
+                    </Grid>
+                </Border>
+
+                <Entry
+                    Grid.Row="2"
                     Margin="12,0"
                     BackgroundColor="Transparent"
                     FontAttributes="Bold"
                     FontSize="18"
-                    Placeholder="Заголовок..."
+                    Placeholder="Заголовок заметки..."
                     PlaceholderColor="{StaticResource TextMuted}"
                     Text="{Binding EditTitle}"
                     TextColor="{StaticResource TextPrimary}" />
 
-                <!--  Редактор  -->
-                <ScrollView Grid.Row="2" Padding="12,8">
+                <ScrollView
+                    Grid.Row="3"
+                    Padding="12,8"
+                    IsVisible="{Binding IsPreviewMode, Converter={StaticResource InverseBoolConverter}}">
                     <Editor
                         AutoSize="TextChanges"
                         MinimumHeightRequest="300"
                         Style="{StaticResource NoteEditorStyle}"
                         Text="{Binding EditContent}" />
                 </ScrollView>
+
+                <WebView
+                    Grid.Row="3"
+                    Margin="12,8"
+                    IsVisible="{Binding IsPreviewMode}">
+                    <WebView.Source>
+                        <HtmlWebViewSource Html="{Binding MarkdownHtml}" />
+                    </WebView.Source>
+                </WebView>
+
+                <Border
+                    Grid.Row="4"
+                    Margin="12,8"
+                    Padding="12,6"
+                    BackgroundColor="{StaticResource BgSecondary}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeShape="RoundRectangle 6">
+                    <Button
+                        Padding="10,4"
+                        BackgroundColor="#3A1E1E"
+                        Command="{Binding DeleteNoteCommand}"
+                        CornerRadius="6"
+                        FontSize="14"
+                        Text="Удалить"
+                        TextColor="#EF4444" />
+                </Border>
             </Grid>
-
         </Grid>
-        <!--  /MobileLayout  -->
 
-        <!--  Индикатор загрузки  -->
         <ActivityIndicator
             HorizontalOptions="Center"
             IsRunning="{Binding IsBusy}"
             IsVisible="{Binding IsBusy}"
             VerticalOptions="Center"
             Color="{StaticResource AccentBlue}" />
-
     </Grid>
 </ContentPage>

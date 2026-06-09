@@ -31,7 +31,15 @@ namespace EduDev_Tracker.Services.Notes
             => _repo.SaveVersionAsync(version);
         public Task<int> SaveAsync(Note note)
             => _repo.SaveAsync(note);
-        public Task<Note> SaveWithChildrenAsync(Note note)
-            => _repo.SaveWithChildrenAsync(note);
+        public Task<Note> SaveNoteDirectAsync(Note note)
+            => _repo.SaveNoteDirectAsync(note);
+        public Task<int> DeleteAsync(Note note)
+            => _repo.DeleteAsync(note);
+        public Task<int> DeleteAttachmentAsync(NoteAttachment attachment)
+            => _repo.DeleteAttachmentAsync(attachment);
+        public Task<int> SaveCategoryAsync(NoteCategory category)
+            => _repo.SaveCategoryAsync(category);
+        public Task<int> DeleteCategoryAsync(NoteCategory category)
+            => _repo.DeleteCategoryAsync(category);
     }
 }

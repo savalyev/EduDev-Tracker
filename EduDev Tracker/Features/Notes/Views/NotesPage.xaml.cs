@@ -23,4 +23,12 @@ public partial class NotesPage : ContentPage
         base.OnSizeAllocated(width, height);
         _vm.OnSizeChanged(width);
     }
+
+    private void OnMenuTapped(object? sender, EventArgs e)
+    {
+        if (Shell.Current != null)
+        {
+            Shell.Current.FlyoutIsPresented = !Shell.Current.FlyoutIsPresented;
+        }
+    }
 }

@@ -849,14 +849,6 @@
                                                         StrokeThickness="1">
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
-                                                            <SwipeGestureRecognizer
-                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskForwardCommand}"
-                                                                CommandParameter="{Binding TaskId}"
-                                                                Direction="Left" />
-                                                            <SwipeGestureRecognizer
-                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskBackCommand}"
-                                                                CommandParameter="{Binding TaskId}"
-                                                                Direction="Right" />
                                                         </Border.GestureRecognizers>
                                                         <Border.StrokeShape>
                                                             <RoundRectangle CornerRadius="10" />
@@ -955,14 +947,6 @@
                                                         StrokeThickness="1">
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
-                                                            <SwipeGestureRecognizer
-                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskForwardCommand}"
-                                                                CommandParameter="{Binding TaskId}"
-                                                                Direction="Left" />
-                                                            <SwipeGestureRecognizer
-                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskBackCommand}"
-                                                                CommandParameter="{Binding TaskId}"
-                                                                Direction="Right" />
                                                         </Border.GestureRecognizers>
                                                         <Border.StrokeShape>
                                                             <RoundRectangle CornerRadius="10" />
@@ -1061,14 +1045,6 @@
                                                         StrokeThickness="1">
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
-                                                            <SwipeGestureRecognizer
-                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskForwardCommand}"
-                                                                CommandParameter="{Binding TaskId}"
-                                                                Direction="Left" />
-                                                            <SwipeGestureRecognizer
-                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskBackCommand}"
-                                                                CommandParameter="{Binding TaskId}"
-                                                                Direction="Right" />
                                                         </Border.GestureRecognizers>
                                                         <Border.StrokeShape>
                                                             <RoundRectangle CornerRadius="10" />
@@ -1167,14 +1143,6 @@
                                                         StrokeThickness="1">
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
-                                                            <SwipeGestureRecognizer
-                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskForwardCommand}"
-                                                                CommandParameter="{Binding TaskId}"
-                                                                Direction="Left" />
-                                                            <SwipeGestureRecognizer
-                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=MoveTaskBackCommand}"
-                                                                CommandParameter="{Binding TaskId}"
-                                                                Direction="Right" />
                                                         </Border.GestureRecognizers>
                                                         <Border.StrokeShape>
                                                             <RoundRectangle CornerRadius="10" />

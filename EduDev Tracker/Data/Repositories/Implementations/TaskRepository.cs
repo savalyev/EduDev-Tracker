@@ -43,7 +43,7 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
 
             return Connection.QueryAsync<TaskItem>(
                 "SELECT * FROM tasks WHERE ProfileId = ? AND DueAt >= ? AND DueAt < ?" +
-                "AND IsArchived = 0",
+                " AND IsArchived = 0",
                 profileId, start, end);
         }
 

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    x:Class="EduDev_Tracker.Features.Notes.Views.VersionsPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:EduDev_Tracker.Data.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+    <Border
+        Padding="20"
+        BackgroundColor="#1C2333"
+        MaximumHeightRequest="500"
+        MinimumHeightRequest="300"
+        Stroke="#252D40"
+        StrokeShape="RoundRectangle 14"
+        WidthRequest="420">
+        <Grid RowDefinitions="Auto,*,Auto" RowSpacing="12">
+
+            <!--  Заголовок  -->
+            <Label
+                Grid.Row="0"
+                FontAttributes="Bold"
+                FontSize="16"
+                Text="История изменений"
+                TextColor="#E8EAF0" />
+
+            <!--  Список версий  -->
+            <CollectionView x:Name="VersionsList" Grid.Row="1">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:NoteVersion">
+                        <Border
+                            Margin="0,0,0,8"
+                            Padding="12,10"
+                            BackgroundColor="#252D40"
+                            Stroke="#2A3550"
+                            StrokeShape="RoundRectangle 8">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+
+                                <!--  Версия  -->
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="6,3"
+                                    BackgroundColor="#2A4A8A"
+                                    StrokeShape="RoundRectangle 4">
+                                    <Label
+                                        FontSize="11"
+                                        Text="{Binding VersionLabel}"
+                                        TextColor="#4F8EF7" />
+                                </Border>
+
+                                <!--  Дата  -->
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="13"
+                                    Text="{Binding SavedAt, StringFormat='{0:dd MMM yyyy, HH:mm}'}"
+                                    TextColor="#8892A4"
+                                    VerticalOptions="Center" />
+
+                                <!--  Кнопка восстановить  -->
+                                <Button
+                                    Grid.Column="2"
+                                    Padding="8,5"
+                                    BackgroundColor="#1C3A6A"
+                                    Clicked="OnRestoreClicked"
+                                    CommandParameter="{Binding .}"
+                                    CornerRadius="6"
+                                    FontSize="11"
+                                    HeightRequest="30"
+                                    Text="Восстановить"
+                                    TextColor="#4F8EF7" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!--  Кнопка закрыть  -->
+            <Button
+                Grid.Row="2"
+                BackgroundColor="#252D40"
+                Clicked="OnCloseClicked"
+                CornerRadius="8"
+                HeightRequest="40"
+                Text="Закрыть"
+                TextColor="#8892A4" />
+        </Grid>
+    </Border>
+</toolkit:Popup>

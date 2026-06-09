@@ -85,6 +85,9 @@ namespace EduDev_Tracker.Data
                 await _connection.CreateTableAsync<NoteTag>();
                 System.Diagnostics.Debug.WriteLine("DB: NoteTag");
 
+                await _connection.CreateTableAsync<NoteVersion>();
+                System.Diagnostics.Debug.WriteLine("DB: NoteVersion");
+
                 await _connection.CreateTableAsync<PomodoroPreset>();
                 await _connection.CreateTableAsync<PomodoroSession>();
                 await _connection.CreateTableAsync<CheatsheetCategory>();

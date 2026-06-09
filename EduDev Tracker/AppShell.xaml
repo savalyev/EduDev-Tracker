@@ -32,4 +32,11 @@
             Route="TasksPage" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Заметки" Route="Notes">
+        <ShellContent
+            Title="Заметки"
+            ContentTemplate="{DataTemplate views:Notes.Views.NotesPage}"
+            Route="NotesPage" />
+    </FlyoutItem>
+
 </Shell>

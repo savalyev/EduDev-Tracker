@@ -5,10 +5,13 @@ using EduDev_Tracker.Features.Dashboard.ViewModels;
 using EduDev_Tracker.Features.Dashboard.Views;
 using EduDev_Tracker.Features.Habits.ViewModels;
 using EduDev_Tracker.Features.Habits.Views;
+using EduDev_Tracker.Features.Notes.ViewModels;
+using EduDev_Tracker.Features.Notes.Views;
 using EduDev_Tracker.Features.Tasks.ViewModels;
 using EduDev_Tracker.Features.Tasks.Views;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
+using EduDev_Tracker.Services.Notes;
 using EduDev_Tracker.Services.Notification;
 using EduDev_Tracker.Services.Tasks;
 using Microsoft.Extensions.Logging;
@@ -87,6 +90,7 @@ namespace EduDev_Tracker
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<Services.Notification.INotificationService, NotificationService>();
             services.AddSingleton<RecurrenceProcessorService>();
+            services.AddSingleton<INotesService, NotesService>();
 
             services.AddTransient<CreateHabitViewModel>();
             services.AddTransient<CreateHabitPage>();
@@ -111,6 +115,11 @@ namespace EduDev_Tracker
 
             services.AddTransient<TaskDetailsPage>();
             services.AddTransient<TaskDetailsViewModel>();
+
+            services.AddTransient<NotesViewModel>();
+            services.AddTransient<NotesPage>();
+
+            services.AddTransient<VersionsPopup>();
         }
     }
 }

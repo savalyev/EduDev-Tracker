@@ -12,6 +12,13 @@
                 <ResourceDictionary Source="Resources/Styles/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <converters:MimeToIconConverter x:Key="MimeToIconConverter" />
+            <converters:FileSizeConverter x:Key="FileSizeConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
+            <converters:ActiveCategoryColorConverter x:Key="ActiveCategoryColorConverter" />
+            <converters:StringToHtmlConverter x:Key="StringToHtmlConverter" />
+            <converters:BoolToPreviewLabelConverter x:Key="BoolToPreviewLabelConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

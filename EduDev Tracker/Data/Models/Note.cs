@@ -23,5 +23,8 @@ namespace EduDev_Tracker.Data.Models
 
         [ManyToMany(typeof(NoteTag))]
         public List<Tag> Tags { get; set; } = new();
+
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<NoteVersion> Versions { get; set; } = new();
     }
 }

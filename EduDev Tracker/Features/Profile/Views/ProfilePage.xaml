@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Profile.Views.ProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:EduDev_Tracker.Features.Profile.ViewModels"
+    Title="Профиль"
+    x:DataType="vm:ProfileViewModel"
+    BackgroundColor="#0F172A">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,24" Spacing="16">
+
+            <Border
+                BackgroundColor="#1E293B"
+                StrokeShape="RoundRectangle 24"
+                StrokeThickness="0">
+                <VerticalStackLayout Padding="20" Spacing="12">
+                    <Label
+                        FontSize="42"
+                        HorizontalOptions="Center"
+                        Text="👤" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="24"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding UserName}"
+                        TextColor="White" />
+                    <Label
+                        FontSize="14"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding UserEmail}"
+                        TextColor="#CBD5E1" />
+                    <Label
+                        FontSize="13"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding AccountType}"
+                        TextColor="#93C5FD" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border
+                BackgroundColor="#1E293B"
+                StrokeShape="RoundRectangle 20"
+                StrokeThickness="0">
+                <VerticalStackLayout Padding="16" Spacing="12">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        Text="Настройки"
+                        TextColor="White" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label
+                            Text="Тема"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="Системная"
+                            TextColor="#94A3B8" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label
+                            Text="Язык"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Text="Русский"
+                            TextColor="#94A3B8" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label
+                            Text="Уведомления"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                        <Switch Grid.Column="1" IsToggled="True" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Button
+                BackgroundColor="#DC2626"
+                Command="{Binding LogoutCommand}"
+                CornerRadius="16"
+                HeightRequest="52"
+                Text="Выйти из аккаунта"
+                TextColor="White" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -55,7 +55,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         public NotesViewModel(INotesService noteService)
         {
             _noteService = noteService;
-            _profileId = 0; // TODO
+            _profileId = Preferences.Default.Get("active_profile_id", 0);
         }
 
         [RelayCommand]

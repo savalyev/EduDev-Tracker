@@ -21,7 +21,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         private readonly IServiceProvider _services;
         private readonly ITaskService _taskService;
         private readonly RecurrenceProcessorService _recurrenceProcessor;
-        private int _profileId = 0;
+        private int _profileId;
 
         public TasksViewModel(ITaskService taskService,
             INavigationService navigation,
@@ -32,6 +32,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             _services = provider;
             _navigation = navigation;
             _recurrenceProcessor = recurrenceProcessor;
+            _profileId = Preferences.Default.Get("active_profile_id", 0);
         }
 
 
@@ -305,23 +306,27 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [RelayCommand]
         private async Task OpenTaskDetails(int id)
         {
-            var page = _services.GetRequiredService<TaskDetailsPage>();
+            //var page = _services.GetRequiredService<TaskDetailsPage>();
 
-            if (page.BindingContext is TaskDetailsViewModel vm)
-                await vm.InitializeAsync(new Dictionary<string, object> { { "taskId", id } });
+            //if (page.BindingContext is TaskDetailsViewModel vm)
+                //await vm.InitializeAsync(new Dictionary<string, object> { { "taskId", id } });
 
-            await _navigation.PushModalAsync(page);
+            //await _navigation.PushModalAsync(page);
+
+            await _navigation.GoToAsync($"{nameof(TaskDetailsPage)}?taskId={id}");
         }
 
         [RelayCommand]
         private async Task EditTask(int taskId)
         {
-            var page = _services.GetRequiredService<TaskDetailsPage>();
+            //var page = _services.GetRequiredService<TaskDetailsPage>();
 
-            if (page.BindingContext is TaskDetailsViewModel vm)
-                await vm.InitializeAsync(new Dictionary<string, object> { { "taskId", taskId } });
+            //if (page.BindingContext is TaskDetailsViewModel vm)
+                //await vm.InitializeAsync(new Dictionary<string, object> { { "taskId", taskId } });
 
-            await _navigation.PushModalAsync(page);
+            //await _navigation.PushModalAsync(page);
+
+            await _navigation.GoToAsync($"{nameof(TaskDetailsPage)}?taskId={taskId}");
         }
 
         [RelayCommand]
@@ -350,8 +355,10 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [RelayCommand]
         private async Task OpenAddTask()
         {
-            var modal = _services.GetRequiredService<AddTaskPage>();
-            await _navigation.PushModalAsync(modal);
+            //var modal = _services.GetRequiredService<AddTaskPage>();
+            //await _navigation.PushModalAsync(modal);
+
+            await _navigation.GoToAsync(nameof(AddTaskPage));
         }
 
         [RelayCommand]
@@ -362,7 +369,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             try
             {
                 await _recurrenceProcessor.ProcessAsync(_profileId);
-                _allTasks = await _taskService.GetActiveAsync(0);
+                _allTasks = await _taskService.GetActiveAsync(_profileId);
                 ApplyFilters();
             } catch(Exception ex)
             {

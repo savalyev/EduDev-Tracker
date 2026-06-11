@@ -171,7 +171,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand]
         private async Task CloseAsync()
         {
-            await _navigation.PopModalAsync();
+            await _navigation.GoBackAsync();
         }
 
     }

@@ -1,14 +1,19 @@
 ﻿using CommunityToolkit.Maui;
 using EduDev_Tracker.Data;
 using EduDev_Tracker.Data.Repositories.Implementations;
+using EduDev_Tracker.Features.Auth.ViewModels;
+using EduDev_Tracker.Features.Auth.Views;
 using EduDev_Tracker.Features.Dashboard.ViewModels;
 using EduDev_Tracker.Features.Dashboard.Views;
 using EduDev_Tracker.Features.Habits.ViewModels;
 using EduDev_Tracker.Features.Habits.Views;
 using EduDev_Tracker.Features.Notes.ViewModels;
 using EduDev_Tracker.Features.Notes.Views;
+using EduDev_Tracker.Features.Profile.ViewModels;
+using EduDev_Tracker.Features.Profile.Views;
 using EduDev_Tracker.Features.Tasks.ViewModels;
 using EduDev_Tracker.Features.Tasks.Views;
+using EduDev_Tracker.Services.Auth;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Notes;
@@ -91,6 +96,7 @@ namespace EduDev_Tracker
             services.AddSingleton<Services.Notification.INotificationService, NotificationService>();
             services.AddSingleton<RecurrenceProcessorService>();
             services.AddSingleton<INotesService, NotesService>();
+            services.AddSingleton<IAuthService,  AuthService>();
 
             services.AddTransient<CreateHabitViewModel>();
             services.AddTransient<CreateHabitPage>();
@@ -120,6 +126,12 @@ namespace EduDev_Tracker
             services.AddTransient<NotesPage>();
 
             services.AddTransient<VersionsPopup>();
+
+            services.AddTransient<AuthViewModel>();
+            services.AddTransient<AuthPage>();
+
+            services.AddTransient<ProfileViewModel>();
+            services.AddTransient<ProfilePage>();
         }
     }
 }

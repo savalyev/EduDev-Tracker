@@ -24,6 +24,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             _taskService = taskService;
             _navigation = navigationService;
             _notification = notification;
+            _profileId = Preferences.Default.Get("active_profile_id", 0);
 
             Recurrence.PropertyChanged += (_, e) => OnPropertyChanged(e.PropertyName);
         }
@@ -63,13 +64,6 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         [RelayCommand]
         private Task Init() => Task.CompletedTask;
-
-        public override Task InitializeAsync(IDictionary<string, object>? query = null)
-        {
-            if (query?.TryGetValue("profileId", out var pid) == true)
-                _profileId = Convert.ToInt32(pid);
-            return Task.CompletedTask;
-        }
 
         [RelayCommand]
         private async Task Save()
@@ -149,7 +143,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         private async Task CloseAsync()
         {
-            await _navigation.PopModalAsync();
+            await _navigation.GoBackAsync();
         }
 
     }

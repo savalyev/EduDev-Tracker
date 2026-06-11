@@ -8,6 +8,13 @@ namespace EduDev_Tracker
         public AppShell()
         {
             InitializeComponent();
+
+            Routing.RegisterRoute(nameof(HabitDetailsPage), typeof(HabitDetailsPage));
+            Routing.RegisterRoute(nameof(ArchivedHabitsPage), typeof(ArchivedHabitsPage));
+            Routing.RegisterRoute(nameof(CreateHabitPage), typeof(CreateHabitPage));
+
+            Routing.RegisterRoute(nameof(TaskDetailsPage), typeof(TaskDetailsPage));
+            Routing.RegisterRoute(nameof(AddTaskPage), typeof(AddTaskPage));
         }
     }
 }

@@ -26,9 +26,12 @@ public partial class TasksPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        if(BindingContext is TasksViewModel vm)
+        this.Opacity = 0;
+        this.FadeToAsync(1, 200, Easing.CubicOut);
+        if (BindingContext is TasksViewModel vm)
         {
             vm.LoadCommand.Execute(null);
         }
     }
+
 }

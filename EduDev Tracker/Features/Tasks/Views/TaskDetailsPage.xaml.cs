@@ -1,28 +1,34 @@
+using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Features.Tasks.ViewModels;
 
 namespace EduDev_Tracker.Features.Tasks.Views;
 
+[QueryProperty(nameof(TaskId), "taskId")]
 public partial class TaskDetailsPage : ContentPage
 {
     private readonly TaskDetailsViewModel _vm;
 
+    private string _taskId;
+    public string TaskId
+    {
+        get => _taskId;
+        set
+        {
+            _taskId = value;
+            _ = LoadAsync();
+        }
+    }
+
 	public TaskDetailsPage(TaskDetailsViewModel vm)
 	{
-            InitializeComponent();
+        InitializeComponent();
         BindingContext = vm;
         _vm = vm;
     }
 
-    protected override async void OnAppearing()
+    private async Task LoadAsync()
     {
-        base.OnAppearing();
-        _vm.InitCommand.Execute(this);
-
-        this.Opacity = 0;
-        this.Scale = 0.95;
-        await Task.WhenAll(
-            this. FadeTo(1, 250, Easing.CubicOut),
-            this.ScaleTo(1, 250, Easing.CubicOut)
-            );
+        if (int.TryParse(TaskId, out var id))
+            await _vm.InitializeAsync(id);
     }
 }

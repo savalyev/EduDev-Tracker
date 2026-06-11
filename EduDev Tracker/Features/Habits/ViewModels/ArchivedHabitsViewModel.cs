@@ -14,6 +14,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private readonly IHabitService _habitService;
         private readonly INotificationService _habitNotificationService;
         private readonly INavigationService _navigation;
+        private readonly int _profileId;
 
         public ObservableCollection<ArchivedHabitItem> ArchivedHabits { get; } = new();
 
@@ -30,6 +31,8 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             _habitService = habitService;
             _habitNotificationService = habitNotificationService;
             _navigation = navigation;
+
+            _profileId = Preferences.Default.Get("active_profile_id", 0);
         }
 
         [RelayCommand]
@@ -43,7 +46,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
                 System.Diagnostics.Debug.WriteLine("[Archive] LoadAsync вызван");
 
-                var habits = await _habitService.GetArchivedAsync(1);
+                var habits = await _habitService.GetArchivedAsync(_profileId);
 
                 System.Diagnostics.Debug.WriteLine($"[Archive] Найдено: {habits.Count}");
 
@@ -88,7 +91,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
         [RelayCommand]
         private async Task CloseAsync()
-            => await _navigation.PopModalAsync();
+            => await _navigation.GoBackAsync();
     }
 
     public class ArchivedHabitItem

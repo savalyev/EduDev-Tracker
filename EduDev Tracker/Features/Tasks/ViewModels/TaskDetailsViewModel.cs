@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Android.Provider;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Data.Models;
@@ -86,13 +87,13 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [RelayCommand]
         private Task Init() => Task.CompletedTask;
 
-        public override async Task InitializeAsync(IDictionary<string, object>? query = null)
+        public async Task InitializeAsync(int taskId)
         {
-            if (query?.TryGetValue("taskId", out var id) != true) return;
             IsBusy = true;
             try
             {
-                _task = await _taskService.GetByIdWithChildrenAsync(Convert.ToInt32(id));
+                _task = await _taskService.GetByIdWithChildrenAsync(taskId);
+                if (_task == null) return; 
                 LoadFromTask(_task);
             }
             finally { IsBusy = false; }
@@ -201,7 +202,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         private async Task CloseAsync()
         {
-            await _navigation.PopModalAsync();
+            await _navigation.GoBackAsync();
         }
     }
 }

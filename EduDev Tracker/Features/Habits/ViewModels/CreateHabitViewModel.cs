@@ -19,6 +19,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private readonly INavigationService _navigation;
         private readonly IHabitService _habitService;
         private readonly INotificationService _habitNotificationService;
+        private readonly int _profileId;
 
 
         [ObservableProperty]
@@ -84,6 +85,8 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
             foreach (var day in WeekDays)
                 day.PropertyChanged += Day_PropertyChanged;
+
+            _profileId = Preferences.Default.Get("active_profile_id", 0);
         }
         private void Day_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -138,7 +141,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                 };
 
                 var habit = await _habitService.CreateAsync(
-                    profileId: 1,
+                    profileId: _profileId,
                     title: Title,
                     type: SelectedHabitType?.Type ?? HabitType.Binary,
                     schedule: Schedule,
@@ -159,7 +162,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand]
         private async Task CancelAsync()
         {
-            await _navigation.PopModalAsync();
+            await _navigation.GoBackAsync();
         }
 
         [RelayCommand]

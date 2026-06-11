@@ -19,6 +19,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private readonly INavigationService _navigation;
         private readonly IServiceProvider _services;
         private readonly IHabitService _habitService;
+        private readonly int _profileId;
 
         public ObservableCollection<HabitItemViewModel> Habits { get; } = new();
         private readonly Dictionary<int, HabitSchedule> _scheduleCache = new();
@@ -58,6 +59,8 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             _navigation = navigation;
             _services = services;
             _habitService = habitService;
+
+            _profileId = Preferences.Default.Get("active_profile_id", 0);
         }
 
         [RelayCommand]
@@ -80,7 +83,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                 Habits.Clear();
                 _scheduleCache.Clear();
 
-                var allhabits = await _habitService.GetActiveAsync(1);
+                var allhabits = await _habitService.GetActiveAsync(_profileId);
 
                 foreach (var habit in allhabits)
                 {
@@ -182,8 +185,9 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand]
         private async Task OpenAddHabitAsync()
         {
-            var modal = _services.GetRequiredService<CreateHabitPage>();
-            await _navigation.PushModalAsync(modal);
+            //var modal = _services.GetRequiredService<CreateHabitPage>();
+            //await _navigation.PushModalAsync(modal);
+            await _navigation.GoToAsync(nameof(CreateHabitPage));
         }
 
         [RelayCommand]
@@ -272,7 +276,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         {
             DaysItems.Clear();
 
-            var allHabit = await _habitService.GetActiveAsync(1);
+            var allHabit = await _habitService.GetActiveAsync(_profileId);
             AnalyticsTotalActive = allHabit.Count().ToString();
             DateTime today = DateTime.Today;
 
@@ -338,10 +342,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand]
         private async Task OpenHabitDetailsAsync(int id)
         {
-            await _navigation.GoToAsync("HabitDetailsPage", new()
-            {
-                {"habitId", id }
-            });
+            await _navigation.GoToAsync($"{nameof(HabitDetailsPage)}?habitId={id}");
         }
 
         [RelayCommand]
@@ -349,8 +350,9 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         {
             try
             {
-                var modal = _services.GetRequiredService<ArchivedHabitsPage>();
-                await _navigation.PushModalAsync(modal);
+                await _navigation.GoToAsync(nameof(ArchivedHabitsPage));
+                //var modal = _services.GetRequiredService<ArchivedHabitsPage>();
+                //await _navigation.PushModalAsync(modal);
             }
             catch (Exception ex)
             {

@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Auth.Views.AuthPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:EduDev_Tracker.Features.Auth.ViewModels"
+    x:DataType="vm:AuthViewModel"
+    BackgroundColor="#0A0E1A"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!--  ЦВЕТА  -->
+            <Color x:Key="BgPage">#0A0E1A</Color>
+            <Color x:Key="BgCard">#111827</Color>
+            <Color x:Key="BgCardInner">#1A2235</Color>
+            <Color x:Key="BgInput">#0F1729</Color>
+            <Color x:Key="AccentBlue">#4F8EF7</Color>
+            <Color x:Key="AccentGreen">#3DDC84</Color>
+            <Color x:Key="BorderDefault">#1E2D45</Color>
+            <Color x:Key="BorderFocus">#4F8EF7</Color>
+            <Color x:Key="TextPrimary">#E8EAF0</Color>
+            <Color x:Key="TextSecondary">#8892A4</Color>
+            <Color x:Key="TextMuted">#4A5568</Color>
+            <Color x:Key="ErrorColor">#EF4444</Color>
+            <Color x:Key="ChipBg">#1A2540</Color>
+            <Color x:Key="ChipBorder">#2A3D60</Color>
+            <Color x:Key="ChipText">#3DDC84</Color>
+
+            <!--  СТИЛЬ ПОЛЯ ВВОДА  -->
+            <Style x:Key="InputEntryStyle" TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+                <Setter Property="PlaceholderColor" Value="{StaticResource TextMuted}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="HeightRequest" Value="44" />
+                <Setter Property="Margin" Value="0" />
+            </Style>
+
+            <!--  ОБЁРТКА ПОЛЯ (Border)  -->
+            <Style x:Key="InputBorderStyle" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{StaticResource BgInput}" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+                <Setter Property="Stroke" Value="{StaticResource BorderDefault}" />
+                <Setter Property="Padding" Value="12,0" />
+                <Setter Property="HeightRequest" Value="46" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Stroke" Value="#1E2D45" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Focused">
+                                <VisualState.Setters>
+                                    <Setter Property="Stroke" Value="#4F8EF7" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+            <!--  МЕТКА ПОЛЯ  -->
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
+                <Setter Property="Margin" Value="0,0,0,4" />
+            </Style>
+
+            <!--  КНОПКА АКЦЕНТ  -->
+            <Style x:Key="PrimaryBtnStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource AccentBlue}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#4F8EF7" />
+                                    <Setter Property="Scale" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#2A4A8A" />
+                                    <Setter Property="Scale" Value="0.97" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#6BA3FF" />
+                                    <Setter Property="Scale" Value="1.01" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="0.5" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+            <!--  КНОПКА GHOST (ссылка)  -->
+            <Style x:Key="LinkBtnStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{StaticResource AccentBlue}" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HeightRequest" Value="32" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="TextColor" Value="#4F8EF7" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="TextColor" Value="#2A4A8A" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="TextColor" Value="#6BA3FF" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!--  ФОНОВЫЙ ГРАДИЕНТ  -->
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="#0A0E1A" />
+                <GradientStop Offset="0.5" Color="#0D1530" />
+                <GradientStop Offset="1" Color="#0A1628" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!--  ОСНОВНОЙ СКРОЛЛ  -->
+        <ScrollView VerticalScrollBarVisibility="Never">
+            <Grid
+                Padding="24"
+                ColumnDefinitions="*,*"
+                MinimumHeightRequest="600"
+                RowDefinitions="*"
+                VerticalOptions="FillAndExpand">
+
+                <!--
+                    ══════════════════════════════════════════
+                    ЛЕВАЯ ПАНЕЛЬ — брендинг / описание
+                    ══════════════════════════════════════════
+                -->
+                <VerticalStackLayout
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Padding="0,0,20,0"
+                    Spacing="0"
+                    VerticalOptions="Center">
+
+                    <!--  Логотип  -->
+                    <Label
+                        Margin="0,0,0,4"
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        FontSize="36"
+                        Text="EduDev"
+                        TextColor="{StaticResource TextPrimary}" />
+
+                    <!--  Подзаголовок  -->
+                    <Label
+                        Margin="0,0,0,8"
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        FontSize="22"
+                        IsVisible="{Binding IsLoginMode}"
+                        Text="Войдите в EduDev"
+                        TextColor="{StaticResource TextPrimary}" />
+
+                    <Label
+                        Margin="0,0,0,8"
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        FontSize="22"
+                        IsVisible="{Binding IsRegisterMode}"
+                        Text="Создайте аккаунт EduDev"
+                        TextColor="{StaticResource TextPrimary}" />
+
+                    <!--  Описание  -->
+                    <Label
+                        Margin="0,0,0,20"
+                        FontSize="14"
+                        IsVisible="{Binding IsLoginMode}"
+                        LineBreakMode="WordWrap"
+                        Text="Продолжайте работу с привычками, задачами и шпаргалками на новом устройстве."
+                        TextColor="{StaticResource TextSecondary}" />
+
+                    <Label
+                        Margin="0,0,0,20"
+                        FontSize="14"
+                        IsVisible="{Binding IsRegisterMode}"
+                        LineBreakMode="WordWrap"
+                        Text="Синхронизируйте привычки, задачи и помодоро-сессии между устройствами. Без аккаунта всё остаётся локально."
+                        TextColor="{StaticResource TextSecondary}" />
+
+                    <!--  Чип "Оффлайн" (только для логина)  -->
+                    <Border
+                        Margin="0,0,0,20"
+                        Padding="12,6"
+                        BackgroundColor="{StaticResource ChipBg}"
+                        HorizontalOptions="Start"
+                        IsVisible="{Binding IsLoginMode}"
+                        Stroke="{StaticResource ChipBorder}"
+                        StrokeShape="RoundRectangle 20">
+                        <Label
+                            FontSize="12"
+                            Text="Оффлайн-режим доступен и без входа"
+                            TextColor="{StaticResource ChipText}" />
+                    </Border>
+
+                    <!--  Фичи (только для входа)  -->
+                    <VerticalStackLayout IsVisible="{Binding IsLoginMode}" Spacing="8">
+                        <Label
+                            FontSize="13"
+                            Text="• Без входа: данные хранятся локально на устройстве."
+                            TextColor="{StaticResource TextSecondary}" />
+                        <Label
+                            FontSize="13"
+                            Text="• С аккаунтом: возможна синхронизация и резервное копирование."
+                            TextColor="{StaticResource TextSecondary}" />
+                    </VerticalStackLayout>
+
+                    <!--  Чипы фич (только для регистрации)  -->
+                    <VerticalStackLayout IsVisible="{Binding IsRegisterMode}" Spacing="16">
+                        <FlexLayout Direction="Row" Wrap="Wrap">
+                            <Border
+                                Margin="0,0,8,8"
+                                Padding="10,5"
+                                BackgroundColor="{StaticResource ChipBg}"
+                                Stroke="{StaticResource ChipBorder}"
+                                StrokeShape="RoundRectangle 16">
+                                <Label
+                                    FontSize="12"
+                                    Text="Трекер привычек"
+                                    TextColor="{StaticResource ChipText}" />
+                            </Border>
+                            <Border
+                                Margin="0,0,8,8"
+                                Padding="10,5"
+                                BackgroundColor="{StaticResource ChipBg}"
+                                Stroke="{StaticResource ChipBorder}"
+                                StrokeShape="RoundRectangle 16">
+                                <Label
+                                    FontSize="12"
+                                    Text="Задачи и заметки"
+                                    TextColor="{StaticResource ChipText}" />
+                            </Border>
+                            <Border
+                                Margin="0,0,8,8"
+                                Padding="10,5"
+                                BackgroundColor="{StaticResource ChipBg}"
+                                Stroke="{StaticResource ChipBorder}"
+                                StrokeShape="RoundRectangle 16">
+                                <Label
+                                    FontSize="12"
+                                    Text="Помодоро-таймер"
+                                    TextColor="{StaticResource ChipText}" />
+                            </Border>
+                            <Border
+                                Margin="0,0,8,8"
+                                Padding="10,5"
+                                BackgroundColor="{StaticResource ChipBg}"
+                                Stroke="{StaticResource ChipBorder}"
+                                StrokeShape="RoundRectangle 16">
+                                <Label
+                                    FontSize="12"
+                                    Text="Дев-инструменты"
+                                    TextColor="{StaticResource ChipText}" />
+                            </Border>
+                        </FlexLayout>
+
+                        <!--  Мини-карточки преимуществ  -->
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Border
+                                Grid.Column="0"
+                                Padding="14"
+                                BackgroundColor="{StaticResource BgCardInner}"
+                                Stroke="{StaticResource BorderDefault}"
+                                StrokeShape="RoundRectangle 10">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Оффлайн"
+                                        TextColor="{StaticResource TextPrimary}" />
+                                    <Label
+                                        FontSize="11"
+                                        LineBreakMode="WordWrap"
+                                        Text="Все данные хранятся в локальной базе, даже без регистрации."
+                                        TextColor="{StaticResource TextSecondary}" />
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border
+                                Grid.Column="1"
+                                Padding="14"
+                                BackgroundColor="{StaticResource BgCardInner}"
+                                Stroke="{StaticResource BorderDefault}"
+                                StrokeShape="RoundRectangle 10">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Безопасно"
+                                        TextColor="{StaticResource TextPrimary}" />
+                                    <Label
+                                        FontSize="11"
+                                        LineBreakMode="WordWrap"
+                                        Text="Шифрование и биометрия доступны в настройках после входа."
+                                        TextColor="{StaticResource TextSecondary}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+
+                <!--
+                    ══════════════════════════════════════════
+                    ПРАВАЯ ПАНЕЛЬ — форма
+                    ══════════════════════════════════════════
+                -->
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Padding="28,24"
+                    BackgroundColor="{StaticResource BgCard}"
+                    Stroke="{StaticResource BorderDefault}"
+                    StrokeShape="RoundRectangle 16"
+                    VerticalOptions="Center">
+
+                    <VerticalStackLayout Spacing="0">
+
+                        <!--  Заголовок формы  -->
+                        <Label
+                            Margin="0,0,0,4"
+                            FontAttributes="Bold"
+                            FontFamily="Comfortaa"
+                            FontSize="20"
+                            IsVisible="{Binding IsLoginMode}"
+                            Text="Авторизация"
+                            TextColor="{StaticResource TextPrimary}" />
+                        <Label
+                            Margin="0,0,0,4"
+                            FontAttributes="Bold"
+                            FontFamily="Comfortaa"
+                            FontSize="20"
+                            IsVisible="{Binding IsRegisterMode}"
+                            Text="Регистрация"
+                            TextColor="{StaticResource TextPrimary}" />
+
+                        <Label
+                            Margin="0,0,0,20"
+                            FontSize="12"
+                            IsVisible="{Binding IsLoginMode}"
+                            Text="Введите e-mail и пароль, указанные при регистрации."
+                            TextColor="{StaticResource TextSecondary}" />
+                        <Label
+                            Margin="0,0,0,20"
+                            FontSize="12"
+                            IsVisible="{Binding IsRegisterMode}"
+                            LineBreakMode="WordWrap"
+                            Text="Создайте учётную запись, чтобы не потерять данные при смене устройства."
+                            TextColor="{StaticResource TextSecondary}" />
+
+                        <!--  ══════ ФОРМА ВХОДА ══════  -->
+                        <VerticalStackLayout IsVisible="{Binding IsLoginMode}" Spacing="14">
+
+                            <!--  Email  -->
+                            <VerticalStackLayout Spacing="0">
+                                <Label Style="{StaticResource LabelStyle}" Text="E-mail" />
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <Entry
+                                        Keyboard="Email"
+                                        Placeholder="you@example.com"
+                                        Style="{StaticResource InputEntryStyle}"
+                                        Text="{Binding LoginEmail}" />
+                                </Border>
+                                <Label
+                                    Margin="2,4,0,0"
+                                    FontSize="11"
+                                    IsVisible="{Binding HasLoginEmailError}"
+                                    Text="{Binding LoginEmailError}"
+                                    TextColor="{StaticResource ErrorColor}" />
+                            </VerticalStackLayout>
+
+                            <!--  Пароль  -->
+                            <VerticalStackLayout Spacing="0">
+                                <Label Style="{StaticResource LabelStyle}" Text="Пароль" />
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Entry
+                                            Grid.Column="0"
+                                            IsPassword="{Binding IsPasswordVisible, Converter={StaticResource InverseBoolConverter}}"
+                                            Placeholder="Пароль"
+                                            Style="{StaticResource InputEntryStyle}"
+                                            Text="{Binding LoginPassword}" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            Command="{Binding TogglePasswordVisibleCommand}"
+                                            FontSize="14"
+                                            HeightRequest="36"
+                                            Text="{Binding PasswordEyeIcon}"
+                                            TextColor="{StaticResource TextMuted}"
+                                            WidthRequest="36" />
+                                    </Grid>
+                                </Border>
+                                <Label
+                                    Margin="2,4,0,0"
+                                    FontSize="11"
+                                    IsVisible="{Binding HasLoginPasswordError}"
+                                    Text="{Binding LoginPasswordError}"
+                                    TextColor="{StaticResource ErrorColor}" />
+                            </VerticalStackLayout>
+
+                            <!--  Забыл пароль / Без входа  -->
+                            <Grid Margin="0,-4,0,0" ColumnDefinitions="Auto,*,Auto">
+                                <Button
+                                    Grid.Column="0"
+                                    Style="{StaticResource LinkBtnStyle}"
+                                    Text="Забыли пароль?" />
+                                <Button
+                                    Grid.Column="2"
+                                    Command="{Binding ContinueOfflineCommand}"
+                                    Style="{StaticResource LinkBtnStyle}"
+                                    Text="Или продолжить без входа" />
+                            </Grid>
+
+                            <!--  Общая ошибка  -->
+                            <Border
+                                Padding="12,8"
+                                BackgroundColor="#2A1A1A"
+                                IsVisible="{Binding HasGeneralError}"
+                                Stroke="#5A1A1A"
+                                StrokeShape="RoundRectangle 8">
+                                <Label
+                                    FontSize="13"
+                                    Text="{Binding GeneralError}"
+                                    TextColor="{StaticResource ErrorColor}" />
+                            </Border>
+
+                            <!--  Кнопка входа  -->
+                            <Button
+                                Margin="0,6,0,0"
+                                Command="{Binding LoginCommand}"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                                Style="{StaticResource PrimaryBtnStyle}"
+                                Text="Войти" />
+
+                            <!--  Нет аккаунта  -->
+                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                                <Label
+                                    FontSize="13"
+                                    Text="Нет аккаунта?"
+                                    TextColor="{StaticResource TextSecondary}"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Command="{Binding SwitchToRegisterCommand}"
+                                    Style="{StaticResource LinkBtnStyle}"
+                                    Text="Зарегистрироваться" />
+                            </HorizontalStackLayout>
+
+                        </VerticalStackLayout>
+
+                        <!--  ══════ ФОРМА РЕГИСТРАЦИИ ══════  -->
+                        <VerticalStackLayout IsVisible="{Binding IsRegisterMode}" Spacing="14">
+
+                            <!--  Имя  -->
+                            <VerticalStackLayout Spacing="0">
+                                <Label Style="{StaticResource LabelStyle}" Text="Имя" />
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <Entry
+                                        Placeholder="Как к вам обращаться"
+                                        Style="{StaticResource InputEntryStyle}"
+                                        Text="{Binding RegisterName}" />
+                                </Border>
+                                <Label
+                                    Margin="2,4,0,0"
+                                    FontSize="11"
+                                    IsVisible="{Binding HasRegisterNameError}"
+                                    Text="{Binding RegisterNameError}"
+                                    TextColor="{StaticResource ErrorColor}" />
+                            </VerticalStackLayout>
+
+                            <!--  Email  -->
+                            <VerticalStackLayout Spacing="0">
+                                <Label Style="{StaticResource LabelStyle}" Text="E-mail" />
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <Entry
+                                        Keyboard="Email"
+                                        Placeholder="you@example.com"
+                                        Style="{StaticResource InputEntryStyle}"
+                                        Text="{Binding RegisterEmail}" />
+                                </Border>
+                                <Label
+                                    Margin="2,4,0,0"
+                                    FontSize="11"
+                                    IsVisible="{Binding HasRegisterEmailError}"
+                                    Text="{Binding RegisterEmailError}"
+                                    TextColor="{StaticResource ErrorColor}" />
+                            </VerticalStackLayout>
+
+                            <!--  Пароль  -->
+                            <VerticalStackLayout Spacing="0">
+                                <Label Style="{StaticResource LabelStyle}" Text="Пароль" />
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Entry
+                                            Grid.Column="0"
+                                            IsPassword="{Binding IsPasswordVisible, Converter={StaticResource InverseBoolConverter}}"
+                                            Placeholder="Минимум 8 символов"
+                                            Style="{StaticResource InputEntryStyle}"
+                                            Text="{Binding RegisterPassword}" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            Command="{Binding TogglePasswordVisibleCommand}"
+                                            FontSize="14"
+                                            HeightRequest="36"
+                                            Text="{Binding PasswordEyeIcon}"
+                                            TextColor="{StaticResource TextMuted}"
+                                            WidthRequest="36" />
+                                    </Grid>
+                                </Border>
+                                <Label
+                                    Margin="2,4,0,0"
+                                    FontSize="11"
+                                    IsVisible="{Binding HasRegisterPasswordError}"
+                                    Text="{Binding RegisterPasswordError}"
+                                    TextColor="{StaticResource ErrorColor}" />
+                            </VerticalStackLayout>
+
+                            <!--  Подтверждение пароля  -->
+                            <VerticalStackLayout Spacing="0">
+                                <Label Style="{StaticResource LabelStyle}" Text="Подтверждение пароля" />
+                                <Border Style="{StaticResource InputBorderStyle}">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Entry
+                                            Grid.Column="0"
+                                            IsPassword="{Binding IsConfirmPasswordVisible, Converter={StaticResource InverseBoolConverter}}"
+                                            Placeholder="Повторите пароль"
+                                            Style="{StaticResource InputEntryStyle}"
+                                            Text="{Binding RegisterPasswordConfirm}" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            Command="{Binding ToggleConfirmPasswordVisibleCommand}"
+                                            FontSize="14"
+                                            HeightRequest="36"
+                                            Text="{Binding ConfirmPasswordEyeIcon}"
+                                            TextColor="{StaticResource TextMuted}"
+                                            WidthRequest="36" />
+                                    </Grid>
+                                </Border>
+                                <Label
+                                    Margin="2,4,0,0"
+                                    FontSize="11"
+                                    IsVisible="{Binding HasRegisterPasswordConfirmError}"
+                                    Text="{Binding RegisterPasswordConfirmError}"
+                                    TextColor="{StaticResource ErrorColor}" />
+                            </VerticalStackLayout>
+
+                            <!--  Подсказка: регистрация необязательна  -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label
+                                    Grid.Column="0"
+                                    FontSize="11"
+                                    LineBreakMode="WordWrap"
+                                    Text="Регистрация не требуется для локальной работы."
+                                    TextColor="{StaticResource TextMuted}"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Grid.Column="1"
+                                    FontSize="11"
+                                    Style="{StaticResource LinkBtnStyle}"
+                                    Text="Подробнее" />
+                            </Grid>
+
+                            <!--  Общая ошибка  -->
+                            <Border
+                                Padding="12,8"
+                                BackgroundColor="#2A1A1A"
+                                IsVisible="{Binding HasGeneralError}"
+                                Stroke="#5A1A1A"
+                                StrokeShape="RoundRectangle 8">
+                                <Label
+                                    FontSize="13"
+                                    Text="{Binding GeneralError}"
+                                    TextColor="{StaticResource ErrorColor}" />
+                            </Border>
+
+                            <!--  Кнопка регистрации  -->
+                            <Button
+                                Margin="0,6,0,0"
+                                Command="{Binding RegisterCommand}"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                                Style="{StaticResource PrimaryBtnStyle}"
+                                Text="Создать аккаунт" />
+
+                            <!--  Уже есть аккаунт  -->
+                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                                <Label
+                                    FontSize="13"
+                                    Text="Уже есть аккаунт?"
+                                    TextColor="{StaticResource TextSecondary}"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Command="{Binding SwitchToLoginCommand}"
+                                    Style="{StaticResource LinkBtnStyle}"
+                                    Text="Войти" />
+                            </HorizontalStackLayout>
+
+                        </VerticalStackLayout>
+
+                        <!--  Индикатор загрузки  -->
+                        <ActivityIndicator
+                            Margin="0,8,0,0"
+                            HeightRequest="24"
+                            HorizontalOptions="Center"
+                            IsRunning="{Binding IsBusy}"
+                            IsVisible="{Binding IsBusy}"
+                            WidthRequest="24"
+                            Color="{StaticResource AccentBlue}" />
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

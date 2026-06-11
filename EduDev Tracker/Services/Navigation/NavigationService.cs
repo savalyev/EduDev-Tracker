@@ -16,10 +16,10 @@ namespace EduDev_Tracker.Services.Navigation
             => Shell.Current.GoToAsync("..");
 
         public Task PushModalAsync(Page page)
-            => Application.Current.MainPage.Navigation.PushModalAsync(page, false);
+            => Application.Current.MainPage.Navigation.PushModalAsync(page, true);
 
         public Task PopModalAsync()
-            => Application.Current.MainPage.Navigation.PopModalAsync();
+            => Application.Current.MainPage.Navigation.PopModalAsync(true);
 
         public Task SwitchToModuleAsync(string flyoutRoute)
         {

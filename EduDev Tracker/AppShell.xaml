@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:dashboard="clr-namespace:EduDev_Tracker.Features.Dashboard.Views"
     xmlns:local="clr-namespace:EduDev_Tracker"
+    xmlns:pomodoro="clr-namespace:EduDev_Tracker.Features.Pomodoro.Views"
     xmlns:profile="clr-namespace:EduDev_Tracker.Features.Profile.Views"
     xmlns:views="clr-namespace:EduDev_Tracker.Features"
     xmlns:welcome="clr-namespace:EduDev_Tracker.Features.Auth.Views"
@@ -45,6 +46,10 @@
             Title="Профиль"
             ContentTemplate="{DataTemplate profile:ProfilePage}"
             Route="ProfilePage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Помодоро" Icon="pomodoro_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate pomodoro:PomodoroPage}" />
     </FlyoutItem>
 
 </Shell>

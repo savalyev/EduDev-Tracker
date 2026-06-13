@@ -17,9 +17,9 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
 
         public Task<List<Habit>> GetArchivedAsync(int profileId)
             => Connection.Table<Habit>()
-        .Where(h => h.ProfileId == profileId && h.IsArchived)
-        .OrderByDescending(h => h.UpdatedAt)
-        .ToListAsync();
+                .Where(h => h.ProfileId == profileId && h.IsArchived)
+                .OrderByDescending(h => h.UpdatedAt)
+                .ToListAsync();
 
         public Task<Habit> GetByIdWithChildrenAsync(int id)
             => Connection.GetWithChildrenAsync<Habit>(id, recursive: true);
@@ -51,6 +51,13 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
                 archived ? 1 : 0, DateTime.UtcNow, habitId);
         }
 
+        public async Task FreezeAsync(int habitId, bool freeze = true)
+        {
+            await Connection.ExecuteAsync(
+                "UPDATE habits SET IsFrozen = ?, UpdatedAt = ? WHERE Id = ?",
+                freeze ? 1 : 0, DateTime.UtcNow, habitId);
+        }
+
         public Task<int> UnlogAsync(int habitId, DateTime date)
         {
             var dateKey = date.Date.ToString("yyyy-MM-dd");
@@ -70,7 +77,7 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
             }
             else
             {
-                await Connection.UpdateWithChildrenAsync(habit);
+                await Connection.UpdateAsync(habit);
             }
         }
 

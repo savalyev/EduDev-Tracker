@@ -9,19 +9,24 @@ using EduDev_Tracker.Features.Habits.ViewModels;
 using EduDev_Tracker.Features.Habits.Views;
 using EduDev_Tracker.Features.Notes.ViewModels;
 using EduDev_Tracker.Features.Notes.Views;
+using EduDev_Tracker.Features.Pomodoro.ViewModels;
+using EduDev_Tracker.Features.Pomodoro.Views;
 using EduDev_Tracker.Features.Profile.ViewModels;
 using EduDev_Tracker.Features.Profile.Views;
 using EduDev_Tracker.Features.Tasks.ViewModels;
 using EduDev_Tracker.Features.Tasks.Views;
+using EduDev_Tracker.Services.Audio;
 using EduDev_Tracker.Services.Auth;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Notes;
 using EduDev_Tracker.Services.Notification;
+using EduDev_Tracker.Services.Pomodoro;
 using EduDev_Tracker.Services.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using Plugin.LocalNotification;
+using Plugin.Maui.Audio;
 
 #if WINDOWS
 using Microsoft.UI.Windowing;
@@ -56,6 +61,8 @@ namespace EduDev_Tracker
             builder.Services.AddSingleton<PomodoroRepository>();
             builder.Services.AddSingleton<CheatsheetRepository>();
             builder.Services.AddSingleton<ProfileRepository>();
+            builder.Services.AddSingleton(AudioManager.Current);
+            builder.Services.AddSingleton<BackgroundTimerService>();
 
             //#if WINDOWS
             //            builder.ConfigureLifecycleEvents(events =>
@@ -97,6 +104,8 @@ namespace EduDev_Tracker
             services.AddSingleton<RecurrenceProcessorService>();
             services.AddSingleton<INotesService, NotesService>();
             services.AddSingleton<IAuthService,  AuthService>();
+            services.AddSingleton<IPomodoroService, PomodoroService>();
+            services.AddSingleton<IAudioService, AudioService>();
 
             services.AddTransient<CreateHabitViewModel>();
             services.AddTransient<CreateHabitPage>();
@@ -132,6 +141,10 @@ namespace EduDev_Tracker
 
             services.AddTransient<ProfileViewModel>();
             services.AddTransient<ProfilePage>();
+
+            services.AddTransient<PomodoroViewModel>();
+            services.AddTransient<PomodoroPage>();
+            services.AddTransient<TaskPickerBottomSheet>();
         }
     }
 }

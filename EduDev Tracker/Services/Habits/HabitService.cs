@@ -67,6 +67,9 @@ namespace EduDev_Tracker.Services.Habits
 
         public Task ArchiveAsync(int habitId, bool archived = true)
             => _repo.ArchiveAsync(habitId, archived);
+
+        public Task FreezeAsync(int habitId, bool freeze = true) 
+            => _repo.FreezeAsync(habitId, freeze);
         public Task<bool> IsCompletedTodayAsync(int habitId)
             => _repo.IsCompletedTodayAsync(habitId);
         public Task<bool> IsCompletedTodayAsync(int habitId, DateTime date)

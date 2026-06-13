@@ -116,6 +116,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             await CloseAsync();
         }
 
+
         [RelayCommand]
         private async Task FreezeHabitAsync()
         {
@@ -128,27 +129,21 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                 if (!confirm) return;
 
                 _habit.IsFrozen = false;
-                _habit.FrozenUntil = DateTime.MinValue;
+                await _habitService.FreezeAsync(_habit.Id, false);
             }
             else
             {
-                string input = await Shell.Current.DisplayPromptAsync(
+                bool confirm = await Shell.Current.DisplayAlertAsync(
                     "Заморозить привычку",
-                    "На сколько дней заморозить? (оставьте пустым — бессрочно)",
-                    accept: "Заморозить",
-                    cancel: "Отмена",
-                    placeholder: "Например: 7",
-                    keyboard: Keyboard.Numeric);
+                    "Вы уверены, что хотите заморозить привычку?",
+                    "Заморозить", "Отмена");
 
-                if (input == null) return;
+                if (!confirm) return;
 
                 _habit.IsFrozen = true;
-                _habit.FrozenUntil = int.TryParse(input, out int days) && days > 0
-                    ? DateTime.Today.AddDays(days)
-                    : DateTime.MaxValue;
+                await _habitService.FreezeAsync(_habit.Id, true);
             }
 
-            await _habitService.UpdateAsync(_habit);
             IsFrozen = _habit.IsFrozen;
         }
 
@@ -163,7 +158,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             if (!confirm) return;
 
             _habit.IsArchived = true;
-            await _habitService.UpdateAsync(_habit);
+            await _habitService.ArchiveAsync(_habit.Id, true);
             await _habitNotificationService.CancelHabitNotificationAsync(_habit.Id);
             await CloseAsync();
         }

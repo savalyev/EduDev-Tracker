@@ -19,6 +19,15 @@
             <converters:ActiveCategoryColorConverter x:Key="ActiveCategoryColorConverter" />
             <converters:StringToHtmlConverter x:Key="StringToHtmlConverter" />
             <converters:BoolToPreviewLabelConverter x:Key="BoolToPreviewLabelConverter" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToAccent"
+                FalseColor="#1E293B"
+                TrueColor="#2DD4BF" />
+            <converters:BoolToColorConverter
+                x:Key="BoolToText"
+                FalseColor="#64748B"
+                TrueColor="#FFFFFF" />
+            <converters:InverseBoolConverter x:Key="InverseBool" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -22,5 +22,6 @@ namespace EduDev_Tracker.Services.Habits
         Task<int> GetCurrentStreakAsync(int habitId);
         public Task<Habit> GetByIdWithChildrenAsync(int id);
         Task<List<Habit>> GetArchivedAsync(int profileId);
+        Task FreezeAsync(int habitId, bool freeze = true);
     }
 }

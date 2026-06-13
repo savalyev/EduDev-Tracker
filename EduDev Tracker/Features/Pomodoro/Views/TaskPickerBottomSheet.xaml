@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Pomodoro.Views.TaskPickerBottomSheet"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:EduDev_Tracker.Data.Models"
+    Title="Выбор задачи"
+    BackgroundColor="#111827">
+
+    <Grid Padding="16" RowDefinitions="Auto,Auto,*,Auto">
+
+        <!--  Заголовок + кнопка закрыть  -->
+        <Grid Margin="0,0,0,14" ColumnDefinitions="*,Auto">
+            <Label
+                FontAttributes="Bold"
+                FontSize="17"
+                Text="Привязать задачу"
+                TextColor="#F1F5F9"
+                VerticalOptions="Center" />
+            <Button
+                Grid.Column="1"
+                BackgroundColor="Transparent"
+                Clicked="OnCloseClicked"
+                FontSize="18"
+                Text="✕"
+                TextColor="#64748B" />
+        </Grid>
+
+        <!--  Поиск  -->
+        <Border
+            Grid.Row="1"
+            Margin="0,0,0,12"
+            Padding="12,0"
+            BackgroundColor="#1E293B"
+            StrokeShape="RoundRectangle 14"
+            StrokeThickness="0">
+            <Grid ColumnDefinitions="Auto,*">
+                <Label
+                    Margin="0,0,8,0"
+                    Text="🔍"
+                    VerticalOptions="Center" />
+                <Entry
+                    x:Name="SearchEntry"
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    Placeholder="Поиск задач..."
+                    PlaceholderColor="#475569"
+                    TextChanged="OnSearchChanged"
+                    TextColor="#F1F5F9" />
+            </Grid>
+        </Border>
+
+        <!--  Список задач  -->
+        <CollectionView
+            x:Name="TaskList"
+            Grid.Row="2"
+            SelectionChanged="OnTaskSelected"
+            SelectionMode="Single">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    Spacing="8"
+                    VerticalOptions="Center">
+                    <Label
+                        FontSize="32"
+                        HorizontalTextAlignment="Center"
+                        Text="📝" />
+                    <Label
+                        FontSize="14"
+                        HorizontalTextAlignment="Center"
+                        Text="Нет открытых задач"
+                        TextColor="#64748B" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TaskItem">
+                    <Border
+                        Margin="0,0,0,8"
+                        Padding="14,12"
+                        BackgroundColor="#1E293B"
+                        StrokeShape="RoundRectangle 14"
+                        StrokeThickness="0">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                            <!--  Индикатор приоритета  -->
+                            <BoxView
+                                Grid.Column="0"
+                                CornerRadius="2"
+                                HeightRequest="36"
+                                VerticalOptions="Center"
+                                WidthRequest="4">
+                                <BoxView.Color>
+                                    <!--  Цвет будет задан в code-behind через DataTrigger  -->
+                                    <Color>#64748B</Color>
+                                </BoxView.Color>
+                            </BoxView>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="3"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontSize="14"
+                                    LineBreakMode="TailTruncation"
+                                    Text="{Binding Title}"
+                                    TextColor="#F1F5F9" />
+                                <Label FontSize="12" TextColor="#64748B">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Category}" TextColor="#475569" />
+                                            <Span Text=" · " TextColor="#334155" />
+                                            <Span Text="{Binding DueAt, StringFormat='{0:dd MMM}'}" TextColor="#64748B" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </VerticalStackLayout>
+
+                            <!--  Галочка для выбранной задачи  -->
+                            <Label
+                                x:Name="CheckMark"
+                                Grid.Column="2"
+                                FontSize="18"
+                                IsVisible="False"
+                                Text="✓"
+                                TextColor="#2DD4BF"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!--  Кнопка "Без задачи" + Привязать  -->
+        <Grid
+            Grid.Row="3"
+            Margin="0,12,0,0"
+            ColumnDefinitions="*,*"
+            ColumnSpacing="12">
+            <Button
+                BackgroundColor="#1E293B"
+                Clicked="OnClearTaskClicked"
+                CornerRadius="14"
+                HeightRequest="48"
+                Text="Без задачи"
+                TextColor="#94A3B8" />
+            <Button
+                Grid.Column="1"
+                BackgroundColor="#2DD4BF"
+                Clicked="OnConfirmClicked"
+                CornerRadius="14"
+                FontAttributes="Bold"
+                HeightRequest="48"
+                Text="Привязать"
+                TextColor="#0B1120" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

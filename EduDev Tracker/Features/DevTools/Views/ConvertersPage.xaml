@@ -1,0 +1,1462 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.DevTools.Views.ConvertersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:EduDev_Tracker.Core.Converters"
+    xmlns:vm="clr-namespace:EduDev_Tracker.Features.DevTools.ViewModels"
+    x:DataType="vm:ConvertersViewModel"
+    BackgroundColor="#0B1120"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <!--  Стили карточек  -->
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="#111827" />
+            <Setter Property="Stroke" Value="#1E293B" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+        <converters:BoolToStringConverter x:Key="BoolToStringConverter" />
+
+        <Style x:Key="SectionLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextColor" Value="#64748B" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+
+        <Style x:Key="ResultLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#F1F5F9" />
+        </Style>
+
+        <Style x:Key="ResultValue" TargetType="Label">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="TextColor" Value="#2DD4BF" />
+            <Setter Property="FontFamily" Value="Monospace" />
+        </Style>
+
+        <Style x:Key="TabBtn" TargetType="Border">
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+            <Setter Property="Padding" Value="14,8" />
+        </Style>
+
+        <Style x:Key="InputEntry" TargetType="Entry">
+            <Setter Property="TextColor" Value="#F1F5F9" />
+            <Setter Property="PlaceholderColor" Value="#475569" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HeightRequest" Value="44" />
+        </Style>
+
+        <Style x:Key="InputBorder" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="#0F172A" />
+            <Setter Property="Stroke" Value="#1E293B" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+            <Setter Property="Padding" Value="12,0" />
+        </Style>
+
+        <Style x:Key="ErrorLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextColor" Value="#EF4444" />
+            <Setter Property="Margin" Value="4,4,0,0" />
+        </Style>
+
+        <Style x:Key="PillBtn" TargetType="Button">
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="HeightRequest" Value="40" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Padding" Value="16,0" />
+        </Style>
+
+        <Style x:Key="CopyBtn" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="#64748B" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="WidthRequest" Value="32" />
+            <Setter Property="HeightRequest" Value="32" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <!--  ═══ DESKTOP (>=768px) ═══  -->
+        <Grid
+            x:Name="DesktopLayout"
+            Padding="24,20,24,20"
+            ColumnDefinitions="*,380"
+            ColumnSpacing="16"
+            IsVisible="False"
+            RowDefinitions="Auto,*">
+
+            <!--  Заголовок  -->
+            <VerticalStackLayout
+                Grid.ColumnSpan="2"
+                Margin="0,0,0,16"
+                Spacing="4">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="26"
+                    Text="Конвертеры"
+                    TextColor="#F1F5F9" />
+                <Label
+                    FontSize="13"
+                    Text="Набор инструментов для разработчиков и студентов: системы счисления, цвета, часовые пояса, JSON/XML и URL/encode/decode в одном модуле."
+                    TextColor="#64748B" />
+            </VerticalStackLayout>
+
+            <!--  Левая колонка: табы + конвертер  -->
+            <Grid
+                Grid.Row="1"
+                Grid.Column="0"
+                RowDefinitions="Auto,*"
+                RowSpacing="16">
+
+                <!--  Горизонтальное меню вкладок  -->
+                <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                    <HorizontalStackLayout Spacing="8">
+                        <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=0}" Style="{StaticResource TabBtn}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="0" />
+                            </Border.GestureRecognizers>
+                            <Label
+                                FontSize="13"
+                                Text="Системы счисления"
+                                TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=0}" />
+                        </Border>
+                        <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=1}" Style="{StaticResource TabBtn}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="1" />
+                            </Border.GestureRecognizers>
+                            <Label
+                                FontSize="13"
+                                Text="Цвета HEX / RGB / HSL"
+                                TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=1}" />
+                        </Border>
+                        <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=2}" Style="{StaticResource TabBtn}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="2" />
+                            </Border.GestureRecognizers>
+                            <Label
+                                FontSize="13"
+                                Text="Время и часовые пояса"
+                                TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=2}" />
+                        </Border>
+                        <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=3}" Style="{StaticResource TabBtn}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="3" />
+                            </Border.GestureRecognizers>
+                            <Label
+                                FontSize="13"
+                                Text="JSON / XML форматирование"
+                                TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=3}" />
+                        </Border>
+                        <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=4}" Style="{StaticResource TabBtn}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="4" />
+                            </Border.GestureRecognizers>
+                            <Label
+                                FontSize="13"
+                                Text="URL encode / decode"
+                                TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=4}" />
+                        </Border>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!--  Панели конвертеров  -->
+                <ScrollView Grid.Row="1">
+                    <VerticalStackLayout Spacing="16">
+
+                        <!--  ── ЧИСЛА (0) ──  -->
+                        <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=0}" Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="14">
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="17"
+                                    Text="Конвертер систем счисления"
+                                    TextColor="#F1F5F9" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Вводишь в любой системе (0xFF, 0b1010, 255) — остальные считаются автоматически"
+                                    TextColor="#64748B" />
+
+                                <!--  Ввод + выбор основания  -->
+
+                                <VerticalStackLayout Spacing="6">
+                                    <Label Style="{StaticResource SectionLabel}" Text="Десятичное число" />
+                                    <Border Style="{StaticResource InputBorder}">
+                                        <Entry
+                                            ClearButtonVisibility="WhileEditing"
+                                            Keyboard="Default"
+                                            Placeholder="например, 255 / 0xFF / 0b11"
+                                            Style="{StaticResource InputEntry}"
+                                            Text="{Binding NumeralInput}" />
+                                    </Border>
+                                    <Label
+                                        FontSize="11"
+                                        Text="Поддерживаются целые числа (int32)"
+                                        TextColor="#334155" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Margin="0,12,0,0" Spacing="6">
+                                    <Label Style="{StaticResource SectionLabel}" Text="Основание вывода" />
+                                    <Border Padding="8,0" Style="{StaticResource InputBorder}">
+                                        <Picker
+                                            BackgroundColor="Transparent"
+                                            ItemsSource="{Binding AvailableBases}"
+                                            SelectedItem="{Binding CustomBase}"
+                                            TextColor="#F1F5F9" />
+                                    </Border>
+                                    <Label
+                                        FontSize="11"
+                                        Text="{Binding CustomBaseLabel}"
+                                        TextColor="#2DD4BF" />
+                                </VerticalStackLayout>
+
+                                <!--  Ошибка  -->
+                                <Label
+                                    IsVisible="{Binding HasNumeralError}"
+                                    Style="{StaticResource ErrorLabel}"
+                                    Text="{Binding NumeralError}" />
+
+                                <!--  Результаты  -->
+                                <Border
+                                    Padding="14"
+                                    BackgroundColor="#0B1120"
+                                    StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="0">
+                                    <Grid
+                                        ColumnDefinitions="48,*,32"
+                                        RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                                        RowSpacing="12">
+
+                                        <!--  BIN  -->
+                                        <Label
+                                            FontSize="12"
+                                            Text="BIN:"
+                                            TextColor="#475569"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Style="{StaticResource ResultValue}"
+                                            Text="{Binding NumeralBin}"
+                                            VerticalOptions="Center" />
+                                        <Button
+                                            Grid.Column="2"
+                                            Command="{Binding CopyToClipboardCommand}"
+                                            CommandParameter="{Binding NumeralBin}"
+                                            Style="{StaticResource CopyBtn}"
+                                            Text="⎘" />
+
+                                        <!--  OCT  -->
+                                        <Label
+                                            Grid.Row="1"
+                                            FontSize="12"
+                                            Text="OCT:"
+                                            TextColor="#475569"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Style="{StaticResource ResultValue}"
+                                            Text="{Binding NumeralOct}"
+                                            VerticalOptions="Center" />
+                                        <Button
+                                            Grid.Row="1"
+                                            Grid.Column="2"
+                                            Command="{Binding CopyToClipboardCommand}"
+                                            CommandParameter="{Binding NumeralOct}"
+                                            Style="{StaticResource CopyBtn}"
+                                            Text="⎘" />
+
+                                        <!--  DEC  -->
+                                        <Label
+                                            Grid.Row="2"
+                                            FontSize="12"
+                                            Text="DEC:"
+                                            TextColor="#475569"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Style="{StaticResource ResultValue}"
+                                            Text="{Binding NumeralDec}"
+                                            VerticalOptions="Center" />
+                                        <Button
+                                            Grid.Row="2"
+                                            Grid.Column="2"
+                                            Command="{Binding CopyToClipboardCommand}"
+                                            CommandParameter="{Binding NumeralDec}"
+                                            Style="{StaticResource CopyBtn}"
+                                            Text="⎘" />
+
+                                        <!--  HEX  -->
+                                        <Label
+                                            Grid.Row="3"
+                                            FontSize="12"
+                                            Text="HEX:"
+                                            TextColor="#475569"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Grid.Row="3"
+                                            Grid.Column="1"
+                                            Style="{StaticResource ResultValue}"
+                                            Text="{Binding NumeralHex}"
+                                            VerticalOptions="Center" />
+                                        <Button
+                                            Grid.Row="3"
+                                            Grid.Column="2"
+                                            Command="{Binding CopyToClipboardCommand}"
+                                            CommandParameter="{Binding NumeralHex}"
+                                            Style="{StaticResource CopyBtn}"
+                                            Text="⎘" />
+
+                                        <!--  CUSTOM (только если основание нестандартное)  -->
+                                        <Label
+                                            Grid.Row="4"
+                                            FontSize="12"
+                                            IsVisible="{Binding ShowNumeralCustom}"
+                                            Text="{Binding CustomBase, StringFormat='B{0}:'}"
+                                            TextColor="#2DD4BF"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Grid.Row="4"
+                                            Grid.Column="1"
+                                            IsVisible="{Binding ShowNumeralCustom}"
+                                            Style="{StaticResource ResultValue}"
+                                            Text="{Binding NumeralCustom}"
+                                            TextColor="#2DD4BF"
+                                            VerticalOptions="Center" />
+                                        <Button
+                                            Grid.Row="4"
+                                            Grid.Column="2"
+                                            Command="{Binding CopyToClipboardCommand}"
+                                            CommandParameter="{Binding NumeralCustom}"
+                                            IsVisible="{Binding ShowNumeralCustom}"
+                                            Style="{StaticResource CopyBtn}"
+                                            Text="⎘" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  ── ЦВЕТ (1) ──  -->
+                        <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=1}" Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="14">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="17"
+                                    Text="Конвертер цветов"
+                                    TextColor="#F1F5F9" />
+
+                                <Border Style="{StaticResource InputBorder}">
+                                    <Grid ColumnDefinitions="Auto,*">
+                                        <BoxView
+                                            Margin="0,0,8,0"
+                                            CornerRadius="6"
+                                            HeightRequest="24"
+                                            VerticalOptions="Center"
+                                            WidthRequest="24"
+                                            Color="{Binding ColorPreview}" />
+                                        <Entry
+                                            Grid.Column="1"
+                                            Placeholder="#FF5733 или rgb(255,87,51) или hsl(11,100%,60%)"
+                                            Style="{StaticResource InputEntry}"
+                                            Text="{Binding ColorInput}" />
+                                    </Grid>
+                                </Border>
+
+                                <Label
+                                    IsVisible="{Binding HasColorError}"
+                                    Style="{StaticResource ErrorLabel}"
+                                    Text="{Binding ColorError}" />
+
+                                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                                    <Border Padding="12" Style="{StaticResource Card}">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label
+                                                HorizontalTextAlignment="Center"
+                                                Style="{StaticResource SectionLabel}"
+                                                Text="HEX" />
+                                            <Label
+                                                HorizontalTextAlignment="Center"
+                                                Style="{StaticResource ResultValue}"
+                                                Text="{Binding ColorHex}" />
+                                            <Button
+                                                Command="{Binding CopyToClipboardCommand}"
+                                                CommandParameter="{Binding ColorHex}"
+                                                HorizontalOptions="Center"
+                                                Style="{StaticResource CopyBtn}"
+                                                Text="⎘" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="12"
+                                        Style="{StaticResource Card}">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label
+                                                HorizontalTextAlignment="Center"
+                                                Style="{StaticResource SectionLabel}"
+                                                Text="RGB" />
+                                            <Label
+                                                FontSize="12"
+                                                HorizontalTextAlignment="Center"
+                                                Style="{StaticResource ResultValue}"
+                                                Text="{Binding ColorRgb}" />
+                                            <Button
+                                                Command="{Binding CopyToClipboardCommand}"
+                                                CommandParameter="{Binding ColorRgb}"
+                                                HorizontalOptions="Center"
+                                                Style="{StaticResource CopyBtn}"
+                                                Text="⎘" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="2"
+                                        Padding="12"
+                                        Style="{StaticResource Card}">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label
+                                                HorizontalTextAlignment="Center"
+                                                Style="{StaticResource SectionLabel}"
+                                                Text="HSL" />
+                                            <Label
+                                                FontSize="12"
+                                                HorizontalTextAlignment="Center"
+                                                Style="{StaticResource ResultValue}"
+                                                Text="{Binding ColorHsl}" />
+                                            <Button
+                                                Command="{Binding CopyToClipboardCommand}"
+                                                CommandParameter="{Binding ColorHsl}"
+                                                HorizontalOptions="Center"
+                                                Style="{StaticResource CopyBtn}"
+                                                Text="⎘" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </Grid>
+
+                                <!--  Превью цвета  -->
+                                <Border
+                                    BackgroundColor="{Binding ColorPreview}"
+                                    HeightRequest="60"
+                                    StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="0" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  ── ВРЕМЯ (2) ──  -->
+                        <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=2}" Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="14">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="17"
+                                    Text="Конвертер времени и часовых поясов"
+                                    TextColor="#F1F5F9" />
+
+                                <Grid ColumnDefinitions="*,100" ColumnSpacing="10">
+                                    <Border Grid.Column="0" Style="{StaticResource InputBorder}">
+                                        <Entry
+                                            Placeholder="2024-01-15 10:00"
+                                            Style="{StaticResource InputEntry}"
+                                            Text="{Binding TimeInput}" />
+                                    </Border>
+
+                                    <Button
+                                        Grid.Column="1"
+                                        BackgroundColor="#1E293B"
+                                        Command="{Binding UseNowCommand}"
+                                        CornerRadius="12"
+                                        FontSize="13"
+                                        HeightRequest="44"
+                                        Text="Сейчас"
+                                        TextColor="#94A3B8"
+                                        VerticalOptions="Center"
+                                        WidthRequest="100" />
+                                </Grid>
+
+                                <Grid
+                                    ColumnDefinitions="*,32,*"
+                                    ColumnSpacing="8"
+                                    VerticalOptions="Center">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Label Style="{StaticResource SectionLabel}" Text="Из:" />
+                                        <Border Padding="8,0" Style="{StaticResource InputBorder}">
+                                            <Picker
+                                                BackgroundColor="Transparent"
+                                                ItemsSource="{Binding AvailableZones}"
+                                                SelectedItem="{Binding FromZoneId}"
+                                                TextColor="#F1F5F9" />
+                                        </Border>
+                                    </VerticalStackLayout>
+
+                                    <Label
+                                        Grid.Column="1"
+                                        Margin="0,0,0,10"
+                                        FontSize="18"
+                                        HorizontalTextAlignment="Center"
+                                        Text="→"
+                                        TextColor="#64748B"
+                                        VerticalOptions="End" />
+
+                                    <VerticalStackLayout Grid.Column="2" Spacing="6">
+                                        <Label Style="{StaticResource SectionLabel}" Text="В:" />
+                                        <Border Padding="8,0" Style="{StaticResource InputBorder}">
+                                            <Picker
+                                                BackgroundColor="Transparent"
+                                                ItemsSource="{Binding AvailableZones}"
+                                                SelectedItem="{Binding ToZoneId}"
+                                                TextColor="#F1F5F9" />
+                                        </Border>
+                                    </VerticalStackLayout>
+                                </Grid>
+
+                                <Button
+                                    BackgroundColor="#2DD4BF"
+                                    Command="{Binding ConvertTimeCommand}"
+                                    CornerRadius="12"
+                                    FontAttributes="Bold"
+                                    HeightRequest="44"
+                                    Text="Конвертировать"
+                                    TextColor="#0B1120" />
+
+                                <Label
+                                    IsVisible="{Binding HasTimeError}"
+                                    Style="{StaticResource ErrorLabel}"
+                                    Text="{Binding TimeError}" />
+
+                                <Border
+                                    Padding="16"
+                                    BackgroundColor="#0B1120"
+                                    StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="0">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label
+                                            FontSize="18"
+                                            Style="{StaticResource ResultValue}"
+                                            Text="{Binding TimeResult}"
+                                            VerticalOptions="Center" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Command="{Binding CopyToClipboardCommand}"
+                                            CommandParameter="{Binding TimeResult}"
+                                            Style="{StaticResource CopyBtn}"
+                                            Text="⎘" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  ── JSON/XML (3) ──  -->
+                        <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=3}" Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="14">
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="17"
+                                    Text="JSON / XML"
+                                    TextColor="#F1F5F9" />
+
+                                <!--  Переключатель режима: Format / Convert  -->
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="0">
+                                    <Border
+                                        Padding="0"
+                                        Stroke="#1E293B"
+                                        StrokeShape="RoundRectangle 12,0,0,12"
+                                        StrokeThickness="1">
+                                        <Border.BackgroundColor>
+                                            <Binding Path="IsJsonMode">
+                                                <Binding.Converter>
+                                                    <converters:BoolToColorConverter FalseColor="#111827" TrueColor="#1E3A2F" />
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </Border.BackgroundColor>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SetJsonModeCommand}" CommandParameter="true" />
+                                        </Border.GestureRecognizers>
+                                        <Label
+                                            Padding="0,10"
+                                            FontSize="13"
+                                            HorizontalTextAlignment="Center"
+                                            Text="JSON">
+                                            <Label.TextColor>
+                                                <Binding Path="IsJsonMode">
+                                                    <Binding.Converter>
+                                                        <converters:BoolToColorConverter FalseColor="#64748B" TrueColor="#2DD4BF" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </Label.TextColor>
+                                        </Label>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="0"
+                                        Stroke="#1E293B"
+                                        StrokeShape="RoundRectangle 0,12,12,0"
+                                        StrokeThickness="1">
+                                        <Border.BackgroundColor>
+                                            <Binding Path="IsJsonMode">
+                                                <Binding.Converter>
+                                                    <converters:BoolToColorConverter FalseColor="#1E3A2F" TrueColor="#111827" />
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </Border.BackgroundColor>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SetJsonModeCommand}" CommandParameter="false" />
+                                        </Border.GestureRecognizers>
+                                        <Label
+                                            Padding="0,10"
+                                            FontSize="13"
+                                            HorizontalTextAlignment="Center"
+                                            Text="XML">
+                                            <Label.TextColor>
+                                                <Binding Path="IsJsonMode">
+                                                    <Binding.Converter>
+                                                        <converters:BoolToColorConverter FalseColor="#2DD4BF" TrueColor="#64748B" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </Label.TextColor>
+                                        </Label>
+                                    </Border>
+                                </Grid>
+
+                                <!--  Кнопки конвертации JSON ↔ XML  -->
+                                <HorizontalStackLayout Spacing="8">
+                                    <Button
+                                        BackgroundColor="#1E293B"
+                                        Command="{Binding ConvertJsonToXmlCommand}"
+                                        Style="{StaticResource PillBtn}"
+                                        Text="JSON → XML"
+                                        TextColor="#94A3B8" />
+                                    <Button
+                                        BackgroundColor="#1E293B"
+                                        Command="{Binding ConvertXmlToJsonCommand}"
+                                        Style="{StaticResource PillBtn}"
+                                        Text="XML → JSON"
+                                        TextColor="#94A3B8" />
+                                    <Button
+                                        BackgroundColor="#2DD4BF"
+                                        Command="{Binding FormatCurrentCommand}"
+                                        FontAttributes="Bold"
+                                        Style="{StaticResource PillBtn}"
+                                        Text="Форматировать"
+                                        TextColor="#0B1120" />
+                                </HorizontalStackLayout>
+
+                                <!--  Два столбца: ввод | вывод  -->
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+
+                                    <!--  Ввод  -->
+                                    <VerticalStackLayout Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label
+                                                Style="{StaticResource SectionLabel}"
+                                                Text="Ввод"
+                                                VerticalOptions="Center" />
+                                            <Button
+                                                Grid.Column="1"
+                                                Padding="4,0"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding ClearJsonXmlInputCommand}"
+                                                FontSize="11"
+                                                HeightRequest="28"
+                                                Text="✕ Очистить"
+                                                TextColor="#475569" />
+                                        </Grid>
+                                        <Border
+                                            Padding="12"
+                                            BackgroundColor="#0F172A"
+                                            Stroke="#1E293B"
+                                            StrokeShape="RoundRectangle 12"
+                                            StrokeThickness="1">
+                                            <Editor
+                                                AutoSize="TextChanges"
+                                                BackgroundColor="Transparent"
+                                                FontFamily="Monospace"
+                                                FontSize="12"
+                                                MinimumHeightRequest="220"
+                                                Placeholder="{Binding IsJsonMode, Converter={StaticResource BoolToStringConverter}, ConverterParameter='Вставь JSON...|Вставь XML...'}"
+                                                PlaceholderColor="#475569"
+                                                Text="{Binding JsonXmlInput}"
+                                                TextColor="#F1F5F9" />
+                                        </Border>
+                                    </VerticalStackLayout>
+
+                                    <!--  Вывод  -->
+                                    <VerticalStackLayout Grid.Column="1" Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label
+                                                Style="{StaticResource SectionLabel}"
+                                                Text="Результат"
+                                                VerticalOptions="Center" />
+                                            <Button
+                                                Grid.Column="1"
+                                                Padding="4,0"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding CopyToClipboardCommand}"
+                                                CommandParameter="{Binding JsonXmlOutput}"
+                                                FontSize="11"
+                                                HeightRequest="28"
+                                                Text="⎘ Копировать"
+                                                TextColor="#2DD4BF" />
+                                        </Grid>
+                                        <Border
+                                            Padding="12"
+                                            BackgroundColor="#0B1120"
+                                            Stroke="#1E293B"
+                                            StrokeShape="RoundRectangle 12"
+                                            StrokeThickness="1">
+                                            <Label
+                                                FontFamily="Monospace"
+                                                FontSize="12"
+                                                LineBreakMode="WordWrap"
+                                                MinimumHeightRequest="220"
+                                                Text="{Binding JsonXmlOutput}"
+                                                TextColor="#2DD4BF" />
+                                        </Border>
+                                    </VerticalStackLayout>
+                                </Grid>
+
+                                <Label
+                                    IsVisible="{Binding HasJsonXmlError}"
+                                    Style="{StaticResource ErrorLabel}"
+                                    Text="{Binding JsonXmlError}" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  ── URL (4) ──  -->
+                        <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=4}" Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="14">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="17"
+                                    Text="URL encode / decode"
+                                    TextColor="#F1F5F9" />
+
+                                <Label Style="{StaticResource SectionLabel}" Text="Ввод" />
+                                <Border
+                                    Padding="12"
+                                    BackgroundColor="#0F172A"
+                                    Stroke="#1E293B"
+                                    StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="1">
+                                    <Editor
+                                        AutoSize="TextChanges"
+                                        BackgroundColor="Transparent"
+                                        MinimumHeightRequest="80"
+                                        Placeholder="Привет мир! или %D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82..."
+                                        PlaceholderColor="#475569"
+                                        Text="{Binding UrlInput}"
+                                        TextColor="#F1F5F9" />
+                                </Border>
+
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                                    <Button
+                                        BackgroundColor="#2DD4BF"
+                                        Command="{Binding EncodeUrlCommand}"
+                                        FontAttributes="Bold"
+                                        Style="{StaticResource PillBtn}"
+                                        Text="Encode →"
+                                        TextColor="#0B1120" />
+                                    <Button
+                                        Grid.Column="1"
+                                        BackgroundColor="#1E293B"
+                                        Command="{Binding DecodeUrlCommand}"
+                                        Style="{StaticResource PillBtn}"
+                                        Text="← Decode"
+                                        TextColor="#94A3B8" />
+                                </Grid>
+
+                                <Label
+                                    IsVisible="{Binding HasUrlError}"
+                                    Style="{StaticResource ErrorLabel}"
+                                    Text="{Binding UrlError}" />
+
+                                <Border
+                                    Padding="12"
+                                    BackgroundColor="#0B1120"
+                                    StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="0">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label
+                                            FontFamily="Monospace"
+                                            FontSize="13"
+                                            LineBreakMode="CharacterWrap"
+                                            Text="{Binding UrlOutput}"
+                                            TextColor="#2DD4BF" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Command="{Binding CopyToClipboardCommand}"
+                                            CommandParameter="{Binding UrlOutput}"
+                                            Style="{StaticResource CopyBtn}"
+                                            Text="⎘" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+                        </Border>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Grid>
+
+            <!--  Правая колонка: история + подсказки  -->
+            <ScrollView Grid.Row="1" Grid.Column="1">
+                <VerticalStackLayout Spacing="16">
+
+                    <!--  История конверсий  -->
+                    <Border Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    Text="История конверсий"
+                                    TextColor="#F1F5F9"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Grid.Column="1"
+                                    Padding="10,0"
+                                    BackgroundColor="#1E293B"
+                                    Command="{Binding ClearTodayHistoryCommand}"
+                                    CornerRadius="10"
+                                    FontSize="12"
+                                    HeightRequest="34"
+                                    Text="Очистить историю"
+                                    TextColor="#94A3B8" />
+                            </Grid>
+
+                            <!--  EmptyView  -->
+                            <VerticalStackLayout
+                                Padding="0,12"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding HasHistory, Converter={StaticResource InvertBoolConverter}}"
+                                Spacing="8">
+                                <Label
+                                    FontSize="28"
+                                    HorizontalTextAlignment="Center"
+                                    Text="🕐" />
+                                <Label
+                                    FontSize="13"
+                                    HorizontalTextAlignment="Center"
+                                    Text="История пуста"
+                                    TextColor="#475569" />
+                                <Label
+                                    FontSize="11"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Начни вводить данные — результаты сохранятся здесь"
+                                    TextColor="#334155" />
+                            </VerticalStackLayout>
+
+                            <!--  Список  -->
+                            <BindableLayout.ItemsSource>
+                                <!--  Используем вертикальный StackLayout с BindableLayout  -->
+                            </BindableLayout.ItemsSource>
+                            <VerticalStackLayout
+                                BindableLayout.ItemsSource="{Binding History}"
+                                IsVisible="{Binding HasHistory}"
+                                Spacing="8">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:HistoryItemVm">
+                                        <Border
+                                            Padding="12"
+                                            BackgroundColor="#0F172A"
+                                            StrokeShape="RoundRectangle 12"
+                                            StrokeThickness="0">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ConvertersViewModel}}, Path=RestoreFromHistoryCommand}" CommandParameter="{Binding .}" />
+                                            </Border.GestureRecognizers>
+                                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                                <Border
+                                                    Padding="6"
+                                                    BackgroundColor="#1E293B"
+                                                    StrokeShape="RoundRectangle 8"
+                                                    StrokeThickness="0"
+                                                    VerticalOptions="Start">
+                                                    <Label FontSize="14" Text="{Binding TypeIcon}" />
+                                                </Border>
+                                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                                    <Label
+                                                        FontSize="13"
+                                                        LineBreakMode="TailTruncation"
+                                                        MaxLines="1"
+                                                        Text="{Binding Input}"
+                                                        TextColor="#F1F5F9" />
+                                                    <Label
+                                                        FontSize="11"
+                                                        LineBreakMode="TailTruncation"
+                                                        MaxLines="1"
+                                                        Text="{Binding Output}"
+                                                        TextColor="#2DD4BF" />
+                                                </VerticalStackLayout>
+                                                <VerticalStackLayout
+                                                    Grid.Column="2"
+                                                    HorizontalOptions="End"
+                                                    Spacing="2">
+                                                    <Label
+                                                        FontSize="10"
+                                                        HorizontalTextAlignment="End"
+                                                        Text="{Binding TypeLabel}"
+                                                        TextColor="#64748B" />
+                                                    <Label
+                                                        FontSize="10"
+                                                        HorizontalTextAlignment="End"
+                                                        Text="{Binding TimeAgo}"
+                                                        TextColor="#334155" />
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Подсказки  -->
+                    <Border Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="Подсказки по использованию"
+                                TextColor="#F1F5F9" />
+                            <Label
+                                FontSize="13"
+                                LineBreakMode="WordWrap"
+                                Text="{Binding CurrentTip}"
+                                TextColor="#94A3B8" />
+                            <Border
+                                Padding="10"
+                                BackgroundColor="#0F172A"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="0">
+                                <Label
+                                    FontSize="12"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Работает офлайн"
+                                    TextColor="#2DD4BF" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </Grid>
+
+        <!--  ═══ MOBILE (<768px) ═══  -->
+        <Grid
+            x:Name="MobileLayout"
+            Padding="16,52,16,16"
+            IsVisible="True"
+            RowDefinitions="Auto,Auto,*">
+
+            <!--  Заголовок  -->
+            <VerticalStackLayout Margin="0,0,0,12" Spacing="2">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="22"
+                    Text="Конвертеры"
+                    TextColor="#F1F5F9" />
+                <Label
+                    FontSize="12"
+                    Text="Инструменты разработчика"
+                    TextColor="#64748B" />
+            </VerticalStackLayout>
+
+            <!--  Табы  -->
+            <ScrollView
+                Grid.Row="1"
+                Margin="0,0,0,12"
+                HorizontalScrollBarVisibility="Never"
+                Orientation="Horizontal">
+                <HorizontalStackLayout Spacing="8">
+                    <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=0}" Style="{StaticResource TabBtn}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="0" />
+                        </Border.GestureRecognizers>
+                        <Label
+                            FontSize="12"
+                            Text="HEX/BIN"
+                            TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=0}" />
+                    </Border>
+                    <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=1}" Style="{StaticResource TabBtn}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="1" />
+                        </Border.GestureRecognizers>
+                        <Label
+                            FontSize="12"
+                            Text="Цвет"
+                            TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=1}" />
+                    </Border>
+                    <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=2}" Style="{StaticResource TabBtn}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="2" />
+                        </Border.GestureRecognizers>
+                        <Label
+                            FontSize="12"
+                            Text="Время"
+                            TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=2}" />
+                    </Border>
+                    <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=3}" Style="{StaticResource TabBtn}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="3" />
+                        </Border.GestureRecognizers>
+                        <Label
+                            FontSize="12"
+                            Text="JSON/XML"
+                            TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=3}" />
+                    </Border>
+                    <Border BackgroundColor="{Binding SelectedTabIndex, Converter={StaticResource TabColorConverter}, ConverterParameter=4}" Style="{StaticResource TabBtn}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="4" />
+                        </Border.GestureRecognizers>
+                        <Label
+                            FontSize="12"
+                            Text="URL"
+                            TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=4}" />
+                    </Border>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <!--  Контент — те же панели что на десктопе, только в ScrollView без правой колонки  -->
+            <ScrollView Grid.Row="2">
+                <VerticalStackLayout Spacing="14">
+
+                    <!--  ЧИСЛА  -->
+                    <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=0}" Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="Системы счисления"
+                                TextColor="#F1F5F9" />
+                            <Border Style="{StaticResource InputBorder}">
+                                <Entry
+                                    Keyboard="Numeric"
+                                    Placeholder="Введи число (255, 0xFF, 0b1010...)"
+                                    Style="{StaticResource InputEntry}"
+                                    Text="{Binding NumeralInput}" />
+                            </Border>
+                            <Label
+                                IsVisible="{Binding HasNumeralError}"
+                                Style="{StaticResource ErrorLabel}"
+                                Text="{Binding NumeralError}" />
+                            <Border
+                                Padding="12"
+                                BackgroundColor="#0B1120"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0">
+                                <Grid
+                                    ColumnDefinitions="Auto,*,Auto"
+                                    RowDefinitions="Auto,Auto,Auto,Auto"
+                                    RowSpacing="10">
+                                    <Label
+                                        FontSize="13"
+                                        Text="BIN:"
+                                        TextColor="#475569"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Style="{StaticResource ResultValue}"
+                                        Text="{Binding NumeralBin}"
+                                        VerticalOptions="Center" />
+                                    <Button
+                                        Grid.Column="2"
+                                        Command="{Binding CopyToClipboardCommand}"
+                                        CommandParameter="{Binding NumeralBin}"
+                                        Style="{StaticResource CopyBtn}"
+                                        Text="⎘" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        FontSize="13"
+                                        Text="OCT:"
+                                        TextColor="#475569"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Style="{StaticResource ResultValue}"
+                                        Text="{Binding NumeralOct}"
+                                        VerticalOptions="Center" />
+                                    <Button
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Command="{Binding CopyToClipboardCommand}"
+                                        CommandParameter="{Binding NumeralOct}"
+                                        Style="{StaticResource CopyBtn}"
+                                        Text="⎘" />
+
+                                    <Label
+                                        Grid.Row="2"
+                                        FontSize="13"
+                                        Text="DEC:"
+                                        TextColor="#475569"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Style="{StaticResource ResultValue}"
+                                        Text="{Binding NumeralDec}"
+                                        VerticalOptions="Center" />
+                                    <Button
+                                        Grid.Row="2"
+                                        Grid.Column="2"
+                                        Command="{Binding CopyToClipboardCommand}"
+                                        CommandParameter="{Binding NumeralDec}"
+                                        Style="{StaticResource CopyBtn}"
+                                        Text="⎘" />
+
+                                    <Label
+                                        Grid.Row="3"
+                                        FontSize="13"
+                                        Text="HEX:"
+                                        TextColor="#475569"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Style="{StaticResource ResultValue}"
+                                        Text="{Binding NumeralHex}"
+                                        VerticalOptions="Center" />
+                                    <Button
+                                        Grid.Row="3"
+                                        Grid.Column="2"
+                                        Command="{Binding CopyToClipboardCommand}"
+                                        CommandParameter="{Binding NumeralHex}"
+                                        Style="{StaticResource CopyBtn}"
+                                        Text="⎘" />
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  ЦВЕТ  -->
+                    <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=1}" Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="Конвертер цветов"
+                                TextColor="#F1F5F9" />
+                            <Border Style="{StaticResource InputBorder}">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <BoxView
+                                        Margin="0,0,8,0"
+                                        CornerRadius="5"
+                                        HeightRequest="22"
+                                        VerticalOptions="Center"
+                                        WidthRequest="22"
+                                        Color="{Binding ColorPreview}" />
+                                    <Entry
+                                        Grid.Column="1"
+                                        Placeholder="#HEX / rgb(...) / hsl(...)"
+                                        Style="{StaticResource InputEntry}"
+                                        Text="{Binding ColorInput}" />
+                                </Grid>
+                            </Border>
+                            <Label
+                                IsVisible="{Binding HasColorError}"
+                                Style="{StaticResource ErrorLabel}"
+                                Text="{Binding ColorError}" />
+                            <Border
+                                BackgroundColor="{Binding ColorPreview}"
+                                HeightRequest="48"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="0" />
+                            <Label
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource ResultValue}"
+                                Text="{Binding ColorHex}" />
+                            <Label
+                                FontSize="13"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource ResultValue}"
+                                Text="{Binding ColorRgb}" />
+                            <Label
+                                FontSize="13"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource ResultValue}"
+                                Text="{Binding ColorHsl}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  ВРЕМЯ  -->
+                    <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=2}" Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="Время и часовые пояса"
+                                TextColor="#F1F5F9" />
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Border Style="{StaticResource InputBorder}">
+                                    <Entry
+                                        Placeholder="2024-01-15 10:00"
+                                        Style="{StaticResource InputEntry}"
+                                        Text="{Binding TimeInput}" />
+                                </Border>
+                                <Button
+                                    BackgroundColor="#1E293B"
+                                    Command="{Binding UseNowCommand}"
+                                    CornerRadius="10"
+                                    FontSize="12"
+                                    HeightRequest="44"
+                                    Text="Now"
+                                    TextColor="#94A3B8" />
+                            </Grid>
+                            <Label Style="{StaticResource SectionLabel}" Text="Из:" />
+                            <Border Padding="8,0" Style="{StaticResource InputBorder}">
+                                <Picker
+                                    BackgroundColor="Transparent"
+                                    ItemsSource="{Binding AvailableZones}"
+                                    SelectedItem="{Binding FromZoneId}"
+                                    TextColor="#F1F5F9" />
+                            </Border>
+                            <Label Style="{StaticResource SectionLabel}" Text="В:" />
+                            <Border Padding="8,0" Style="{StaticResource InputBorder}">
+                                <Picker
+                                    BackgroundColor="Transparent"
+                                    ItemsSource="{Binding AvailableZones}"
+                                    SelectedItem="{Binding ToZoneId}"
+                                    TextColor="#F1F5F9" />
+                            </Border>
+                            <Button
+                                BackgroundColor="#2DD4BF"
+                                Command="{Binding ConvertTimeCommand}"
+                                CornerRadius="12"
+                                FontAttributes="Bold"
+                                HeightRequest="44"
+                                Text="Конвертировать"
+                                TextColor="#0B1120" />
+                            <Label
+                                IsVisible="{Binding HasTimeError}"
+                                Style="{StaticResource ErrorLabel}"
+                                Text="{Binding TimeError}" />
+                            <Label
+                                FontSize="16"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource ResultValue}"
+                                Text="{Binding TimeResult}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  JSON/XML  -->
+                    <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=3}" Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="JSON / XML"
+                                TextColor="#F1F5F9" />
+                            <HorizontalStackLayout Spacing="8">
+                                <Button
+                                    BackgroundColor="#1E3A2F"
+                                    Command="{Binding ConvertJsonToXmlCommand}"
+                                    Style="{StaticResource PillBtn}"
+                                    Text="JSON → XML"
+                                    TextColor="#2DD4BF" />
+                                <Button
+                                    BackgroundColor="#1E293B"
+                                    Command="{Binding ConvertXmlToJsonCommand}"
+                                    Style="{StaticResource PillBtn}"
+                                    Text="XML → JSON"
+                                    TextColor="#94A3B8" />
+                            </HorizontalStackLayout>
+                            <Border
+                                Padding="12"
+                                BackgroundColor="#0F172A"
+                                Stroke="#1E293B"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1">
+                                <Editor
+                                    AutoSize="TextChanges"
+                                    BackgroundColor="Transparent"
+                                    FontFamily="Monospace"
+                                    FontSize="12"
+                                    MinimumHeightRequest="120"
+                                    Placeholder="Ввод..."
+                                    PlaceholderColor="#475569"
+                                    Text="{Binding JsonXmlInput}"
+                                    TextColor="#F1F5F9" />
+                            </Border>
+                            <Label
+                                IsVisible="{Binding HasJsonXmlError}"
+                                Style="{StaticResource ErrorLabel}"
+                                Text="{Binding JsonXmlError}" />
+                            <Border
+                                Padding="12"
+                                BackgroundColor="#0B1120"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0">
+                                <Label
+                                    FontFamily="Monospace"
+                                    FontSize="12"
+                                    Text="{Binding JsonXmlOutput}"
+                                    TextColor="#2DD4BF" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  URL  -->
+                    <Border IsVisible="{Binding SelectedTabIndex, Converter={StaticResource TabVisibleConverter}, ConverterParameter=4}" Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="URL encode / decode"
+                                TextColor="#F1F5F9" />
+                            <Border
+                                Padding="12"
+                                BackgroundColor="#0F172A"
+                                Stroke="#1E293B"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1">
+                                <Editor
+                                    AutoSize="TextChanges"
+                                    BackgroundColor="Transparent"
+                                    MinimumHeightRequest="80"
+                                    Placeholder="Текст или URL..."
+                                    PlaceholderColor="#475569"
+                                    Text="{Binding UrlInput}"
+                                    TextColor="#F1F5F9" />
+                            </Border>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Button
+                                    BackgroundColor="#2DD4BF"
+                                    Command="{Binding EncodeUrlCommand}"
+                                    CornerRadius="12"
+                                    FontAttributes="Bold"
+                                    HeightRequest="44"
+                                    Text="Encode"
+                                    TextColor="#0B1120" />
+                                <Button
+                                    Grid.Column="1"
+                                    BackgroundColor="#1E293B"
+                                    Command="{Binding DecodeUrlCommand}"
+                                    CornerRadius="12"
+                                    HeightRequest="44"
+                                    Text="Decode"
+                                    TextColor="#94A3B8" />
+                            </Grid>
+                            <Label
+                                IsVisible="{Binding HasUrlError}"
+                                Style="{StaticResource ErrorLabel}"
+                                Text="{Binding UrlError}" />
+                            <Border
+                                Padding="12"
+                                BackgroundColor="#0B1120"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0">
+                                <Label
+                                    FontFamily="Monospace"
+                                    FontSize="13"
+                                    LineBreakMode="CharacterWrap"
+                                    Text="{Binding UrlOutput}"
+                                    TextColor="#2DD4BF" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  История (мобайл)  -->
+                    <Border Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="История конверсий"
+                                    TextColor="#F1F5F9"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Grid.Column="1"
+                                    Padding="8,0"
+                                    BackgroundColor="#1E293B"
+                                    Command="{Binding ClearTodayHistoryCommand}"
+                                    CornerRadius="8"
+                                    FontSize="11"
+                                    HeightRequest="30"
+                                    Text="Очистить"
+                                    TextColor="#94A3B8" />
+                            </Grid>
+                            <VerticalStackLayout
+                                BindableLayout.ItemsSource="{Binding History}"
+                                IsVisible="{Binding HasHistory}"
+                                Spacing="8">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:HistoryItemVm">
+                                        <Border
+                                            Padding="10"
+                                            BackgroundColor="#0F172A"
+                                            StrokeShape="RoundRectangle 10"
+                                            StrokeThickness="0">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ConvertersViewModel}}, Path=RestoreFromHistoryCommand}" CommandParameter="{Binding .}" />
+                                            </Border.GestureRecognizers>
+                                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                                                <Label
+                                                    FontSize="14"
+                                                    Text="{Binding TypeIcon}"
+                                                    VerticalOptions="Center" />
+                                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                                    <Label
+                                                        FontSize="12"
+                                                        LineBreakMode="TailTruncation"
+                                                        MaxLines="1"
+                                                        Text="{Binding Input}"
+                                                        TextColor="#F1F5F9" />
+                                                    <Label
+                                                        FontSize="11"
+                                                        LineBreakMode="TailTruncation"
+                                                        MaxLines="1"
+                                                        Text="{Binding Output}"
+                                                        TextColor="#2DD4BF" />
+                                                </VerticalStackLayout>
+                                                <Label
+                                                    Grid.Column="2"
+                                                    FontSize="10"
+                                                    Text="{Binding TimeAgo}"
+                                                    TextColor="#475569"
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                            <Label
+                                FontSize="12"
+                                HorizontalTextAlignment="Center"
+                                IsVisible="{Binding HasHistory, Converter={StaticResource InvertBoolConverter}}"
+                                Text="Пока пусто"
+                                TextColor="#475569" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Подсказки (мобайл)  -->
+                    <Border Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Подсказки"
+                                TextColor="#F1F5F9" />
+                            <Label
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="{Binding CurrentTip}"
+                                TextColor="#94A3B8" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </Grid>
+</ContentPage>

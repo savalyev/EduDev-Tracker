@@ -433,25 +433,21 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
         [RelayCommand]
         private async Task OpenCreatePresetAsync()
         {
-            string? name = await Shell.Current.DisplayPromptAsync(
-                "Новый пресет", "Введите название пресета",
-                "Создать", "Отмена", "Например: Глубокая работа 50/10");
+            var vm = new CreatePresetViewModel(_pomodoroService);
 
-            if (string.IsNullOrWhiteSpace(name)) return;
-
-            int profileId = Preferences.Default.Get("active_profile_id", 0);
-            var newPreset = new PomodoroPreset
+            vm.PresetCreated += async preset =>
             {
-                ProfileId = profileId,
-                Name = name,
-                WorkMinutes = 25,
-                ShortBreakMin = 5,
-                LongBreakMin = 15,
-                CyclesToLong = 4,
-                IsDefault = false
+                await LoadPresetsAsync();
+
+                if (preset.IsDefault && !IsRunning)
+                {
+                    ActivePreset = preset;
+                    SetupPhase(_currentPhase);
+                }
             };
-            await _pomodoroService.SavePresetAsync(newPreset);
-            await LoadPresetsAsync();
+
+            var page = new CreatePresetPage(vm);
+            await Shell.Current.Navigation.PushModalAsync(page, animated: true);
         }
 
         [RelayCommand]

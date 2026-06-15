@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:EduDev_Tracker.Core.Converters"
     xmlns:local="clr-namespace:EduDev_Tracker">
+
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -28,6 +29,10 @@
                 FalseColor="#64748B"
                 TrueColor="#FFFFFF" />
             <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:TabColorConverter x:Key="TabColorConverter" />
+            <converters:TabTextConverter x:Key="TabTextConverter" />
+            <converters:TabVisibleConverter x:Key="TabVisibleConverter" />
+            <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

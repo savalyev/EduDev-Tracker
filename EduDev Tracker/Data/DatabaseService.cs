@@ -94,6 +94,10 @@ namespace EduDev_Tracker.Data
                 await _connection.CreateTableAsync<Cheatsheet>();
                 await _connection.CreateTableAsync<CheatsheetTag>();
                 await _connection.CreateTableAsync<ConversionHistory>();
+                await _connection.ExecuteAsync(
+                    @"CREATE INDEX IF NOT EXISTS idx_conv_profile_time
+                    ON conversionhistory(ProfileId, CreatedAt DESC)");
+
                 await _connection.CreateTableAsync<Reminder>();
 
                 System.Diagnostics.Debug.WriteLine("DB: tables done");

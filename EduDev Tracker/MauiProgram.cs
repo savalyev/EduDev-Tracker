@@ -27,6 +27,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using Plugin.LocalNotification;
 using Plugin.Maui.Audio;
+using EduDev_Tracker.Services.Converters;
+using EduDev_Tracker.Features.DevTools.ViewModels;
+using EduDev_Tracker.Features.DevTools.Views;
+
+
+
 
 #if WINDOWS
 using Microsoft.UI.Windowing;
@@ -61,6 +67,7 @@ namespace EduDev_Tracker
             builder.Services.AddSingleton<PomodoroRepository>();
             builder.Services.AddSingleton<CheatsheetRepository>();
             builder.Services.AddSingleton<ProfileRepository>();
+            builder.Services.AddSingleton<ConversionRepository>();
             builder.Services.AddSingleton(AudioManager.Current);
             builder.Services.AddSingleton<BackgroundTimerService>();
 
@@ -106,6 +113,7 @@ namespace EduDev_Tracker
             services.AddSingleton<IAuthService,  AuthService>();
             services.AddSingleton<IPomodoroService, PomodoroService>();
             services.AddSingleton<IAudioService, AudioService>();
+            services.AddSingleton<IConversionService,  ConversionService>();
 
             services.AddTransient<CreateHabitViewModel>();
             services.AddTransient<CreateHabitPage>();
@@ -145,6 +153,11 @@ namespace EduDev_Tracker
             services.AddTransient<PomodoroViewModel>();
             services.AddTransient<PomodoroPage>();
             services.AddTransient<TaskPickerBottomSheet>();
+            services.AddTransient<CreatePresetViewModel>();
+            services.AddTransient<CreatePresetPage>();
+
+            services.AddTransient<ConvertersViewModel>();
+            services.AddTransient<ConvertersPage>();
         }
     }
 }

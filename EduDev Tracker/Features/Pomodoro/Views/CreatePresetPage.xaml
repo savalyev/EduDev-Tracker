@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Pomodoro.Views.CreatePresetPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:EduDev_Tracker.Features.Pomodoro.ViewModels"
+    Title=""
+    x:DataType="vm:CreatePresetViewModel"
+    BackgroundColor="#0B1120"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <Style x:Key="FieldLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="#94A3B8" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+
+        <Style x:Key="ValueLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#F1F5F9" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="WidthRequest" Value="52" />
+        </Style>
+
+        <Style x:Key="StepButton" TargetType="Button">
+            <Setter Property="WidthRequest" Value="40" />
+            <Setter Property="HeightRequest" Value="40" />
+            <Setter Property="CornerRadius" Value="20" />
+            <Setter Property="BackgroundColor" Value="#1E293B" />
+            <Setter Property="TextColor" Value="#2DD4BF" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style x:Key="PhaseCard" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="#111827" />
+            <Setter Property="Stroke" Value="#1E293B" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+            <Setter Property="Padding" Value="16,14" />
+        </Style>
+
+        <Style x:Key="PreviewBadge" TargetType="Border">
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 20" />
+            <Setter Property="Padding" Value="14,8" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  ── Шапка ──  -->
+        <Grid
+            Grid.Row="0"
+            Padding="16,52,16,12"
+            BackgroundColor="#0B1120"
+            ColumnDefinitions="Auto,*,Auto">
+            <Button
+                Grid.Column="0"
+                Padding="0"
+                BackgroundColor="Transparent"
+                Command="{Binding CancelCommand}"
+                FontSize="15"
+                Text="Отмена"
+                TextColor="#64748B" />
+            <Label
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="17"
+                HorizontalTextAlignment="Center"
+                Text="Новый пресет"
+                TextColor="#F1F5F9"
+                VerticalOptions="Center" />
+            <Button
+                Grid.Column="2"
+                Padding="0"
+                BackgroundColor="Transparent"
+                Command="{Binding SaveCommand}"
+                FontAttributes="Bold"
+                FontSize="15"
+                Text="Сохранить"
+                TextColor="#2DD4BF" />
+        </Grid>
+
+        <!--  Разделитель  -->
+        <BoxView
+            Grid.Row="0"
+            HeightRequest="1"
+            VerticalOptions="End"
+            Color="#1E293B" />
+
+        <!--  ── Контент ──  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,20,16,20" Spacing="16">
+
+                <!--  Название  -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Style="{StaticResource FieldLabel}" Text="Название пресета" />
+                    <Border
+                        Padding="14,0"
+                        BackgroundColor="#111827"
+                        Stroke="#1E293B"
+                        StrokeShape="RoundRectangle 14"
+                        StrokeThickness="1">
+                        <Entry
+                            BackgroundColor="Transparent"
+                            FontSize="14"
+                            HeightRequest="48"
+                            Placeholder="Например: Глубокая работа 50/10"
+                            PlaceholderColor="#475569"
+                            ReturnType="Next"
+                            Text="{Binding Name}"
+                            TextColor="#F1F5F9" />
+                    </Border>
+                    <!--  Ошибка валидации  -->
+                    <Label
+                        FontSize="12"
+                        IsVisible="{Binding HasNameError}"
+                        Text="{Binding NameError}"
+                        TextColor="#EF4444" />
+                </VerticalStackLayout>
+
+                <!--  Превью цикла  -->
+                <Border Style="{StaticResource PhaseCard}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label
+                            Margin="0"
+                            Style="{StaticResource FieldLabel}"
+                            Text="Предпросмотр цикла" />
+                        <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                            <HorizontalStackLayout
+                                x:Name="PreviewStack"
+                                BindableLayout.ItemsSource="{Binding CyclePreviewItems}"
+                                Spacing="6">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:CyclePreviewItem">
+                                        <Border BackgroundColor="{Binding BadgeColor}" Style="{StaticResource PreviewBadge}">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="11"
+                                                HorizontalTextAlignment="Center"
+                                                Text="{Binding Label}"
+                                                TextColor="{Binding TextColor}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </HorizontalStackLayout>
+                        </ScrollView>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Рабочее время  -->
+                <Border Style="{StaticResource PhaseCard}">
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="12">
+                        <VerticalStackLayout
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Spacing="2">
+                            <Label
+                                Margin="0"
+                                Style="{StaticResource FieldLabel}"
+                                Text="🟢  Рабочий интервал" />
+                            <Label
+                                FontSize="11"
+                                Text="Время сфокусированной работы"
+                                TextColor="#475569" />
+                        </VerticalStackLayout>
+                        <Grid
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            ColumnDefinitions="Auto,Auto,Auto"
+                            ColumnSpacing="8"
+                            VerticalOptions="Center">
+                            <Button
+                                Command="{Binding DecreaseWorkCommand}"
+                                Style="{StaticResource StepButton}"
+                                Text="−" />
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="0"
+                                VerticalOptions="Center">
+                                <Label Style="{StaticResource ValueLabel}" Text="{Binding WorkMinutes}" />
+                                <Label
+                                    FontSize="10"
+                                    HorizontalTextAlignment="Center"
+                                    Text="мин"
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+                            <Button
+                                Grid.Column="2"
+                                Command="{Binding IncreaseWorkCommand}"
+                                Style="{StaticResource StepButton}"
+                                Text="+" />
+                        </Grid>
+
+                        <!--  Слайдер  -->
+                        <Slider
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Maximum="90"
+                            MaximumTrackColor="#1E293B"
+                            Minimum="5"
+                            MinimumTrackColor="#2DD4BF"
+                            ThumbColor="#2DD4BF"
+                            Value="{Binding WorkMinutes}" />
+                    </Grid>
+                </Border>
+
+                <!--  Короткий перерыв  -->
+                <Border Style="{StaticResource PhaseCard}">
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="12">
+                        <VerticalStackLayout
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Spacing="2">
+                            <Label
+                                Margin="0"
+                                Style="{StaticResource FieldLabel}"
+                                Text="🔵  Короткий перерыв" />
+                            <Label
+                                FontSize="11"
+                                Text="Отдых между рабочими интервалами"
+                                TextColor="#475569" />
+                        </VerticalStackLayout>
+                        <Grid
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            ColumnDefinitions="Auto,Auto,Auto"
+                            ColumnSpacing="8"
+                            VerticalOptions="Center">
+                            <Button
+                                Command="{Binding DecreaseShortBreakCommand}"
+                                Style="{StaticResource StepButton}"
+                                Text="−" />
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="0"
+                                VerticalOptions="Center">
+                                <Label Style="{StaticResource ValueLabel}" Text="{Binding ShortBreakMin}" />
+                                <Label
+                                    FontSize="10"
+                                    HorizontalTextAlignment="Center"
+                                    Text="мин"
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+                            <Button
+                                Grid.Column="2"
+                                Command="{Binding IncreaseShortBreakCommand}"
+                                Style="{StaticResource StepButton}"
+                                Text="+" />
+                        </Grid>
+                        <Slider
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Maximum="30"
+                            MaximumTrackColor="#1E293B"
+                            Minimum="1"
+                            MinimumTrackColor="#60A5FA"
+                            ThumbColor="#60A5FA"
+                            Value="{Binding ShortBreakMin}" />
+                    </Grid>
+                </Border>
+
+                <!--  Длинный перерыв  -->
+                <Border Style="{StaticResource PhaseCard}">
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="12">
+                        <VerticalStackLayout
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Spacing="2">
+                            <Label
+                                Margin="0"
+                                Style="{StaticResource FieldLabel}"
+                                Text="🟣  Длинный перерыв" />
+                            <Label
+                                FontSize="11"
+                                Text="После N рабочих циклов"
+                                TextColor="#475569" />
+                        </VerticalStackLayout>
+                        <Grid
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            ColumnDefinitions="Auto,Auto,Auto"
+                            ColumnSpacing="8"
+                            VerticalOptions="Center">
+                            <Button
+                                Command="{Binding DecreaseLongBreakCommand}"
+                                Style="{StaticResource StepButton}"
+                                Text="−" />
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="0"
+                                VerticalOptions="Center">
+                                <Label Style="{StaticResource ValueLabel}" Text="{Binding LongBreakMin}" />
+                                <Label
+                                    FontSize="10"
+                                    HorizontalTextAlignment="Center"
+                                    Text="мин"
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+                            <Button
+                                Grid.Column="2"
+                                Command="{Binding IncreaseLongBreakCommand}"
+                                Style="{StaticResource StepButton}"
+                                Text="+" />
+                        </Grid>
+                        <Slider
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Maximum="60"
+                            MaximumTrackColor="#1E293B"
+                            Minimum="5"
+                            MinimumTrackColor="#A78BFA"
+                            ThumbColor="#A78BFA"
+                            Value="{Binding LongBreakMin}" />
+                    </Grid>
+                </Border>
+
+                <!--  Количество циклов до длинного перерыва  -->
+                <Border Style="{StaticResource PhaseCard}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2">
+                            <Label
+                                Margin="0"
+                                Style="{StaticResource FieldLabel}"
+                                Text="🔁  Циклов до длинного перерыва" />
+                            <Label
+                                FontSize="11"
+                                Text="{Binding CyclesDescription}"
+                                TextColor="#475569" />
+                        </VerticalStackLayout>
+                        <Grid
+                            Grid.Column="1"
+                            ColumnDefinitions="Auto,Auto,Auto"
+                            ColumnSpacing="8"
+                            VerticalOptions="Center">
+                            <Button
+                                Command="{Binding DecreaseCyclesCommand}"
+                                Style="{StaticResource StepButton}"
+                                Text="−" />
+                            <Label
+                                Grid.Column="1"
+                                Style="{StaticResource ValueLabel}"
+                                Text="{Binding CyclesToLong}"
+                                VerticalOptions="Center" />
+                            <Button
+                                Grid.Column="2"
+                                Command="{Binding IncreaseCyclesCommand}"
+                                Style="{StaticResource StepButton}"
+                                Text="+" />
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!--  Сделать пресетом по умолчанию  -->
+                <Border Style="{StaticResource PhaseCard}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2">
+                            <Label
+                                FontSize="14"
+                                Text="Пресет по умолчанию"
+                                TextColor="#CBD5E1" />
+                            <Label
+                                FontSize="11"
+                                Text="Будет автоматически выбран при открытии"
+                                TextColor="#475569" />
+                        </VerticalStackLayout>
+                        <Switch
+                            Grid.Column="1"
+                            IsToggled="{Binding IsDefault}"
+                            OnColor="#2DD4BF"
+                            ThumbColor="#FFFFFF"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!--  Итоговое время цикла  -->
+                <Border
+                    Padding="16,14"
+                    BackgroundColor="#0F172A"
+                    StrokeShape="RoundRectangle 16"
+                    StrokeThickness="0">
+                    <Grid ColumnDefinitions="*,*,*">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding TotalCycleTime}"
+                                TextColor="#2DD4BF" />
+                            <Label
+                                FontSize="11"
+                                HorizontalTextAlignment="Center"
+                                Text="Полный цикл"
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            HorizontalOptions="Center"
+                            Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding TotalWorkTime}"
+                                TextColor="#F1F5F9" />
+                            <Label
+                                FontSize="11"
+                                HorizontalTextAlignment="Center"
+                                Text="Чистая работа"
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout
+                            Grid.Column="2"
+                            HorizontalOptions="Center"
+                            Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding TotalBreakTime}"
+                                TextColor="#94A3B8" />
+                            <Label
+                                FontSize="11"
+                                HorizontalTextAlignment="Center"
+                                Text="Перерывы"
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  ── Нижняя кнопка (дублирует Сохранить для удобства) ──  -->
+        <Border
+            Grid.Row="2"
+            Padding="16,12,16,32"
+            BackgroundColor="#0B1120"
+            Stroke="#1E293B">
+            <Button
+                BackgroundColor="#2DD4BF"
+                Command="{Binding SaveCommand}"
+                CornerRadius="16"
+                FontAttributes="Bold"
+                FontSize="15"
+                HeightRequest="52"
+                Text="Сохранить пресет"
+                TextColor="#0B1120" />
+        </Border>
+
+    </Grid>
+</ContentPage>

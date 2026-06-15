@@ -129,22 +129,7 @@
 	  <MauiXaml Update="Features\Dashboard\Views\DashboardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Features\DevTools\Views\Base64Page.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\DevTools\Views\ColorConverterPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\DevTools\Views\JsonXmlToolsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\DevTools\Views\TimeCalculatorPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\DevTools\Views\UnitConverterPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\DevTools\Views\UrlEncodeDecodePage.xaml">
+	  <MauiXaml Update="Features\DevTools\Views\ConvertersPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Habits\Views\CreateHabitPage.xaml">
@@ -171,13 +156,10 @@
 	  <MauiXaml Update="Features\Notes\Views\VersionsPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Features\Pomodoro\Views\FocusStatsPage.xaml">
+	  <MauiXaml Update="Features\Pomodoro\Views\CreatePresetPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Pomodoro\Views\PomodoroPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\Pomodoro\Views\SessionHistoryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Pomodoro\Views\TaskPickerBottomSheet.xaml">

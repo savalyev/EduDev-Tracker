@@ -114,6 +114,7 @@
                 <Setter Property="TextColor" Value="{StaticResource AccentBlue}" />
                 <Setter Property="FontSize" Value="13" />
                 <Setter Property="Padding" Value="0" />
+                <Setter Property="BorderWidth" Value="0" />
                 <Setter Property="HeightRequest" Value="32" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
@@ -205,7 +206,7 @@
                         FontSize="14"
                         IsVisible="{Binding IsLoginMode}"
                         LineBreakMode="WordWrap"
-                        Text="Продолжайте работу с привычками, задачами и шпаргалками на новом устройстве."
+                        Text="Продолжайте работу с привычками, задачами и заметками на новом устройстве."
                         TextColor="{StaticResource TextSecondary}" />
 
                     <Label
@@ -287,7 +288,7 @@
                                 StrokeShape="RoundRectangle 16">
                                 <Label
                                     FontSize="12"
-                                    Text="Дев-инструменты"
+                                    Text="DEV-инструменты"
                                     TextColor="{StaticResource ChipText}" />
                             </Border>
                         </FlexLayout>
@@ -421,6 +422,7 @@
                                             Grid.Column="1"
                                             Padding="0"
                                             BackgroundColor="Transparent"
+                                            BorderWidth="0"
                                             Command="{Binding TogglePasswordVisibleCommand}"
                                             FontSize="14"
                                             HeightRequest="36"
@@ -539,6 +541,7 @@
                                             Grid.Column="1"
                                             Padding="0"
                                             BackgroundColor="Transparent"
+                                            BorderWidth="0"
                                             Command="{Binding TogglePasswordVisibleCommand}"
                                             FontSize="14"
                                             HeightRequest="36"
@@ -570,6 +573,7 @@
                                             Grid.Column="1"
                                             Padding="0"
                                             BackgroundColor="Transparent"
+                                            BorderWidth="0"
                                             Command="{Binding ToggleConfirmPasswordVisibleCommand}"
                                             FontSize="14"
                                             HeightRequest="36"

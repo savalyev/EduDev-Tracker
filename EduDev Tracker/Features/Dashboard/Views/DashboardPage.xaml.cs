@@ -6,29 +6,15 @@ namespace EduDev_Tracker.Features.Dashboard.Views;
 public partial class DashboardPage : ContentPage
 {
 
-    private readonly INotificationService _notificationService;
+    private readonly DashboardViewModel _vm;
 
-    const double WidthThreshold = 900;
-    public DashboardPage(DashboardViewModel vm, INotificationService notificationService)
+    public DashboardPage(DashboardViewModel vm)
     {
         InitializeComponent();
+        _vm = vm;
         BindingContext = vm;
-        _notificationService = notificationService;
-
-        this.SizeChanged += DashboardPage_SizeChanged;
     }
 
-    private void DashboardPage_SizeChanged(object? sender, EventArgs e)
-    {
-        if (Width < WidthThreshold)
-        {
-            VisualStateManager.GoToState(CardsGrid, "Narrow");
-        }
-        else
-        {
-            VisualStateManager.GoToState(CardsGrid, "Wide");
-        }
-    }
 
     private void OnMenuTapped(object? sender, EventArgs e)
     {
@@ -41,6 +27,22 @@ public partial class DashboardPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _notificationService.RequestPermissionAsync();
+        TriggerAdaptiveState(Width);
+        await _vm.InitializeAsync();
     }
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+        TriggerAdaptiveState(width);
+    }
+
+    private void TriggerAdaptiveState(double width)
+    {
+        if (width <= 0) return;
+
+        var state = width >= 768 ? "Wide" : "Narrow";
+        VisualStateManager.GoToState(CardsGrid, state);
+    }
+
+
 }

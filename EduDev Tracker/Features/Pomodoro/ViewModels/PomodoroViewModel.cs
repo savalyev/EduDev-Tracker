@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Data.Repositories.Implementations;
 using EduDev_Tracker.Features.Pomodoro.Drawing;
@@ -105,7 +106,7 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
 
         private async Task LoadPresetsAsync()
         {
-            int profileId = Preferences.Default.Get("active_profile_id", 0);
+            int profileId = SessionService.GetProfileId();
             var list = await _pomodoroService.GetPresetsAsync(profileId);
 
             if (list.Count == 0)
@@ -125,7 +126,7 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
 
         private async Task LoadStatisticsAsync()
         {
-            int profileId = Preferences.Default.Get("active_profile_id", 0);
+            int profileId = SessionService.GetProfileId();
             var now = DateTime.Now;
             var today = now.Date;
 
@@ -261,7 +262,7 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
             StartPauseLabel = "Пауза";
             _sessionStartedAt = DateTime.UtcNow;
 
-            int profileId = Preferences.Default.Get("active_profile_id", 0);
+            int profileId = SessionService.GetProfileId();
             _activeSession = new PomodoroSession
             {
                 ProfileId = profileId,
@@ -412,7 +413,7 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
                 return;
             }
 
-            int profileId = Preferences.Default.Get("active_profile_id", 0);
+            int profileId = SessionService.GetProfileId();
 
             foreach (var p in Presets)
             {

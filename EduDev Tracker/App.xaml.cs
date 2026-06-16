@@ -1,4 +1,5 @@
-﻿using EduDev_Tracker.Data;
+﻿using EduDev_Tracker.Core.Helpers;
+using EduDev_Tracker.Data;
 using EduDev_Tracker.Data.Repositories.Implementations;
 using EduDev_Tracker.Features.Auth.Views;
 using EduDev_Tracker.Services.Notification;
@@ -30,7 +31,9 @@ namespace EduDev_Tracker
             {
                 await _db.InitAsync();
 
-                int profileId = Preferences.Default.Get("active_profile_id", 0);
+                int profileId = SessionService.GetProfileId();
+
+                System.Diagnostics.Debug.WriteLine($"[App Init] profileId из Preferences = {profileId}");
 
                 if (profileId == 0)
                 {
@@ -39,9 +42,12 @@ namespace EduDev_Tracker
                 }
 
                 var profile = await _profileRepo.GetByIdAsync(profileId);
+
+                System.Diagnostics.Debug.WriteLine($"[App Init] profile из БД = {profile?.Name ?? "null"}");
+
                 if (profile is null)
                 {
-                    Preferences.Default.Remove("active_profile_id");
+                    SessionService.Clear();
                     GoToAuth();
                     return;
                 }
@@ -53,7 +59,7 @@ namespace EduDev_Tracker
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[App Init] {ex}");
+                System.Diagnostics.Debug.WriteLine($"[App Init] EXCEPTION: {ex}");
                 GoToAuth();
             }
         }

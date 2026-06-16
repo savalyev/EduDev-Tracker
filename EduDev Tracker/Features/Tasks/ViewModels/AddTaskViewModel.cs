@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Notification;
@@ -24,7 +25,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             _taskService = taskService;
             _navigation = navigationService;
             _notification = notification;
-            _profileId = Preferences.Default.Get("active_profile_id", 0);
+            _profileId = SessionService.GetProfileId();
 
             Recurrence.PropertyChanged += (_, e) => OnPropertyChanged(e.PropertyName);
         }

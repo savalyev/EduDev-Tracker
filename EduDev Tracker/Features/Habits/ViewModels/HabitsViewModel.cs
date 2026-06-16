@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Features.Habits.Views;
 using EduDev_Tracker.Services.Habits;
@@ -60,7 +61,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             _services = services;
             _habitService = habitService;
 
-            _profileId = Preferences.Default.Get("active_profile_id", 0);
+            _profileId = SessionService.GetProfileId();
         }
 
         [RelayCommand]

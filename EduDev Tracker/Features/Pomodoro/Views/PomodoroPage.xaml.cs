@@ -48,4 +48,12 @@ public partial class PomodoroPage : ContentPage
         DesktopLayout.IsVisible = isDesktop;
         MobileLayout.IsVisible = !isDesktop;
     }
+
+    private void OnMenuTapped(object? sender, EventArgs e)
+    {
+        if (Shell.Current != null)
+        {
+            Shell.Current.FlyoutIsPresented = !Shell.Current.FlyoutIsPresented;
+        }
+    }
 }

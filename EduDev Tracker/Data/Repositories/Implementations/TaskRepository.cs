@@ -82,5 +82,15 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
         {
             return Connection.InsertOrReplaceAsync(recurrence);
         }
+
+        public async Task<int> GetTasksClosedWeek(int profileId, DateTime from, DateTime to)
+        {
+            var result = await Connection.ExecuteScalarAsync<int>(
+                "SELECT COUNT(*) FROM tasks WHERE ProfileId=? AND Status='Done' " +
+                "AND CompletedAt BETWEEN ? AND ?",
+                profileId, from, to);
+
+            return result;
+        }
     }
 }

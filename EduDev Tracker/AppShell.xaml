@@ -1,60 +1,177 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Shell
     x:Class="EduDev_Tracker.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:analytics="clr-namespace:EduDev_Tracker.Features.Analytics.Views"
     xmlns:converters="clr-namespace:EduDev_Tracker.Features.DevTools.Views"
     xmlns:dashboard="clr-namespace:EduDev_Tracker.Features.Dashboard.Views"
-    xmlns:local="clr-namespace:EduDev_Tracker"
+    xmlns:habits="clr-namespace:EduDev_Tracker.Features.Habits.Views"
+    xmlns:notes="clr-namespace:EduDev_Tracker.Features.Notes.Views"
     xmlns:pomodoro="clr-namespace:EduDev_Tracker.Features.Pomodoro.Views"
     xmlns:profile="clr-namespace:EduDev_Tracker.Features.Profile.Views"
-    xmlns:views="clr-namespace:EduDev_Tracker.Features"
-    xmlns:welcome="clr-namespace:EduDev_Tracker.Features.Auth.Views"
-    Title="EduDev_Tracker">
+    xmlns:tasks="clr-namespace:EduDev_Tracker.Features.Tasks.Views"
+    FlyoutWidth="260"
+    Shell.BackgroundColor="#0A0E1A"
+    Shell.FlyoutBackgroundColor="#0A0E1A"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="False"
+    Shell.TitleColor="#E8EAF0">
 
-    <Shell.FlyoutBehavior>Flyout</Shell.FlyoutBehavior>
+    <!--  ══ Шапка flyout ══════════════════════════════════════════════  -->
+    <Shell.FlyoutHeader>
+        <Grid Padding="20,48,20,16" BackgroundColor="#0A0E1A">
+            <VerticalStackLayout Spacing="4">
+                <!--  Логотип/иконка  -->
+                <Border
+                    BackgroundColor="#1E293B"
+                    HeightRequest="48"
+                    HorizontalOptions="Start"
+                    StrokeShape="RoundRectangle 14"
+                    StrokeThickness="0"
+                    WidthRequest="48">
+                    <Image
+                        HeightRequest="40"
+                        Source="logo.png"
+                        WidthRequest="50" />
+                </Border>
+                <Label
+                    Margin="0,8,0,0"
+                    FontAttributes="Bold"
+                    FontSize="17"
+                    Text="EduDev Tracker"
+                    TextColor="#F1F5F9" />
+                <Label
+                    FontSize="12"
+                    Text="Твой инструмент продуктивности"
+                    TextColor="#475569" />
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
 
-    <FlyoutItem Title="Главная страница" Route="Dashboard">
-        <ShellContent
-            Title="Главная страница"
-            ContentTemplate="{DataTemplate views:Dashboard.Views.DashboardPage}"
-            Route="DashboardPage" />
+
+    <!--  ══ Кастомный шаблон пункта меню ════════════════════════════  -->
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="12,4" ColumnDefinitions="44,*">
+                <!--  Иконка с подсветкой при выборе  -->
+                <Border
+                    BackgroundColor="#1E293B"
+                    HeightRequest="36"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
+                    <Image
+                        HeightRequest="20"
+                        HorizontalOptions="Center"
+                        Source="{Binding FlyoutIcon}"
+                        VerticalOptions="Center"
+                        WidthRequest="20" />
+                </Border>
+                <Label
+                    Grid.Column="1"
+                    Margin="8,0,0,0"
+                    FontSize="14"
+                    Text="{Binding Title}"
+                    TextColor="#CBD5E1"
+                    VerticalOptions="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <!--  ══ Главное ══════════════════════════════════════════════════  -->
+    <FlyoutItem Title="Главное" IsVisible="False">
+        <!--  Это просто группирующий заголовок, не кликабельный  -->
     </FlyoutItem>
 
-    <FlyoutItem Title="Привычки" Route="Habits">
-        <ShellContent
-            Title="Привычки"
-            ContentTemplate="{DataTemplate views:Habits.Views.HabitsPage}"
-            Route="HabitsPage" />
+    <FlyoutItem
+        x:Name="FlyoutDashboard"
+        Title="Дашборд"
+        Icon="mainwindow_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate dashboard:DashboardPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Задачи" Route="Tasks">
-        <ShellContent
-            Title="Задачи"
-            ContentTemplate="{DataTemplate views:Tasks.Views.TasksPage}"
-            Route="TasksPage" />
+    <FlyoutItem
+        x:Name="FlyoutHabits"
+        Title="Привычки"
+        Icon="habits_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate habits:HabitsPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Заметки" Route="Notes">
-        <ShellContent
-            Title="Заметки"
-            ContentTemplate="{DataTemplate views:Notes.Views.NotesPage}"
-            Route="NotesPage" />
+    <FlyoutItem
+        x:Name="FlyoutTasks"
+        Title="Задачи"
+        Icon="tasks_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate tasks:TasksPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Профиль" Route="Profile">
-        <ShellContent
-            Title="Профиль"
-            ContentTemplate="{DataTemplate profile:ProfilePage}"
-            Route="ProfilePage" />
+    <FlyoutItem
+        x:Name="FlyoutNotes"
+        Title="Заметки"
+        Icon="notes_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate notes:NotesPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Помодоро" Icon="pomodoro_icon.png">
+    <!--  ══ Инструменты ══════════════════════════════════════════════  -->
+    <FlyoutItem
+        x:Name="FlyoutPomodoro"
+        Title="Помодоро"
+        Icon="pomodoro_icon.png">
         <ShellContent ContentTemplate="{DataTemplate pomodoro:PomodoroPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Конвертеры" Icon="converters.png">
-        <ShellContent ContentTemplate="{DataTemplate converters:ConvertersPage}" Route="ConvertersPage" />
+    <FlyoutItem
+        x:Name="FlyoutConverters"
+        Title="Конвертеры"
+        Icon="converters_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate converters:ConvertersPage}" />
     </FlyoutItem>
+
+    <FlyoutItem
+        x:Name="FlyoutAnalytics"
+        Title="Аналитика"
+        Icon="analytics_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate analytics:AnalyticsPage}" />
+    </FlyoutItem>
+
+    <!--  ══ Профиль ══════════════════════════════════════════════════  -->
+    <FlyoutItem
+        x:Name="FlyoutProfile"
+        Title="Профиль"
+        Icon="profile_icon.png">
+        <ShellContent ContentTemplate="{DataTemplate profile:ProfilePage}" />
+    </FlyoutItem>
+
+    <!--  ══ Подвал flyout ════════════════════════════════════════════  -->
+    <Shell.FlyoutFooter>
+        <Grid Padding="20,12" BackgroundColor="#0A0E1A">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <BoxView
+                Grid.Row="0"
+                HeightRequest="1"
+                Color="#1E293B" />
+
+            <VerticalStackLayout
+                Grid.Row="1"
+                Margin="0,12,0,0"
+                Spacing="2">
+                <Label
+                    FontSize="12"
+                    HorizontalOptions="Center"
+                    Text="EduDev Tracker v1.0"
+                    TextColor="#334155" />
+                <Label
+                    FontSize="11"
+                    HorizontalOptions="Center"
+                    Text="by svvvlyxv"
+                    TextColor="#1E293B" />
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutFooter>
 
 </Shell>

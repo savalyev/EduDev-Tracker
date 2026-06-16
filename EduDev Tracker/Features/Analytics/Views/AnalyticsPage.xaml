@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Analytics.Views.AnalyticsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:EduDev_Tracker.Features.Analytics.Models"
+    xmlns:views="clr-namespace:EduDev_Tracker.Features.Analytics.Views"
+    xmlns:vm="clr-namespace:EduDev_Tracker.Features.Analytics.ViewModels"
+    x:DataType="vm:AnalyticsViewModel"
+    BackgroundColor="#0B1120"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!--  Карточка-секция  -->
+            <Style x:Key="SectionCard" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="#111827" />
+                <Setter Property="Stroke" Value="#1E293B" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 20" />
+                <Setter Property="Padding" Value="16" />
+            </Style>
+            <Style x:Key="SectionTitle" TargetType="Label">
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="#F1F5F9" />
+                <Setter Property="Margin" Value="0,0,0,10" />
+            </Style>
+            <Style x:Key="MutedLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="#64748B" />
+            </Style>
+            <!--  Кнопка-пилюля (период)  -->
+            <Style x:Key="PillBtn" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#1E293B" />
+                <Setter Property="TextColor" Value="#CBD5E1" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="Padding" Value="20,0" />
+            </Style>
+            <Style x:Key="PillBtnActive" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#2DD4BF" />
+                <Setter Property="TextColor" Value="#0B1120" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="Padding" Value="20,0" />
+            </Style>
+            <!--  Метрика-мини-карточка  -->
+            <Style x:Key="MetricCard" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="#0F172A" />
+                <Setter Property="StrokeThickness" Value="0" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 14" />
+                <Setter Property="Padding" Value="14,12" />
+            </Style>
+            <!--  Кнопка формата  -->
+            <Style x:Key="FormatBtn" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#1E293B" />
+                <Setter Property="TextColor" Value="#CBD5E1" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="90" />
+            </Style>
+            <Style x:Key="FormatBtnActive" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#2DD4BF" />
+                <Setter Property="TextColor" Value="#0B1120" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="90" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <Grid x:Name="RootGrid">
+
+            <!--
+                ══════════════════════════════════════════════════════
+                DESKTOP LAYOUT  (≥ 768 px)  — 2 колонки
+                ══════════════════════════════════════════════════════════
+            -->
+            <Grid
+                x:Name="DesktopLayout"
+                Padding="20,16"
+                ColumnDefinitions="*,320"
+                ColumnSpacing="16"
+                IsVisible="False">
+
+                <!--  ═══ ЛЕВАЯ КОЛОНКА ═══════════════════════════════  -->
+                <VerticalStackLayout Grid.Column="0" Spacing="16">
+
+                    <!--  Заголовок + панель управления  -->
+                    <Border Padding="16,12" Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="12">
+
+                            <!--  Заголовок  -->
+                            <VerticalStackLayout>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="26"
+                                    Text="Аналитика и отчётность"
+                                    TextColor="#F1F5F9" />
+                                <Label
+                                    Margin="0,4,0,0"
+                                    FontSize="13"
+                                    Text="Объединённый взгляд на привычки, задачи, Помодоро, заметки и dev-инструменты"
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+
+                            <!--  Строка 1: кнопки периода + генерация  -->
+                            <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" ColumnSpacing="8">
+                                <Button
+                                    Padding="16,0"
+                                    BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource PeriodColorConverter}, ConverterParameter=Week}"
+                                    Command="{Binding SelectPeriodCommand}"
+                                    CommandParameter="week"
+                                    CornerRadius="20"
+                                    FontAttributes="{Binding SelectedPeriod, Converter={StaticResource PeriodFontConverter}, ConverterParameter=Week}"
+                                    HeightRequest="40"
+                                    Text="7 дней"
+                                    TextColor="{Binding SelectedPeriod, Converter={StaticResource PeriodTextColorConverter}, ConverterParameter=Week}" />
+
+                                <Button
+                                    Grid.Column="1"
+                                    Padding="16,0"
+                                    BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource PeriodColorConverter}, ConverterParameter=Month}"
+                                    Command="{Binding SelectPeriodCommand}"
+                                    CommandParameter="month"
+                                    CornerRadius="20"
+                                    FontAttributes="{Binding SelectedPeriod, Converter={StaticResource PeriodFontConverter}, ConverterParameter=Month}"
+                                    HeightRequest="40"
+                                    Text="Месяц"
+                                    TextColor="{Binding SelectedPeriod, Converter={StaticResource PeriodTextColorConverter}, ConverterParameter=Month}" />
+
+                                <Button
+                                    Grid.Column="2"
+                                    Padding="16,0"
+                                    BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource PeriodColorConverter}, ConverterParameter=Custom}"
+                                    Command="{Binding SelectPeriodCommand}"
+                                    CommandParameter="custom"
+                                    CornerRadius="20"
+                                    FontAttributes="{Binding SelectedPeriod, Converter={StaticResource PeriodFontConverter}, ConverterParameter=Custom}"
+                                    HeightRequest="40"
+                                    Text="Период"
+                                    TextColor="{Binding SelectedPeriod, Converter={StaticResource PeriodTextColorConverter}, ConverterParameter=Custom}" />
+
+                                <Label
+                                    Grid.Column="3"
+                                    Margin="8,0"
+                                    FontSize="13"
+                                    Text="{Binding PeriodLabel}"
+                                    TextColor="#64748B"
+                                    VerticalOptions="Center" />
+
+                                <Button
+                                    Grid.Column="4"
+                                    Padding="20,0"
+                                    BackgroundColor="#2DD4BF"
+                                    Command="{Binding GenerateReportCommand}"
+                                    CornerRadius="20"
+                                    FontAttributes="Bold"
+                                    HeightRequest="40"
+                                    IsEnabled="{Binding IsGenerating, Converter={StaticResource InverseBool}}"
+                                    Text="Сгенерировать отчёт"
+                                    TextColor="#0B1120" />
+                            </Grid>
+
+                            <!--  Строка 2: DatePicker (только при выборе "Период")  -->
+                            <Grid
+                                ColumnDefinitions="Auto,20,Auto,Auto"
+                                ColumnSpacing="8"
+                                IsVisible="{Binding ShowCustomRange}">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label
+                                        FontSize="11"
+                                        Text="С"
+                                        TextColor="#64748B" />
+                                    <Border
+                                        Padding="10,2"
+                                        BackgroundColor="#1E293B"
+                                        StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="0">
+                                        <DatePicker
+                                            BackgroundColor="Transparent"
+                                            Date="{Binding CustomFrom}"
+                                            Format="dd.MM.yyyy"
+                                            TextColor="#F1F5F9" />
+                                    </Border>
+                                </VerticalStackLayout>
+
+                                <Label
+                                    Grid.Column="1"
+                                    Margin="0,0,0,8"
+                                    Text="—"
+                                    TextColor="#64748B"
+                                    VerticalOptions="End" />
+
+                                <VerticalStackLayout Grid.Column="2" Spacing="4">
+                                    <Label
+                                        FontSize="11"
+                                        Text="По"
+                                        TextColor="#64748B" />
+                                    <Border
+                                        Padding="10,2"
+                                        BackgroundColor="#1E293B"
+                                        StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="0">
+                                        <DatePicker
+                                            BackgroundColor="Transparent"
+                                            Date="{Binding CustomTo}"
+                                            Format="dd.MM.yyyy"
+                                            TextColor="#F1F5F9" />
+                                    </Border>
+                                </VerticalStackLayout>
+
+                                <Button
+                                    Grid.Column="3"
+                                    Padding="16,0"
+                                    BackgroundColor="#1E293B"
+                                    Command="{Binding ApplyCustomRangeCommand}"
+                                    CornerRadius="10"
+                                    HeightRequest="44"
+                                    Text="Применить"
+                                    TextColor="#CBD5E1"
+                                    VerticalOptions="End" />
+                            </Grid>
+
+                            <!--  Строка 3: фильтр по модулю  -->
+                            <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                                <HorizontalStackLayout Spacing="8">
+                                    <Border
+                                        Padding="12,6"
+                                        BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=All}"
+                                        StrokeShape="RoundRectangle 16"
+                                        StrokeThickness="0">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="All" />
+                                        </Border.GestureRecognizers>
+                                        <Label
+                                            FontSize="12"
+                                            Text="Все модули"
+                                            TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=All}" />
+                                    </Border>
+                                    <Border
+                                        Padding="12,6"
+                                        BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=Habits}"
+                                        StrokeShape="RoundRectangle 16"
+                                        StrokeThickness="0">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="Habits" />
+                                        </Border.GestureRecognizers>
+                                        <Label
+                                            FontSize="12"
+                                            Text="Привычки"
+                                            TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=Habits}" />
+                                    </Border>
+                                    <Border
+                                        Padding="12,6"
+                                        BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=Tasks}"
+                                        StrokeShape="RoundRectangle 16"
+                                        StrokeThickness="0">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="Tasks" />
+                                        </Border.GestureRecognizers>
+                                        <Label
+                                            FontSize="12"
+                                            Text="Задачи"
+                                            TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=Tasks}" />
+                                    </Border>
+                                    <Border
+                                        Padding="12,6"
+                                        BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=Pomodoro}"
+                                        StrokeShape="RoundRectangle 16"
+                                        StrokeThickness="0">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="Pomodoro" />
+                                        </Border.GestureRecognizers>
+                                        <Label
+                                            FontSize="12"
+                                            Text="Помодоро"
+                                            TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=Pomodoro}" />
+                                    </Border>
+                                    <Border
+                                        Padding="12,6"
+                                        BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=Notes}"
+                                        StrokeShape="RoundRectangle 16"
+                                        StrokeThickness="0">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="Notes" />
+                                        </Border.GestureRecognizers>
+                                        <Label
+                                            FontSize="12"
+                                            Text="Заметки"
+                                            TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=Notes}" />
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </ScrollView>
+
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  ── Ключевые метрики ──  -->
+                    <Border Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label
+                                    Margin="0"
+                                    Style="{StaticResource SectionTitle}"
+                                    Text="Ключевые метрики" />
+                                <Label
+                                    Grid.Column="1"
+                                    Style="{StaticResource MutedLabel}"
+                                    Text="Сводка по всем модулям"
+                                    VerticalOptions="Center" />
+                            </Grid>
+
+                            <!--  4 карточки метрик  -->
+                            <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
+
+                                <!--  Привычки  -->
+                                <Border Style="{StaticResource MetricCard}">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label Style="{StaticResource MutedLabel}" Text="Выполненные привычки" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="26"
+                                            Text="{Binding HabitsText}"
+                                            TextColor="#F1F5F9" />
+                                        <Label
+                                            FontSize="11"
+                                            Text="{Binding HabitsDelta}"
+                                            TextColor="#2DD4BF" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <!--  Задачи  -->
+                                <Border Grid.Column="1" Style="{StaticResource MetricCard}">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label Style="{StaticResource MutedLabel}" Text="Закрытые задачи" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="26"
+                                            Text="{Binding TasksText}"
+                                            TextColor="#F1F5F9" />
+                                        <Label
+                                            FontSize="11"
+                                            Text="{Binding TasksDelta}"
+                                            TextColor="#F59E0B" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <!--  Помодоро  -->
+                                <Border Grid.Column="2" Style="{StaticResource MetricCard}">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label Style="{StaticResource MutedLabel}" Text="Сессии Помодоро" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="26"
+                                            Text="{Binding PomodoroText}"
+                                            TextColor="#F1F5F9" />
+                                        <Label
+                                            FontSize="11"
+                                            Text="{Binding PomodoroSubText}"
+                                            TextColor="#64748B" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <!--  Заметки  -->
+                                <Border Grid.Column="3" Style="{StaticResource MetricCard}">
+                                    <VerticalStackLayout Spacing="2">
+                                        <Label Style="{StaticResource MutedLabel}" Text="Созданные заметки" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="26"
+                                            Text="{Binding NotesText}"
+                                            TextColor="#F1F5F9" />
+                                        <Label
+                                            FontSize="11"
+                                            Text="{Binding NotesDelta}"
+                                            TextColor="#94A3B8" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  ── График ──  -->
+                    <Border Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label
+                                    Margin="0"
+                                    Style="{StaticResource SectionTitle}"
+                                    Text="Динамика продуктивности по дням недели"
+                                    VerticalOptions="Center" />
+                                <HorizontalStackLayout Grid.Column="1" Spacing="12">
+                                    <Label
+                                        FontSize="11"
+                                        Text="Привычки"
+                                        TextColor="#2DD4BF"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="•"
+                                        TextColor="#475569"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="Задачи"
+                                        TextColor="#818CF8"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="•"
+                                        TextColor="#475569"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="Помодоро"
+                                        TextColor="#F59E0B"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                            </Grid>
+
+                            <!--  GraphicsView для графика  -->
+                            <Border
+                                BackgroundColor="#0B1120"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0">
+                                <GraphicsView x:Name="ChartViewDesktop" HeightRequest="180" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  ── Таблица разбивки ──  -->
+                    <Border Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label
+                                    Margin="0"
+                                    Style="{StaticResource SectionTitle}"
+                                    Text="Разбивка по модулям"
+                                    VerticalOptions="Center" />
+                                <HorizontalStackLayout Grid.Column="1" Spacing="8">
+                                    <Button
+                                        Padding="12,0"
+                                        Command="{Binding SelectPeriodCommand}"
+                                        CommandParameter="week"
+                                        FontSize="12"
+                                        HeightRequest="32"
+                                        Style="{StaticResource PillBtn}"
+                                        Text="Неделя" />
+                                    <Button
+                                        Padding="12,0"
+                                        Command="{Binding SelectPeriodCommand}"
+                                        CommandParameter="month"
+                                        FontSize="12"
+                                        HeightRequest="32"
+                                        Style="{StaticResource PillBtn}"
+                                        Text="Месяц" />
+                                </HorizontalStackLayout>
+                            </Grid>
+
+                            <!--  Заголовки таблицы  -->
+                            <Grid
+                                Padding="0,0,0,4"
+                                ColumnDefinitions="*,120,60,140"
+                                ColumnSpacing="12">
+                                <Label Style="{StaticResource MutedLabel}" Text="Модуль" />
+                                <Label
+                                    Grid.Column="1"
+                                    Style="{StaticResource MutedLabel}"
+                                    Text="За период" />
+                                <Label
+                                    Grid.Column="2"
+                                    Style="{StaticResource MutedLabel}"
+                                    Text="В день" />
+                                <Label
+                                    Grid.Column="3"
+                                    Style="{StaticResource MutedLabel}"
+                                    Text="Тренд" />
+                            </Grid>
+                            <BoxView HeightRequest="1" Color="#1E293B" />
+
+                            <!--  Строки таблицы  -->
+                            <CollectionView ItemsSource="{Binding ModuleTable}" SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:ModuleRow">
+                                        <Grid
+                                            Padding="0,10"
+                                            ColumnDefinitions="*,120,60,140"
+                                            ColumnSpacing="12">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="13"
+                                                Text="{Binding Module}"
+                                                TextColor="#CBD5E1" />
+                                            <Label
+                                                Grid.Column="1"
+                                                FontSize="13"
+                                                Text="{Binding PeriodValue}"
+                                                TextColor="#94A3B8" />
+                                            <Label
+                                                Grid.Column="2"
+                                                FontSize="13"
+                                                Text="{Binding PerDayValue}"
+                                                TextColor="#94A3B8" />
+                                            <Label
+                                                Grid.Column="3"
+                                                FontSize="12"
+                                                Text="{Binding TrendLabel}"
+                                                TextColor="{Binding TrendColor}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Border>
+
+                </VerticalStackLayout>
+
+                <!--  ═══ ПРАВАЯ КОЛОНКА ══════════════════════════════  -->
+                <VerticalStackLayout Grid.Column="1" Spacing="16">
+
+                    <!--  Параметры отчёта  -->
+                    <Border Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Style="{StaticResource SectionTitle}" Text="Параметры отчёта" />
+                            <Grid
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="8"
+                                RowDefinitions="Auto,Auto,Auto"
+                                RowSpacing="6">
+                                <Label
+                                    Style="{StaticResource MutedLabel}"
+                                    Text="Период:"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="12"
+                                    Text="{Binding PeriodLabel}"
+                                    TextColor="#94A3B8"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Grid.Row="1"
+                                    Style="{StaticResource MutedLabel}"
+                                    Text="Модули:"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontSize="12"
+                                    Text="Все"
+                                    TextColor="#94A3B8"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Grid.Row="2"
+                                    Style="{StaticResource MutedLabel}"
+                                    Text="Формат:"
+                                    VerticalOptions="Center" />
+                                <HorizontalStackLayout
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Spacing="8">
+                                    <Button
+                                        Command="{Binding SelectFormatCommand}"
+                                        CommandParameter="pdf"
+                                        Style="{Binding IsPdfSelected, Converter={StaticResource BoolToFormatStyleConverter}}"
+                                        Text="HTML" />
+                                    <Button
+                                        Command="{Binding SelectFormatCommand}"
+                                        CommandParameter="csv"
+                                        Style="{Binding IsCsvSelected, Converter={StaticResource BoolToFormatStyleConverter}}"
+                                        Text="CSV" />
+                                </HorizontalStackLayout>
+                            </Grid>
+
+                            <Label
+                                FontSize="12"
+                                HorizontalTextAlignment="Center"
+                                IsVisible="{Binding HasExportStatus}"
+                                Text="{Binding ExportStatus}"
+                                TextColor="#2DD4BF" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Инсайты недели  -->
+                    <Border Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label
+                                    Margin="0"
+                                    Style="{StaticResource SectionTitle}"
+                                    Text="Инсайты недели"
+                                    VerticalOptions="Center" />
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="8,4"
+                                    BackgroundColor="#1E3A2F"
+                                    StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="0">
+                                    <Label
+                                        FontSize="11"
+                                        Text="Автоматический анализ"
+                                        TextColor="#2DD4BF" />
+                                </Border>
+                            </Grid>
+
+                            <CollectionView ItemsSource="{Binding Insights}" SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <Label
+                                            Margin="0,2"
+                                            FontSize="12"
+                                            Text="{Binding .}"
+                                            TextColor="#CBD5E1" />
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Рекомендации  -->
+                    <Border Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Style="{StaticResource SectionTitle}" Text="Рекомендации" />
+
+                            <CollectionView ItemsSource="{Binding Recommendations}" SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <Label
+                                            Margin="0,2"
+                                            FontSize="12"
+                                            Text="{Binding .}"
+                                            TextColor="#CBD5E1" />
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Border>
+
+                </VerticalStackLayout>
+            </Grid>
+
+            <!--
+                ══════════════════════════════════════════════════════
+                MOBILE LAYOUT  (< 768 px)  — 1 колонка
+                ══════════════════════════════════════════════════════════
+            -->
+            <VerticalStackLayout
+                x:Name="MobileLayout"
+                Padding="14,12"
+                IsVisible="False"
+                Spacing="14">
+
+                <!--  Заголовок  -->
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Text="Аналитика и отчётность"
+                    TextColor="#F1F5F9" />
+                <Label
+                    Margin="0,-8,0,0"
+                    FontSize="12"
+                    Text="Объединённый взгляд на все модули"
+                    TextColor="#64748B" />
+
+                <!--  Панель периода (mobile)  -->
+                <Border Padding="12" Style="{StaticResource SectionCard}">
+                    <VerticalStackLayout Spacing="10">
+
+                        <!--  Кнопки периода  -->
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                            <Button
+                                BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource PeriodColorConverter}, ConverterParameter=Week}"
+                                Command="{Binding SelectPeriodCommand}"
+                                CommandParameter="week"
+                                CornerRadius="20"
+                                FontAttributes="{Binding SelectedPeriod, Converter={StaticResource PeriodFontConverter}, ConverterParameter=Week}"
+                                HeightRequest="38"
+                                Text="7 дней"
+                                TextColor="{Binding SelectedPeriod, Converter={StaticResource PeriodTextColorConverter}, ConverterParameter=Week}" />
+                            <Button
+                                Grid.Column="1"
+                                BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource PeriodColorConverter}, ConverterParameter=Month}"
+                                Command="{Binding SelectPeriodCommand}"
+                                CommandParameter="month"
+                                CornerRadius="20"
+                                FontAttributes="{Binding SelectedPeriod, Converter={StaticResource PeriodFontConverter}, ConverterParameter=Month}"
+                                HeightRequest="38"
+                                Text="Месяц"
+                                TextColor="{Binding SelectedPeriod, Converter={StaticResource PeriodTextColorConverter}, ConverterParameter=Month}" />
+                            <Button
+                                Grid.Column="2"
+                                BackgroundColor="{Binding SelectedPeriod, Converter={StaticResource PeriodColorConverter}, ConverterParameter=Custom}"
+                                Command="{Binding SelectPeriodCommand}"
+                                CommandParameter="custom"
+                                CornerRadius="20"
+                                FontAttributes="{Binding SelectedPeriod, Converter={StaticResource PeriodFontConverter}, ConverterParameter=Custom}"
+                                HeightRequest="38"
+                                Text="Период"
+                                TextColor="{Binding SelectedPeriod, Converter={StaticResource PeriodTextColorConverter}, ConverterParameter=Custom}" />
+                        </Grid>
+
+                        <!--  DatePicker (только при "Период")  -->
+                        <VerticalStackLayout IsVisible="{Binding ShowCustomRange}" Spacing="8">
+                            <Border
+                                Padding="10,2"
+                                BackgroundColor="#1E293B"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="0">
+                                <DatePicker
+                                    BackgroundColor="Transparent"
+                                    Date="{Binding CustomFrom}"
+                                    Format="dd.MM.yyyy"
+                                    TextColor="#F1F5F9" />
+                            </Border>
+                            <Border
+                                Padding="10,2"
+                                BackgroundColor="#1E293B"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="0">
+                                <DatePicker
+                                    BackgroundColor="Transparent"
+                                    Date="{Binding CustomTo}"
+                                    Format="dd.MM.yyyy"
+                                    TextColor="#F1F5F9" />
+                            </Border>
+                            <Button
+                                BackgroundColor="#1E293B"
+                                Command="{Binding ApplyCustomRangeCommand}"
+                                CornerRadius="10"
+                                HeightRequest="44"
+                                Text="Применить"
+                                TextColor="#CBD5E1" />
+                        </VerticalStackLayout>
+
+                        <!--  Фильтр по модулю  -->
+                        <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                            <HorizontalStackLayout Spacing="8">
+                                <Border
+                                    Padding="10,5"
+                                    BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=All}"
+                                    StrokeShape="RoundRectangle 14"
+                                    StrokeThickness="0">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="All" />
+                                    </Border.GestureRecognizers>
+                                    <Label
+                                        FontSize="12"
+                                        Text="Все"
+                                        TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=All}" />
+                                </Border>
+                                <Border
+                                    Padding="10,5"
+                                    BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=Habits}"
+                                    StrokeShape="RoundRectangle 14"
+                                    StrokeThickness="0">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="Habits" />
+                                    </Border.GestureRecognizers>
+                                    <Label
+                                        FontSize="12"
+                                        Text="Привычки"
+                                        TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=Habits}" />
+                                </Border>
+                                <Border
+                                    Padding="10,5"
+                                    BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=Tasks}"
+                                    StrokeShape="RoundRectangle 14"
+                                    StrokeThickness="0">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="Tasks" />
+                                    </Border.GestureRecognizers>
+                                    <Label
+                                        FontSize="12"
+                                        Text="Задачи"
+                                        TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=Tasks}" />
+                                </Border>
+                                <Border
+                                    Padding="10,5"
+                                    BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=Pomodoro}"
+                                    StrokeShape="RoundRectangle 14"
+                                    StrokeThickness="0">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="Pomodoro" />
+                                    </Border.GestureRecognizers>
+                                    <Label
+                                        FontSize="12"
+                                        Text="Помодоро"
+                                        TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=Pomodoro}" />
+                                </Border>
+                                <Border
+                                    Padding="10,5"
+                                    BackgroundColor="{Binding SelectedModule, Converter={StaticResource ModuleColorConverter}, ConverterParameter=Notes}"
+                                    StrokeShape="RoundRectangle 14"
+                                    StrokeThickness="0">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectModuleCommand}" CommandParameter="Notes" />
+                                    </Border.GestureRecognizers>
+                                    <Label
+                                        FontSize="12"
+                                        Text="Заметки"
+                                        TextColor="{Binding SelectedModule, Converter={StaticResource ModuleTextColorConverter}, ConverterParameter=Notes}" />
+                                </Border>
+                            </HorizontalStackLayout>
+                        </ScrollView>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Метрики 2×2 (mobile)  -->
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10"
+                    RowDefinitions="Auto,Auto"
+                    RowSpacing="10">
+                    <Border Style="{StaticResource MetricCard}">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Style="{StaticResource MutedLabel}" Text="Привычки" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="{Binding HabitsText}"
+                                TextColor="#F1F5F9" />
+                            <Label
+                                FontSize="11"
+                                Text="{Binding HabitsDelta}"
+                                TextColor="#2DD4BF" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource MetricCard}">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Style="{StaticResource MutedLabel}" Text="Задачи" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="{Binding TasksText}"
+                                TextColor="#F1F5F9" />
+                            <Label
+                                FontSize="11"
+                                Text="{Binding TasksDelta}"
+                                TextColor="#F59E0B" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Row="1" Style="{StaticResource MetricCard}">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Style="{StaticResource MutedLabel}" Text="Помодоро" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="{Binding PomodoroText}"
+                                TextColor="#F1F5F9" />
+                            <Label
+                                FontSize="11"
+                                Text="{Binding PomodoroSubText}"
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Style="{StaticResource MetricCard}">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Style="{StaticResource MutedLabel}" Text="Заметки" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="{Binding NotesText}"
+                                TextColor="#F1F5F9" />
+                            <Label
+                                FontSize="11"
+                                Text="{Binding NotesDelta}"
+                                TextColor="#94A3B8" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!--  График (mobile)  -->
+                <Border Style="{StaticResource SectionCard}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Style="{StaticResource SectionTitle}" Text="Динамика продуктивности" />
+                        <Border
+                            BackgroundColor="#0B1120"
+                            StrokeShape="RoundRectangle 12"
+                            StrokeThickness="0">
+                            <GraphicsView x:Name="ChartViewMobile" HeightRequest="150" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Таблица (mobile — скролл горизонтально)  -->
+                <Border Style="{StaticResource SectionCard}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Style="{StaticResource SectionTitle}" Text="Разбивка по модулям" />
+                        <CollectionView ItemsSource="{Binding ModuleTable}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:ModuleRow">
+                                    <Grid Padding="0,8" ColumnDefinitions="*,Auto">
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="13"
+                                                Text="{Binding Module}"
+                                                TextColor="#CBD5E1" />
+                                            <Label
+                                                FontSize="12"
+                                                Text="{Binding PeriodValue}"
+                                                TextColor="#94A3B8" />
+                                        </VerticalStackLayout>
+                                        <Label
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            Text="{Binding TrendLabel}"
+                                            TextColor="{Binding TrendColor}"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Инсайты (mobile)  -->
+                <Border Style="{StaticResource SectionCard}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}" Text="Инсайты" />
+                        <CollectionView ItemsSource="{Binding Insights}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Label
+                                        Margin="0,2"
+                                        FontSize="12"
+                                        Text="{Binding .}"
+                                        TextColor="#CBD5E1" />
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Рекомендации (mobile)  -->
+                <Border Style="{StaticResource SectionCard}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource SectionTitle}" Text="Рекомендации" />
+                        <CollectionView ItemsSource="{Binding Recommendations}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Label
+                                        Margin="0,2"
+                                        FontSize="12"
+                                        Text="{Binding .}"
+                                        TextColor="#CBD5E1" />
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Отчёт (mobile)  -->
+                <Border Margin="0,0,0,20" Style="{StaticResource SectionCard}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Style="{StaticResource SectionTitle}" Text="Параметры отчёта" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button
+                                Command="{Binding SelectFormatCommand}"
+                                CommandParameter="pdf"
+                                Style="{Binding IsPdfSelected, Converter={StaticResource BoolToFormatStyleConverter}}"
+                                Text="PDF" />
+                            <Button
+                                Grid.Column="1"
+                                Command="{Binding SelectFormatCommand}"
+                                CommandParameter="csv"
+                                Style="{Binding IsCsvSelected, Converter={StaticResource BoolToFormatStyleConverter}}"
+                                Text="CSV" />
+                        </Grid>
+                        <Button
+                            BackgroundColor="#2DD4BF"
+                            Command="{Binding GenerateReportCommand}"
+                            CornerRadius="14"
+                            FontAttributes="Bold"
+                            HeightRequest="48"
+                            IsEnabled="{Binding IsGenerating, Converter={StaticResource InverseBool}}"
+                            Text="Сгенерировать отчёт"
+                            TextColor="#0B1120" />
+                        <Label
+                            FontSize="12"
+                            HorizontalTextAlignment="Center"
+                            IsVisible="{Binding HasExportStatus}"
+                            Text="{Binding ExportStatus}"
+                            TextColor="#2DD4BF" />
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

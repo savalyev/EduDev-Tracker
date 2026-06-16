@@ -1,3 +1,4 @@
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Data.Repositories.Implementations;
 using TaskStatus = EduDev_Tracker.Data.Models.TaskStatus;
@@ -25,9 +26,8 @@ public partial class TaskPickerBottomSheet : ContentPage
 
     private async Task LoadTasksAsync()
     {
-        int profileId = Preferences.Default.Get("active_profile_id", 0);
+        int profileId = SessionService.GetProfileId();
 
-        // Берём все незакрытые задачи профиля (открытые + в процессе)
         var all = await _taskRepo.GetAllAsync();
             _allTasks = all
             .Where(t => t.ProfileId == profileId

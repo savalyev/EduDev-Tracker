@@ -6,6 +6,7 @@
     xmlns:vm="clr-namespace:EduDev_Tracker.Features.Auth.ViewModels"
     x:DataType="vm:AuthViewModel"
     BackgroundColor="#0A0E1A"
+    SafeAreaEdges="All"
     Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
@@ -154,9 +155,13 @@
         <!--  ОСНОВНОЙ СКРОЛЛ  -->
         <ScrollView VerticalScrollBarVisibility="Never">
             <Grid
-                Padding="24"
-                ColumnDefinitions="*,*"
-                MinimumHeightRequest="600"
+                Padding="{OnIdiom Phone='16,20',
+                                  Default='24,40'}"
+                ColumnDefinitions="{OnIdiom Phone='*',
+                                            Default='*,*'}"
+                ColumnSpacing="0"
+                HorizontalOptions="Center"
+                MaximumWidthRequest="1200"
                 RowDefinitions="*"
                 VerticalOptions="FillAndExpand">
 
@@ -168,7 +173,8 @@
                 <VerticalStackLayout
                     Grid.Row="0"
                     Grid.Column="0"
-                    Padding="0,0,20,0"
+                    Padding="{OnIdiom Phone='0,0,0,24',
+                                      Default='0,0,40,0'}"
                     Spacing="0"
                     VerticalOptions="Center">
 
@@ -177,7 +183,8 @@
                         Margin="0,0,0,4"
                         FontAttributes="Bold"
                         FontFamily="Comfortaa"
-                        FontSize="36"
+                        FontSize="{OnIdiom Phone='28',
+                                           Default='36'}"
                         Text="EduDev"
                         TextColor="{StaticResource TextPrimary}" />
 
@@ -186,7 +193,8 @@
                         Margin="0,0,0,8"
                         FontAttributes="Bold"
                         FontFamily="Comfortaa"
-                        FontSize="22"
+                        FontSize="{OnIdiom Phone='18',
+                                           Default='22'}"
                         IsVisible="{Binding IsLoginMode}"
                         Text="Войдите в EduDev"
                         TextColor="{StaticResource TextPrimary}" />
@@ -195,7 +203,8 @@
                         Margin="0,0,0,8"
                         FontAttributes="Bold"
                         FontFamily="Comfortaa"
-                        FontSize="22"
+                        FontSize="{OnIdiom Phone='18',
+                                           Default='22'}"
                         IsVisible="{Binding IsRegisterMode}"
                         Text="Создайте аккаунт EduDev"
                         TextColor="{StaticResource TextPrimary}" />
@@ -336,6 +345,13 @@
                         </Grid>
                     </VerticalStackLayout>
 
+                    <!--  Декоративный разделитель (только для телефона, чтобы отделить от формы)  -->
+                    <BoxView
+                        Margin="0,24,0,0"
+                        BackgroundColor="{StaticResource BorderDefault}"
+                        HeightRequest="1"
+                        IsVisible="{OnIdiom Phone=True,
+                                            Default=False}" />
                 </VerticalStackLayout>
 
                 <!--
@@ -346,7 +362,8 @@
                 <Border
                     Grid.Row="0"
                     Grid.Column="1"
-                    Padding="28,24"
+                    Padding="{OnIdiom Phone='20,20',
+                                      Default='32,28'}"
                     BackgroundColor="{StaticResource BgCard}"
                     Stroke="{StaticResource BorderDefault}"
                     StrokeShape="RoundRectangle 16"
@@ -359,7 +376,8 @@
                             Margin="0,0,0,4"
                             FontAttributes="Bold"
                             FontFamily="Comfortaa"
-                            FontSize="20"
+                            FontSize="{OnIdiom Phone='18',
+                                               Default='20'}"
                             IsVisible="{Binding IsLoginMode}"
                             Text="Авторизация"
                             TextColor="{StaticResource TextPrimary}" />
@@ -367,19 +385,20 @@
                             Margin="0,0,0,4"
                             FontAttributes="Bold"
                             FontFamily="Comfortaa"
-                            FontSize="20"
+                            FontSize="{OnIdiom Phone='18',
+                                               Default='20'}"
                             IsVisible="{Binding IsRegisterMode}"
                             Text="Регистрация"
                             TextColor="{StaticResource TextPrimary}" />
 
                         <Label
-                            Margin="0,0,0,20"
+                            Margin="0,0,0,16"
                             FontSize="12"
                             IsVisible="{Binding IsLoginMode}"
                             Text="Введите e-mail и пароль, указанные при регистрации."
                             TextColor="{StaticResource TextSecondary}" />
                         <Label
-                            Margin="0,0,0,20"
+                            Margin="0,0,0,16"
                             FontSize="12"
                             IsVisible="{Binding IsRegisterMode}"
                             LineBreakMode="WordWrap"
@@ -387,7 +406,7 @@
                             TextColor="{StaticResource TextSecondary}" />
 
                         <!--  ══════ ФОРМА ВХОДА ══════  -->
-                        <VerticalStackLayout IsVisible="{Binding IsLoginMode}" Spacing="14">
+                        <VerticalStackLayout IsVisible="{Binding IsLoginMode}" Spacing="12">
 
                             <!--  Email  -->
                             <VerticalStackLayout Spacing="0">
@@ -440,13 +459,22 @@
                             </VerticalStackLayout>
 
                             <!--  Забыл пароль / Без входа  -->
-                            <Grid Margin="0,-4,0,0" ColumnDefinitions="Auto,*,Auto">
+                            <Grid
+                                Margin="0,-2,0,0"
+                                ColumnDefinitions="{OnIdiom Phone='*,Auto',
+                                                            Default='Auto,*,Auto'}"
+                                RowDefinitions="{OnIdiom Phone='Auto,Auto',
+                                                         Default='Auto'}">
                                 <Button
+                                    Grid.Row="0"
                                     Grid.Column="0"
                                     Style="{StaticResource LinkBtnStyle}"
                                     Text="Забыли пароль?" />
                                 <Button
-                                    Grid.Column="2"
+                                    Grid.Row="{OnIdiom Phone=1,
+                                                       Default=0}"
+                                    Grid.Column="{OnIdiom Phone=0,
+                                                          Default=2}"
                                     Command="{Binding ContinueOfflineCommand}"
                                     Style="{StaticResource LinkBtnStyle}"
                                     Text="Или продолжить без входа" />
@@ -467,7 +495,7 @@
 
                             <!--  Кнопка входа  -->
                             <Button
-                                Margin="0,6,0,0"
+                                Margin="0,4,0,0"
                                 Command="{Binding LoginCommand}"
                                 IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
                                 Style="{StaticResource PrimaryBtnStyle}"
@@ -489,7 +517,7 @@
                         </VerticalStackLayout>
 
                         <!--  ══════ ФОРМА РЕГИСТРАЦИИ ══════  -->
-                        <VerticalStackLayout IsVisible="{Binding IsRegisterMode}" Spacing="14">
+                        <VerticalStackLayout IsVisible="{Binding IsRegisterMode}" Spacing="12">
 
                             <!--  Имя  -->
                             <VerticalStackLayout Spacing="0">
@@ -621,7 +649,7 @@
 
                             <!--  Кнопка регистрации  -->
                             <Button
-                                Margin="0,6,0,0"
+                                Margin="0,4,0,0"
                                 Command="{Binding RegisterCommand}"
                                 IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
                                 Style="{StaticResource PrimaryBtnStyle}"

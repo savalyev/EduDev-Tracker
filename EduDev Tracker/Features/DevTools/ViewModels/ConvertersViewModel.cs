@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Services.Converters;
 using System;
@@ -98,7 +99,7 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
         public ConvertersViewModel(IConversionService service)
         {
             _service = service;
-            _profileId = Preferences.Default.Get("active_profile_id", 0);
+            _profileId = SessionService.GetProfileId();
         }
 
         public async Task InitializeAsync()

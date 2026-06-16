@@ -7,13 +7,17 @@
     xmlns:vm="clr-namespace:EduDev_Tracker.Features.Habits.ViewModels"
     Title=""
     x:DataType="vm:HabitDetailsViewModel"
+    BackgroundColor="#0A0E1A"
     Shell.NavBarIsVisible="False">
 
     <Grid>
-        <Image
-            Aspect="Fill"
-            Opacity="0.8"
-            Source="background_gradient.jpg" />
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="#0A0E1A" />
+                <GradientStop Offset="0.5" Color="#0D1530" />
+                <GradientStop Offset="1" Color="#0A1628" />
+            </LinearGradientBrush>
+        </Grid.Background>
 
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="16">

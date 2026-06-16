@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Services.Pomodoro;
 using System.Collections.ObjectModel;
@@ -185,7 +186,7 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
             }
             NameError = "";
 
-            int profileId = Preferences.Default.Get("active_profile_id", 0);
+            int profileId = SessionService.GetProfileId();
 
             if (IsDefault)
             {

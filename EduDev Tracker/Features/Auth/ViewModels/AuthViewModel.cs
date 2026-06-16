@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Services.Auth;
 using System.Text.RegularExpressions;
 
@@ -88,7 +89,7 @@ namespace EduDev_Tracker.Features.Auth.ViewModels
             try
             {
                 var profile = await _authService.LoginAsync(LoginEmail, LoginPassword);
-                Preferences.Default.Set("active_profile_id", profile.Id);
+                SessionService.SaveProfileId(profile.Id);
                 await NavigateToMainAsync();
             }
             catch (InvalidOperationException ex) when (ex.Message == "WRONG_PASSWORD")
@@ -118,7 +119,7 @@ namespace EduDev_Tracker.Features.Auth.ViewModels
             try
             {
                 var profile = await _authService.RegisterAsync(RegisterName, RegisterEmail, RegisterPassword);
-                Preferences.Default.Set("active_profile_id", profile.Id);
+                SessionService.SaveProfileId(profile.Id);
                 await NavigateToMainAsync();
             }
             catch (InvalidOperationException ex) when (ex.Message == "EMAIL_TAKEN")
@@ -139,7 +140,7 @@ namespace EduDev_Tracker.Features.Auth.ViewModels
             try
             {
                 var profile = await _authService.LoginOfflineAsync();
-                Preferences.Default.Set("active_profile_id", profile.Id);
+                SessionService.SaveProfileId(profile.Id);
                 await NavigateToMainAsync();
             }
             catch (Exception ex)

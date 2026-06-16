@@ -1,6 +1,7 @@
 ﻿using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Data.Repositories.Implementations;
 using BCrypt.Net;
+using EduDev_Tracker.Core.Helpers;
 
 namespace EduDev_Tracker.Services.Auth
 {
@@ -81,7 +82,7 @@ namespace EduDev_Tracker.Services.Auth
         public async Task LogoutAsync()
         {
             await _repo.DeactivateAllAsync();
-            Preferences.Default.Remove("active_profile_id");
+            SessionService.Clear();
         }
 
 

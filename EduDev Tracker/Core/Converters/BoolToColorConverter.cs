@@ -24,4 +24,19 @@ namespace EduDev_Tracker.Core.Converters
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }
+    public class BoolToColorConverterForMain : IValueConverter
+    {
+        public static readonly BoolToColorConverter Instance = new();
+
+        public object Convert(object? value, Type t, object? parameter, CultureInfo c)
+        {
+            var parts = parameter?.ToString()?.Split('|') ?? [];
+            if (parts.Length < 2) return Colors.Transparent;
+            var hex = value is true ? parts[0] : parts[1];
+            return Color.FromArgb(hex);
+        }
+
+        public object ConvertBack(object? v, Type t, object? p, CultureInfo c)
+            => throw new NotImplementedException();
+    }
 }

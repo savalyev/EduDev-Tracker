@@ -589,6 +589,18 @@
                 Padding="14,12"
                 IsVisible="False"
                 Spacing="12">
+                <Image
+                    HeightRequest="36"
+                    HorizontalOptions="Start"
+                    IsVisible="{OnIdiom Phone=True,
+                                        Default=False}"
+                    Source="menu.png"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMenuTapped" />
+                    </Image.GestureRecognizers>
+                </Image>
 
                 <!--  Табы режима  -->
                 <Border Padding="6" Style="{StaticResource SectionCard}">
@@ -834,6 +846,13 @@
                         </BindableLayout.ItemTemplate>
                     </HorizontalStackLayout>
                 </ScrollView>
+                <Button
+                    Margin="0,8,0,0"
+                    BackgroundColor="#1E3A4A"
+                    Command="{Binding OpenCreatePresetCommand}"
+                    Style="{StaticResource ControlButton}"
+                    Text="+ Новый пресет"
+                    TextColor="#2DD4BF" />
 
                 <!--  Уведомления mobile  -->
                 <Border Padding="16" Style="{StaticResource SectionCard}">

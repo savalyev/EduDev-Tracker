@@ -3,32 +3,41 @@
     x:Class="EduDev_Tracker.Features.Dashboard.Views.DashboardPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:EduDev_Tracker.Features.Dashboard.Views"
+    xmlns:vm="clr-namespace:EduDev_Tracker.Features.Dashboard.ViewModels"
     Title=""
+    x:DataType="vm:DashboardViewModel"
+    BackgroundColor="#0A0E1A"
     SafeAreaEdges="All"
     Shell.NavBarIsVisible="False">
 
     <ScrollView>
-
         <Grid>
-
-            <Image
-                Aspect="Fill"
-                Opacity="0.8"
-                Source="background_gradient.jpg" />
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0" Color="#0A0E1A" />
+                    <GradientStop Offset="0.5" Color="#0D1530" />
+                    <GradientStop Offset="1" Color="#0A1628" />
+                </LinearGradientBrush>
+            </Grid.Background>
 
             <Grid
                 x:Name="ContentGrid"
                 Padding="16"
                 HorizontalOptions="Center"
                 MaximumWidthRequest="1500"
-                RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto"
                 RowSpacing="14"
                 VerticalOptions="Start">
 
-                <Grid ColumnDefinitions="Auto, *, Auto">
+                <!--  ══ ШАПКА ══════════════════════════════════════════  -->
+                <Grid ColumnDefinitions="Auto,*,Auto">
+
                     <Image
                         HeightRequest="45"
                         HorizontalOptions="Start"
+                        IsVisible="{OnIdiom Phone=True,
+                                            Default=False}"
                         Source="menu.png"
                         VerticalOptions="Start"
                         WidthRequest="45">
@@ -43,9 +52,7 @@
                             HorizontalOptions="Center"
                             Source="logo.png"
                             WidthRequest="100" />
-
                         <Label Style="{StaticResource EduAppTitleLabel}" Text="EduDev Tracker" />
-
                         <Label Style="{StaticResource EduAppSubtitleLabel}" Text="by svvvlyxv" />
                     </VerticalStackLayout>
 
@@ -58,28 +65,96 @@
                         WidthRequest="45" />
                 </Grid>
 
-                <Border
+                <!--  ══ БЫСТРЫЕ ДЕЙСТВИЯ ═══════════════════════════════  -->
+                <!--  ФИКС: ColumnDefinitions заданы сразу, не через VSM  -->
+                <Grid
+                    x:Name="QuickActionsGrid"
                     Grid.Row="1"
-                    Margin="16,20,16,0"
+                    Margin="16,0,16,0"
+                    ColumnDefinitions="*,*,*"
+                    ColumnSpacing="10">
+
+                    <Border Padding="12,10" Style="{StaticResource EduCardBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding QuickAddHabitCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                            <Image
+                                HeightRequest="16"
+                                Source="habits_logo.png"
+                                VerticalOptions="Center"
+                                WidthRequest="16" />
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="13"
+                                Text="+ Привычка"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="12,10"
+                        Style="{StaticResource EduCardBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding QuickAddTaskCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                            <Image
+                                HeightRequest="16"
+                                Source="tasks_logo.png"
+                                VerticalOptions="Center"
+                                WidthRequest="16" />
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="13"
+                                Text="+ Задача"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <Border
+                        Grid.Column="2"
+                        Padding="12,10"
+                        Style="{StaticResource EduCardBorder}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding StartPomodoroCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                            <Image
+                                HeightRequest="14"
+                                Source="start_icon.png"
+                                VerticalOptions="Center"
+                                WidthRequest="14" />
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="13"
+                                Text="Помодоро"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!--  ══ ПРОГРЕСС НЕДЕЛИ ════════════════════════════════  -->
+                <Border
+                    Grid.Row="2"
+                    Margin="16,0,16,0"
                     Style="{StaticResource EduCardBorder}">
 
-                    <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
 
                         <VerticalStackLayout>
-
                             <Label Style="{StaticResource EduCardTitleLabel}" Text="Прогресс недели" />
-
-                            <Label
-                                Grid.Row="1"
-                                Style="{StaticResource EduProgressSubtitleLabel}"
-                                Text="Привычки, задачи и Помодоро" />
-
+                            <Label Style="{StaticResource EduProgressSubtitleLabel}" Text="Привычки, задачи и Помодоро" />
                         </VerticalStackLayout>
 
                         <Label
                             Grid.Column="1"
                             Style="{StaticResource EduCardTitleLabel}"
-                            Text="1%"
+                            Text="{Binding WeekProgressText}"
                             VerticalOptions="Center" />
 
                         <ProgressBar
@@ -87,174 +162,309 @@
                             Grid.ColumnSpan="2"
                             Margin="0,20,0,0"
                             BackgroundColor="White"
-                            Progress="0.01"
+                            Progress="{Binding WeekProgress}"
                             ProgressColor="#019301" />
+
+                        <Grid
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Margin="0,12,0,0"
+                            ColumnDefinitions="*,*,*"
+                            ColumnSpacing="8">
+
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="Comfortaa"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding HabitsCompletedWeek}"
+                                    TextColor="White" />
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="11"
+                                    HorizontalOptions="Center"
+                                    Opacity="0.5"
+                                    Text="Привычек"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                HorizontalOptions="Center"
+                                Spacing="2">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="Comfortaa"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding TasksClosedWeek}"
+                                    TextColor="White" />
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="11"
+                                    HorizontalOptions="Center"
+                                    Opacity="0.5"
+                                    Text="Задач"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout
+                                Grid.Column="2"
+                                HorizontalOptions="Center"
+                                Spacing="2">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="Comfortaa"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding PomodoroWeek}"
+                                    TextColor="White" />
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="11"
+                                    HorizontalOptions="Center"
+                                    Opacity="0.5"
+                                    Text="Помодоро"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
+
+                        </Grid>
                     </Grid>
                 </Border>
 
+                <!--  ══ КАРТОЧКИ МОДУЛЕЙ ═══════════════════════════════  -->
                 <Grid
                     x:Name="CardsGrid"
-                    Grid.Row="2"
-                    Margin="16,20,16,0"
+                    Grid.Row="3"
+                    Margin="16,0,16,0"
                     ColumnSpacing="20"
                     RowSpacing="20">
+                    <!--  Привычки  -->
                     <Border x:Name="HabitsCard" Style="{StaticResource EduCardBorder}">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,*">
 
-                        <Grid ColumnDefinitions="*, Auto">
+                            <Label
+                                Grid.ColumnSpan="2"
+                                Style="{StaticResource EduCardSubtitleLabel}"
+                                Text="{Binding HabitsSubtitle}" />
 
-                            <VerticalStackLayout Grid.Column="0" Spacing="10">
+                            <Label
+                                Grid.Row="1"
+                                Style="{StaticResource EduCardTitleLabel}"
+                                Text="Привычки" />
 
-                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="У Вас ни одной привычки :(" />
-                                <Label Style="{StaticResource EduCardTitleLabel}" Text="Привычки" />
-                                <Image Source="dividing_strip.png" />
-                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Пора повышать свою продуктивность! Смело добавляйте новые привычки и отмечайте выполнение!" />
+                            <!--  ФИКС: иконка в правом верхнем углу через Grid  -->
+                            <Image
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HeightRequest="35"
+                                Source="habits_logo.png"
+                                VerticalOptions="Start"
+                                WidthRequest="35" />
 
-                                <Border
-                                    Margin="0,150,0,0"
-                                    Style="{StaticResource EduPrimaryButtonBorder}"
-                                    WidthRequest="147">
+                            <Image
+                                Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                Source="dividing_strip.png" />
+
+                            <Label
+                                Grid.Row="3"
+                                Grid.ColumnSpan="2"
+                                Style="{StaticResource EduCardSubtitleLabel}"
+                                Text="Пора повышать свою продуктивность! Смело добавляйте новые привычки и отмечайте выполнение!" />
+
+                            <!--  ФИКС: убран магический Margin, кнопка в нижней строке  -->
+                            <Grid
+                                Grid.Row="4"
+                                Grid.ColumnSpan="2"
+                                Margin="0,16,0,0"
+                                ColumnDefinitions="*,Auto"
+                                VerticalOptions="End">
+
+                                <Border Style="{StaticResource EduPrimaryButtonBorder}" WidthRequest="147">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GoToHabitsCommand}" />
+                                    </Border.GestureRecognizers>
                                     <HorizontalStackLayout HorizontalOptions="Center">
-
                                         <Image
                                             Margin="0,0,10,0"
                                             HeightRequest="13"
                                             Source="transition_icon.png"
                                             WidthRequest="13" />
-
-                                        <Button Style="{StaticResource EduPrimaryButton}" Text="Перейти" />
-
+                                        <Button
+                                            Command="{Binding GoToHabitsCommand}"
+                                            Style="{StaticResource EduPrimaryButton}"
+                                            Text="Перейти" />
                                     </HorizontalStackLayout>
                                 </Border>
 
-                            </VerticalStackLayout>
-
-                            <VerticalStackLayout Grid.Column="1">
-
+                                <!--  ФИКС: add_icon без магического Margin  -->
                                 <Image
-                                    HeightRequest="35"
-                                    Source="habits_logo.png"
-                                    WidthRequest="35" />
-
-                                <Image
-                                    Margin="0,266,0,0"
+                                    Grid.Column="1"
                                     HeightRequest="35"
                                     Source="add_icon.png"
-                                    WidthRequest="35" />
-
-                            </VerticalStackLayout>
+                                    VerticalOptions="End"
+                                    WidthRequest="35">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding QuickAddHabitCommand}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </Grid>
 
                         </Grid>
-
                     </Border>
 
+                    <!--  Задачи  -->
                     <Border x:Name="TasksCard" Style="{StaticResource EduCardBorder}">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,*">
 
-                        <Grid ColumnDefinitions="*, Auto">
+                            <Label
+                                Grid.ColumnSpan="2"
+                                Style="{StaticResource EduCardSubtitleLabel}"
+                                Text="{Binding TasksSubtitle}" />
 
-                            <VerticalStackLayout Grid.Column="0" Spacing="10">
+                            <Label
+                                Grid.Row="1"
+                                Style="{StaticResource EduCardTitleLabel}"
+                                Text="Задачи" />
 
+                            <Image
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HeightRequest="35"
+                                Source="tasks_logo.png"
+                                VerticalOptions="Start"
+                                WidthRequest="35" />
 
-                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="У Вас ни одной задачи :(" />
-                                <Label Style="{StaticResource EduCardTitleLabel}" Text="Задачи" />
-                                <Image Source="dividing_strip.png" />
-                                <Label Style="{StaticResource EduCardSubtitleLabel}" Text="У Вас есть задачи, которые нужно отслеживать? Создавайте умный список задач и следите за своей работой!" />
+                            <Image
+                                Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                Source="dividing_strip.png" />
 
-                                <Border
-                                    Margin="0,150,0,0"
-                                    Style="{StaticResource EduPrimaryButtonBorder}"
-                                    WidthRequest="147">
+                            <Label
+                                Grid.Row="3"
+                                Grid.ColumnSpan="2"
+                                Style="{StaticResource EduCardSubtitleLabel}"
+                                Text="У Вас есть задачи, которые нужно отслеживать? Создавайте умный список задач и следите за своей работой!" />
+
+                            <Grid
+                                Grid.Row="4"
+                                Grid.ColumnSpan="2"
+                                Margin="0,16,0,0"
+                                ColumnDefinitions="*,Auto"
+                                VerticalOptions="End">
+
+                                <Border Style="{StaticResource EduPrimaryButtonBorder}" WidthRequest="147">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GoToTasksCommand}" />
+                                    </Border.GestureRecognizers>
                                     <HorizontalStackLayout HorizontalOptions="Center">
-
                                         <Image
                                             Margin="0,0,10,0"
                                             HeightRequest="13"
                                             Source="transition_icon.png"
                                             WidthRequest="13" />
-
-                                        <Button Style="{StaticResource EduPrimaryButton}" Text="Перейти" />
-
+                                        <Button
+                                            Command="{Binding GoToTasksCommand}"
+                                            Style="{StaticResource EduPrimaryButton}"
+                                            Text="Перейти" />
                                     </HorizontalStackLayout>
                                 </Border>
 
-                            </VerticalStackLayout>
-
-                            <VerticalStackLayout Grid.Column="1">
-
                                 <Image
-                                    HeightRequest="35"
-                                    Source="tasks_logo.png"
-                                    WidthRequest="35" />
-
-                                <Image
-                                    Margin="0,266,0,0"
+                                    Grid.Column="1"
                                     HeightRequest="35"
                                     Source="add_icon.png"
-                                    WidthRequest="35" />
-
-                            </VerticalStackLayout>
+                                    VerticalOptions="End"
+                                    WidthRequest="35">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding QuickAddTaskCommand}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </Grid>
 
                         </Grid>
-
                     </Border>
 
+                    <!--  Сегодняшние задачи  -->
                     <Border x:Name="TodayTasksCard" Style="{StaticResource EduCardBorder}">
-
-                        <Grid RowDefinitions="Auto, *">
+                        <Grid RowDefinitions="Auto,*">
 
                             <Label Style="{StaticResource EduCardTitleLabel}" Text="Сегодняшние задачи" />
 
+                            <!--  Пустое состояние  -->
                             <Border
                                 Grid.Row="1"
                                 Margin="0,10,0,0"
+                                IsVisible="{Binding HasTodayTasks, Converter={StaticResource InverseBool}}"
                                 Style="{StaticResource EduEmptyStateBorder}">
-
-                                <VerticalStackLayout>
-
-                                    <Label
-                                        Margin="0,100,0,0"
-                                        FontFamily="Comfortaa"
-                                        FontSize="20"
-                                        HorizontalTextAlignment="Center"
-                                        Opacity="0.6"
-                                        Text="Задач пока нет :("
-                                        TextColor="White" />
-
-                                </VerticalStackLayout>
-
+                                <Label
+                                    Margin="0,100,0,0"
+                                    FontFamily="Comfortaa"
+                                    FontSize="20"
+                                    HorizontalTextAlignment="Center"
+                                    Opacity="0.6"
+                                    Text="Задач пока нет :("
+                                    TextColor="White" />
                             </Border>
 
-                        </Grid>
+                            <!--  Список задач  -->
+                            <CollectionView
+                                Grid.Row="1"
+                                Margin="0,10,0,0"
+                                IsVisible="{Binding HasTodayTasks}"
+                                ItemsSource="{Binding TodayTasks}"
+                                SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:TodayTaskItem">
+                                        <Grid
+                                            Padding="0,6"
+                                            ColumnDefinitions="8,*"
+                                            ColumnSpacing="10">
+                                            <BoxView
+                                                BackgroundColor="{Binding PriorityColor}"
+                                                CornerRadius="4"
+                                                VerticalOptions="Fill"
+                                                WidthRequest="4" />
+                                            <Label
+                                                Grid.Column="1"
+                                                FontFamily="Comfortaa"
+                                                FontSize="13"
+                                                Text="{Binding Title}"
+                                                TextColor="White"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
 
+                        </Grid>
                     </Border>
 
+                    <!--  VisualStateManager — переключение Narrow/Wide  -->
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="WidthStates">
                             <VisualState x:Name="Narrow">
                                 <VisualState.Setters>
                                     <Setter TargetName="CardsGrid" Property="ColumnDefinitions" Value="*" />
                                     <Setter TargetName="CardsGrid" Property="RowDefinitions" Value="Auto,Auto,Auto" />
-
                                     <Setter TargetName="HabitsCard" Property="Grid.Row" Value="0" />
                                     <Setter TargetName="HabitsCard" Property="Grid.Column" Value="0" />
-
                                     <Setter TargetName="TasksCard" Property="Grid.Row" Value="1" />
                                     <Setter TargetName="TasksCard" Property="Grid.Column" Value="0" />
-
                                     <Setter TargetName="TodayTasksCard" Property="Grid.Row" Value="2" />
                                     <Setter TargetName="TodayTasksCard" Property="Grid.Column" Value="0" />
                                 </VisualState.Setters>
                             </VisualState>
-
                             <VisualState x:Name="Wide">
                                 <VisualState.Setters>
                                     <Setter TargetName="CardsGrid" Property="ColumnDefinitions" Value="*,*,*" />
                                     <Setter TargetName="CardsGrid" Property="RowDefinitions" Value="Auto" />
                                     <Setter TargetName="HabitsCard" Property="Grid.Row" Value="0" />
                                     <Setter TargetName="HabitsCard" Property="Grid.Column" Value="0" />
-
                                     <Setter TargetName="TasksCard" Property="Grid.Row" Value="0" />
                                     <Setter TargetName="TasksCard" Property="Grid.Column" Value="1" />
-
                                     <Setter TargetName="TodayTasksCard" Property="Grid.Row" Value="0" />
                                     <Setter TargetName="TodayTasksCard" Property="Grid.Column" Value="2" />
                                 </VisualState.Setters>
@@ -263,111 +473,131 @@
                     </VisualStateManager.VisualStateGroups>
                 </Grid>
 
+                <!--  ══ НИЖНИЙ РЯД: ГРАФИК + ФОКУС ════════════════════  -->
                 <Grid
-                    Grid.Row="3"
-                    Margin="16,20,16,0"
-                    RowDefinitions="Auto, Auto"
+                    Grid.Row="4"
+                    Margin="16,0,16,0"
+                    RowDefinitions="Auto,Auto"
                     RowSpacing="20">
 
+                    <!--  График  -->
                     <Border Style="{StaticResource EduCardBorder}">
+                        <Grid RowDefinitions="Auto,*">
 
-                        <Grid RowDefinitions="Auto, *">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label
+                                    Style="{StaticResource EduCardTitle16}"
+                                    Text="Продуктивность за 7 дней"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    Opacity="0.6"
+                                    Text="Подробнее →"
+                                    TextColor="White"
+                                    VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GoToAnalyticsCommand}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
 
-                            <Label Style="{StaticResource EduCardTitle16}" Text="Продуктивность за 7 дней" />
-
-                            <Border
+                            <!--  ФИКС: минимальная высота бара через BarHeight в VM  -->
+                            <CollectionView
                                 Grid.Row="1"
                                 Margin="0,20,0,0"
                                 HeightRequest="153"
-                                Stroke="#66FFFFFF"
-                                StrokeDashArray="10, 10">
-
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="20"
-                                    HorizontalTextAlignment="Center"
-                                    Opacity="0.6"
-                                    Text="Здесь будет график =)"
-                                    TextColor="White"
-                                    VerticalTextAlignment="Center" />
-
-                            </Border>
+                                ItemsSource="{Binding WeekChart}"
+                                SelectionMode="None">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout ItemSpacing="6" Orientation="Horizontal" />
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:WeekBarPoint">
+                                        <VerticalStackLayout
+                                            Spacing="6"
+                                            VerticalOptions="End"
+                                            WidthRequest="38">
+                                            <Border
+                                                BackgroundColor="{Binding BarColor}"
+                                                HeightRequest="{Binding BarHeight}"
+                                                HorizontalOptions="Center"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                WidthRequest="26">
+                                                <BoxView HeightRequest="0" />
+                                            </Border>
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="11"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding DayLabel}"
+                                                TextColor="{Binding DayLabelColor}" />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
 
                         </Grid>
-
                     </Border>
 
+                    <!--  Фокус  -->
                     <Border
                         Grid.Row="1"
                         Padding="10"
                         Style="{StaticResource EduCardBorder}">
-
                         <VerticalStackLayout Spacing="10">
 
                             <Label Style="{StaticResource EduCardTitle16}" Text="Фокус" />
-
                             <Image Source="dividing_strip.png" />
 
-                            <Grid ColumnDefinitions="*, Auto">
-
+                            <Grid ColumnDefinitions="*,Auto">
                                 <Label Style="{StaticResource EduSmallLabelMuted}" Text="Сегодня" />
-
                                 <Label
                                     Grid.Column="1"
                                     Style="{StaticResource EduSmallLabel}"
-                                    Text="0" />
-
+                                    Text="{Binding TodayFocusText}" />
                             </Grid>
-
                             <Image Source="dividing_strip.png" />
 
-                            <Grid ColumnDefinitions="*, Auto">
-
+                            <Grid ColumnDefinitions="*,Auto">
                                 <Label Style="{StaticResource EduSmallLabelMuted}" Text="Сессий" />
-
                                 <Label
                                     Grid.Column="1"
                                     Style="{StaticResource EduSmallLabel}"
-                                    Text="0" />
-
+                                    Text="{Binding TodaySessionsCount}" />
                             </Grid>
-
                             <Image Source="dividing_strip.png" />
 
-                            <Grid ColumnDefinitions="*, Auto">
-
+                            <Grid ColumnDefinitions="*,Auto">
                                 <Label Style="{StaticResource EduSmallLabelMuted}" Text="Активный цикл" />
-
                                 <Label
                                     Grid.Column="1"
                                     Style="{StaticResource EduSmallLabel}"
-                                    Text="25/5" />
+                                    Text="{Binding ActivePresetLabel}" />
                             </Grid>
-
                             <Image Source="dividing_strip.png" />
 
-                            <Grid ColumnDefinitions="*, Auto">
-
+                            <Grid ColumnDefinitions="*,Auto">
                                 <Label Style="{StaticResource EduSmallLabelMuted}" Text="Запустить Помодоро" />
-
                                 <Image
                                     Grid.Column="1"
                                     HeightRequest="12"
                                     Source="start_icon.png"
-                                    WidthRequest="11" />
-
+                                    WidthRequest="11">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding StartPomodoroCommand}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
                             </Grid>
 
                         </VerticalStackLayout>
-
                     </Border>
 
                 </Grid>
 
             </Grid>
-
         </Grid>
-
     </ScrollView>
-
 </ContentPage>

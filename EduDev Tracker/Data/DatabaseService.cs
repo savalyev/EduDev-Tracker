@@ -90,13 +90,11 @@ namespace EduDev_Tracker.Data
 
                 await _connection.CreateTableAsync<PomodoroPreset>();
                 await _connection.CreateTableAsync<PomodoroSession>();
-                await _connection.CreateTableAsync<CheatsheetCategory>();
-                await _connection.CreateTableAsync<Cheatsheet>();
-                await _connection.CreateTableAsync<CheatsheetTag>();
+
                 await _connection.CreateTableAsync<ConversionHistory>();
                 await _connection.ExecuteAsync(
                     @"CREATE INDEX IF NOT EXISTS idx_conv_profile_time
-                    ON conversionhistory(ProfileId, CreatedAt DESC)");
+                    ON conversion_history(ProfileId, CreatedAt DESC)");
 
                 await _connection.CreateTableAsync<Reminder>();
 

@@ -23,14 +23,12 @@ public partial class TasksPage : ContentPage
         }
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        this.Opacity = 0;
-        this.FadeToAsync(1, 200, Easing.CubicOut);
-        if (BindingContext is TasksViewModel vm)
+        if (BindingContext is TasksViewModel vm && !vm.IsBusy)
         {
-            vm.LoadCommand.Execute(null);
+            await vm.LoadCommand.ExecuteAsync(null);
         }
     }
 

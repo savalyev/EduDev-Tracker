@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Repositories.Implementations;
 using EduDev_Tracker.Features.Auth.Views;
 using EduDev_Tracker.Services.Auth;
@@ -32,7 +33,7 @@ namespace EduDev_Tracker.Features.Profile.ViewModels
 
         public async Task InitializeAsync()
         {
-            int profileId = Preferences.Default.Get("active_profile_id", 0);
+            int profileId = SessionService.GetProfileId();
             if (profileId == 0) return;
 
             var profile = await _profileRepo.GetByIdAsync(profileId);

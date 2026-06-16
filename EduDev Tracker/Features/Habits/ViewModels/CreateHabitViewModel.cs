@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
@@ -86,7 +87,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             foreach (var day in WeekDays)
                 day.PropertyChanged += Day_PropertyChanged;
 
-            _profileId = Preferences.Default.Get("active_profile_id", 0);
+            _profileId = SessionService.GetProfileId();
         }
         private void Day_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {

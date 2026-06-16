@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Maui;
 using EduDev_Tracker.Data;
 using EduDev_Tracker.Data.Repositories.Implementations;
+using EduDev_Tracker.Features.Analytics.ViewModels;
+using EduDev_Tracker.Features.Analytics.Views;
 using EduDev_Tracker.Features.Auth.ViewModels;
 using EduDev_Tracker.Features.Auth.Views;
 using EduDev_Tracker.Features.Dashboard.ViewModels;
 using EduDev_Tracker.Features.Dashboard.Views;
+using EduDev_Tracker.Features.DevTools.ViewModels;
+using EduDev_Tracker.Features.DevTools.Views;
 using EduDev_Tracker.Features.Habits.ViewModels;
 using EduDev_Tracker.Features.Habits.Views;
 using EduDev_Tracker.Features.Notes.ViewModels;
@@ -15,8 +19,10 @@ using EduDev_Tracker.Features.Profile.ViewModels;
 using EduDev_Tracker.Features.Profile.Views;
 using EduDev_Tracker.Features.Tasks.ViewModels;
 using EduDev_Tracker.Features.Tasks.Views;
+using EduDev_Tracker.Services.Analytics;
 using EduDev_Tracker.Services.Audio;
 using EduDev_Tracker.Services.Auth;
+using EduDev_Tracker.Services.Converters;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Notes;
@@ -27,9 +33,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using Plugin.LocalNotification;
 using Plugin.Maui.Audio;
-using EduDev_Tracker.Services.Converters;
-using EduDev_Tracker.Features.DevTools.ViewModels;
-using EduDev_Tracker.Features.DevTools.Views;
 
 
 
@@ -114,6 +117,7 @@ namespace EduDev_Tracker
             services.AddSingleton<IPomodoroService, PomodoroService>();
             services.AddSingleton<IAudioService, AudioService>();
             services.AddSingleton<IConversionService,  ConversionService>();
+            services.AddSingleton<IAnalyticsService, AnalyticsService>();
 
             services.AddTransient<CreateHabitViewModel>();
             services.AddTransient<CreateHabitPage>();
@@ -158,6 +162,9 @@ namespace EduDev_Tracker
 
             services.AddTransient<ConvertersViewModel>();
             services.AddTransient<ConvertersPage>();
+
+            services.AddTransient<AnalyticsViewModel>();
+            services.AddTransient<AnalyticsPage>();
         }
     }
 }

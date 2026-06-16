@@ -84,5 +84,8 @@ namespace EduDev_Tracker.Services.Habits
             => _repo.GetByIdWithChildrenAsync(id);
         public Task<List<Habit>> GetArchivedAsync(int profileId)
             => _repo.GetArchivedAsync(profileId);
+
+        public Task<int> GetHabitsCompletedWeek(int profileId, DateTime from, DateTime to)
+            => _repo.GetHabitsCompletedWeek(profileId, from, to);
     }
 }

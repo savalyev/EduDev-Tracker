@@ -33,6 +33,14 @@
             <converters:TabTextConverter x:Key="TabTextConverter" />
             <converters:TabVisibleConverter x:Key="TabVisibleConverter" />
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
+            <converters:PeriodStyleConverter x:Key="PeriodStyleConverter" />
+            <converters:BoolToFormatStyleConverter x:Key="BoolToFormatStyleConverter" />
+            <converters:PeriodColorConverter x:Key="PeriodColorConverter" />
+            <converters:PeriodTextColorConverter x:Key="PeriodTextColorConverter" />
+            <converters:PeriodFontConverter x:Key="PeriodFontConverter" />
+            <converters:ModuleColorConverter x:Key="ModuleColorConverter" />
+            <converters:ModuleTextColorConverter x:Key="ModuleTextColorConverter" />
+            <converters:RatioToHeightConverter x:Key="RatioToHeightConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

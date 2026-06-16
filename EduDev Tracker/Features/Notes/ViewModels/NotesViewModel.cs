@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
+using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Data.Repositories.Implementations;
 using EduDev_Tracker.Features.Notes.Views;
@@ -55,7 +56,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         public NotesViewModel(INotesService noteService)
         {
             _noteService = noteService;
-            _profileId = Preferences.Default.Get("active_profile_id", 0);
+            _profileId = SessionService.GetProfileId();
         }
 
         [RelayCommand]
@@ -186,6 +187,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
                 SelectedNote.Title = EditTitle;
                 SelectedNote.Content = EditContent;
                 SelectedNote.UpdatedAt = DateTime.UtcNow;
+
 
                 if (SelectedNoteCategory is not null)
                     SelectedNote.CategoryId = SelectedNoteCategory.Id;

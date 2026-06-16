@@ -16,5 +16,6 @@ namespace EduDev_Tracker.Services.Tasks
         public Task<TaskRecurrence> GetRecurrenceAsync(int id);
         public Task SaveAsync(TaskItem task);
         public Task SaveRecurrenceAsync(TaskRecurrence recurrence);
+        public Task<int> GetTasksClosedWeek(int profileId, DateTime from, DateTime to);
     }
 }

@@ -3,7 +3,7 @@ using SQLiteNetExtensionsAsync.Extensions;
 
 namespace EduDev_Tracker.Data.Repositories.Implementations
 {
-    public class HabitRepository: BaseRepository<Habit>
+    public class HabitRepository : BaseRepository<Habit>
     {
         public HabitRepository(DatabaseService db) : base(db) { }
 
@@ -70,10 +70,10 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
         {
             habit.UpdatedAt = DateTime.UtcNow;
 
-            if(habit.Id == 0)
+            if (habit.Id == 0)
             {
                 habit.CreatedAt = DateTime.UtcNow;
-                await Connection.InsertWithChildrenAsync(habit, recursive:  true);
+                await Connection.InsertWithChildrenAsync(habit, recursive: true);
             }
             else
             {
@@ -172,6 +172,19 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
             var result = await Connection.ExecuteScalarAsync<double>(
                 "SELECT COALESCE(SUM(Value), 0) FROM habit_logs WHERE HabitId = ? AND LogDate = ?",
                 habitId, today);
+
+            return result;
+        }
+
+        public async Task<int> GetHabitsCompletedWeek(int profileId, DateTime from, DateTime to)
+        {
+            var fromStr = from.ToString("yyyy-MM-dd");
+            var toStr = to.ToString("yyyy-MM-dd");
+
+            var result = await Connection.ExecuteScalarAsync<int>(
+                "SELECT COUNT(*) FROM habit_logs WHERE LogDate BETWEEN ? AND ? " +
+                "AND HabitId IN (SELECT Id FROM habits WHERE ProfileId = ? AND IsArchived=0)",
+                fromStr, toStr, profileId);
 
             return result;
         }

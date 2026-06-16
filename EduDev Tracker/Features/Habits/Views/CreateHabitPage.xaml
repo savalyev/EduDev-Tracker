@@ -6,9 +6,17 @@
     xmlns:local="clr-namespace:EduDev_Tracker.Core.Helpers"
     xmlns:viewmodels="clr-namespace:EduDev_Tracker.Features.Habits.ViewModels"
     x:DataType="viewmodels:CreateHabitViewModel"
-    BackgroundImageSource="background_gradient.jpg">
+    BackgroundColor="#0A0E1A"
+    Shell.NavBarIsVisible="False">
 
     <ScrollView>
+        <ScrollView.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="#0A0E1A" />
+                <GradientStop Offset="0.5" Color="#0D1530" />
+                <GradientStop Offset="1" Color="#0A1628" />
+            </LinearGradientBrush>
+        </ScrollView.Background>
         <Grid
             Padding="16"
             HorizontalOptions="Center"

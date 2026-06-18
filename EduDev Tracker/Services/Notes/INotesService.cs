@@ -8,7 +8,7 @@ namespace EduDev_Tracker.Services.Notes
     public interface INotesService
     {
         public Task<List<NoteCategory>> GetCategoriesAsync(int profileId);
-        public Task<List<Note>> GetByProfileAsync(int profileId, bool inclideArchived);
+        public Task<List<Note>> GetByProfileAsync(int profileId, bool includeArchived);
         public Task<List<Note>> SearchAsync(int profileId, string query);
         public Task<List<NoteAttachment>> GetAttachmentsAsync(int noteId);
         public Task<List<NoteVersion>> GetVersionsAsync(int noteId);

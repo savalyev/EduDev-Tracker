@@ -23,7 +23,13 @@ namespace EduDev_Tracker.Data.Models
         public string PriorityString
         {
             get => Priority.ToString();
-            set => Priority = Enum.Parse<TaskPriority>(value);
+            set => Priority = value switch
+            {
+                nameof(TaskPriority.Urgent) => TaskPriority.Urgent,
+                nameof(TaskPriority.High)   => TaskPriority.High,
+                nameof(TaskPriority.Low)    => TaskPriority.Low,
+                _                           => TaskPriority.Medium,
+            };
         }
         [Ignore] public TaskStatus Status { get; set; } = TaskStatus.Open;
 
@@ -31,11 +37,18 @@ namespace EduDev_Tracker.Data.Models
         public string StatusString
         {
             get => Status.ToString();
-            set => Status = Enum.Parse<TaskStatus>(value);
+            set => Status = value switch
+            {
+                nameof(TaskStatus.InProgress) => TaskStatus.InProgress,
+                nameof(TaskStatus.Done)       => TaskStatus.Done,
+                nameof(TaskStatus.Cancelled)  => TaskStatus.Cancelled,
+                _                             => TaskStatus.Open,
+            };
         }
 
         public DateTime? DueAt { get; set; }
         public DateTime? CompletedAt { get; set; }
+        public DateTime? ReminderAt { get; set; }
 
         public bool IsArchived { get; set; }
         public int SortOrder { get; set; }

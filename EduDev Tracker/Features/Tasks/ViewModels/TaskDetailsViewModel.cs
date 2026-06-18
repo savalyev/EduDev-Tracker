@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Data.Models;
+using EduDev_Tracker.Features.Tasks.Views;
 using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Tasks;
 using System;
@@ -26,18 +27,16 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsNotEditing))]
-        [NotifyPropertyChangedFor(nameof(IsEditingRecurrence))]
         [NotifyPropertyChangedFor(nameof(EditButtonText))]
         private bool isEditing;
 
         public bool IsNotEditing => !IsEditing;
-        public bool IsEditingRecurrence => IsEditing && IsRecurring;
         public string EditButtonText => IsEditing ? "Отмена" : "Редактировать";
 
         [RelayCommand]
-        private void ToggleEdit()
+        private async Task ToggleEdit()
         {
-            if (IsEditing) LoadFromTask(_task); // откат изменений
+            if (IsEditing) await LoadFromTask(_task); // откат изменений
             IsEditing = !IsEditing;
         }
 
@@ -58,29 +57,16 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         public string ArchiveButtonText => IsArchived ? "Разархивировать" : "Архивировать";
 
-        public RecurrenceHelper Recurrence { get; } = new();
+        private RecurrenceHelper Recurrence { get; } = new();
 
-        public bool IsRecurring { get => Recurrence.IsRecurring; set => Recurrence.IsRecurring = value; }
-        public bool HasRecurrence => Recurrence.IsRecurring && !IsEditing;
+        public bool HasRecurrence => Recurrence.IsRecurring;
         public string RecurrenceSummary => Recurrence.RecurrenceSummary;
-        public string SelectedRuleType { get => Recurrence.SelectedRuleType; set => Recurrence.SelectedRuleType = value; }
-        public double IntervalN { get => Recurrence.IntervalN; set => Recurrence.IntervalN = value; }
-        public double DayOfMonth { get => Recurrence.DayOfMonth; set => Recurrence.DayOfMonth = value; }
-        public bool IsWeekly => Recurrence.IsWeekly;
-        public bool IsMonthly => Recurrence.IsMonthly;
-        public string IntervalLabel => Recurrence.IntervalLabel;
-        public string MonColor => Recurrence.MonColor; public string MonBorder => Recurrence.MonBorder;
-        public string TueColor => Recurrence.TueColor; public string TueBorder => Recurrence.TueBorder;
-        public string WedColor => Recurrence.WedColor; public string WedBorder => Recurrence.WedBorder;
-        public string ThuColor => Recurrence.ThuColor; public string ThuBorder => Recurrence.ThuBorder;
-        public string FriColor => Recurrence.FriColor; public string FriBorder => Recurrence.FriBorder;
-        public string SatColor => Recurrence.SatColor; public string SatBorder => Recurrence.SatBorder;
-        public string SunColor => Recurrence.SunColor; public string SunBorder => Recurrence.SunBorder;
 
-        [ObservableProperty] private string nextDueText = string.Empty;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasNextDueText))]
+        private string nextDueText = string.Empty;
 
-        [RelayCommand] private void SelectRuleType(string t) => Recurrence.SelectedRuleType = t;
-        [RelayCommand] private void ToggleDay(string bit) => Recurrence.ToggleDayCommand.Execute(bit);
+        public bool HasNextDueText => !string.IsNullOrEmpty(NextDueText);
 
 
         [RelayCommand]
@@ -125,9 +111,18 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 DeadlineTextColor = "#99FFFFFF";
             }
 
-            Recurrence.LoadFromRecurrence(await _taskService.GetRecurrenceAsync(task.Id));
-            if (task.Recurrence?.NextDue != null)
-                NextDueText = $"Следующее: {task.Recurrence.NextDue:d MMMM yyyy}";
+            var rec = await _taskService.GetRecurrenceAsync(task.Id);
+            Recurrence.LoadFromRecurrence(rec);
+            NextDueText = rec?.NextDue != null
+                ? $"Следующее: {rec.NextDue:d MMMM yyyy}"
+                : string.Empty;
+        }
+
+        [RelayCommand]
+        private async Task OpenReminder()
+        {
+            if (_task is null) return;
+            await _navigation.GoToAsync($"{nameof(ReminderSettingsPage)}?taskId={_task.Id}");
         }
 
         [RelayCommand]
@@ -135,7 +130,13 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         {
             if (_task is null) return;
             CurrentStatus = status;
-            _task.Status = Enum.Parse<TaskStatus>(status);
+            _task.Status = status switch
+            {
+                "InProgress" => TaskStatus.InProgress,
+                "Done"       => TaskStatus.Done,
+                "Cancelled"  => TaskStatus.Cancelled,
+                _            => TaskStatus.Open,
+            };
             _task.UpdatedAt = DateTime.UtcNow;
             if (_task.Status == TaskStatus.Done) _task.CompletedAt = DateTime.UtcNow;
 
@@ -147,7 +148,13 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         {
             if (_task is null) return;
             CurrentPriority = priority;
-            _task.Priority = Enum.Parse<TaskPriority>(priority);
+            _task.Priority = priority switch
+            {
+                "Urgent" => TaskPriority.Urgent,
+                "High"   => TaskPriority.High,
+                "Low"    => TaskPriority.Low,
+                _        => TaskPriority.Medium,
+            };
             _task.UpdatedAt = DateTime.UtcNow;
             await _taskService.SaveAsync(_task);
         }
@@ -162,10 +169,21 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 _task.Title = TaskTitle.Trim();
                 _task.Description = string.IsNullOrWhiteSpace(Description) ? null : Description.Trim();
                 _task.Category = string.IsNullOrWhiteSpace(Category) ? null : Category.Trim();
-                _task.Priority = Enum.Parse<TaskPriority>(CurrentPriority);
-                _task.Status = Enum.Parse<TaskStatus>(CurrentStatus);
+                _task.Priority = CurrentPriority switch
+                {
+                    "Urgent" => TaskPriority.Urgent,
+                    "High"   => TaskPriority.High,
+                    "Low"    => TaskPriority.Low,
+                    _        => TaskPriority.Medium,
+                };
+                _task.Status = CurrentStatus switch
+                {
+                    "InProgress" => TaskStatus.InProgress,
+                    "Done"       => TaskStatus.Done,
+                    "Cancelled"  => TaskStatus.Cancelled,
+                    _            => TaskStatus.Open,
+                };
                 _task.DueAt = DueDate.Date + DueTime;
-                _task.Recurrence = Recurrence.BuildRecurrence(_task.Id);
                 _task.UpdatedAt = DateTime.UtcNow;
 
                 await _taskService.SaveAsync(_task);

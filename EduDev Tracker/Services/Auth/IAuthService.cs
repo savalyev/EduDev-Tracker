@@ -10,6 +10,7 @@ namespace EduDev_Tracker.Services.Auth
         Task<Profile> RegisterAsync(string name, string email, string password);
         Task<Profile> LoginAsync(string email, string password);
         Task<Profile> LoginOfflineAsync();
+        Task<Profile> LoginWithOAuthAsync(OAuthUserInfo info);
         Task LogoutAsync();
     }
 }

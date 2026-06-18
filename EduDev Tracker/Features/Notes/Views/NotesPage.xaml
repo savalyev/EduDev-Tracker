@@ -57,10 +57,10 @@
             <Style x:Key="ToolbarBtnStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource BgCard}" />
                 <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="14" />
                 <Setter Property="CornerRadius" Value="8" />
-                <Setter Property="Padding" Value="10,6" />
-                <Setter Property="HeightRequest" Value="34" />
+                <Setter Property="Padding" Value="12,8" />
+                <Setter Property="HeightRequest" Value="44" />
                 <Setter Property="BorderColor" Value="{StaticResource BorderColor}" />
                 <Setter Property="BorderWidth" Value="1" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
@@ -101,11 +101,11 @@
             <Style x:Key="AccentBtnStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource AccentBlue}" />
                 <Setter Property="TextColor" Value="White" />
-                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontSize" Value="14" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="CornerRadius" Value="8" />
-                <Setter Property="Padding" Value="14,8" />
-                <Setter Property="HeightRequest" Value="36" />
+                <Setter Property="Padding" Value="14,10" />
+                <Setter Property="HeightRequest" Value="44" />
                 <Setter Property="Shadow">
                     <Shadow
                         Brush="#4F8EF7"
@@ -210,12 +210,12 @@
             <Style x:Key="MdBtnStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="Transparent" />
                 <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
-                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontSize" Value="14" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="CornerRadius" Value="6" />
-                <Setter Property="Padding" Value="8,4" />
-                <Setter Property="HeightRequest" Value="30" />
-                <Setter Property="MinimumWidthRequest" Value="32" />
+                <Setter Property="Padding" Value="8,6" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="MinimumWidthRequest" Value="36" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -247,7 +247,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid BackgroundColor="{StaticResource BgPrimary}">
+    <Grid x:Name="RootGrid" BackgroundColor="{StaticResource BgPrimary}">
 
         <!--  Desktop  -->
         <Grid
@@ -290,7 +290,7 @@
                     Stroke="{StaticResource BorderColor}"
                     StrokeShape="RoundRectangle 8">
                     <Entry
-                        HeightRequest="36"
+                        HeightRequest="44"
                         Placeholder="Поиск по заметкам..."
                         ReturnCommand="{Binding SearchCommand}"
                         Style="{StaticResource SearchEntryStyle}"
@@ -386,7 +386,7 @@
                                 BackgroundColor="#2A4A8A"
                                 Command="{Binding CreateCategoryCommand}"
                                 CornerRadius="6"
-                                HeightRequest="32"
+                                HeightRequest="40"
                                 Text="✓"
                                 TextColor="#4F8EF7"
                                 WidthRequest="36" />
@@ -394,7 +394,7 @@
                                 BackgroundColor="Transparent"
                                 Command="{Binding CancelAddCategoryCommand}"
                                 FontSize="16"
-                                HeightRequest="32"
+                                HeightRequest="40"
                                 Text="✕"
                                 TextColor="#8892A4"
                                 WidthRequest="32" />
@@ -533,7 +533,7 @@
                         Command="{Binding DeleteNoteCommand}"
                         CornerRadius="8"
                         FontSize="16"
-                        HeightRequest="36"
+                        HeightRequest="44"
                         Text="🗑"
                         TextColor="#E05555"
                         ToolTipProperties.Text="Удалить заметку"
@@ -731,102 +731,55 @@
             <!--  Right column  -->
             <ScrollView
                 Grid.Column="2"
-                Padding="14"
+                Padding="16"
                 BackgroundColor="{StaticResource BgSecondary}"
                 IsVisible="{Binding HasSelectedNote}">
                 <VerticalStackLayout Spacing="0">
 
                     <Border Style="{StaticResource SectionCardStyle}">
-                        <VerticalStackLayout Spacing="10">
+                        <VerticalStackLayout Spacing="12">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="13"
+                                FontSize="15"
                                 Text="Свойства заметки"
                                 TextColor="{StaticResource TextPrimary}" />
 
                             <Grid ColumnDefinitions="*,Auto">
                                 <Label
                                     Grid.Column="0"
+                                    FontSize="14"
                                     Style="{StaticResource MutedStyle}"
                                     Text="Категория"
                                     VerticalOptions="Center" />
                                 <Picker
                                     Grid.Column="1"
                                     BackgroundColor="Transparent"
-                                    FontSize="12"
+                                    FontSize="14"
                                     HorizontalOptions="End"
                                     ItemDisplayBinding="{Binding Name}"
                                     ItemsSource="{Binding Categories}"
                                     SelectedItem="{Binding SelectedNoteCategory}"
                                     TextColor="{StaticResource TextPrimary}"
-                                    WidthRequest="120" />
-                            </Grid>
-
-                            <BoxView BackgroundColor="{StaticResource BorderColor}" HeightRequest="1" />
-
-                            <Grid ColumnDefinitions="*,Auto">
-                                <Label
-                                    Grid.Column="0"
-                                    Style="{StaticResource MutedStyle}"
-                                    Text="Теги"
-                                    VerticalOptions="Center" />
-                                <Label
-                                    Grid.Column="1"
-                                    FontSize="12"
-                                    HorizontalOptions="End"
-                                    Text="{Binding TagsDisplay}"
-                                    TextColor="{StaticResource AccentBlue}" />
-                            </Grid>
-
-                            <BoxView BackgroundColor="{StaticResource BorderColor}" HeightRequest="1" />
-
-                            <Grid ColumnDefinitions="*,Auto">
-                                <Label
-                                    Grid.Column="0"
-                                    Style="{StaticResource MutedStyle}"
-                                    Text="Напоминание"
-                                    VerticalOptions="Center" />
-                                <Label
-                                    Grid.Column="1"
-                                    FontSize="12"
-                                    HorizontalOptions="End"
-                                    Text="{Binding ReminderDisplay}"
-                                    TextColor="{StaticResource TextSecondary}" />
-                            </Grid>
-
-                            <BoxView BackgroundColor="{StaticResource BorderColor}" HeightRequest="1" />
-
-                            <Grid ColumnDefinitions="*,Auto">
-                                <Label
-                                    Grid.Column="0"
-                                    Style="{StaticResource MutedStyle}"
-                                    Text="Формат"
-                                    VerticalOptions="Center" />
-                                <Label
-                                    Grid.Column="1"
-                                    FontSize="12"
-                                    HorizontalOptions="End"
-                                    Text="Markdown"
-                                    TextColor="{StaticResource TextSecondary}" />
+                                    WidthRequest="130" />
                             </Grid>
                         </VerticalStackLayout>
                     </Border>
 
                     <Border Style="{StaticResource SectionCardStyle}">
-                        <VerticalStackLayout Spacing="8">
+                        <VerticalStackLayout Spacing="10">
                             <Grid ColumnDefinitions="*,Auto">
                                 <Label
                                     Grid.Column="0"
                                     FontAttributes="Bold"
-                                    FontSize="13"
+                                    FontSize="15"
                                     Text="Вложения"
                                     TextColor="{StaticResource TextPrimary}" />
                                 <Button
                                     Grid.Column="1"
-                                    Padding="8,4"
+                                    Padding="10,6"
                                     Command="{Binding AddAttachmentCommand}"
-                                    FontSize="11"
-                                    HeightRequest="28"
+                                    FontSize="13"
+                                    HeightRequest="36"
                                     Style="{StaticResource ToolbarBtnStyle}"
                                     Text="+ Файл" />
                             </Grid>
@@ -848,20 +801,20 @@
 
                                                 <VerticalStackLayout Grid.Column="1" Spacing="2">
                                                     <Label
-                                                        FontSize="12"
+                                                        FontSize="14"
                                                         LineBreakMode="TailTruncation"
                                                         Text="{Binding FileName}"
                                                         TextColor="{StaticResource TextPrimary}" />
-                                                    <Label Style="{StaticResource MutedStyle}" Text="{Binding SizeBytes, Converter={StaticResource FileSizeConverter}}" />
+                                                    <Label FontSize="13" Style="{StaticResource MutedStyle}" Text="{Binding SizeBytes, Converter={StaticResource FileSizeConverter}}" />
                                                 </VerticalStackLayout>
 
                                                 <Button
                                                     Grid.Column="2"
-                                                    Padding="8,4"
+                                                    Padding="10,6"
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesViewModel}}, Path=OpenAttachmentCommand}"
                                                     CommandParameter="{Binding .}"
-                                                    FontSize="11"
-                                                    HeightRequest="28"
+                                                    FontSize="13"
+                                                    HeightRequest="36"
                                                     Style="{StaticResource ToolbarBtnStyle}"
                                                     Text="Открыть" />
 
@@ -890,14 +843,14 @@
                     </Border>
 
                     <Border Style="{StaticResource SectionCardStyle}">
-                        <VerticalStackLayout Spacing="8">
+                        <VerticalStackLayout Spacing="10">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="13"
+                                FontSize="15"
                                 Text="История версий"
                                 TextColor="{StaticResource TextPrimary}" />
 
-                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding NoteVersions}" Spacing="4">
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding NoteVersions}" Spacing="6">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="models:NoteVersion">
                                         <Grid
@@ -906,17 +859,18 @@
                                             ColumnSpacing="8">
                                             <Border
                                                 Grid.Column="0"
-                                                Padding="6,3"
+                                                Padding="8,4"
                                                 BackgroundColor="{StaticResource AccentBlueMuted}"
                                                 StrokeShape="RoundRectangle 4">
                                                 <Label
-                                                    FontSize="11"
+                                                    FontSize="13"
                                                     Text="{Binding VersionLabel}"
                                                     TextColor="{StaticResource AccentBlue}" />
                                             </Border>
 
                                             <Label
                                                 Grid.Column="1"
+                                                FontSize="13"
                                                 Style="{StaticResource MutedStyle}"
                                                 Text="{Binding SavedAt, StringFormat='{0:dd MMM, HH:mm}'}"
                                                 VerticalOptions="Center" />
@@ -934,6 +888,7 @@
 
                             <Label
                                 Padding="0,4"
+                                FontSize="13"
                                 HorizontalOptions="Center"
                                 IsVisible="{Binding HasNoVersions}"
                                 Style="{StaticResource MutedStyle}"
@@ -945,7 +900,7 @@
                         <VerticalStackLayout Spacing="10">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="13"
+                                FontSize="15"
                                 Text="Экспорт"
                                 TextColor="{StaticResource TextPrimary}" />
                             <StackLayout Orientation="Horizontal" Spacing="8">
@@ -1044,7 +999,7 @@
                     Stroke="{StaticResource BorderColor}"
                     StrokeShape="RoundRectangle 8">
                     <Entry
-                        HeightRequest="36"
+                        HeightRequest="44"
                         Placeholder="Поиск..."
                         ReturnCommand="{Binding SearchCommand}"
                         Style="{StaticResource SearchEntryStyle}"

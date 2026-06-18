@@ -17,8 +17,8 @@ namespace EduDev_Tracker.Services.Notes
 
         public Task<List<NoteCategory>> GetCategoriesAsync(int profileId)
             => _repo.GetCategoriesAsync(profileId);
-        public Task<List<Note>> GetByProfileAsync(int profileId, bool inclideArchived)
-            => _repo.GetByProfileAsync(profileId, inclideArchived);
+        public Task<List<Note>> GetByProfileAsync(int profileId, bool includeArchived)
+            => _repo.GetByProfileAsync(profileId, includeArchived);
         public Task<List<Note>> SearchAsync(int profileId, string query)
             => _repo.SearchAsync(profileId, query);
         public Task<List<NoteAttachment>> GetAttachmentsAsync(int noteId)

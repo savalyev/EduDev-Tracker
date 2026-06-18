@@ -27,25 +27,25 @@
                 <Setter Property="Margin" Value="0,0,0,10" />
             </Style>
             <Style x:Key="MutedLabel" TargetType="Label">
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="13" />
                 <Setter Property="TextColor" Value="#64748B" />
             </Style>
             <!--  Кнопка-пилюля (период)  -->
             <Style x:Key="PillBtn" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="#1E293B" />
                 <Setter Property="TextColor" Value="#CBD5E1" />
-                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontSize" Value="14" />
                 <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="HeightRequest" Value="44" />
                 <Setter Property="Padding" Value="20,0" />
             </Style>
             <Style x:Key="PillBtnActive" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="#2DD4BF" />
                 <Setter Property="TextColor" Value="#0B1120" />
-                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontSize" Value="14" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="HeightRequest" Value="44" />
                 <Setter Property="Padding" Value="20,0" />
             </Style>
             <!--  Метрика-мини-карточка  -->
@@ -178,7 +178,7 @@
                                 IsVisible="{Binding ShowCustomRange}">
                                 <VerticalStackLayout Spacing="4">
                                     <Label
-                                        FontSize="11"
+                                        FontSize="12"
                                         Text="С"
                                         TextColor="#64748B" />
                                     <Border
@@ -203,7 +203,7 @@
 
                                 <VerticalStackLayout Grid.Column="2" Spacing="4">
                                     <Label
-                                        FontSize="11"
+                                        FontSize="12"
                                         Text="По"
                                         TextColor="#64748B" />
                                     <Border
@@ -333,7 +333,7 @@
                                             Text="{Binding HabitsText}"
                                             TextColor="#F1F5F9" />
                                         <Label
-                                            FontSize="11"
+                                            FontSize="12"
                                             Text="{Binding HabitsDelta}"
                                             TextColor="#2DD4BF" />
                                     </VerticalStackLayout>
@@ -349,7 +349,7 @@
                                             Text="{Binding TasksText}"
                                             TextColor="#F1F5F9" />
                                         <Label
-                                            FontSize="11"
+                                            FontSize="12"
                                             Text="{Binding TasksDelta}"
                                             TextColor="#F59E0B" />
                                     </VerticalStackLayout>
@@ -365,7 +365,7 @@
                                             Text="{Binding PomodoroText}"
                                             TextColor="#F1F5F9" />
                                         <Label
-                                            FontSize="11"
+                                            FontSize="12"
                                             Text="{Binding PomodoroSubText}"
                                             TextColor="#64748B" />
                                     </VerticalStackLayout>
@@ -381,7 +381,7 @@
                                             Text="{Binding NotesText}"
                                             TextColor="#F1F5F9" />
                                         <Label
-                                            FontSize="11"
+                                            FontSize="12"
                                             Text="{Binding NotesDelta}"
                                             TextColor="#94A3B8" />
                                     </VerticalStackLayout>
@@ -401,27 +401,27 @@
                                     VerticalOptions="Center" />
                                 <HorizontalStackLayout Grid.Column="1" Spacing="12">
                                     <Label
-                                        FontSize="11"
+                                        FontSize="12"
                                         Text="Привычки"
                                         TextColor="#2DD4BF"
                                         VerticalOptions="Center" />
                                     <Label
-                                        FontSize="11"
+                                        FontSize="12"
                                         Text="•"
                                         TextColor="#475569"
                                         VerticalOptions="Center" />
                                     <Label
-                                        FontSize="11"
+                                        FontSize="12"
                                         Text="Задачи"
                                         TextColor="#818CF8"
                                         VerticalOptions="Center" />
                                     <Label
-                                        FontSize="11"
+                                        FontSize="12"
                                         Text="•"
                                         TextColor="#475569"
                                         VerticalOptions="Center" />
                                     <Label
-                                        FontSize="11"
+                                        FontSize="12"
                                         Text="Помодоро"
                                         TextColor="#F59E0B"
                                         VerticalOptions="Center" />
@@ -608,7 +608,7 @@
                                     StrokeShape="RoundRectangle 12"
                                     StrokeThickness="0">
                                     <Label
-                                        FontSize="11"
+                                        FontSize="12"
                                         Text="Автоматический анализ"
                                         TextColor="#2DD4BF" />
                                 </Border>
@@ -662,6 +662,18 @@
                 Spacing="14">
 
                 <!--  Заголовок  -->
+                <Image
+                    HeightRequest="36"
+                    HorizontalOptions="Start"
+                    IsVisible="{OnIdiom Phone=True,
+                                        Default=False}"
+                    Source="menu.png"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMenuTapped" />
+                    </Image.GestureRecognizers>
+                </Image>
                 <Label
                     FontAttributes="Bold"
                     FontSize="20"
@@ -832,7 +844,7 @@
                                 Text="{Binding HabitsText}"
                                 TextColor="#F1F5F9" />
                             <Label
-                                FontSize="11"
+                                FontSize="12"
                                 Text="{Binding HabitsDelta}"
                                 TextColor="#2DD4BF" />
                         </VerticalStackLayout>
@@ -846,7 +858,7 @@
                                 Text="{Binding TasksText}"
                                 TextColor="#F1F5F9" />
                             <Label
-                                FontSize="11"
+                                FontSize="12"
                                 Text="{Binding TasksDelta}"
                                 TextColor="#F59E0B" />
                         </VerticalStackLayout>
@@ -860,7 +872,7 @@
                                 Text="{Binding PomodoroText}"
                                 TextColor="#F1F5F9" />
                             <Label
-                                FontSize="11"
+                                FontSize="12"
                                 Text="{Binding PomodoroSubText}"
                                 TextColor="#64748B" />
                         </VerticalStackLayout>
@@ -877,7 +889,7 @@
                                 Text="{Binding NotesText}"
                                 TextColor="#F1F5F9" />
                             <Label
-                                FontSize="11"
+                                FontSize="12"
                                 Text="{Binding NotesDelta}"
                                 TextColor="#94A3B8" />
                         </VerticalStackLayout>
@@ -974,7 +986,7 @@
                                 Command="{Binding SelectFormatCommand}"
                                 CommandParameter="pdf"
                                 Style="{Binding IsPdfSelected, Converter={StaticResource BoolToFormatStyleConverter}}"
-                                Text="PDF" />
+                                Text="HTML" />
                             <Button
                                 Grid.Column="1"
                                 Command="{Binding SelectFormatCommand}"

@@ -79,6 +79,53 @@ namespace EduDev_Tracker.Services.Auth
             return local;
         }
 
+        public async Task<Profile> LoginWithOAuthAsync(OAuthUserInfo info)
+        {
+            var existing = await _repo.FindByOAuthAsync(info.Provider, info.ProviderId);
+
+            if (existing is not null)
+            {
+                existing.Name        = info.Name;
+                existing.AvatarUrl   = info.AvatarUrl;
+                existing.IsActive    = true;
+                existing.LastLoginAt = DateTime.UtcNow;
+                await _repo.SaveAsync(existing);
+                return existing;
+            }
+
+            // Если уже есть аккаунт с тем же email — привяжем OAuth к нему
+            if (!string.IsNullOrEmpty(info.Email))
+            {
+                var byEmail = await _repo.FindByEmailAsync(info.Email);
+                if (byEmail is not null)
+                {
+                    byEmail.OAuthProvider = info.Provider;
+                    byEmail.OAuthId       = info.ProviderId;
+                    byEmail.AvatarUrl     = info.AvatarUrl;
+                    byEmail.IsActive      = true;
+                    byEmail.LastLoginAt   = DateTime.UtcNow;
+                    await _repo.SaveAsync(byEmail);
+                    return byEmail;
+                }
+            }
+
+            var profile = new Profile
+            {
+                Name          = info.Name,
+                Email         = info.Email,
+                OAuthProvider = info.Provider,
+                OAuthId       = info.ProviderId,
+                AvatarUrl     = info.AvatarUrl,
+                IsLocal       = false,
+                IsActive      = true,
+                CreatedAt     = DateTime.UtcNow,
+                LastLoginAt   = DateTime.UtcNow
+            };
+
+            await _repo.SaveAsync(profile);
+            return profile;
+        }
+
         public async Task LogoutAsync()
         {
             await _repo.DeactivateAllAsync();

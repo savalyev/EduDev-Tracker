@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="EduDev_Tracker.Features.Tasks.Views.ReminderSettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:EduDev_Tracker.Features.Tasks.ViewModels"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    Title=""
+    x:DataType="vm:ReminderSettingsViewModel"
+    BackgroundColor="#0A0E1A"
+    Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="#0A0E1A" />
+                <GradientStop Offset="1" Color="#0D1530" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <ScrollView>
+            <Grid
+                Padding="16"
+                HorizontalOptions="Center"
+                MaximumWidthRequest="600"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                RowSpacing="14"
+                VerticalOptions="Start">
+
+                <!--  ══ ШАПКА  ════════════════════════════════════════════════  -->
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                    <Border
+                        Padding="10,8"
+                        BackgroundColor="#111827"
+                        Stroke="#1E293B"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="1">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CancelCommand}" />
+                        </Border.GestureRecognizers>
+                        <Label
+                            FontFamily="Comfortaa"
+                            FontSize="13"
+                            Text="← Назад"
+                            TextColor="#94A3B8" />
+                    </Border>
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        FontSize="20"
+                        Text="Напоминание"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                </Grid>
+
+                <!--  ══ ЗАДАЧА  ══════════════════════════════════════════════  -->
+                <Border Grid.Row="1" Style="{StaticResource EduCardBorder}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label
+                            FontFamily="Comfortaa"
+                            FontSize="11"
+                            Opacity="0.5"
+                            Text="Задача"
+                            TextColor="White" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="Comfortaa"
+                            FontSize="16"
+                            LineBreakMode="TailTruncation"
+                            Text="{Binding TaskTitle}"
+                            TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  ══ ТЕКУЩЕЕ НАПОМИНАНИЕ (если есть)  ══════════════════════  -->
+                <Border
+                    Grid.Row="2"
+                    BackgroundColor="#0F2A1A"
+                    IsVisible="{Binding HasReminder}"
+                    Padding="16,14"
+                    Stroke="#166534"
+                    StrokeShape="RoundRectangle 14"
+                    StrokeThickness="1">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Label
+                            FontSize="20"
+                            Text="🔔"
+                            VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="13"
+                                Text="Напоминание установлено"
+                                TextColor="#4ADE80" />
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="12"
+                                Text="{Binding ExistingLabel}"
+                                TextColor="#86EFAC" />
+                        </VerticalStackLayout>
+                        <Border
+                            Grid.Column="2"
+                            BackgroundColor="#1A0808"
+                            Padding="10,6"
+                            Stroke="#7F1D1D"
+                            StrokeShape="RoundRectangle 8"
+                            StrokeThickness="1"
+                            VerticalOptions="Center">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding RemoveReminderCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="12"
+                                Text="Удалить"
+                                TextColor="#EF4444" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!--  ══ ВЫБОР ДАТЫ И ВРЕМЕНИ  ═══════════════════════════════  -->
+                <Border Grid.Row="3" Style="{StaticResource EduCardBorder}">
+                    <VerticalStackLayout Spacing="0">
+
+                        <Label
+                            Margin="0,0,0,14"
+                            FontAttributes="Bold"
+                            FontFamily="Comfortaa"
+                            FontSize="16"
+                            Text="Установить напоминание"
+                            TextColor="White" />
+
+                        <!--  Дата  -->
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" Padding="0,10">
+                            <Label
+                                FontSize="20"
+                                Text="📅"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Column="1"
+                                FontFamily="Comfortaa"
+                                FontSize="14"
+                                Text="Дата"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <DatePicker
+                                Grid.Column="2"
+                                BackgroundColor="Transparent"
+                                FontFamily="Comfortaa"
+                                FontSize="13"
+                                Format="d MMMM yyyy"
+                                MinimumDate="{x:Static sys:DateTime.Today}"
+                                TextColor="#94A3B8"
+                                Date="{Binding ReminderDate}"
+                                HorizontalOptions="End" />
+                        </Grid>
+
+                        <BoxView BackgroundColor="#1E293B" HeightRequest="1" Margin="36,0,0,0" />
+
+                        <!--  Время  -->
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" Padding="0,10">
+                            <Label
+                                FontSize="20"
+                                Text="🕐"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Column="1"
+                                FontFamily="Comfortaa"
+                                FontSize="14"
+                                Text="Время"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <TimePicker
+                                Grid.Column="2"
+                                BackgroundColor="Transparent"
+                                FontFamily="Comfortaa"
+                                FontSize="13"
+                                Format="HH:mm"
+                                TextColor="#94A3B8"
+                                Time="{Binding ReminderTime}"
+                                HorizontalOptions="End" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  ══ КНОПКА СОХРАНИТЬ  ══════════════════════════════════  -->
+                <Border
+                    Grid.Row="4"
+                    Margin="0,4,0,24"
+                    Padding="0,16"
+                    BackgroundColor="#0A1F0A"
+                    Stroke="#166534"
+                    StrokeShape="RoundRectangle 14"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SaveCommand}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                        <Label
+                            FontSize="18"
+                            Text="🔔"
+                            VerticalOptions="Center" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="Comfortaa"
+                            FontSize="15"
+                            Text="Сохранить напоминание"
+                            TextColor="#4ADE80"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+            </Grid>
+        </ScrollView>
+
+        <!--  Индикатор загрузки  -->
+        <ActivityIndicator
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="#019301"
+            VerticalOptions="Center" />
+
+    </Grid>
+</ContentPage>

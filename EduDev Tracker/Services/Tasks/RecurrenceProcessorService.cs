@@ -26,7 +26,7 @@ namespace EduDev_Tracker.Services.Tasks
                 var rec = await _taskRepo.GetRecurrenceAsync(task.Id);
                 if (rec == null) continue;
 
-                var nextDue = rec.NextDue ?? RecurrenceCalculator.CalcFirstDue(rec, today);
+                var nextDue = rec.NextDue ?? RecurrenceCalculator.CalcFirstDue(rec, task.DueAt?.Date ?? today);
                 if (nextDue.Date > today) continue;
 
                 if (rec.EndDate.HasValue && today > rec.EndDate.Value) continue;
@@ -56,19 +56,8 @@ namespace EduDev_Tracker.Services.Tasks
             };
 
             await _taskRepo.SaveAsync(newTask);
-
-            var newRec = new TaskRecurrence
-            {
-                TaskId = newTask.Id,
-                RuleType = rec.RuleType,
-                IntervalN = rec.IntervalN,
-                DaysMask = rec.DaysMask,
-                DayOfMonth = rec.DayOfMonth,
-                EndDate = rec.EndDate,
-                NextDue = RecurrenceCalculator.CalcNext(rec, dueAt)
-            };
-
-            await _taskRepo.SaveRecurrenceAsync(newRec);
+            // Порождённый экземпляр — просто задача без recurrence.
+            // Только шаблон (original) управляет расписанием через своё TaskRecurrence.
         }
     }
 }

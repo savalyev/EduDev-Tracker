@@ -17,6 +17,6 @@ namespace EduDev_Tracker.Data
 
         public static string DatabasePath => Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
 
-        public const int CurrentSchemaVersion = 1;
+        public const int CurrentSchemaVersion = 3;
     }
 }

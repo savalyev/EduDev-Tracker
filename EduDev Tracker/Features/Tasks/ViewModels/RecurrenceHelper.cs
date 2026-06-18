@@ -96,6 +96,10 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [NotifyPropertyChangedFor(nameof(RecurrenceSummary))]
         private DateTime recurrenceEndDate = DateTime.Today.AddYears(1);
 
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(RecurrenceSummary))]
+        private bool hasEndDate = false;
+
         public DateTime Today => DateTime.Today;
 
         public string RecurrenceSummary
@@ -143,6 +147,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             IntervalN = rec.IntervalN;
             DaysMask = rec.DaysMask ?? 0;
             DayOfMonth = rec.DayOfMonth ?? 1;
+            HasEndDate = rec.EndDate.HasValue;
             RecurrenceEndDate = rec.EndDate ?? DateTime.Today.AddYears(1);
         }
 
@@ -156,7 +161,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 IntervalN = (int)IntervalN,
                 DaysMask = IsWeekly ? DaysMask : null,
                 DayOfMonth = IsMonthly ? (int)DayOfMonth : null,
-                EndDate = RecurrenceEndDate,
+                EndDate = HasEndDate ? RecurrenceEndDate : (DateTime?)null,
                 NextDue = null
             };
         }

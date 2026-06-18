@@ -37,24 +37,30 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
                 await Connection.UpdateAsync(session);
         }
 
+        // .NET ticks → unix seconds: (ticks - 621355968000000000) / 10000000
+        private const string TicksToDate =
+            "strftime('%Y-%m-%d', (StartedAt - 621355968000000000) / 10000000, 'unixepoch')";
+
         public Task<int> CountCompletedAsync(int profileId, DateTime from, DateTime to)
             => Connection.ExecuteScalarAsync<int>(
             @"SELECT COUNT(*) FROM pomodoro_sessions
               WHERE ProfileId = ? AND Phase = 'Work'
               AND WasInterrupted = 0
+              AND EndedAt IS NOT NULL
               AND StartedAt BETWEEN ? AND ?",
                 profileId, from, to);
 
         public Task<List<DailyPomodoroStat>> GetDailyStatsAsync(int profileId, DateTime from, DateTime to)
             => Connection.QueryAsync<DailyPomodoroStat>(
-            @"SELECT date(StartedAt) AS Day,
+            $@"SELECT {TicksToDate} AS Day,
                      COUNT(*) AS Sessions,
                      SUM(ActualMinutes) AS Minutes
               FROM pomodoro_sessions
               WHERE ProfileId = ? AND Phase = 'Work'
               AND WasInterrupted = 0
+              AND EndedAt IS NOT NULL
               AND StartedAt BETWEEN ? AND ?
-              GROUP BY date(StartedAt)
+              GROUP BY {TicksToDate}
               ORDER BY Day",
                 profileId, from, to);
     }

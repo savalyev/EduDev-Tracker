@@ -46,4 +46,12 @@ public partial class AnalyticsPage : ContentPage
         DesktopLayout.IsVisible = desktop;
         MobileLayout.IsVisible = !desktop;
     }
+
+    private void OnMenuTapped(object? sender, EventArgs e)
+    {
+        if (Shell.Current != null)
+        {
+            Shell.Current.FlyoutIsPresented = !Shell.Current.FlyoutIsPresented;
+        }
+    }
 }

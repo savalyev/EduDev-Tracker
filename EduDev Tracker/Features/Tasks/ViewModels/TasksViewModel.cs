@@ -346,12 +346,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         [RelayCommand]
         private async Task OpenReminder(int taskId)
-        {
-            await Application.Current.MainPage.DisplayAlertAsync("Уведомление",
-                "Ожидайте добавление этой функции в будущих обновлениях!", "Жду!");
-
-            await Task.CompletedTask;
-        }
+            => await _navigation.GoToAsync($"{nameof(ReminderSettingsPage)}?taskId={taskId}");
 
         [RelayCommand]
         private async Task OpenAddTask()
@@ -369,13 +364,30 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             IsBusy = true;
             try
             {
-                await _recurrenceProcessor.ProcessAsync(_profileId);
+                try
+                {
+                    await _recurrenceProcessor.ProcessAsync(_profileId);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[ProcessAsync] ERROR: {ex}");
+                }
+
                 _allTasks = await _taskService.GetActiveAsync(_profileId);
                 ApplyFilters();
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[TasksViewModel.Load] CRASH: {ex}");
-                await Application.Current.MainPage.DisplayAlertAsync("Ошибка загрузки", ex.Message, "OK");
+                try
+                {
+                    if (Shell.Current != null)
+                        await Shell.Current.DisplayAlertAsync("Ошибка загрузки", ex.Message, "OK");
+                }
+                catch (Exception alertEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[Load] Alert failed: {alertEx.Message}");
+                }
             }
             finally
             {

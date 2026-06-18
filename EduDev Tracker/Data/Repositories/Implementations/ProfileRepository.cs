@@ -24,6 +24,11 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
               .Where(p => p.IsActive)
               .FirstOrDefaultAsync();
 
+        public Task<Profile?> FindByOAuthAsync(string provider, string oauthId) =>
+               Connection.Table<Profile>()
+              .Where(p => p.OAuthProvider == provider && p.OAuthId == oauthId)
+              .FirstOrDefaultAsync();
+
         public async Task DeactivateAllAsync()
         {
             var active = await Connection.Table<Profile>()

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+
+  <!-- Все модели данных — сохранить полностью, т.к. SQLite-net и SQLiteNetExtensions
+       читают атрибуты, создают экземпляры и устанавливают свойства через рефлексию -->
+  <assembly fullname="EduDev Tracker">
+    <namespace fullname="EduDev_Tracker.Data.Models" preserve="all" />
+    <namespace fullname="EduDev_Tracker.Data.Models.Joins" preserve="all" />
+    <namespace fullname="EduDev_Tracker.Data.Repositories" preserve="all" />
+    <namespace fullname="EduDev_Tracker.Data.Repositories.Implementations" preserve="all" />
+    <!-- Конвертеры создаются через XAML StaticResource — линкер не видит прямых вызовов -->
+    <namespace fullname="EduDev_Tracker.Core.Converters" preserve="all" />
+  </assembly>
+
+  <!-- SQLiteNetExtensions полностью работает через рефлексию -->
+  <assembly fullname="SQLiteNetExtensions" preserve="all" />
+  <assembly fullname="SQLiteNetExtensions.Async" preserve="all" />
+
+  <!-- sqlite-net-pcl внутри тоже использует рефлексию для маппинга колонок -->
+  <assembly fullname="SQLite-net" preserve="all" />
+  <assembly fullname="SQLitePCLRaw.core" preserve="all" />
+
+</linker>

@@ -159,20 +159,26 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         [RelayCommand]
         private async Task CreateNoteAsync()
         {
-            var note = new Note
+            if (IsBusy) return;
+            IsBusy = true;
+            try
             {
-                ProfileId = _profileId,
-                Title = "Новая заметка",
-                Content = string.Empty,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
+                var note = new Note
+                {
+                    ProfileId = _profileId,
+                    Title = "Новая заметка",
+                    Content = string.Empty,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
 
-            await _noteService.SaveNoteDirectAsync(note);
-            await RefreshNotesAsync();
-            SelectedNote = FilteredNotes.FirstOrDefault(n => n.Id == note.Id);
+                await _noteService.SaveNoteDirectAsync(note);
+                await RefreshNotesAsync();
+                SelectedNote = FilteredNotes.FirstOrDefault(n => n.Id == note.Id);
 
-            if (IsMobileLayout) MobileShowEditor = true;
+                if (IsMobileLayout) MobileShowEditor = true;
+            }
+            finally { IsBusy = false; }
         }
 
         [RelayCommand]
@@ -195,7 +201,9 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
                 await _noteService.SaveNoteDirectAsync(SelectedNote);
                 AutosaveStatus = $"Сохранено в {DateTime.Now:HH:mm}";
 
+                var savedId = SelectedNote.Id;
                 await RefreshNotesAsync();
+                SelectedNote = FilteredNotes.FirstOrDefault(n => n.Id == savedId) ?? SelectedNote;
                 await LoadVersionsAsync(SelectedNote.Id);
             }
             catch (Exception ex)
@@ -301,6 +309,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         private async Task DebounceSearchAsync()
         {
             _searchCts?.Cancel();
+            _searchCts?.Dispose();
             _searchCts = new CancellationTokenSource();
             try
             {
@@ -333,7 +342,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
             SelectedNote.IsPinned = !SelectedNote.IsPinned;
             SelectedNote.UpdatedAt = DateTime.UtcNow;
 
-            await _noteService.SaveAsync(SelectedNote);
+            await _noteService.SaveNoteDirectAsync(SelectedNote);
 
             await RefreshNotesAsync();
         }

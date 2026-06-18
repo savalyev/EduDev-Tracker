@@ -46,6 +46,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         public double DayOfMonth { get => Recurrence.DayOfMonth; set => Recurrence.DayOfMonth = value; }
         public int DaysMask { get => Recurrence.DaysMask; set => Recurrence.DaysMask = value; }
         public DateTime RecurrenceEndDate { get => Recurrence.RecurrenceEndDate; set => Recurrence.RecurrenceEndDate = value; }
+        public bool HasEndDate { get => Recurrence.HasEndDate; set => Recurrence.HasEndDate = value; }
         public bool IsWeekly => Recurrence.IsWeekly;
         public bool IsMonthly => Recurrence.IsMonthly;
         public string RecurrenceSummary => Recurrence.RecurrenceSummary;
@@ -93,8 +94,8 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 };
 
 
-                await Shell.Current.DisplayAlertAsync("Успех!", "Задача создана!", "ОК");
                 await _taskService.SaveAsync(task);
+                await Shell.Current.DisplayAlertAsync("Успех!", "Задача создана!", "ОК");
 
                 if (Recurrence.IsRecurring)
                 {
@@ -133,6 +134,12 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             if(DueDate.Date + DueTime < DateTime.Now)
             {
                 await Shell.Current.DisplayAlertAsync("Ошибка", "Дедлайн не может существовать в прошлом", "ОК");
+                valid = false;
+            }
+
+            if (Recurrence.IsRecurring && Recurrence.IsWeekly && Recurrence.DaysMask == 0)
+            {
+                await Shell.Current.DisplayAlertAsync("Ошибка", "Выберите хотя бы один день недели", "ОК");
                 valid = false;
             }
 

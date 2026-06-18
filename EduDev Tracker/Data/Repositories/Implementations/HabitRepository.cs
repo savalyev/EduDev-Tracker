@@ -189,6 +189,17 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
             return result;
         }
 
+        public async Task<int> GetCompletedCountByDayAsync(int profileId, DateTime date)
+        {
+            var dateStr = date.ToString("yyyy-MM-dd");
+
+            return await Connection.ExecuteScalarAsync<int>(
+                "SELECT COUNT(*) FROM habit_logs " +
+                "WHERE LogDate = ? " +
+                "AND HabitId IN (SELECT Id FROM habits WHERE ProfileId = ? AND IsArchived = 0)",
+                dateStr, profileId);
+        }
+
 
     }
 }

@@ -11,7 +11,7 @@
 
     <ContentPage.Resources>
         <Style x:Key="FieldLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontSize" Value="15" />
             <Setter Property="TextColor" Value="#94A3B8" />
             <Setter Property="Margin" Value="0,0,0,6" />
         </Style>
@@ -25,12 +25,12 @@
         </Style>
 
         <Style x:Key="StepButton" TargetType="Button">
-            <Setter Property="WidthRequest" Value="40" />
-            <Setter Property="HeightRequest" Value="40" />
-            <Setter Property="CornerRadius" Value="20" />
+            <Setter Property="WidthRequest" Value="44" />
+            <Setter Property="HeightRequest" Value="44" />
+            <Setter Property="CornerRadius" Value="22" />
             <Setter Property="BackgroundColor" Value="#1E293B" />
             <Setter Property="TextColor" Value="#2DD4BF" />
-            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontSize" Value="23" />
             <Setter Property="Padding" Value="0" />
         </Style>
 
@@ -45,7 +45,7 @@
         <Style x:Key="PreviewBadge" TargetType="Border">
             <Setter Property="StrokeThickness" Value="0" />
             <Setter Property="StrokeShape" Value="RoundRectangle 20" />
-            <Setter Property="Padding" Value="14,8" />
+            <Setter Property="Padding" Value="16,10" />
         </Style>
     </ContentPage.Resources>
 
@@ -61,6 +61,7 @@
                 Grid.Column="0"
                 Padding="0"
                 BackgroundColor="Transparent"
+                BorderWidth="0"
                 Command="{Binding CancelCommand}"
                 FontSize="15"
                 Text="Отмена"
@@ -68,7 +69,7 @@
             <Label
                 Grid.Column="1"
                 FontAttributes="Bold"
-                FontSize="17"
+                FontSize="20"
                 HorizontalTextAlignment="Center"
                 Text="Новый пресет"
                 TextColor="#F1F5F9"
@@ -77,6 +78,7 @@
                 Grid.Column="2"
                 Padding="0"
                 BackgroundColor="Transparent"
+                BorderWidth="0"
                 Command="{Binding SaveCommand}"
                 FontAttributes="Bold"
                 FontSize="15"
@@ -133,16 +135,18 @@
                             <HorizontalStackLayout
                                 x:Name="PreviewStack"
                                 BindableLayout.ItemsSource="{Binding CyclePreviewItems}"
-                                Spacing="6">
+                                MinimumHeightRequest="52"
+                                Spacing="8">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="vm:CyclePreviewItem">
                                         <Border BackgroundColor="{Binding BadgeColor}" Style="{StaticResource PreviewBadge}">
                                             <Label
                                                 FontAttributes="Bold"
-                                                FontSize="11"
+                                                FontSize="15"
                                                 HorizontalTextAlignment="Center"
                                                 Text="{Binding Label}"
-                                                TextColor="{Binding TextColor}" />
+                                                TextColor="{Binding TextColor}"
+                                                VerticalTextAlignment="Center" />
                                         </Border>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
@@ -166,7 +170,7 @@
                                 Style="{StaticResource FieldLabel}"
                                 Text="🟢  Рабочий интервал" />
                             <Label
-                                FontSize="11"
+                                FontSize="13"
                                 Text="Время сфокусированной работы"
                                 TextColor="#475569" />
                         </VerticalStackLayout>
@@ -226,7 +230,7 @@
                                 Style="{StaticResource FieldLabel}"
                                 Text="🔵  Короткий перерыв" />
                             <Label
-                                FontSize="11"
+                                FontSize="13"
                                 Text="Отдых между рабочими интервалами"
                                 TextColor="#475569" />
                         </VerticalStackLayout>
@@ -284,7 +288,7 @@
                                 Style="{StaticResource FieldLabel}"
                                 Text="🟣  Длинный перерыв" />
                             <Label
-                                FontSize="11"
+                                FontSize="13"
                                 Text="После N рабочих циклов"
                                 TextColor="#475569" />
                         </VerticalStackLayout>
@@ -336,7 +340,7 @@
                                 Style="{StaticResource FieldLabel}"
                                 Text="🔁  Циклов до длинного перерыва" />
                             <Label
-                                FontSize="11"
+                                FontSize="13"
                                 Text="{Binding CyclesDescription}"
                                 TextColor="#475569" />
                         </VerticalStackLayout>
@@ -372,7 +376,7 @@
                                 Text="Пресет по умолчанию"
                                 TextColor="#CBD5E1" />
                             <Label
-                                FontSize="11"
+                                FontSize="13"
                                 Text="Будет автоматически выбран при открытии"
                                 TextColor="#475569" />
                         </VerticalStackLayout>
@@ -387,20 +391,20 @@
 
                 <!--  Итоговое время цикла  -->
                 <Border
-                    Padding="16,14"
+                    Padding="20,18"
                     BackgroundColor="#0F172A"
                     StrokeShape="RoundRectangle 16"
                     StrokeThickness="0">
                     <Grid ColumnDefinitions="*,*,*">
-                        <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="18"
+                                FontSize="22"
                                 HorizontalTextAlignment="Center"
                                 Text="{Binding TotalCycleTime}"
                                 TextColor="#2DD4BF" />
                             <Label
-                                FontSize="11"
+                                FontSize="13"
                                 HorizontalTextAlignment="Center"
                                 Text="Полный цикл"
                                 TextColor="#64748B" />
@@ -408,15 +412,15 @@
                         <VerticalStackLayout
                             Grid.Column="1"
                             HorizontalOptions="Center"
-                            Spacing="4">
+                            Spacing="6">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="18"
+                                FontSize="22"
                                 HorizontalTextAlignment="Center"
                                 Text="{Binding TotalWorkTime}"
                                 TextColor="#F1F5F9" />
                             <Label
-                                FontSize="11"
+                                FontSize="13"
                                 HorizontalTextAlignment="Center"
                                 Text="Чистая работа"
                                 TextColor="#64748B" />
@@ -424,15 +428,15 @@
                         <VerticalStackLayout
                             Grid.Column="2"
                             HorizontalOptions="Center"
-                            Spacing="4">
+                            Spacing="6">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="18"
+                                FontSize="22"
                                 HorizontalTextAlignment="Center"
                                 Text="{Binding TotalBreakTime}"
                                 TextColor="#94A3B8" />
                             <Label
-                                FontSize="11"
+                                FontSize="13"
                                 HorizontalTextAlignment="Center"
                                 Text="Перерывы"
                                 TextColor="#64748B" />

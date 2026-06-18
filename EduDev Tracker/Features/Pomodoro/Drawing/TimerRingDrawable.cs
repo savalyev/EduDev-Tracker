@@ -63,21 +63,28 @@ namespace EduDev_Tracker.Features.Pomodoro.Drawing
 
             if (Progress <= 0.001) return;
 
-            // 2. Прогресс-дуга
-            float startAngle = -90f;
+            // 2. Прогресс-дуга через PathF — не зависит от конвенций DrawArc
             float sweepAngle = (float)(Progress * 360.0);
 
             canvas.StrokeColor = GetArcColor();
             canvas.StrokeSize = stroke;
             canvas.StrokeLineCap = LineCap.Round;
-            canvas.DrawArc(
-                cx - radius, cy - radius,
-                radius * 2, radius * 2,
-                startAngle, startAngle + sweepAngle,
-                clockwise: true, closed: false);
 
-            // 3. Светящийся наконечник
-            double angleRad = ((sweepAngle - 90) * Math.PI) / 180.0;
+            var path = new PathF();
+            int segments = Math.Max(2, (int)(sweepAngle / 3f));
+            for (int i = 0; i <= segments; i++)
+            {
+                double t = (double)i / segments;
+                double rad = ((-90.0 + sweepAngle * t) * Math.PI) / 180.0;
+                float px = cx + radius * (float)Math.Cos(rad);
+                float py = cy + radius * (float)Math.Sin(rad);
+                if (i == 0) path.MoveTo(px, py);
+                else path.LineTo(px, py);
+            }
+            canvas.DrawPath(path);
+
+            // 3. Светящийся наконечник (конец дуги = -90 + sweepAngle в экранных)
+            double angleRad = ((-90.0 + sweepAngle) * Math.PI) / 180.0;
             float tipX = cx + radius * (float)Math.Cos(angleRad);
             float tipY = cy + radius * (float)Math.Sin(angleRad);
 

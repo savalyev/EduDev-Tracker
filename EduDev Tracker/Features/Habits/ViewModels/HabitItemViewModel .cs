@@ -99,7 +99,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private string ParseProgress()
         {
             if (_habitSchedule.DayMask == 127)
-                return $"Сегодня: {_todayProgress}/{_habit.TargetValue} {_habit.TargetUnit}";
+                return $"";
             else
                 return $"На этой неделе: {_todayProgress}/{CountDays(_habitSchedule.DayMask)} сессий";
         }

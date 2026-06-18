@@ -24,7 +24,7 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <ScrollView>
+        <ScrollView x:Name="PageScrollView">
             <Grid
                 Padding="0,0,0,24"
                 MaximumWidthRequest="1500"
@@ -104,66 +104,59 @@
                                 Grid.Row="1"
                                 Style="{StaticResource EduCardSubtitleLabel}"
                                 Text="{Binding Title}" />
-
-                            <Border
+                            <HorizontalStackLayout
                                 Grid.Row="2"
                                 Margin="0,10,0,0"
-                                BackgroundColor="#14182E"
-                                HorizontalOptions="Start"
-                                Stroke="White"
-                                StrokeShape="RoundRectangle 15"
-                                StrokeThickness="0.5">
-                                <HorizontalStackLayout Padding="10,6" Spacing="6">
-                                    <Button
-                                        Command="{Binding SelectPeriodCommand}"
-                                        CommandParameter="Сегодня"
-                                        Style="{StaticResource EduFilterButton}"
-                                        Text="Сегодня">
-                                        <Button.Triggers>
-                                            <DataTrigger
-                                                Binding="{Binding SelectedPeriod}"
-                                                TargetType="Button"
-                                                Value="Сегодня">
-                                                <Setter Property="BackgroundColor" Value="#5B5FEF" />
-                                                <Setter Property="TextColor" Value="White" />
-                                                <Setter Property="BorderColor" Value="#7B7FFF" />
-                                            </DataTrigger>
-                                        </Button.Triggers>
-                                    </Button>
-                                    <Button
-                                        Command="{Binding SelectPeriodCommand}"
-                                        CommandParameter="Неделя"
-                                        Style="{StaticResource EduFilterButton}"
-                                        Text="Неделя">
-                                        <Button.Triggers>
-                                            <DataTrigger
-                                                Binding="{Binding SelectedPeriod}"
-                                                TargetType="Button"
-                                                Value="Неделя">
-                                                <Setter Property="BackgroundColor" Value="#5B5FEF" />
-                                                <Setter Property="TextColor" Value="White" />
-                                                <Setter Property="BorderColor" Value="#7B7FFF" />
-                                            </DataTrigger>
-                                        </Button.Triggers>
-                                    </Button>
-                                    <Button
-                                        Command="{Binding SelectPeriodCommand}"
-                                        CommandParameter="Все"
-                                        Style="{StaticResource EduFilterButton}"
-                                        Text="Все">
-                                        <Button.Triggers>
-                                            <DataTrigger
-                                                Binding="{Binding SelectedPeriod}"
-                                                TargetType="Button"
-                                                Value="Все">
-                                                <Setter Property="BackgroundColor" Value="#5B5FEF" />
-                                                <Setter Property="TextColor" Value="White" />
-                                                <Setter Property="BorderColor" Value="#7B7FFF" />
-                                            </DataTrigger>
-                                        </Button.Triggers>
-                                    </Button>
-                                </HorizontalStackLayout>
-                            </Border>
+                                Spacing="10">
+                                <Button
+                                    Command="{Binding SelectPeriodCommand}"
+                                    CommandParameter="Сегодня"
+                                    Style="{StaticResource EduFilterButton}"
+                                    Text="Сегодня">
+                                    <Button.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding SelectedPeriod}"
+                                            TargetType="Button"
+                                            Value="Сегодня">
+                                            <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                            <Setter Property="TextColor" Value="White" />
+                                            <Setter Property="BorderColor" Value="#7B7FFF" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button
+                                    Command="{Binding SelectPeriodCommand}"
+                                    CommandParameter="Неделя"
+                                    Style="{StaticResource EduFilterButton}"
+                                    Text="Неделя">
+                                    <Button.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding SelectedPeriod}"
+                                            TargetType="Button"
+                                            Value="Неделя">
+                                            <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                            <Setter Property="TextColor" Value="White" />
+                                            <Setter Property="BorderColor" Value="#7B7FFF" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button
+                                    Command="{Binding SelectPeriodCommand}"
+                                    CommandParameter="Все"
+                                    Style="{StaticResource EduFilterButton}"
+                                    Text="Все">
+                                    <Button.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding SelectedPeriod}"
+                                            TargetType="Button"
+                                            Value="Все">
+                                            <Setter Property="BackgroundColor" Value="#5B5FEF" />
+                                            <Setter Property="TextColor" Value="White" />
+                                            <Setter Property="BorderColor" Value="#7B7FFF" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </HorizontalStackLayout>
 
                             <FlexLayout
                                 Grid.Row="3"
@@ -201,7 +194,7 @@
                                 ItemsSource="{Binding Habits}"
                                 SelectionMode="None">
                                 <CollectionView.ItemsLayout>
-                                    <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
+                                    <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
                                 </CollectionView.ItemsLayout>
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="vm:HabitItemViewModel">
@@ -245,7 +238,7 @@
                                                         TextColor="White" />
                                                     <Label
                                                         FontFamily="Comfortaa"
-                                                        FontSize="10"
+                                                        FontSize="12"
                                                         LineBreakMode="TailTruncation"
                                                         Text="{Binding Description}"
                                                         TextColor="#99FFFFFF" />
@@ -255,7 +248,7 @@
                                                         Wrap="Wrap">
                                                         <Border
                                                             Margin="0,0,4,4"
-                                                            Padding="6,2"
+                                                            Padding="8,4"
                                                             Background="#182333"
                                                             Stroke="#4A5A6A"
                                                             StrokeThickness="1">
@@ -264,13 +257,13 @@
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="10"
+                                                                FontSize="12"
                                                                 Text="{Binding Schedule}"
                                                                 TextColor="#99FFFFFF" />
                                                         </Border>
                                                         <Border
                                                             Margin="0,0,4,4"
-                                                            Padding="6,2"
+                                                            Padding="8,4"
                                                             Background="#182333"
                                                             Stroke="#4A5A6A"
                                                             StrokeThickness="1">
@@ -279,13 +272,13 @@
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="10"
+                                                                FontSize="12"
                                                                 Text="{Binding TimeOfDay}"
                                                                 TextColor="#99FFFFFF" />
                                                         </Border>
                                                         <Border
                                                             Margin="0,0,4,4"
-                                                            Padding="6,2"
+                                                            Padding="8,4"
                                                             Background="#182333"
                                                             Stroke="#4A5A6A"
                                                             StrokeThickness="1">
@@ -294,7 +287,7 @@
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="10"
+                                                                FontSize="12"
                                                                 Text="{Binding Type}"
                                                                 TextColor="#99FFFFFF" />
                                                         </Border>
@@ -321,7 +314,7 @@
                                                     VerticalOptions="Center">
                                                     <Label
                                                         FontFamily="Comfortaa"
-                                                        FontSize="10"
+                                                        FontSize="12"
                                                         HorizontalOptions="End"
                                                         Text="Серия"
                                                         TextColor="#99FFFFFF" />
@@ -493,7 +486,7 @@
                                                 TextColor="White" />
                                             <Label
                                                 FontFamily="Comfortaa"
-                                                FontSize="10"
+                                                FontSize="12"
                                                 Text="За последние 7 дней"
                                                 TextColor="#99FFFFFF" />
                                         </VerticalStackLayout>
@@ -514,7 +507,7 @@
                                                 TextColor="White" />
                                             <Label
                                                 FontFamily="Comfortaa"
-                                                FontSize="10"
+                                                FontSize="12"
                                                 Text="Активные привычки"
                                                 TextColor="#99FFFFFF" />
                                         </VerticalStackLayout>
@@ -535,7 +528,7 @@
                                                 TextColor="White" />
                                             <Label
                                                 FontFamily="Comfortaa"
-                                                FontSize="10"
+                                                FontSize="12"
                                                 Text="Сильные дни"
                                                 TextColor="#99FFFFFF" />
                                         </VerticalStackLayout>
@@ -556,7 +549,7 @@
                                                 TextColor="White" />
                                             <Label
                                                 FontFamily="Comfortaa"
-                                                FontSize="10"
+                                                FontSize="12"
                                                 Text="Больше всего пропусков"
                                                 TextColor="#99FFFFFF" />
                                         </VerticalStackLayout>
@@ -569,7 +562,7 @@
             </Grid>
         </ScrollView>
         <Button
-            Margin="16,0,16,16"
+            Margin="16,16,16,16"
             Command="{Binding OpenAddHabitCommand}"
             HeightRequest="48"
             HorizontalOptions="Fill"

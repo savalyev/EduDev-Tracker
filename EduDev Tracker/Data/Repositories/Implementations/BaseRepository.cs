@@ -1,8 +1,12 @@
-﻿using SQLite;
+﻿using System.Diagnostics.CodeAnalysis;
+using SQLite;
 
 namespace EduDev_Tracker.Data.Repositories.Implementations
 {
-    public abstract class BaseRepository<T> where T : new()
+    // [DynamicallyAccessedMembers] сообщает IL Trimmer: "для любого T сохрани все публичные свойства".
+    // Без этого линкер вырезает геттеры/сеттеры моделей, к которым SQLite-net обращается через рефлексию.
+    public abstract class BaseRepository<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>
+        where T : new()
     {
         protected readonly DatabaseService Db;
         protected SQLiteAsyncConnection Connection => Db.Connection;
@@ -17,7 +21,6 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
         {
             var idProp = typeof(T).GetProperty("Id");
             var id = (int)(idProp?.GetValue(entity) ?? 0);
-
             return id == 0 ? await Connection.InsertAsync(entity) : await Connection.UpdateAsync(entity);
         }
 

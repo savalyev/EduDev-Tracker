@@ -4,7 +4,9 @@ using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data.Models;
 using EduDev_Tracker.Features.Analytics.Models;
-using EduDev_Tracker.Services.Analytics;
+using EduDev_Tracker.Features.Habits.Views;
+using EduDev_Tracker.Features.Pomodoro.ViewModels;
+using EduDev_Tracker.Features.Tasks.Views;
 using EduDev_Tracker.Services.Habits;
 using EduDev_Tracker.Services.Navigation;
 using EduDev_Tracker.Services.Pomodoro;
@@ -52,7 +54,6 @@ namespace EduDev_Tracker.Features.Dashboard.ViewModels
         private readonly ITaskService _taskService;
         private readonly IPomodoroService _pomodoroService;
         private readonly INavigationService _navigationService;
-        private readonly IAnalyticsService _analyticsService;
         private int profileId;
 
         public DashboardViewModel(
@@ -113,10 +114,20 @@ namespace EduDev_Tracker.Features.Dashboard.ViewModels
 
         private async Task LoadHabitsAsync()
         {
-            var allActiveHabits = await _habitService.GetActiveAsync(profileId);
+            var activeHabits = await _habitService.GetActiveAsync(profileId);
+            TotalHabits = activeHabits.Count;
 
-            CompletedToday = (int)await _habitService.GetTodayProgressAsync(profileId);
-            TotalHabits = allActiveHabits.Count;
+            if(TotalHabits > 0)
+            {
+                var progressTasks = activeHabits
+                    .Select(h => _habitService.GetTodayProgressAsync(h.Id));
+                var progresses = await Task.WhenAll(progressTasks);
+                CompletedToday = progresses.Count(p => p > 0);
+            }
+            else
+            {
+                CompletedToday = 0;
+            }
 
             HasHabits = TotalHabits > 0;
             HabitsSubtitle = HasHabits
@@ -127,6 +138,8 @@ namespace EduDev_Tracker.Features.Dashboard.ViewModels
                     profileId,
                     DateTime.Today.AddDays(-6),
                     DateTime.Today);
+
+            HabitsTargetWeek = TotalHabits * 7;
         }
 
         private async Task LoadTasksAsync()
@@ -134,14 +147,14 @@ namespace EduDev_Tracker.Features.Dashboard.ViewModels
 
             var allTasks = await _taskService.GetActiveAsync(profileId);
 
-            // TODO: TotalTasks = await _taskRepo.GetOpenCountAsync(profileId);
-            // TODO: OverdueTasks = await _taskRepo.GetOverdueCountAsync(profileId);
             TotalTasks = allTasks
-                .Where(h => h.Status == TaskStatus.Open || h.Status == TaskStatus.InProgress)
-                .Count();
+                .Count(t => t.Status == TaskStatus.Open
+                         || t.Status == TaskStatus.InProgress);
+
             OverdueTasks = allTasks
-                .Where(h => h.DueAt < DateTime.Now)
-                .Count();
+                .Count(t => t.DueAt < DateTime.Now
+                    && t.Status != TaskStatus.Done);
+
             HasTasks = TotalTasks > 0;
             TasksSubtitle = OverdueTasks > 0
                 ? $"⚠ Просрочено: {OverdueTasks}"
@@ -155,21 +168,27 @@ namespace EduDev_Tracker.Features.Dashboard.ViewModels
 
         private async Task LoadTodayTasksAsync()
         {
-            var alltasks = await _taskService.GetActiveAsync(profileId);
+            var allTasks = await _taskService.GetActiveAsync(profileId);
 
-            foreach (var task in alltasks)
+            var todayDate = DateTime.Today;
+
+            var filtered = allTasks
+                .Where(t => t.Status != TaskStatus.Done
+                         && (t.DueAt == null || t.DueAt.Value.Date == todayDate))
+                .OrderByDescending(t => t.Priority)
+                .Take(10)
+                .ToList();
+
+            TodayTasks = filtered.Select(t => new TodayTaskItem
             {
-                TodayTaskItem newTask = new TodayTaskItem
-                {
-                    Id = task.Id,
-                    Title = task.Title,
-                    Priority = GetPriorityLabel(task.Priority),
-                    PriorityColor = GetPriorityColor(task.Priority),
-                    IsDone = task.Status == TaskStatus.Done
-                };
+                Id = t.Id,
+                Title = t.Title,
+                Priority = GetPriorityLabel(t.Priority),
+                PriorityColor = GetPriorityColor(t.Priority),
+                IsDone = t.Status == TaskStatus.Done
+            }).ToList();
 
-                TodayTasks.Add(newTask);
-            }
+
             HasTodayTasks = TodayTasks.Count > 0;
         }
 
@@ -184,51 +203,80 @@ namespace EduDev_Tracker.Features.Dashboard.ViewModels
 
         private static string GetPriorityColor(TaskPriority p) => p switch
         {
-            TaskPriority.Urgent => "#2A0A0A",
-            TaskPriority.High => "#2A1800",
-            TaskPriority.Medium => "#0A1A2A",
-            TaskPriority.Low => "#0A2010",
-            _ => "#182333"
+            TaskPriority.Urgent => "#EF4444",
+            TaskPriority.High   => "#F97316",
+            TaskPriority.Medium => "#3B82F6",
+            TaskPriority.Low    => "#22C55E",
+            _                   => "#64748B"
         };
 
         private async Task LoadPomodoroAsync()
         {
-            // TODO: IPomodoroRepository
-            await Task.Delay(1);
+            var today = DateTime.Today;
 
-            // TODO: реальные данные из pomodoro_sessions за сегодня
-            TodayFocusMinutes = 0;
-            TodaySessionsCount = 0;
-            ActivePresetLabel = "25 / 5"; // TODO: из активного пресета
+            var weekStart = today.AddDays(-6);
+            var tomorrow = today.AddDays(1);
+
+            var weekStats = await _pomodoroService
+                .GetDailyStatsAsync(profileId, weekStart, tomorrow);
+
+            var todayStats = weekStats
+                .Where(s => s.Day == today.ToString("yyyy-MM-dd"))
+                .ToList();
+
+
+            TodayFocusMinutes = todayStats.Sum(s => s.Minutes ?? 0);
+            TodaySessionsCount = todayStats.Sum(s => s.Sessions);
+            PomodoroWeek = weekStats.Sum(s => s.Sessions);
+
             TodayFocusText = TodayFocusMinutes >= 60
-                ? $"{TodayFocusMinutes / 60} ч {TodayFocusMinutes % 60} мин"
-                : $"{TodayFocusMinutes} мин";
-            PomodoroWeek = 0; // TODO: сессий за неделю
+            ? $"{TodayFocusMinutes / 60} ч {TodayFocusMinutes % 60} мин"
+            : $"{TodayFocusMinutes} мин";
+
+            var presets = await _pomodoroService.GetPresetsAsync(profileId);
+            var defaultPreset = presets.FirstOrDefault(p => p.IsDefault);
+            ActivePresetLabel = defaultPreset is not null
+                ? $"{defaultPreset.WorkMinutes} / {defaultPreset.ShortBreakMin}"
+                : "25 / 5";
         }
 
         private async Task LoadWeekChartAsync()
         {
-            await Task.Delay(1);
             var dayNames = new[] { "Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб" };
             var today = DateTime.Today;
+
+            var weekStart = today.AddDays(-6);
+            var tomorrow = today.AddDays(1);
+
+            var pomodoroStats = await _pomodoroService
+                .GetDailyStatsAsync(profileId, weekStart, tomorrow);
+
+            var pomodoroByDay = pomodoroStats
+                .ToDictionary(s => s.Day, s => s.Sessions);
+
             var points = new List<WeekBarPoint>();
 
             for (int i = 6; i >= 0; i--)
             {
                 var day = today.AddDays(-i);
-                // TODO: реальные данные из репозиториев за каждый день
+
+                var dayKey = day.ToString("yyyy-MM-dd");
+
+                var pomodoroCount = pomodoroByDay.GetValueOrDefault(dayKey, 0);
+                var habitsCount = await _habitService.GetCompletedCountByDayAsync(profileId, day);
+                var tasksCount  = await _taskService.GetClosedCountByDayAsync(profileId, day);
+
                 points.Add(new WeekBarPoint
                 {
                     DayLabel = dayNames[(int)day.DayOfWeek],
                     IsToday = day == today,
-                    HeightRatio = 0,   // TODO: нормализованное значение 0..1
-                    HabitsCount = 0,
-                    TasksCount = 0,
-                    PomodoroCount = 0
+                    HeightRatio = 0,
+                    HabitsCount = habitsCount,
+                    TasksCount = tasksCount,
+                    PomodoroCount = pomodoroCount
                 });
             }
 
-            // Нормализуем высоты
             var maxScore = points.Max(p => p.HabitsCount + p.TasksCount * 2 + p.PomodoroCount);
             if (maxScore > 0)
                 foreach (var p in points)
@@ -239,9 +287,7 @@ namespace EduDev_Tracker.Features.Dashboard.ViewModels
 
         private void UpdateWeekProgress()
         {
-            // Простая формула: (выполнено привычек + закрыто задач + помодоро) / цель
-            // TODO: настраиваемая цель
-            var target = Math.Max(1, HabitsTargetWeek + 7 + 10); // привычки + задачи + помодоро
+            var target = Math.Max(1, HabitsTargetWeek + 7 + 10);
             var current = HabitsCompletedWeek + TasksClosedWeek + PomodoroWeek;
             WeekProgress = Math.Min(1.0, (double)current / target);
             WeekProgressText = $"{(int)(WeekProgress * 100)}%";
@@ -253,31 +299,29 @@ namespace EduDev_Tracker.Features.Dashboard.ViewModels
         [RelayCommand]
         private async Task QuickAddHabitAsync()
         {
-            // TODO: открыть модальное окно добавления привычки
-            await Shell.Current.GoToAsync("//habits");
+            await _navigationService.GoToAsync(nameof(CreateHabitPage));
         }
 
         [RelayCommand]
         private async Task QuickAddTaskAsync()
         {
-            // TODO: открыть модальное окно добавления задачи
-            await Shell.Current.GoToAsync("//tasks");
+            await _navigationService.GoToAsync(nameof(AddTaskPage));
         }
 
         [RelayCommand]
         private async Task StartPomodoroAsync()
         {
-            await Shell.Current.GoToAsync("//pomodoro");
+            await _navigationService.SwitchToModuleAsync("FlyoutPomodoro");
         }
 
         [RelayCommand]
-        private async Task GoToHabitsAsync() => await Shell.Current.GoToAsync("//habits");
+        private async Task GoToHabitsAsync() => await _navigationService.SwitchToModuleAsync("FlyoutHabits");
 
         [RelayCommand]
-        private async Task GoToTasksAsync() => await Shell.Current.GoToAsync("//tasks");
+        private async Task GoToTasksAsync() => await _navigationService.SwitchToModuleAsync("FlyoutTasks");
 
         [RelayCommand]
-        private async Task GoToAnalyticsAsync() => await Shell.Current.GoToAsync("//analytics");
+        private async Task GoToAnalyticsAsync() => await _navigationService.SwitchToModuleAsync("FlyoutAnalytics");
     }
 
     public class WeekBarPoint

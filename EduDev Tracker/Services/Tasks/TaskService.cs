@@ -34,8 +34,12 @@ namespace EduDev_Tracker.Services.Tasks
             => _repo.GetRecurrenceAsync(id);
         public Task SaveRecurrenceAsync(TaskRecurrence recurrence)
             => _repo.SaveRecurrenceAsync(recurrence);
+        public Task DeleteRecurrenceAsync(int taskId)
+            => _repo.DeleteRecurrenceAsync(taskId);
 
         public Task<int> GetTasksClosedWeek(int profileId, DateTime from, DateTime to)
             => _repo.GetTasksClosedWeek(profileId, from, to);
+        public Task<int> GetClosedCountByDayAsync(int profileId, DateTime date)
+            => _repo.GetClosedCountByDayAsync(profileId, date);
     }
 }

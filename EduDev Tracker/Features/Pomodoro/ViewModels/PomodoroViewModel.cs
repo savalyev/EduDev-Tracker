@@ -101,7 +101,8 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
         {
             await LoadPresetsAsync();
             await LoadStatisticsAsync();
-            SetupPhase(PomodoroPhase.Work);
+            if (!IsRunning)
+                SetupPhase(PomodoroPhase.Work);
         }
 
         private async Task LoadPresetsAsync()
@@ -120,7 +121,7 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
             ActivePreset = list.FirstOrDefault(p => p.IsDefault) ?? list.FirstOrDefault();
             SelectedPresetsCountText = $"{list.Count} режима";
 
-            if (ActivePreset != null)
+            if (ActivePreset != null && !IsRunning)
                 SetupPhase(_currentPhase);
         }
 
@@ -135,8 +136,9 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
                 profileId, today, today.AddDays(1));
             TodayPomodoros = $"{todayCount} помодоро";
 
-            // Неделя
-            var weekStart = today.AddDays(-(int)today.DayOfWeek + 1);
+            // Неделя (Пн=0, Вс=6; в C# Sunday=0, поэтому: (DayOfWeek + 6) % 7 даёт дней до ближайшего пн)
+            int daysToMonday = ((int)today.DayOfWeek + 6) % 7;
+            var weekStart = today.AddDays(-daysToMonday);
             var weekStats = await _pomodoroService.GetDailyStatsAsync(profileId, weekStart, now);
             var totalWeek = weekStats.Sum(s => s.Sessions);
             var totalMin = weekStats.Sum(s => s.Minutes ?? 0);
@@ -252,15 +254,21 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
         [RelayCommand]
         private async Task ToggleTimerAsync()
         {
-            if (IsRunning) PauseTimer();
-            else await StartTimerAsync();
+            if (IsBusy) return;
+            IsBusy = true;
+            try
+            {
+                if (IsRunning) PauseTimer();
+                else await StartTimerAsync();
+            }
+            finally { IsBusy = false; }
         }
 
         private async Task StartTimerAsync()
         {
             IsRunning = true;
             StartPauseLabel = "Пауза";
-            _sessionStartedAt = DateTime.UtcNow;
+            _sessionStartedAt = DateTime.Now;
 
             int profileId = SessionService.GetProfileId();
             _activeSession = new PomodoroSession
@@ -289,16 +297,23 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
 
         private async void OnTimerTick(object? sender, EventArgs e)
         {
-            _remainingSeconds--;
+            try
+            {
+                _remainingSeconds--;
 
-            if (_remainingSeconds == 60 && SoundBeforeEnd)
-                await _audioService.PlayAsync("bell_soft");
+                if (_remainingSeconds == 60 && SoundBeforeEnd)
+                    await _audioService.PlayAsync("bell_soft");
 
-            UpdateTimerDisplay();
-            UpdateRing();
+                UpdateTimerDisplay();
+                UpdateRing();
 
-            if (_remainingSeconds <= 0)
-                await OnPhaseCompleted();
+                if (_remainingSeconds <= 0)
+                    await OnPhaseCompleted();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[OnTimerTick] {ex}");
+            }
         }
 
         private async Task OnPhaseCompleted()
@@ -309,8 +324,8 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
 
             if (_activeSession != null)
             {
-                _activeSession.EndedAt = DateTime.UtcNow;
-                _activeSession.ActualMinutes = (int)(DateTime.UtcNow - _sessionStartedAt).TotalMinutes;
+                _activeSession.EndedAt = DateTime.Now;
+                _activeSession.ActualMinutes = (int)(DateTime.Now - _sessionStartedAt).TotalMinutes;
                 _activeSession.WasInterrupted = false;
                 await _pomodoroService.SaveSessionAsync(_activeSession);
                 _activeSession = null;
@@ -350,7 +365,8 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
 
             if (_activeSession != null)
             {
-                _activeSession.EndedAt = DateTime.UtcNow;
+                _activeSession.EndedAt = DateTime.Now;
+                _activeSession.ActualMinutes = (int)(DateTime.Now - _sessionStartedAt).TotalMinutes;
                 _activeSession.WasInterrupted = true;
                 await _pomodoroService.SaveSessionAsync(_activeSession);
                 _activeSession = null;
@@ -376,7 +392,8 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
 
             if (_activeSession != null)
             {
-                _activeSession.EndedAt = DateTime.UtcNow;
+                _activeSession.EndedAt = DateTime.Now;
+                _activeSession.ActualMinutes = (int)(DateTime.Now - _sessionStartedAt).TotalMinutes;
                 _activeSession.WasInterrupted = true;
                 await _pomodoroService.SaveSessionAsync(_activeSession);
                 _activeSession = null;
@@ -434,18 +451,20 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
         [RelayCommand]
         private async Task OpenCreatePresetAsync()
         {
-            var vm = new CreatePresetViewModel(_pomodoroService);
+            var vm = _services.GetRequiredService<CreatePresetViewModel>();
 
-            vm.PresetCreated += async preset =>
+            Action<PomodoroPreset>? handler = null;
+            handler = async preset =>
             {
+                vm.PresetCreated -= handler!;
                 await LoadPresetsAsync();
-
                 if (preset.IsDefault && !IsRunning)
                 {
                     ActivePreset = preset;
                     SetupPhase(_currentPhase);
                 }
             };
+            vm.PresetCreated += handler;
 
             var page = new CreatePresetPage(vm);
             await Shell.Current.Navigation.PushModalAsync(page, animated: true);
@@ -488,11 +507,17 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
         public async void OnPageDisappearing()
         {
             if (!IsRunning) return;
-
-            await _bgTimer.ScheduleEndNotificationAsync(
-                remainingSeconds: _remainingSeconds,
-                phaseLabel: PhaseLabel,
-                taskTitle: LinkedTaskTitle == "Не выбрана" ? "" : LinkedTaskTitle);
+            try
+            {
+                await _bgTimer.ScheduleEndNotificationAsync(
+                    remainingSeconds: _remainingSeconds,
+                    phaseLabel: PhaseLabel,
+                    taskTitle: LinkedTaskTitle == "Не выбрана" ? "" : LinkedTaskTitle);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[OnPageDisappearing] {ex}");
+            }
         }
 
         public void OnPageReappearing()

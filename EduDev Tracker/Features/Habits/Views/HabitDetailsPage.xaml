@@ -52,7 +52,7 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="18" />
                             </Border.StrokeShape>
-                            <Image Aspect="Fill" Source="{Binding Icon}" />
+                            <Image Aspect="Fill" Source="default_icon.png" />
                         </Border>
 
                         <!--  Режим просмотра  -->
@@ -190,6 +190,7 @@
                         FontFamily="Comfortaa"
                         FontSize="14"
                         HeightRequest="44"
+                        IsVisible="False"
                         Style="{StaticResource NoActiveEduPrimaryButton}"
                         Text="{Binding FreezeButtonText}"
                         TextColor="White" />

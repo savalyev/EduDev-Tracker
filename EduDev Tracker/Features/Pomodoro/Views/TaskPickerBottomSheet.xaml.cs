@@ -21,7 +21,14 @@ public partial class TaskPickerBottomSheet : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await LoadTasksAsync();
+        try
+        {
+            await LoadTasksAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[TaskPickerBottomSheet.OnAppearing] {ex}");
+        }
     }
 
     private async Task LoadTasksAsync()

@@ -45,14 +45,17 @@ public partial class HabitsPage : ContentPage
         }
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-
-        if(BindingContext is HabitsViewModel vm)
-        {
+        PageScrollView.Opacity = 0;
+        PageScrollView.TranslationY = 14;
+        if (BindingContext is HabitsViewModel vm)
             vm.LoadCommand.Execute(null);
-        }
+        await Task.WhenAll(
+            PageScrollView.FadeTo(1, 260, Easing.CubicOut),
+            PageScrollView.TranslateTo(0, 0, 260, Easing.CubicOut)
+        );
     }
 
 #if WINDOWS

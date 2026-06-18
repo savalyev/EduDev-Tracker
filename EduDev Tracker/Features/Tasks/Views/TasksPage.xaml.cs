@@ -26,10 +26,14 @@ public partial class TasksPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        PageScrollView.Opacity = 0;
+        PageScrollView.TranslationY = 14;
         if (BindingContext is TasksViewModel vm && !vm.IsBusy)
-        {
             await vm.LoadCommand.ExecuteAsync(null);
-        }
+        await Task.WhenAll(
+            PageScrollView.FadeTo(1, 260, Easing.CubicOut),
+            PageScrollView.TranslateTo(0, 0, 260, Easing.CubicOut)
+        );
     }
 
 }

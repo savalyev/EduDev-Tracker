@@ -6,6 +6,7 @@
         <ResourceDictionary Source="Labels.xaml" />
         <ResourceDictionary Source="Buttons.xaml" />
         <ResourceDictionary Source="Cards.xaml" />
+        <ResourceDictionary Source="Inputs.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

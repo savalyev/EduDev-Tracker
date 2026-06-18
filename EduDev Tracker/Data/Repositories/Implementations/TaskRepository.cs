@@ -55,8 +55,8 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
         public async Task CompleteAsync(int id)
         {
             await Connection.ExecuteAsync(
-                "UPDATE tasks SET Status = ?, UpdatedAt = ? WHERE Id = ?",
-                TaskStatus.Done.ToString(), DateTime.UtcNow, id);
+                "UPDATE tasks SET Status = ?, CompletedAt = ?, UpdatedAt = ? WHERE Id = ?",
+                TaskStatus.Done.ToString(), DateTime.UtcNow, DateTime.UtcNow, id);
         }
 
         public async Task ArchiveAsync(int id, bool archived = true)
@@ -68,9 +68,8 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
 
         public async Task DeleteAsync(int id)
         {
-            await Connection.ExecuteAsync(
-                "DELETE FROM tasks WHERE Id = ?",
-                id);
+            await Connection.ExecuteAsync("DELETE FROM task_recurrences WHERE TaskId = ?", id);
+            await Connection.ExecuteAsync("DELETE FROM tasks WHERE Id = ?", id);
         }
 
         public Task<TaskRecurrence> GetRecurrenceAsync(int id)
@@ -83,6 +82,11 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
             return Connection.InsertOrReplaceAsync(recurrence);
         }
 
+        public Task DeleteRecurrenceAsync(int taskId)
+        {
+            return Connection.ExecuteAsync("DELETE FROM task_recurrences WHERE TaskId = ?", taskId);
+        }
+
         public async Task<int> GetTasksClosedWeek(int profileId, DateTime from, DateTime to)
         {
             var result = await Connection.ExecuteScalarAsync<int>(
@@ -91,6 +95,18 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
                 profileId, from, to);
 
             return result;
+        }
+
+        public async Task<int> GetClosedCountByDayAsync(int profileId, DateTime date)
+        {
+            var start = date.Date;
+            var end = date.Date.AddDays(1);
+
+            return await Connection.ExecuteScalarAsync<int>(
+                "SELECT COUNT(*) FROM tasks " +
+                "WHERE ProfileId = ? AND Status = 'Done' " +
+                "AND CompletedAt >= ? AND CompletedAt < ?",
+                profileId, start, end);
         }
     }
 }

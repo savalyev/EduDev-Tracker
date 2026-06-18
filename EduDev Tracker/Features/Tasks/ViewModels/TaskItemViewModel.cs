@@ -20,6 +20,8 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [ObservableProperty] private string deadlineTextColor = "#99FFFFFF";
         [ObservableProperty] private bool isCompleted;
         [ObservableProperty] private string statusKey = "Todo";
+        [ObservableProperty] private bool hasReminder;
+        [ObservableProperty] private string reminderLabel = "";
 
         public static TaskItemViewModel FromModel(TaskItem task)
         {
@@ -38,8 +40,12 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                     DeadlineText = FormatDeadline(task.DueAt),
                     DeadlineBgColor = isOverdue ? "#2A1010" : "#182333",
                     DeadlineTextColor = isOverdue ? "#FF6B6B" : isToday ? "#FFDD44" : "#99FFFFFF",
-                    IsCompleted = task.Status == Data.Models.TaskStatus.Done,
-                    StatusKey = task.Status.ToString()
+                    IsCompleted   = task.Status == Data.Models.TaskStatus.Done,
+                    StatusKey     = task.Status.ToString(),
+                    HasReminder   = task.ReminderAt.HasValue && task.ReminderAt.Value > DateTime.Now,
+                    ReminderLabel = task.ReminderAt.HasValue && task.ReminderAt.Value > DateTime.Now
+                                        ? "🔔 " + FormatReminder(task.ReminderAt.Value)
+                                        : ""
                 };
             } catch(Exception ex)
             {
@@ -73,6 +79,13 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             TaskPriority.Low => "#27AE60",
             _ => "#4A5A6A"
         };
+
+        private static string FormatReminder(DateTime remind)
+        {
+            if (remind.Date == DateTime.Today)         return "Сегодня " + remind.ToString("HH:mm");
+            if (remind.Date == DateTime.Today.AddDays(1)) return "Завтра " + remind.ToString("HH:mm");
+            return remind.ToString("d MMM HH:mm");
+        }
 
         private static string FormatDeadline(DateTime? due)
         {

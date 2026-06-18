@@ -23,7 +23,7 @@ namespace EduDev_Tracker.Services.Habits
         public Task<Habit> GetByIdWithChildrenAsync(int id);
         Task<List<Habit>> GetArchivedAsync(int profileId);
         Task FreezeAsync(int habitId, bool freeze = true);
-
         Task<int> GetHabitsCompletedWeek(int profileId, DateTime from, DateTime to);
+        Task<int> GetCompletedCountByDayAsync(int profileId, DateTime date);
     }
 }

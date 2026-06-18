@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using EduDev_Tracker.Data;
 using EduDev_Tracker.Data.Repositories.Implementations;
+using EduDev_Tracker.Data.Seed;
 using EduDev_Tracker.Features.Analytics.ViewModels;
 using EduDev_Tracker.Features.Analytics.Views;
 using EduDev_Tracker.Features.Auth.ViewModels;
@@ -71,6 +72,8 @@ namespace EduDev_Tracker
             builder.Services.AddSingleton<CheatsheetRepository>();
             builder.Services.AddSingleton<ProfileRepository>();
             builder.Services.AddSingleton<ConversionRepository>();
+            builder.Services.AddSingleton<ReminderRepository>();
+            builder.Services.AddSingleton<DemoDataSeeder>();
             builder.Services.AddSingleton(AudioManager.Current);
             builder.Services.AddSingleton<BackgroundTimerService>();
 
@@ -107,6 +110,7 @@ namespace EduDev_Tracker
 
         static void RegisterServices(IServiceCollection services)
         {
+            services.AddSingleton<IOAuthService, OAuthService>();
             services.AddSingleton<IHabitService, HabitService>();
             services.AddSingleton<ITaskService, TaskService>();
             services.AddSingleton<INavigationService, NavigationService>();
@@ -139,6 +143,9 @@ namespace EduDev_Tracker
 
             services.AddTransient<AddTaskPage>();
             services.AddTransient<AddTaskViewModel>();
+
+            services.AddTransient<ReminderSettingsPage>();
+            services.AddTransient<ReminderSettingsViewModel>();
 
             services.AddTransient<TaskDetailsPage>();
             services.AddTransient<TaskDetailsViewModel>();

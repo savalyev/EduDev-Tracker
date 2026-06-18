@@ -4,12 +4,14 @@ using EduDev_Tracker.Core.Base;
 using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Services.Auth;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace EduDev_Tracker.Features.Auth.ViewModels
 {
     public partial class AuthViewModel : BaseViewModel
     {
         private readonly IAuthService _authService;
+        private readonly IOAuthService _oauthService;
 
         [ObservableProperty] private bool _isLoginMode = true;
         [ObservableProperty] private bool _isRegisterMode;
@@ -57,9 +59,10 @@ namespace EduDev_Tracker.Features.Auth.ViewModels
         public string PasswordEyeIcon => IsPasswordVisible ? "👁" : "🙈";
         public string ConfirmPasswordEyeIcon => IsConfirmPasswordVisible ? "👁" : "🙈";
 
-        public AuthViewModel(IAuthService authService)
+        public AuthViewModel(IAuthService authService, IOAuthService oauthService)
         {
-            _authService = authService;
+            _authService  = authService;
+            _oauthService = oauthService;
         }
 
         [RelayCommand]
@@ -253,6 +256,64 @@ namespace EduDev_Tracker.Features.Auth.ViewModels
             RegisterPasswordConfirmError = string.Empty;
             GeneralError = string.Empty;
             NotifyErrorProperties();
+        }
+
+        [RelayCommand]
+        private async Task LoginWithGoogleAsync()
+        {
+            if (IsBusy) return;
+            IsBusy = true;
+            GeneralError = string.Empty;
+            try
+            {
+                var info    = await _oauthService.LoginWithGoogleAsync();
+                var profile = await _authService.LoginWithOAuthAsync(info);
+                SessionService.SaveProfileId(profile.Id);
+                await NavigateToMainAsync();
+            }
+            catch (TaskCanceledException) { }
+            catch (OperationCanceledException) { }
+            catch (PlatformNotSupportedException)
+            {
+                GeneralError = "OAuth-вход недоступен на этой платформе";
+                NotifyErrorProperties();
+            }
+            catch (Exception ex)
+            {
+                GeneralError = "Не удалось войти через Google";
+                System.Diagnostics.Debug.WriteLine($"[OAuth Google] {ex}");
+                NotifyErrorProperties();
+            }
+            finally { IsBusy = false; }
+        }
+
+        [RelayCommand]
+        private async Task LoginWithGitHubAsync()
+        {
+            if (IsBusy) return;
+            IsBusy = true;
+            GeneralError = string.Empty;
+            try
+            {
+                var info    = await _oauthService.LoginWithGitHubAsync();
+                var profile = await _authService.LoginWithOAuthAsync(info);
+                SessionService.SaveProfileId(profile.Id);
+                await NavigateToMainAsync();
+            }
+            catch (TaskCanceledException) { }
+            catch (OperationCanceledException) { }
+            catch (PlatformNotSupportedException)
+            {
+                GeneralError = "OAuth-вход недоступен на этой платформе";
+                NotifyErrorProperties();
+            }
+            catch (Exception ex)
+            {
+                GeneralError = "Не удалось войти через GitHub";
+                System.Diagnostics.Debug.WriteLine($"[OAuth GitHub] {ex}");
+                NotifyErrorProperties();
+            }
+            finally { IsBusy = false; }
         }
 
         private void NotifyErrorProperties()

@@ -16,7 +16,14 @@ namespace EduDev_Tracker.Data.Models
         public string TypeString
         {
             get => Type.ToString();
-            set => Type = Enum.Parse<ConversionType>(value);
+            set => Type = value switch
+            {
+                nameof(ConversionType.Color)   => ConversionType.Color,
+                nameof(ConversionType.Time)    => ConversionType.Time,
+                nameof(ConversionType.JsonXml) => ConversionType.JsonXml,
+                nameof(ConversionType.Url)     => ConversionType.Url,
+                _                              => ConversionType.Numeral,
+            };
         }
         [NotNull] public string InputText { get; set; } = "";
         [NotNull] public string OutputText { get; set; } = "";

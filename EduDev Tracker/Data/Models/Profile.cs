@@ -14,6 +14,9 @@ namespace EduDev_Tracker.Data.Models
         [Indexed(Unique = false)] public string? Email { get; set; }
         public string? PasswordHash { get; set; }
         public string? AvatarPath { get; set; }
+        public string? AvatarUrl { get; set; }
+        public string? OAuthProvider { get; set; }
+        public string? OAuthId { get; set; }
         public bool IsLocal { get; set; } = true;
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

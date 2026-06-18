@@ -26,7 +26,12 @@ namespace EduDev_Tracker.Data.Models
         public string TypeString
         {
             get => Type.ToString();
-            set => Type = Enum.Parse<HabitType>(value);
+            set => Type = value switch
+            {
+                nameof(HabitType.Quantitative) => HabitType.Quantitative,
+                nameof(HabitType.Time)         => HabitType.Time,
+                _                              => HabitType.Binary,
+            };
         }
         public double? TargetValue { get; set; }
         public string? TargetUnit { get; set; }
@@ -36,7 +41,12 @@ namespace EduDev_Tracker.Data.Models
         public string TargetPeriodString
         {
             get => TargetPeriod.ToString();
-            set => TargetPeriod = Enum.Parse<HabitPeriod>(value);
+            set => TargetPeriod = value switch
+            {
+                nameof(HabitPeriod.Week)  => HabitPeriod.Week,
+                nameof(HabitPeriod.Month) => HabitPeriod.Month,
+                _                         => HabitPeriod.Day,
+            };
         }
         public bool IsArchived { get; set; }
         public bool IsFrozen { get; set; }

@@ -87,6 +87,7 @@
 
     <FlyoutItem
         x:Name="FlyoutDashboard"
+        Route="FlyoutDashboard"
         Title="Дашборд"
         Icon="mainwindow_icon.png">
         <ShellContent ContentTemplate="{DataTemplate dashboard:DashboardPage}" />
@@ -94,6 +95,7 @@
 
     <FlyoutItem
         x:Name="FlyoutHabits"
+        Route="FlyoutHabits"
         Title="Привычки"
         Icon="habits_icon.png">
         <ShellContent ContentTemplate="{DataTemplate habits:HabitsPage}" />
@@ -101,6 +103,7 @@
 
     <FlyoutItem
         x:Name="FlyoutTasks"
+        Route="FlyoutTasks"
         Title="Задачи"
         Icon="tasks_icon.png">
         <ShellContent ContentTemplate="{DataTemplate tasks:TasksPage}" />
@@ -108,6 +111,7 @@
 
     <FlyoutItem
         x:Name="FlyoutNotes"
+        Route="FlyoutNotes"
         Title="Заметки"
         Icon="notes_icon.png">
         <ShellContent ContentTemplate="{DataTemplate notes:NotesPage}" />
@@ -116,6 +120,7 @@
     <!--  ══ Инструменты ══════════════════════════════════════════════  -->
     <FlyoutItem
         x:Name="FlyoutPomodoro"
+        Route="FlyoutPomodoro"
         Title="Помодоро"
         Icon="pomodoro_icon.png">
         <ShellContent ContentTemplate="{DataTemplate pomodoro:PomodoroPage}" />
@@ -123,6 +128,7 @@
 
     <FlyoutItem
         x:Name="FlyoutConverters"
+        Route="FlyoutConverters"
         Title="Конвертеры"
         Icon="converters_icon.png">
         <ShellContent ContentTemplate="{DataTemplate converters:ConvertersPage}" />
@@ -130,6 +136,7 @@
 
     <FlyoutItem
         x:Name="FlyoutAnalytics"
+        Route="FlyoutAnalytics"
         Title="Аналитика"
         Icon="analytics_icon.png">
         <ShellContent ContentTemplate="{DataTemplate analytics:AnalyticsPage}" />
@@ -138,6 +145,7 @@
     <!--  ══ Профиль ══════════════════════════════════════════════════  -->
     <FlyoutItem
         x:Name="FlyoutProfile"
+        Route="FlyoutProfile"
         Title="Профиль"
         Icon="profile_icon.png">
         <ShellContent ContentTemplate="{DataTemplate profile:ProfilePage}" />

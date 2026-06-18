@@ -28,7 +28,13 @@ public partial class DashboardPage : ContentPage
     {
         base.OnAppearing();
         TriggerAdaptiveState(Width);
+        ContentGrid.Opacity = 0;
+        ContentGrid.TranslationY = 14;
         await _vm.InitializeAsync();
+        await Task.WhenAll(
+            ContentGrid.FadeTo(1, 260, Easing.CubicOut),
+            ContentGrid.TranslateTo(0, 0, 260, Easing.CubicOut)
+        );
     }
     protected override void OnSizeAllocated(double width, double height)
     {
@@ -38,8 +44,6 @@ public partial class DashboardPage : ContentPage
 
     private void TriggerAdaptiveState(double width)
     {
-        if (width <= 0) return;
-
         var state = width >= 768 ? "Wide" : "Narrow";
         VisualStateManager.GoToState(CardsGrid, state);
     }

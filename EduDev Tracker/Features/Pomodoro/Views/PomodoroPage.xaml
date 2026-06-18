@@ -27,7 +27,7 @@
             </Style>
 
             <Style x:Key="MutedLabel" TargetType="Label">
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="13" />
                 <Setter Property="TextColor" Value="#64748B" />
             </Style>
 
@@ -78,7 +78,7 @@
                                 StrokeShape="RoundRectangle 20"
                                 StrokeThickness="0">
                                 <Label
-                                    FontSize="11"
+                                    FontSize="13"
                                     Text="{Binding SelectedPresetsCountText}"
                                     TextColor="#2DD4BF" />
                             </Border>
@@ -138,7 +138,7 @@
                                                 Grid.Row="1"
                                                 Grid.Column="0"
                                                 Margin="0,4,0,0"
-                                                FontSize="11"
+                                                FontSize="13"
                                                 TextColor="#64748B">
                                                 <Label.FormattedText>
                                                     <FormattedString>
@@ -181,7 +181,7 @@
                                 CommandParameter="Work"
                                 CornerRadius="14"
                                 FontSize="13"
-                                HeightRequest="40"
+                                HeightRequest="44"
                                 Text="Работа"
                                 TextColor="{Binding IsWorkPhase, Converter={StaticResource BoolToText}}" />
                             <Button
@@ -191,7 +191,7 @@
                                 CommandParameter="ShortBreak"
                                 CornerRadius="14"
                                 FontSize="13"
-                                HeightRequest="40"
+                                HeightRequest="44"
                                 Text="Короткий перерыв"
                                 TextColor="{Binding IsShortBreakPhase, Converter={StaticResource BoolToText}}" />
                             <Button
@@ -201,7 +201,7 @@
                                 CommandParameter="LongBreak"
                                 CornerRadius="14"
                                 FontSize="13"
-                                HeightRequest="40"
+                                HeightRequest="44"
                                 Text="Длинный перерыв"
                                 TextColor="{Binding IsLongBreakPhase, Converter={StaticResource BoolToText}}" />
                         </Grid>
@@ -233,7 +233,7 @@
                                     VerticalOptions="Center">
                                     <Label
                                         CharacterSpacing="1"
-                                        FontSize="11"
+                                        FontSize="13"
                                         HorizontalTextAlignment="Center"
                                         Text="{Binding PhaseLabel}"
                                         TextColor="#64748B" />
@@ -305,7 +305,7 @@
                                     BackgroundColor="#1E3A4A"
                                     StrokeShape="RoundRectangle 20"
                                     StrokeThickness="0">
-                                    <Label FontSize="11" TextColor="#2DD4BF">
+                                    <Label FontSize="13" TextColor="#2DD4BF">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="● " TextColor="#2DD4BF" />
@@ -318,6 +318,7 @@
                                     Grid.Column="1"
                                     Padding="0"
                                     BackgroundColor="Transparent"
+                                    BorderWidth="0"
                                     Command="{Binding PickTaskCommand}"
                                     FontSize="12"
                                     HorizontalOptions="Start"
@@ -338,7 +339,7 @@
                                     <VerticalStackLayout Spacing="2">
                                         <Label
                                             FontAttributes="Bold"
-                                            FontSize="20"
+                                            FontSize="18"
                                             HorizontalTextAlignment="Center"
                                             Text="{Binding TodayPomodoros}"
                                             TextColor="#F1F5F9" />
@@ -357,7 +358,7 @@
                                     <VerticalStackLayout Spacing="2">
                                         <Label
                                             FontAttributes="Bold"
-                                            FontSize="20"
+                                            FontSize="18"
                                             HorizontalTextAlignment="Center"
                                             Text="{Binding WeekSessions}"
                                             TextColor="#F1F5F9" />
@@ -376,7 +377,7 @@
                                     <VerticalStackLayout Spacing="2">
                                         <Label
                                             FontAttributes="Bold"
-                                            FontSize="16"
+                                            FontSize="18"
                                             HorizontalTextAlignment="Center"
                                             Text="{Binding WeekFocusTime}"
                                             TextColor="#F1F5F9" />
@@ -395,29 +396,34 @@
                 <VerticalStackLayout Grid.Column="2" Spacing="12">
 
                     <!--  Текущая задача  -->
-                    <Border Padding="16" Style="{StaticResource SectionCard}">
-                        <VerticalStackLayout Spacing="10">
-                            <Label Style="{StaticResource SectionTitle}" Text="Текущая задача" />
+                    <Border Padding="20" Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label
+                                FontSize="17"
+                                Style="{StaticResource SectionTitle}"
+                                Text="Текущая задача" />
                             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
                                 <Label
+                                    FontSize="14"
                                     Style="{StaticResource MutedLabel}"
                                     Text="Проект"
                                     VerticalOptions="Center" />
                                 <Label
                                     Grid.Column="1"
-                                    FontSize="12"
+                                    FontSize="14"
                                     HorizontalTextAlignment="End"
                                     Text="{Binding LinkedTaskProject}"
                                     TextColor="#94A3B8" />
                             </Grid>
                             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
                                 <Label
+                                    FontSize="14"
                                     Style="{StaticResource MutedLabel}"
                                     Text="Задача"
                                     VerticalOptions="Center" />
                                 <Label
                                     Grid.Column="1"
-                                    FontSize="12"
+                                    FontSize="14"
                                     HorizontalTextAlignment="End"
                                     LineBreakMode="TailTruncation"
                                     Text="{Binding LinkedTaskTitle}"
@@ -425,12 +431,14 @@
                             </Grid>
                             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
                                 <Label
+                                    FontSize="14"
                                     Style="{StaticResource MutedLabel}"
                                     Text="Осталось помодоро"
                                     VerticalOptions="Center" />
                                 <Label
                                     Grid.Column="1"
-                                    FontSize="12"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
                                     HorizontalTextAlignment="End"
                                     Text="{Binding RemainingPomodorosText}"
                                     TextColor="#2DD4BF" />
@@ -443,89 +451,33 @@
                         </VerticalStackLayout>
                     </Border>
 
-                    <!--  Звуковые уведомления  -->
-                    <Border Padding="16" Style="{StaticResource SectionCard}">
-                        <VerticalStackLayout Spacing="12">
-                            <Label Style="{StaticResource SectionTitle}" Text="Звуковые уведомления" />
-                            <Grid
-                                ColumnDefinitions="*,Auto"
-                                RowDefinitions="Auto,Auto"
-                                RowSpacing="2">
-                                <Label
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    FontSize="13"
-                                    Text="Звук при завершении сессии"
-                                    TextColor="#CBD5E1" />
-                                <Switch
-                                    Grid.Row="0"
-                                    Grid.RowSpan="2"
-                                    Grid.Column="1"
-                                    IsToggled="{Binding SoundOnComplete}"
-                                    OnColor="#2DD4BF"
-                                    ThumbColor="#FFFFFF"
-                                    VerticalOptions="Center" />
-                                <Label
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    Style="{StaticResource MutedLabel}"
-                                    Text="{Binding SoundDescription}" />
-                            </Grid>
-                            <BoxView HeightRequest="1" Color="#1E293B" />
-                            <Grid
-                                ColumnDefinitions="*,Auto"
-                                RowDefinitions="Auto,Auto"
-                                RowSpacing="2">
-                                <Label
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    FontSize="13"
-                                    Text="Звук за 1 минуту до конца"
-                                    TextColor="#CBD5E1" />
-                                <Switch
-                                    Grid.Row="0"
-                                    Grid.RowSpan="2"
-                                    Grid.Column="1"
-                                    IsToggled="{Binding SoundBeforeEnd}"
-                                    OnColor="#2DD4BF"
-                                    ThumbColor="#FFFFFF"
-                                    VerticalOptions="Center" />
-                                <Label
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    Style="{StaticResource MutedLabel}"
-                                    Text="Мягкое напоминание перед сменой режима" />
-                            </Grid>
-                        </VerticalStackLayout>
-                    </Border>
-
                     <!--  Статистика по дням  -->
-                    <Border Padding="16" Style="{StaticResource SectionCard}">
-                        <VerticalStackLayout Spacing="10">
+                    <Border Padding="20" Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="12">
                             <Label Style="{StaticResource SectionTitle}" Text="Статистика по дням" />
                             <Label
-                                FontSize="12"
+                                FontSize="13"
                                 Text="{Binding WeekStatsDescription}"
                                 TextColor="#64748B" />
-                            <CollectionView HeightRequest="80" ItemsSource="{Binding WeekDayStats}">
+                            <CollectionView HeightRequest="120" ItemsSource="{Binding WeekDayStats}">
                                 <CollectionView.ItemsLayout>
-                                    <LinearItemsLayout ItemSpacing="4" Orientation="Horizontal" />
+                                    <LinearItemsLayout ItemSpacing="6" Orientation="Horizontal" />
                                 </CollectionView.ItemsLayout>
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="vm:DayStatItem">
                                         <VerticalStackLayout
                                             HorizontalOptions="Center"
                                             Spacing="4"
-                                            WidthRequest="28">
+                                            WidthRequest="34">
                                             <BoxView
-                                                CornerRadius="4"
+                                                CornerRadius="5"
                                                 HeightRequest="{Binding BarHeight}"
                                                 HorizontalOptions="Center"
                                                 VerticalOptions="End"
-                                                WidthRequest="16"
+                                                WidthRequest="22"
                                                 Color="{Binding BarColor}" />
                                             <Label
-                                                FontSize="10"
+                                                FontSize="13"
                                                 HorizontalTextAlignment="Center"
                                                 Text="{Binding DayLetter}"
                                                 TextColor="#475569" />
@@ -537,42 +489,42 @@
                     </Border>
 
                     <!--  Итоги за месяц  -->
-                    <Border Padding="16" Style="{StaticResource SectionCard}">
-                        <VerticalStackLayout Spacing="10">
+                    <Border Padding="20" Style="{StaticResource SectionCard}">
+                        <VerticalStackLayout Spacing="12">
                             <Label Style="{StaticResource SectionTitle}" Text="Итоги за месяц" />
                             <Grid ColumnDefinitions="*,Auto">
                                 <Label
-                                    FontSize="13"
+                                    FontSize="15"
                                     Text="Всего помодоро"
                                     TextColor="#94A3B8" />
                                 <Label
                                     Grid.Column="1"
                                     FontAttributes="Bold"
-                                    FontSize="13"
+                                    FontSize="17"
                                     Text="{Binding MonthTotal}"
                                     TextColor="#F1F5F9" />
                             </Grid>
                             <Grid ColumnDefinitions="*,Auto">
                                 <Label
-                                    FontSize="13"
+                                    FontSize="15"
                                     Text="Среднее в день"
                                     TextColor="#94A3B8" />
                                 <Label
                                     Grid.Column="1"
                                     FontAttributes="Bold"
-                                    FontSize="13"
+                                    FontSize="17"
                                     Text="{Binding MonthAvgPerDay}"
                                     TextColor="#F1F5F9" />
                             </Grid>
                             <Grid ColumnDefinitions="*,Auto">
                                 <Label
-                                    FontSize="13"
+                                    FontSize="15"
                                     Text="Самый продуктивный день"
                                     TextColor="#94A3B8" />
                                 <Label
                                     Grid.Column="1"
                                     FontAttributes="Bold"
-                                    FontSize="13"
+                                    FontSize="17"
                                     Text="{Binding MonthBestDay}"
                                     TextColor="#2DD4BF" />
                             </Grid>
@@ -671,7 +623,7 @@
                                     Text="{Binding TimeDisplay}"
                                     TextColor="#F1F5F9" />
                                 <Label
-                                    FontSize="11"
+                                    FontSize="13"
                                     HorizontalTextAlignment="Center"
                                     Text="{Binding CycleDisplay}"
                                     TextColor="#475569" />
@@ -773,19 +725,23 @@
                 </Grid>
 
                 <!--  Текущая задача mobile  -->
-                <Border Padding="16" Style="{StaticResource SectionCard}">
-                    <VerticalStackLayout Spacing="10">
-                        <Label Style="{StaticResource SectionTitle}" Text="Текущая задача" />
+                <Border Padding="20" Style="{StaticResource SectionCard}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label
+                            FontSize="17"
+                            Style="{StaticResource SectionTitle}"
+                            Text="Текущая задача" />
                         <Grid ColumnDefinitions="*,Auto">
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 LineBreakMode="TailTruncation"
                                 Text="{Binding LinkedTaskTitle}"
                                 TextColor="#CBD5E1"
                                 VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
-                                FontSize="12"
+                                FontAttributes="Bold"
+                                FontSize="16"
                                 Text="{Binding RemainingPomodorosText}"
                                 TextColor="#2DD4BF"
                                 VerticalOptions="Center" />
@@ -818,7 +774,7 @@
                                             FontSize="13"
                                             Text="{Binding Name}"
                                             TextColor="#F1F5F9" />
-                                        <Label FontSize="11" TextColor="#64748B">
+                                        <Label FontSize="13" TextColor="#64748B">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <Span Text="{Binding WorkMinutes}" />
@@ -854,77 +810,46 @@
                     Text="+ Новый пресет"
                     TextColor="#2DD4BF" />
 
-                <!--  Уведомления mobile  -->
-                <Border Padding="16" Style="{StaticResource SectionCard}">
-                    <VerticalStackLayout Spacing="12">
-                        <Label Style="{StaticResource SectionTitle}" Text="Уведомления" />
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Label
-                                FontSize="13"
-                                Text="Звук при завершении"
-                                TextColor="#CBD5E1"
-                                VerticalOptions="Center" />
-                            <Switch
-                                Grid.Column="1"
-                                IsToggled="{Binding SoundOnComplete}"
-                                OnColor="#2DD4BF"
-                                ThumbColor="#FFFFFF" />
-                        </Grid>
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Label
-                                FontSize="13"
-                                Text="Звук за 1 минуту"
-                                TextColor="#CBD5E1"
-                                VerticalOptions="Center" />
-                            <Switch
-                                Grid.Column="1"
-                                IsToggled="{Binding SoundBeforeEnd}"
-                                OnColor="#2DD4BF"
-                                ThumbColor="#FFFFFF" />
-                        </Grid>
-                    </VerticalStackLayout>
-                </Border>
-
                 <!--  Итоги за месяц mobile  -->
                 <Border
                     Margin="0,0,0,20"
-                    Padding="16"
+                    Padding="20"
                     Style="{StaticResource SectionCard}">
-                    <VerticalStackLayout Spacing="10">
+                    <VerticalStackLayout Spacing="12">
                         <Label Style="{StaticResource SectionTitle}" Text="Итоги за месяц" />
                         <Grid ColumnDefinitions="*,Auto">
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 Text="Всего помодоро"
                                 TextColor="#94A3B8" />
                             <Label
                                 Grid.Column="1"
                                 FontAttributes="Bold"
-                                FontSize="13"
+                                FontSize="17"
                                 Text="{Binding MonthTotal}"
                                 TextColor="#F1F5F9" />
                         </Grid>
                         <Grid ColumnDefinitions="*,Auto">
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 Text="Среднее в день"
                                 TextColor="#94A3B8" />
                             <Label
                                 Grid.Column="1"
                                 FontAttributes="Bold"
-                                FontSize="13"
+                                FontSize="17"
                                 Text="{Binding MonthAvgPerDay}"
                                 TextColor="#F1F5F9" />
                         </Grid>
                         <Grid ColumnDefinitions="*,Auto">
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 Text="Лучший день"
                                 TextColor="#94A3B8" />
                             <Label
                                 Grid.Column="1"
                                 FontAttributes="Bold"
-                                FontSize="13"
+                                FontSize="17"
                                 Text="{Binding MonthBestDay}"
                                 TextColor="#2DD4BF" />
                         </Grid>

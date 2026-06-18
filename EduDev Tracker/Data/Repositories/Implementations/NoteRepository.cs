@@ -17,12 +17,12 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
                 .ToListAsync();
         }
 
-        public Task<List<Note>> GetByProfileAsync(int profileId, bool inclideArchived = false)
+        public Task<List<Note>> GetByProfileAsync(int profileId, bool includeArchived = false)
         {
             var q = Connection.Table<Note>()
                 .Where(n => n.ProfileId == profileId);
 
-            if (!inclideArchived)
+            if (!includeArchived)
             {
                 q = q.Where(n => !n.IsArchived);
             }
@@ -32,15 +32,22 @@ namespace EduDev_Tracker.Data.Repositories.Implementations
                 .ToListAsync();
         }
 
-        public Task<int> DeleteAsync(Note note) =>
-            Connection.DeleteAsync(note);
+        public async Task<int> DeleteAsync(Note note)
+        {
+            await Connection.ExecuteAsync("DELETE FROM note_versions WHERE NoteId = ?", note.Id);
+            await Connection.ExecuteAsync("DELETE FROM note_attachments WHERE NoteId = ?", note.Id);
+            return await Connection.DeleteAsync(note);
+        }
 
         public Task<int> DeleteAttachmentAsync(NoteAttachment attachment) =>
             Connection.DeleteAsync(attachment);
 
         public Task<List<Note>> SearchAsync(int profileId, string query)
         {
-            var fts = query.Replace("\"", "\"\"");
+            var trimmed = query.Trim();
+            if (string.IsNullOrEmpty(trimmed)) return Task.FromResult(new List<Note>());
+
+            var fts = trimmed.Replace("\"", "\"\"");
             return Connection.QueryAsync<Note>(
                 @"SELECT n.* FROM notes n
                   JOIN notes_fts f ON f.rowid = n.Id

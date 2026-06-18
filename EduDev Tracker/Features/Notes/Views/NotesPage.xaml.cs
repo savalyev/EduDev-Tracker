@@ -16,7 +16,20 @@ public partial class NotesPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _vm.LoadAsync();
+        RootGrid.Opacity = 0;
+        RootGrid.TranslationY = 14;
+        try
+        {
+            if (!_vm.IsBusy)
+                await _vm.LoadAsync();
+            await Task.WhenAll(
+                RootGrid.FadeTo(1, 260, Easing.CubicOut),
+                RootGrid.TranslateTo(0, 0, 260, Easing.CubicOut));
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[NotesPage.OnAppearing] {ex}");
+        }
     }
     protected override void OnSizeAllocated(double width, double height)
     {

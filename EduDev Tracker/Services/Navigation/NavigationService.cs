@@ -27,6 +27,8 @@ namespace EduDev_Tracker.Services.Navigation
                 .FirstOrDefault(i => i.Route == flyoutRoute);
             if (item != null)
                 Shell.Current.CurrentItem = item;
+            else
+                System.Diagnostics.Debug.WriteLine($"[Nav] Модуль '{flyoutRoute}' не найден");
             return Task.CompletedTask;
         }
     }

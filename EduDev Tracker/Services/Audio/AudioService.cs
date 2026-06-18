@@ -9,6 +9,8 @@ namespace EduDev_Tracker.Services.Audio
     {
         private readonly IAudioManager _audioManager;
         private double _volume = 0.6;
+        private IAudioPlayer? _currentPlayer;
+        private Stream? _currentStream;
 
         public double Volume => _volume;
         public AudioService(IAudioManager audioManager)
@@ -20,13 +22,14 @@ namespace EduDev_Tracker.Services.Audio
         {
             try
             {
-                var stream = await FileSystem.OpenAppPackageFileAsync($"{soundName}.mp3");
+                _currentPlayer?.Stop();
+                _currentPlayer?.Dispose();
+                _currentStream?.Dispose();
 
-                var player = _audioManager.CreatePlayer(stream);
-
-                player.Volume = _volume;
-                player.Play();
-
+                _currentStream = await FileSystem.OpenAppPackageFileAsync($"{soundName}.mp3");
+                _currentPlayer = _audioManager.CreatePlayer(_currentStream);
+                _currentPlayer.Volume = _volume;
+                _currentPlayer.Play();
             }
             catch (Exception ex)
             {

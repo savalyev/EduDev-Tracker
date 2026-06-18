@@ -17,4 +17,7 @@ public partial class ProfilePage : ContentPage
         base.OnAppearing();
         await _viewModel.InitializeAsync();
     }
+
+    private void OnMenuTapped(object sender, TappedEventArgs e)
+        => Shell.Current.FlyoutIsPresented = true;
 }

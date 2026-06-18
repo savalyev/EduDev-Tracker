@@ -80,6 +80,20 @@
                         BackgroundColor="#1E293B"
                         StrokeShape="RoundRectangle 14"
                         StrokeThickness="0">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#1E293B" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#1E3A50" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
                             <!--  Индикатор приоритета  -->
                             <BoxView
@@ -119,10 +133,24 @@
                                 x:Name="CheckMark"
                                 Grid.Column="2"
                                 FontSize="18"
-                                IsVisible="False"
                                 Text="✓"
                                 TextColor="#2DD4BF"
-                                VerticalOptions="Center" />
+                                VerticalOptions="Center">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="IsVisible" Value="True" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Label>
                         </Grid>
                     </Border>
                 </DataTemplate>

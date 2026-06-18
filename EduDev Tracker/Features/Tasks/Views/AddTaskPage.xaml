@@ -82,6 +82,7 @@
                         <VerticalStackLayout Spacing="6">
                             <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Название *" />
                             <Border
+                                x:Name="TitleBorder"
                                 Padding="12,10"
                                 BackgroundColor="#14182E"
                                 Stroke="#495061"
@@ -92,17 +93,20 @@
                                 <Entry
                                     FontFamily="Comfortaa"
                                     FontSize="14"
+                                    Focused="OnTitleFocused"
                                     MaxLength="300"
                                     Placeholder="Например: Сдать лабораторную по C#"
                                     PlaceholderColor="#55FFFFFF"
                                     Text="{Binding TaskTitle}"
-                                    TextColor="White" />
+                                    TextColor="White"
+                                    Unfocused="OnTitleUnfocused" />
                             </Border>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Spacing="6">
                             <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Описание" />
                             <Border
+                                x:Name="DescBorder"
                                 Padding="12,10"
                                 BackgroundColor="#14182E"
                                 Stroke="#495061"
@@ -113,12 +117,14 @@
                                 <Editor
                                     AutoSize="TextChanges"
                                     FontFamily="Comfortaa"
+                                    Focused="OnDescFocused"
                                     FontSize="14"
                                     MinimumHeightRequest="80"
                                     Placeholder="Подробности, ссылки, заметки..."
                                     PlaceholderColor="#55FFFFFF"
                                     Text="{Binding Description}"
-                                    TextColor="White" />
+                                    TextColor="White"
+                                    Unfocused="OnDescUnfocused" />
                             </Border>
                         </VerticalStackLayout>
 
@@ -541,25 +547,36 @@
                                             VerticalOptions="End" />
                                     </Grid>
 
-                                    <VerticalStackLayout Spacing="6">
-                                        <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Повторять до (необязательно)" />
-                                        <Border
-                                            Padding="12,10"
-                                            BackgroundColor="#14182E"
-                                            Stroke="#495061"
-                                            StrokeThickness="1">
-                                            <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="12" />
-                                            </Border.StrokeShape>
-                                            <DatePicker
-                                                Date="{Binding RecurrenceEndDate}"
-                                                FontFamily="Comfortaa"
-                                                FontSize="14"
-                                                Format="d MMMM yyyy"
-                                                MinimumDate="{Binding Today}"
-                                                TextColor="White" />
-                                        </Border>
-                                    </VerticalStackLayout>
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label
+                                            Style="{StaticResource EduCardSubtitleLabel}"
+                                            Text="Ограничить дату окончания"
+                                            VerticalOptions="Center" />
+                                        <Switch
+                                            Grid.Column="1"
+                                            IsToggled="{Binding HasEndDate}"
+                                            OffColor="Gray"
+                                            OnColor="#5B5FEF"
+                                            ThumbColor="White"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                    <Border
+                                        Padding="12,10"
+                                        BackgroundColor="#14182E"
+                                        IsVisible="{Binding HasEndDate}"
+                                        Stroke="#495061"
+                                        StrokeThickness="1">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <DatePicker
+                                            Date="{Binding RecurrenceEndDate}"
+                                            FontFamily="Comfortaa"
+                                            FontSize="14"
+                                            Format="d MMMM yyyy"
+                                            MinimumDate="{Binding Today}"
+                                            TextColor="White" />
+                                    </Border>
 
                                     <Border
                                         Padding="12,10"

@@ -95,6 +95,11 @@
 	  <Folder Include="Localization\" />
 	</ItemGroup>
 
+	<!-- Android Release: сохраняем типы, используемые через рефлексию (SQLite, SQLiteNetExtensions) -->
+	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
+	  <TrimmerRootDescriptor Include="Platforms\Android\Linker.xml" />
+	</ItemGroup>
+
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\habitsIcon\book_icon.png" />
 	  <MauiImage Include="Resources\Images\habitsIcon\brain_icon.png" />
@@ -117,9 +122,6 @@
 	  <MauiXaml Update="Features\Auth\Views\AuthPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Features\Auth\Views\WelcomePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Features\Dashboard\Views\DashboardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -136,12 +138,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Habits\Views\HabitsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\Notes\Views\NoteEditorPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Features\Notes\Views\NotePreviewPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Notes\Views\NotesPage.xaml">
@@ -172,6 +168,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Tasks\Views\AddTaskPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Tasks\Views\ReminderSettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Tasks\Views\TaskBoardPage.xaml">

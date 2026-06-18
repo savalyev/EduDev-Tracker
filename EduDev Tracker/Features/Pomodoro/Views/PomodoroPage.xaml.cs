@@ -4,34 +4,43 @@ namespace EduDev_Tracker.Features.Pomodoro.Views;
 
 public partial class PomodoroPage : ContentPage
 {
-
 	private readonly PomodoroViewModel _vm;
+    private Action? _ringInvalidatedHandler;
+    private bool _isDesktop;
+
 	public PomodoroPage(PomodoroViewModel vm)
 	{
 		InitializeComponent();
 		BindingContext = _vm = vm;
 
-        vm.TimerRing.Invalidated += () =>
+        _ringInvalidatedHandler = () => MainThread.BeginInvokeOnMainThread(() =>
         {
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                TimerRingDesktop.Invalidate();
-                TimerRingMobile.Invalidate();
-            });
-        };
+            TimerRingDesktop.Invalidate();
+            TimerRingMobile.Invalidate();
+        });
+        vm.TimerRing.Invalidated += _ringInvalidatedHandler;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        _vm.TimerRing.Invalidated += _ringInvalidatedHandler;
         _vm.OnPageReappearing();
-        await _vm.InitializeAsync();
-        UpdateLayout(Width);
+        try
+        {
+            await _vm.InitializeAsync();
+            UpdateLayout(Width);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[PomodoroPage.OnAppearing] {ex}");
+        }
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
+        _vm.TimerRing.Invalidated -= _ringInvalidatedHandler;
         _vm.OnPageDisappearing();
     }
 
@@ -45,6 +54,8 @@ public partial class PomodoroPage : ContentPage
     {
         if (width <= 0) return;
         bool isDesktop = width >= 768;
+        if (isDesktop == _isDesktop) return;
+        _isDesktop = isDesktop;
         DesktopLayout.IsVisible = isDesktop;
         MobileLayout.IsVisible = !isDesktop;
     }

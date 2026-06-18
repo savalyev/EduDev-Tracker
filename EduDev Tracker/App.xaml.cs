@@ -1,9 +1,9 @@
 ﻿using EduDev_Tracker.Core.Helpers;
 using EduDev_Tracker.Data;
 using EduDev_Tracker.Data.Repositories.Implementations;
+using EduDev_Tracker.Data.Seed;
 using EduDev_Tracker.Features.Auth.Views;
 using EduDev_Tracker.Services.Notification;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace EduDev_Tracker
 {
@@ -50,6 +50,29 @@ namespace EduDev_Tracker
                     SessionService.Clear();
                     GoToAuth();
                     return;
+                }
+
+                // Восстанавливаем уведомления после перезапуска / перезагрузки устройства
+                try
+                {
+                    var notif = _services.GetRequiredService<INotificationService>();
+                    await notif.RequestPermissionAsync();
+                    await notif.RescheduleAllPendingAsync(profileId);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[App Init] Reschedule failed: {ex.Message}");
+                }
+
+                // Шпаргалки: создаём один раз при первом входе профиля
+                try
+                {
+                    var seeder = _services.GetRequiredService<DemoDataSeeder>();
+                    await seeder.SeedIfNeededAsync(profileId);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[App Init] Seed failed: {ex.Message}");
                 }
 
                 MainThread.BeginInvokeOnMainThread(() =>

@@ -9,7 +9,7 @@ namespace EduDev_Tracker.Services.Tasks
     {
         public static DateTime CalcFirstDue(TaskRecurrence rec, DateTime from)
         {
-            return CalcNext(rec, from.AddDays(-1));
+            return CalcNext(rec, from);
         }
         public static DateTime CalcNext(TaskRecurrence rec, DateTime from)
         {
@@ -27,15 +27,28 @@ namespace EduDev_Tracker.Services.Tasks
             if (rec.DaysMask == null || rec.DaysMask == 0)
                 return from.AddDays(7 * rec.IntervalN);
 
-            for (int i = 1; i <= 7; i++)
+            // Ищем следующий выбранный день в пределах текущей недели (до следующего понедельника)
+            for (int i = 1; i <= 6; i++)
             {
                 var candidate = from.AddDays(i);
                 int bit = DayOfWeekToBit(candidate.DayOfWeek);
-                if ((rec.DaysMask & bit) != 0)
-                    return candidate;
+                if ((rec.DaysMask & bit) != 0) return candidate;
+                if (candidate.DayOfWeek == DayOfWeek.Monday) break;
             }
 
-            return from.AddDays(7);
+            // В текущей неделе дней нет — прыгаем в следующий цикл (+IntervalN недель от начала текущей)
+            int daysSinceMonday = ((int)from.DayOfWeek - (int)DayOfWeek.Monday + 7) % 7;
+            var thisMonday = from.Date.AddDays(-daysSinceMonday);
+            var nextCycleMonday = thisMonday.AddDays(7 * rec.IntervalN);
+
+            for (int i = 0; i < 7; i++)
+            {
+                var candidate = nextCycleMonday.AddDays(i);
+                int bit = DayOfWeekToBit(candidate.DayOfWeek);
+                if ((rec.DaysMask & bit) != 0) return candidate;
+            }
+
+            return nextCycleMonday;
         }
 
         private static DateTime CalcNextMonthly(TaskRecurrence rec, DateTime from)

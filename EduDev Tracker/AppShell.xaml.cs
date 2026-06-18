@@ -15,6 +15,7 @@ namespace EduDev_Tracker
 
             Routing.RegisterRoute(nameof(TaskDetailsPage), typeof(TaskDetailsPage));
             Routing.RegisterRoute(nameof(AddTaskPage), typeof(AddTaskPage));
+            Routing.RegisterRoute(nameof(ReminderSettingsPage), typeof(ReminderSettingsPage));
         }
     }
 }

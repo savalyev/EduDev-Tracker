@@ -3,6 +3,7 @@
     x:Class="EduDev_Tracker.Features.Auth.Views.AuthPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:EduDev_Tracker.Core.Converters"
     xmlns:vm="clr-namespace:EduDev_Tracker.Features.Auth.ViewModels"
     x:DataType="vm:AuthViewModel"
     BackgroundColor="#0A0E1A"
@@ -139,6 +140,10 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
+            <converters:BoolToOpacityConverter
+                x:Key="BoolToFullOpacityConverter"
+                FalseOpacity="0"
+                TrueOpacity="1" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -411,12 +416,14 @@
                             <!--  Email  -->
                             <VerticalStackLayout Spacing="0">
                                 <Label Style="{StaticResource LabelStyle}" Text="E-mail" />
-                                <Border Style="{StaticResource InputBorderStyle}">
+                                <Border x:Name="LoginEmailBorder" Style="{StaticResource InputBorderStyle}">
                                     <Entry
+                                        Focused="OnLoginEmailFocused"
                                         Keyboard="Email"
                                         Placeholder="you@example.com"
                                         Style="{StaticResource InputEntryStyle}"
-                                        Text="{Binding LoginEmail}" />
+                                        Text="{Binding LoginEmail}"
+                                        Unfocused="OnLoginEmailUnfocused" />
                                 </Border>
                                 <Label
                                     Margin="2,4,0,0"
@@ -429,14 +436,16 @@
                             <!--  Пароль  -->
                             <VerticalStackLayout Spacing="0">
                                 <Label Style="{StaticResource LabelStyle}" Text="Пароль" />
-                                <Border Style="{StaticResource InputBorderStyle}">
+                                <Border x:Name="LoginPasswordBorder" Style="{StaticResource InputBorderStyle}">
                                     <Grid ColumnDefinitions="*,Auto">
                                         <Entry
                                             Grid.Column="0"
+                                            Focused="OnLoginPasswordFocused"
                                             IsPassword="{Binding IsPasswordVisible, Converter={StaticResource InverseBoolConverter}}"
                                             Placeholder="Пароль"
                                             Style="{StaticResource InputEntryStyle}"
-                                            Text="{Binding LoginPassword}" />
+                                            Text="{Binding LoginPassword}"
+                                            Unfocused="OnLoginPasswordUnfocused" />
                                         <Button
                                             Grid.Column="1"
                                             Padding="0"
@@ -514,6 +523,84 @@
                                     Text="Зарегистрироваться" />
                             </HorizontalStackLayout>
 
+                            <!--  OAuth  -->
+                            <Grid
+                                Margin="0,4,0,0"
+                                ColumnDefinitions="*,Auto,*"
+                                ColumnSpacing="8"
+                                IsVisible="{OnIdiom Phone=True,
+                                                    Default=False}">
+                                <BoxView
+                                    Grid.Column="0"
+                                    BackgroundColor="{StaticResource BorderDefault}"
+                                    HeightRequest="1"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="11"
+                                    Text="или войдите через"
+                                    TextColor="{StaticResource TextMuted}"
+                                    VerticalOptions="Center" />
+                                <BoxView
+                                    Grid.Column="2"
+                                    BackgroundColor="{StaticResource BorderDefault}"
+                                    HeightRequest="1"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                            <Grid
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="10"
+                                IsVisible="{OnIdiom Phone=True,
+                                                    Default=False}">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="12,10"
+                                    BackgroundColor="{StaticResource BgCardInner}"
+                                    Stroke="{StaticResource BorderDefault}"
+                                    StrokeShape="RoundRectangle 10">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding LoginWithGoogleCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            Text="G"
+                                            TextColor="#4285F4"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontFamily="Comfortaa"
+                                            FontSize="13"
+                                            Text="Google"
+                                            TextColor="{StaticResource TextPrimary}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="12,10"
+                                    BackgroundColor="{StaticResource BgCardInner}"
+                                    Stroke="{StaticResource BorderDefault}"
+                                    StrokeShape="RoundRectangle 10">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding LoginWithGitHubCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                                        <Label
+                                            FontSize="16"
+                                            Text="⌥"
+                                            TextColor="{StaticResource TextPrimary}"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontFamily="Comfortaa"
+                                            FontSize="13"
+                                            Text="GitHub"
+                                            TextColor="{StaticResource TextPrimary}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
+
                         </VerticalStackLayout>
 
                         <!--  ══════ ФОРМА РЕГИСТРАЦИИ ══════  -->
@@ -522,11 +609,13 @@
                             <!--  Имя  -->
                             <VerticalStackLayout Spacing="0">
                                 <Label Style="{StaticResource LabelStyle}" Text="Имя" />
-                                <Border Style="{StaticResource InputBorderStyle}">
+                                <Border x:Name="RegNameBorder" Style="{StaticResource InputBorderStyle}">
                                     <Entry
+                                        Focused="OnRegNameFocused"
                                         Placeholder="Как к вам обращаться"
                                         Style="{StaticResource InputEntryStyle}"
-                                        Text="{Binding RegisterName}" />
+                                        Text="{Binding RegisterName}"
+                                        Unfocused="OnRegNameUnfocused" />
                                 </Border>
                                 <Label
                                     Margin="2,4,0,0"
@@ -539,12 +628,14 @@
                             <!--  Email  -->
                             <VerticalStackLayout Spacing="0">
                                 <Label Style="{StaticResource LabelStyle}" Text="E-mail" />
-                                <Border Style="{StaticResource InputBorderStyle}">
+                                <Border x:Name="RegEmailBorder" Style="{StaticResource InputBorderStyle}">
                                     <Entry
+                                        Focused="OnRegEmailFocused"
                                         Keyboard="Email"
                                         Placeholder="you@example.com"
                                         Style="{StaticResource InputEntryStyle}"
-                                        Text="{Binding RegisterEmail}" />
+                                        Text="{Binding RegisterEmail}"
+                                        Unfocused="OnRegEmailUnfocused" />
                                 </Border>
                                 <Label
                                     Margin="2,4,0,0"
@@ -557,14 +648,16 @@
                             <!--  Пароль  -->
                             <VerticalStackLayout Spacing="0">
                                 <Label Style="{StaticResource LabelStyle}" Text="Пароль" />
-                                <Border Style="{StaticResource InputBorderStyle}">
+                                <Border x:Name="RegPasswordBorder" Style="{StaticResource InputBorderStyle}">
                                     <Grid ColumnDefinitions="*,Auto">
                                         <Entry
                                             Grid.Column="0"
+                                            Focused="OnRegPasswordFocused"
                                             IsPassword="{Binding IsPasswordVisible, Converter={StaticResource InverseBoolConverter}}"
                                             Placeholder="Минимум 8 символов"
                                             Style="{StaticResource InputEntryStyle}"
-                                            Text="{Binding RegisterPassword}" />
+                                            Text="{Binding RegisterPassword}"
+                                            Unfocused="OnRegPasswordUnfocused" />
                                         <Button
                                             Grid.Column="1"
                                             Padding="0"
@@ -627,11 +720,6 @@
                                     Text="Регистрация не требуется для локальной работы."
                                     TextColor="{StaticResource TextMuted}"
                                     VerticalOptions="Center" />
-                                <Button
-                                    Grid.Column="1"
-                                    FontSize="11"
-                                    Style="{StaticResource LinkBtnStyle}"
-                                    Text="Подробнее" />
                             </Grid>
 
                             <!--  Общая ошибка  -->
@@ -667,6 +755,84 @@
                                     Style="{StaticResource LinkBtnStyle}"
                                     Text="Войти" />
                             </HorizontalStackLayout>
+
+                            <!--  OAuth  -->
+                            <Grid
+                                Margin="0,4,0,0"
+                                ColumnDefinitions="*,Auto,*"
+                                ColumnSpacing="8"
+                                IsVisible="{OnIdiom Phone=True,
+                                                    Default=False}">
+                                <BoxView
+                                    Grid.Column="0"
+                                    BackgroundColor="{StaticResource BorderDefault}"
+                                    HeightRequest="1"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="11"
+                                    Text="или войдите через"
+                                    TextColor="{StaticResource TextMuted}"
+                                    VerticalOptions="Center" />
+                                <BoxView
+                                    Grid.Column="2"
+                                    BackgroundColor="{StaticResource BorderDefault}"
+                                    HeightRequest="1"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                            <Grid
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="10"
+                                IsVisible="{OnIdiom Phone=True,
+                                                    Default=False}">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="12,10"
+                                    BackgroundColor="{StaticResource BgCardInner}"
+                                    Stroke="{StaticResource BorderDefault}"
+                                    StrokeShape="RoundRectangle 10">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding LoginWithGoogleCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            Text="G"
+                                            TextColor="#4285F4"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontFamily="Comfortaa"
+                                            FontSize="13"
+                                            Text="Google"
+                                            TextColor="{StaticResource TextPrimary}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="12,10"
+                                    BackgroundColor="{StaticResource BgCardInner}"
+                                    Stroke="{StaticResource BorderDefault}"
+                                    StrokeShape="RoundRectangle 10">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding LoginWithGitHubCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                                        <Label
+                                            FontSize="16"
+                                            Text="⌥"
+                                            TextColor="{StaticResource TextPrimary}"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontFamily="Comfortaa"
+                                            FontSize="13"
+                                            Text="GitHub"
+                                            TextColor="{StaticResource TextPrimary}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
 
                         </VerticalStackLayout>
 

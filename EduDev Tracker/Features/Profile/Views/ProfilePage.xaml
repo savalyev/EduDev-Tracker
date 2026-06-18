@@ -4,92 +4,343 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:EduDev_Tracker.Features.Profile.ViewModels"
-    Title="Профиль"
+    Title=""
     x:DataType="vm:ProfileViewModel"
-    BackgroundColor="#0F172A">
+    BackgroundColor="#0A0E1A"
+    SafeAreaEdges="All"
+    Shell.NavBarIsVisible="False">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20,24" Spacing="16">
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0" Color="#0A0E1A" />
+                    <GradientStop Offset="0.5" Color="#0D1530" />
+                    <GradientStop Offset="1" Color="#0A1628" />
+                </LinearGradientBrush>
+            </Grid.Background>
 
-            <Border
-                BackgroundColor="#1E293B"
-                StrokeShape="RoundRectangle 24"
-                StrokeThickness="0">
-                <VerticalStackLayout Padding="20" Spacing="12">
+            <Grid
+                Padding="16"
+                HorizontalOptions="Center"
+                MaximumWidthRequest="700"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                RowSpacing="14"
+                VerticalOptions="Start">
+
+                <!--  ══ ШАПКА ══════════════════════════════════════════════  -->
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                    <Image
+                        HeightRequest="40"
+                        HorizontalOptions="Start"
+                        IsVisible="{OnIdiom Phone=True, Default=False}"
+                        Source="menu.png"
+                        VerticalOptions="Center"
+                        WidthRequest="40">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuTapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
                     <Label
-                        FontSize="42"
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        FontSize="22"
+                        Text="Профиль"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                </Grid>
+
+                <!--  ══ КАРТОЧКА ПРОФИЛЯ ═══════════════════════════════════  -->
+                <Border Grid.Row="1" Style="{StaticResource EduCardBorder}">
+                    <Grid
+                        ColumnDefinitions="Auto,*"
+                        ColumnSpacing="16"
+                        RowDefinitions="Auto">
+
+                        <!--  Аватар — цветной круг с инициалами  -->
+                        <Border
+                            BackgroundColor="{Binding AvatarColor}"
+                            HeightRequest="80"
+                            HorizontalOptions="Start"
+                            StrokeShape="RoundRectangle 40"
+                            StrokeThickness="0"
+                            VerticalOptions="Start"
+                            WidthRequest="80">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="Comfortaa"
+                                FontSize="24"
+                                HorizontalOptions="Center"
+                                Text="{Binding AvatarInitials}"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </Border>
+
+                        <!--  Информация  -->
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="5"
+                            VerticalOptions="Center">
+
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="Comfortaa"
+                                FontSize="20"
+                                LineBreakMode="TailTruncation"
+                                Text="{Binding UserName}"
+                                TextColor="White" />
+
+                            <Label
+                                FontSize="13"
+                                LineBreakMode="TailTruncation"
+                                Text="{Binding UserEmail}"
+                                TextColor="#64748B" />
+
+                            <!--  Бейдж типа аккаунта  -->
+                            <Border
+                                BackgroundColor="{Binding AccountTypeBg}"
+                                HorizontalOptions="Start"
+                                Padding="10,5"
+                                StrokeShape="RoundRectangle 8"
+                                StrokeThickness="0">
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="13"
+                                    Text="{Binding AccountTypeLabel}"
+                                    TextColor="{Binding AccountTypeColor}" />
+                            </Border>
+
+                            <Label
+                                FontSize="13"
+                                Text="{Binding MemberSince, StringFormat='Участник с {0}'}"
+                                TextColor="#334155" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!--  ══ СТАТИСТИКА ═════════════════════════════════════════  -->
+                <Grid
+                    Grid.Row="2"
+                    ColumnDefinitions="{OnIdiom Phone='*,*', Default='*,*,*,*'}"
+                    ColumnSpacing="12"
+                    RowDefinitions="{OnIdiom Phone='Auto,Auto', Default='Auto'}"
+                    RowSpacing="12">
+
+                    <!--  Привычки  -->
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Padding="16,20"
+                        BackgroundColor="#0F1729"
+                        Stroke="#1E293B"
+                        StrokeShape="RoundRectangle 14"
+                        StrokeThickness="1">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="Comfortaa"
+                                FontSize="28"
+                                HorizontalOptions="Center"
+                                Text="{Binding HabitsCount}"
+                                TextColor="#10B981" />
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Opacity="0.7"
+                                Text="Привычки"
+                                TextColor="White" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Задачи  -->
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Padding="16,20"
+                        BackgroundColor="#0F1729"
+                        Stroke="#1E293B"
+                        StrokeShape="RoundRectangle 14"
+                        StrokeThickness="1">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="Comfortaa"
+                                FontSize="28"
+                                HorizontalOptions="Center"
+                                Text="{Binding TasksCount}"
+                                TextColor="#3B82F6" />
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Opacity="0.7"
+                                Text="Задачи"
+                                TextColor="White" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Заметки (адаптивная позиция)  -->
+                    <Border
+                        Grid.Row="{OnIdiom Phone=1, Default=0}"
+                        Grid.Column="{OnIdiom Phone=0, Default=2}"
+                        Padding="16,20"
+                        BackgroundColor="#0F1729"
+                        Stroke="#1E293B"
+                        StrokeShape="RoundRectangle 14"
+                        StrokeThickness="1">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="Comfortaa"
+                                FontSize="28"
+                                HorizontalOptions="Center"
+                                Text="{Binding NotesCount}"
+                                TextColor="#8B5CF6" />
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Opacity="0.7"
+                                Text="Заметки"
+                                TextColor="White" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Помодоро (адаптивная позиция)  -->
+                    <Border
+                        Grid.Row="{OnIdiom Phone=1, Default=0}"
+                        Grid.Column="{OnIdiom Phone=1, Default=3}"
+                        Padding="16,20"
+                        BackgroundColor="#0F1729"
+                        Stroke="#1E293B"
+                        StrokeShape="RoundRectangle 14"
+                        StrokeThickness="1">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="Comfortaa"
+                                FontSize="28"
+                                HorizontalOptions="Center"
+                                Text="{Binding PomodoroCount}"
+                                TextColor="#F59E0B" />
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Opacity="0.7"
+                                Text="Помодоро"
+                                TextColor="White" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                </Grid>
+
+                <!--  ══ НАСТРОЙКИ ══════════════════════════════════════════  -->
+                <Border Grid.Row="3" Style="{StaticResource EduCardBorder}">
+                    <VerticalStackLayout Spacing="0">
+
+                        <Label
+                            Margin="0,0,0,14"
+                            FontAttributes="Bold"
+                            FontFamily="Comfortaa"
+                            FontSize="17"
+                            Text="Настройки"
+                            TextColor="White" />
+
+                        <!--  Язык  -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,10">
+                            <Label
+                                Grid.Column="0"
+                                FontSize="15"
+                                Text="Язык приложения"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <Picker
+                                Grid.Column="1"
+                                BackgroundColor="Transparent"
+                                FontFamily="Comfortaa"
+                                FontSize="13"
+                                HorizontalOptions="End"
+                                ItemsSource="{Binding Languages}"
+                                SelectedItem="{Binding SelectedLanguage}"
+                                TextColor="#94A3B8"
+                                TitleColor="#64748B"
+                                VerticalOptions="Center"
+                                WidthRequest="110" />
+                        </Grid>
+
+                        <BoxView BackgroundColor="#1E293B" HeightRequest="1" />
+
+                        <!--  Умные напоминания  -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,10">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                                <Label
+                                    FontSize="15"
+                                    Text="Умные напоминания"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="13"
+                                    Text="Напоминания в оптимальное время"
+                                    TextColor="#475569" />
+                            </VerticalStackLayout>
+                            <Switch
+                                Grid.Column="1"
+                                IsToggled="{Binding SmartRemindersEnabled}"
+                                OnColor="#019301"
+                                ThumbColor="White"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView BackgroundColor="#1E293B" HeightRequest="1" />
+
+                        <!--  Звук и вибрация  -->
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,10">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                                <Label
+                                    FontSize="15"
+                                    Text="Звук и вибрация"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="13"
+                                    Text="Звуки таймера и уведомлений"
+                                    TextColor="#475569" />
+                            </VerticalStackLayout>
+                            <Switch
+                                Grid.Column="1"
+                                IsToggled="{Binding SoundVibrationEnabled}"
+                                OnColor="#019301"
+                                ThumbColor="White"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  ══ ВЫХОД ════════════════════════════════════════════════  -->
+                <Border
+                    Grid.Row="4"
+                    Margin="0,0,0,16"
+                    Padding="0,16"
+                    BackgroundColor="#1A0808"
+                    Stroke="#7F1D1D"
+                    StrokeShape="RoundRectangle 14"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LogoutCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        FontSize="15"
                         HorizontalOptions="Center"
-                        Text="👤" />
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="24"
-                        HorizontalTextAlignment="Center"
-                        Text="{Binding UserName}"
-                        TextColor="White" />
-                    <Label
-                        FontSize="14"
-                        HorizontalTextAlignment="Center"
-                        Text="{Binding UserEmail}"
-                        TextColor="#CBD5E1" />
-                    <Label
-                        FontSize="13"
-                        HorizontalTextAlignment="Center"
-                        Text="{Binding AccountType}"
-                        TextColor="#93C5FD" />
-                </VerticalStackLayout>
-            </Border>
+                        Text="Выйти из аккаунта"
+                        TextColor="#EF4444"
+                        VerticalOptions="Center" />
+                </Border>
 
-            <Border
-                BackgroundColor="#1E293B"
-                StrokeShape="RoundRectangle 20"
-                StrokeThickness="0">
-                <VerticalStackLayout Padding="16" Spacing="12">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="18"
-                        Text="Настройки"
-                        TextColor="White" />
-
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label
-                            Text="Тема"
-                            TextColor="White"
-                            VerticalOptions="Center" />
-                        <Label
-                            Grid.Column="1"
-                            Text="Системная"
-                            TextColor="#94A3B8" />
-                    </Grid>
-
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label
-                            Text="Язык"
-                            TextColor="White"
-                            VerticalOptions="Center" />
-                        <Label
-                            Grid.Column="1"
-                            Text="Русский"
-                            TextColor="#94A3B8" />
-                    </Grid>
-
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label
-                            Text="Уведомления"
-                            TextColor="White"
-                            VerticalOptions="Center" />
-                        <Switch Grid.Column="1" IsToggled="True" />
-                    </Grid>
-                </VerticalStackLayout>
-            </Border>
-
-            <Button
-                BackgroundColor="#DC2626"
-                Command="{Binding LogoutCommand}"
-                CornerRadius="16"
-                HeightRequest="52"
-                Text="Выйти из аккаунта"
-                TextColor="White" />
-
-        </VerticalStackLayout>
+            </Grid>
+        </Grid>
     </ScrollView>
 </ContentPage>

@@ -102,6 +102,7 @@ namespace EduDev_Tracker.Data
 
                 await CreateFtsAsync();
                 System.Diagnostics.Debug.WriteLine("DB: fts done");
+                await CreateNotesIndexesAsync();
 
                 await MigrateAsync();
                 System.Diagnostics.Debug.WriteLine("DB: migrate done");
@@ -136,12 +137,43 @@ namespace EduDev_Tracker.Data
             END;");
         }
 
+        private async Task CreateNotesIndexesAsync()
+        {
+            await _connection!.ExecuteAsync(
+                "CREATE INDEX IF NOT EXISTS idx_notes_profile_updated ON notes(ProfileId, IsArchived, UpdatedAt DESC)");
+            await _connection.ExecuteAsync(
+                "CREATE INDEX IF NOT EXISTS idx_notes_pinned ON notes(ProfileId, IsPinned, UpdatedAt DESC)");
+        }
+
         private async Task MigrateAsync()
         {
             var v = await _connection!.ExecuteScalarAsync<int>("PRAGMA user_version");
-            if (v < Constants.CurrentSchemaVersion)
+
+            if (v < 2)
             {
+                await TryAddColumnAsync("profiles", "AvatarUrl", "TEXT");
+                await TryAddColumnAsync("profiles", "OAuthProvider", "TEXT");
+                await TryAddColumnAsync("profiles", "OAuthId", "TEXT");
+            }
+
+            if (v < 3)
+            {
+                await TryAddColumnAsync("tasks", "ReminderAt", "INTEGER");
+            }
+
+            if (v < Constants.CurrentSchemaVersion)
                 await _connection.ExecuteAsync($"PRAGMA user_version = {Constants.CurrentSchemaVersion};");
+        }
+
+        private async Task TryAddColumnAsync(string table, string column, string type)
+        {
+            try
+            {
+                await _connection!.ExecuteAsync($"ALTER TABLE {table} ADD COLUMN {column} {type}");
+            }
+            catch
+            {
+                // Колонка уже существует — игнорируем
             }
         }
 

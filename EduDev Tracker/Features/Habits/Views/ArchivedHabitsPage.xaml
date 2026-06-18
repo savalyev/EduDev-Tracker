@@ -59,18 +59,18 @@
                     VerticalOptions="Center">
                     <Label
                         FontFamily="Comfortaa"
-                        FontSize="48"
+                        FontSize="88"
                         HorizontalOptions="Center"
                         Text="📦" />
                     <Label
                         FontFamily="Comfortaa"
-                        FontSize="16"
+                        FontSize="36"
                         HorizontalOptions="Center"
                         Text="Архив пуст"
                         TextColor="White" />
                     <Label
                         FontFamily="Comfortaa"
-                        FontSize="12"
+                        FontSize="16"
                         HorizontalOptions="Center"
                         HorizontalTextAlignment="Center"
                         Text="Заархивированные привычки появятся здесь"
@@ -113,7 +113,7 @@
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="14" />
                                             </Border.StrokeShape>
-                                            <Image Aspect="Fill" Source="{Binding Icon}" />
+                                            <Image Aspect="Fill" Source="default_icon.png" />
                                         </Border>
 
                                         <VerticalStackLayout

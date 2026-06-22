@@ -11,5 +11,6 @@ namespace EduDev_Tracker.Services.Analytics
             ReportModule module = ReportModule.All);
         Task<string> ExportPdfAsync(AnalyticsReport report);
         Task<string> ExportCsvAsync(AnalyticsReport report);
+        Task<string> ExportExcelAsync(AnalyticsReport report);
     }
 }

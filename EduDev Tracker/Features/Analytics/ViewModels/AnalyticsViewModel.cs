@@ -40,7 +40,7 @@ namespace EduDev_Tracker.Features.Analytics.ViewModels
 
         [ObservableProperty] private ReportFormat selectedFormat = ReportFormat.Pdf;
         [ObservableProperty] private bool isPdfSelected = true;
-        [ObservableProperty] private bool isCsvSelected = false;
+        [ObservableProperty] private bool isExcelSelected = false;
         [ObservableProperty] private bool isGenerating = false;
         [ObservableProperty] private string exportStatus = "";
         [ObservableProperty] private bool hasExportStatus = false;
@@ -151,7 +151,7 @@ namespace EduDev_Tracker.Features.Analytics.ViewModels
             PeriodLabel = r.PeriodLabel;
 
             // Метрики
-            HabitsText = $"{r.HabitsCompleted} / {r.HabitsTotal}";
+            HabitsText = $"{r.HabitsCompleted}";
             HabitsDelta = FormatDelta(r.HabitsCompleted, r.HabitsCompletedPrev, "к прошлой неделе");
 
             TasksText = r.TasksClosed.ToString();
@@ -189,7 +189,7 @@ namespace EduDev_Tracker.Features.Analytics.ViewModels
         {
             SelectedFormat = fmt == "pdf" ? ReportFormat.Pdf : ReportFormat.Csv;
             IsPdfSelected = SelectedFormat == ReportFormat.Pdf;
-            IsCsvSelected = SelectedFormat == ReportFormat.Csv;
+            IsExcelSelected = SelectedFormat == ReportFormat.Csv;
         }
 
         [RelayCommand]
@@ -204,7 +204,7 @@ namespace EduDev_Tracker.Features.Analytics.ViewModels
             {
                 string path = SelectedFormat == ReportFormat.Pdf
                     ? await _service.ExportPdfAsync(_lastReport)
-                    : await _service.ExportCsvAsync(_lastReport);
+                    : await _service.ExportExcelAsync(_lastReport);
 
                 await Share.Default.RequestAsync(new ShareFileRequest
                 {

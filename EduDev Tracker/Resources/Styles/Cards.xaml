@@ -5,7 +5,7 @@
         <Setter Property="BackgroundColor" Value="{StaticResource EduBackground}" />
         <Setter Property="Stroke" Value="{StaticResource EduCardBorder}" />
         <Setter Property="StrokeThickness" Value="1" />
-        <Setter Property="StrokeShape" Value="RoundRectangle 15" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
         <Setter Property="Padding" Value="20" />
     </Style>
 
@@ -19,9 +19,9 @@
 
     <Style x:Key="EduEmptyStateBorder" TargetType="Border">
         <Setter Property="BackgroundColor" Value="#900F121C" />
-        <Setter Property="StrokeShape" Value="RoundRectangle 15" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
         <Setter Property="StrokeThickness" Value="0" />
-        <Setter Property="Padding" Value="20" />
+        <Setter Property="Padding" Value="16" />
     </Style>
 
     <Style x:Key="EduDarkButtonSelectionBorder" TargetType="Border">
@@ -29,7 +29,7 @@
         <Setter Property="Stroke" Value="#FFFFFF" />
         <Setter Property="StrokeThickness" Value="1" />
         <Setter Property="StrokeShape">
-            <RoundRectangle CornerRadius="15" />
+            <RoundRectangle CornerRadius="12" />
         </Setter>
     </Style>
 
@@ -38,7 +38,7 @@
         <Setter Property="Stroke" Value="#FFFFFF" />
         <Setter Property="StrokeThickness" Value="1" />
         <Setter Property="StrokeShape">
-            <RoundRectangle CornerRadius="10" />
+            <RoundRectangle CornerRadius="8" />
         </Setter>
         <Setter Property="Padding" Value="0" />
     </Style>

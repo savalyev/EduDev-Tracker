@@ -58,9 +58,9 @@
                             TextColor="White" />
                         <Label
                             FontFamily="Comfortaa"
-                            FontSize="13"
+                            FontSize="15"
                             Text="{Binding DateText}"
-                            TextColor="#64748B" />
+                            TextColor="#8892A4" />
                     </VerticalStackLayout>
 
                     <Image
@@ -88,16 +88,16 @@
                             FontFamily="Comfortaa"
                             FontSize="22"
                             Text="{Binding WeekProgressText}"
-                            TextColor="#019301"
+                            TextColor="{StaticResource EduAccent}"
                             VerticalOptions="Center" />
 
                         <ProgressBar
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
                             Margin="0,16,0,0"
-                            BackgroundColor="#1E293B"
+                            BackgroundColor="{StaticResource EduBorder}"
                             Progress="{Binding WeekProgress}"
-                            ProgressColor="#019301" />
+                            ProgressColor="{StaticResource EduAccent}" />
 
                         <Grid
                             Grid.Row="2"
@@ -110,17 +110,16 @@
                                 <Label
                                     FontAttributes="Bold"
                                     FontFamily="Comfortaa"
-                                    FontSize="20"
+                                    FontSize="26"
                                     HorizontalOptions="Center"
                                     Text="{Binding HabitsCompletedWeek}"
-                                    TextColor="#10B981" />
+                                    TextColor="{StaticResource EduSuccess}" />
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="14"
+                                    FontSize="15"
                                     HorizontalOptions="Center"
-                                    Opacity="0.7"
                                     Text="Привычек"
-                                    TextColor="White" />
+                                    TextColor="{StaticResource EduMutedText}" />
                             </VerticalStackLayout>
 
                             <VerticalStackLayout
@@ -130,17 +129,16 @@
                                 <Label
                                     FontAttributes="Bold"
                                     FontFamily="Comfortaa"
-                                    FontSize="20"
+                                    FontSize="26"
                                     HorizontalOptions="Center"
                                     Text="{Binding TasksClosedWeek}"
-                                    TextColor="#3B82F6" />
+                                    TextColor="{StaticResource EduInfo}" />
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="14"
+                                    FontSize="15"
                                     HorizontalOptions="Center"
-                                    Opacity="0.7"
                                     Text="Задач"
-                                    TextColor="White" />
+                                    TextColor="{StaticResource EduMutedText}" />
                             </VerticalStackLayout>
 
                             <VerticalStackLayout
@@ -150,17 +148,16 @@
                                 <Label
                                     FontAttributes="Bold"
                                     FontFamily="Comfortaa"
-                                    FontSize="20"
+                                    FontSize="26"
                                     HorizontalOptions="Center"
                                     Text="{Binding PomodoroWeek}"
-                                    TextColor="#F59E0B" />
+                                    TextColor="{StaticResource EduWarning}" />
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="14"
+                                    FontSize="15"
                                     HorizontalOptions="Center"
-                                    Opacity="0.7"
                                     Text="Помодоро"
-                                    TextColor="White" />
+                                    TextColor="{StaticResource EduMutedText}" />
                             </VerticalStackLayout>
 
                         </Grid>
@@ -229,7 +226,7 @@
                                             WidthRequest="13" />
                                         <Label
                                             FontFamily="Comfortaa"
-                                            FontSize="13"
+                                            FontSize="15"
                                             Text="Перейти"
                                             TextColor="White"
                                             VerticalOptions="Center" />
@@ -305,7 +302,7 @@
                                             WidthRequest="13" />
                                         <Label
                                             FontFamily="Comfortaa"
-                                            FontSize="13"
+                                            FontSize="15"
                                             Text="Перейти"
                                             TextColor="White"
                                             VerticalOptions="Center" />
@@ -379,7 +376,7 @@
                                             <Label
                                                 Grid.Column="1"
                                                 FontFamily="Comfortaa"
-                                                FontSize="13"
+                                                FontSize="15"
                                                 Text="{Binding Title}"
                                                 TextColor="White"
                                                 VerticalOptions="Center" />
@@ -442,9 +439,8 @@
                                     Grid.Column="1"
                                     FontFamily="Comfortaa"
                                     FontSize="14"
-                                    Opacity="0.6"
                                     Text="Подробнее →"
-                                    TextColor="White"
+                                    TextColor="#8892A4"
                                     VerticalOptions="Center">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GoToAnalyticsCommand}" />
@@ -478,7 +474,7 @@
                                             </Border>
                                             <Label
                                                 FontFamily="Comfortaa"
-                                                FontSize="13"
+                                                FontSize="15"
                                                 HorizontalOptions="Center"
                                                 Text="{Binding DayLabel}"
                                                 TextColor="{Binding DayLabelColor}" />

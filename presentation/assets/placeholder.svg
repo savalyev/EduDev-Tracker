@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="Segoe UI, Roboto, sans-serif">
+  <rect width="1280" height="720" fill="#F8FAFC"/>
+  <rect x="24" y="24" width="1232" height="672" rx="20" fill="#FFFFFF"
+        stroke="#CBD5E1" stroke-width="3" stroke-dasharray="14 12"/>
+  <g transform="translate(640 300)" text-anchor="middle">
+    <circle r="64" fill="none" stroke="#2DD4BF" stroke-width="6"/>
+    <path d="M-26 0 H26 M0 -26 V26" stroke="#2DD4BF" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <text x="640" y="430" text-anchor="middle" font-size="44" font-weight="700" fill="#0F172A">
+    Вставьте диаграмму сюда
+  </text>
+  <text x="640" y="486" text-anchor="middle" font-size="26" fill="#64748B">
+    замените файл в assets/diagrams/ или поменяйте src в index.html
+  </text>
+</svg>

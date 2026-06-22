@@ -36,7 +36,7 @@
                         TextColor="White" />
                     <Label
                         FontFamily="Comfortaa"
-                        FontSize="12"
+                        FontSize="14"
                         Text="Восстановите или удалите заархивированные привычки"
                         TextColor="#99FFFFFF" />
                 </VerticalStackLayout>
@@ -57,11 +57,6 @@
                     IsVisible="{Binding IsEmpty}"
                     Spacing="12"
                     VerticalOptions="Center">
-                    <Label
-                        FontFamily="Comfortaa"
-                        FontSize="88"
-                        HorizontalOptions="Center"
-                        Text="📦" />
                     <Label
                         FontFamily="Comfortaa"
                         FontSize="36"
@@ -169,9 +164,9 @@
                                             CommandParameter="{Binding HabitId}"
                                             CornerRadius="12"
                                             FontFamily="Comfortaa"
-                                            FontSize="13"
+                                            FontSize="15"
                                             HeightRequest="40"
-                                            Text="♻️ Восстановить"
+                                            Text="Восстановить"
                                             TextColor="#6EE7B7" />
                                         <Button
                                             Grid.Column="1"
@@ -182,9 +177,9 @@
                                             CommandParameter="{Binding HabitId}"
                                             CornerRadius="12"
                                             FontFamily="Comfortaa"
-                                            FontSize="13"
+                                            FontSize="15"
                                             HeightRequest="40"
-                                            Text="🗑️ Удалить"
+                                            Text="Удалить"
                                             TextColor="#FF6B8A" />
                                     </Grid>
                                 </Grid>

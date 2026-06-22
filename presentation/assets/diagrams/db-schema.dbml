@@ -1,0 +1,280 @@
+// ============================================================
+// EduDev Tracker — схема БД (22 таблицы)
+// Вставь это в https://dbdiagram.io  → Export → PNG/SVG
+// Источник: пояснительная записка, Приложение Б + раздел 3.2
+// Длины nvarchar = символы (в записке указаны байты; nvarchar = 2 байта/символ)
+// ============================================================
+
+Project EduDevTracker {
+  database_type: 'SQLite'
+  Note: 'Локальное хранилище личной продуктивности'
+}
+
+Table profiles {
+  id            int            [pk, increment]
+  name          nvarchar(255)  [not null]
+  email         nvarchar(255)  [null, note: 'пусто для локального профиля']
+  password_hash nvarchar(255)  [null]
+  avatar_path   nvarchar(250)  [null]
+  is_local      bit            [not null, default: 1]
+  is_active     bit            [not null, default: 0]
+  created_at    datetime       [not null]
+}
+
+Table app_settings {
+  profile_id         int            [pk]
+  language           nvarchar(10)
+  theme              nvarchar(20)
+  biometric_enabled  bit
+  notifications_on   bit
+  notification_sound nvarchar(255)
+  vibration_pattern  nvarchar(255)
+  smart_reminders    bit
+  week_starts_monday bit
+}
+
+Table tags {
+  id         int            [pk, increment]
+  profile_id int            [not null]
+  name       nvarchar(100)  [not null]
+  color      nvarchar(20)
+}
+
+Table habits {
+  id            int             [pk, increment]
+  profile_id    int             [not null]
+  title         nvarchar(255)   [not null]
+  description   nvarchar(1000)
+  icon          nvarchar(100)
+  color         nvarchar(20)
+  type          nvarchar(20)    [note: 'Binary / Quantitative / Time']
+  target_value  float
+  target_unit   nvarchar(50)
+  target_period nvarchar(20)    [note: 'Day / Week / Month']
+  is_archived   bit
+  is_frozen     bit
+  frozen_until  datetime
+  sort_order    int
+  created_at    datetime
+  updated_at    datetime
+}
+
+Table habit_schedules {
+  id              int           [pk, increment]
+  habit_id        int           [not null]
+  days_mask       int           [note: 'битовая маска дней недели']
+  time_of_day     nvarchar(10)
+  reminder_offset int
+}
+
+Table habit_logs {
+  id           int            [pk, increment]
+  habit_id     int            [not null]
+  log_date     date           [not null]
+  value        float          [default: 1]
+  note         nvarchar(500)
+  completed_at datetime       [not null]
+
+  indexes {
+    (habit_id, log_date) [unique]
+  }
+}
+
+Table habit_tags {
+  habit_id int
+  tag_id   int
+
+  indexes {
+    (habit_id, tag_id) [pk]
+  }
+}
+
+Table projects {
+  id         int            [pk, increment]
+  profile_id int            [not null]
+  name       nvarchar(255)  [not null]
+  color      nvarchar(20)
+  created_at datetime
+}
+
+Table tasks {
+  id             int             [pk, increment]
+  profile_id     int             [not null]
+  project_id     int             [null]
+  title          nvarchar(255)   [not null]
+  description    nvarchar(2000)
+  category       nvarchar(50)
+  priority       int             [note: 'Low / Medium / High / Urgent']
+  status         nvarchar(20)    [note: 'Open / InProgress / Done / Cancelled']
+  due_at         datetime
+  completed_at   datetime
+  estimated_min  int
+  parent_task_id int             [null, note: 'подзадачи']
+  is_archived    bit
+  sort_order     int
+  created_at     datetime
+  updated_at     datetime
+}
+
+Table task_recurrences {
+  task_id      int           [pk]
+  rule_type    nvarchar(20)  [note: 'daily / weekly / monthly']
+  interval_n   int
+  days_mask    int
+  day_of_month int
+  end_date     date
+  next_due     datetime
+}
+
+Table task_tags {
+  task_id int
+  tag_id  int
+
+  indexes {
+    (task_id, tag_id) [pk]
+  }
+}
+
+Table pomodoro_presets {
+  id              int            [pk, increment]
+  profile_id      int            [not null]
+  name            nvarchar(200)  [not null]
+  work_minutes    int
+  short_break_min int
+  long_break_min  int
+  cycles_to_long  int
+  is_default      bit
+}
+
+Table pomodoro_sessions {
+  id              int             [pk, increment]
+  profile_id      int             [not null]
+  preset_id       int             [null]
+  phase           nvarchar(20)    [note: 'Work / ShortBreak / LongBreak']
+  started_at      datetime
+  ended_at        datetime
+  planned_minutes int
+  actual_minutes  int
+  was_interrupted bit
+  notes           nvarchar(1000)
+}
+
+Table note_categories {
+  id         int            [pk, increment]
+  profile_id int            [not null]
+  name       nvarchar(200)  [not null]
+  color      nvarchar(20)
+}
+
+Table notes {
+  id          int            [pk, increment]
+  profile_id  int            [not null]
+  category_id int            [null]
+  title       nvarchar(255)  [not null]
+  content     text           [note: 'nvarchar(MAX)']
+  is_pinned   bit
+  created_at  datetime
+  updated_at  datetime
+}
+
+Table note_attachments {
+  id         int             [pk, increment]
+  note_id    int             [not null]
+  file_path  nvarchar(1000)  [not null]
+  file_name  nvarchar(255)   [not null]
+  mime_type  nvarchar(100)
+  size_bytes bigint
+  created_at datetime
+}
+
+Table note_versions {
+  id       int       [pk, increment]
+  note_id  int       [not null]
+  content  text      [note: 'nvarchar(MAX)']
+  saved_at datetime
+}
+
+Table cheatsheet_categories {
+  id         int            [pk, increment]
+  name       nvarchar(100)  [not null]
+  icon       nvarchar(100)
+  is_builtin bit
+}
+
+Table cheatsheets {
+  id          int            [pk, increment]
+  profile_id  int            [null]
+  category_id int            [not null]
+  title       nvarchar(255)  [not null]
+  content     text           [note: 'nvarchar(MAX)']
+  is_builtin  bit
+  created_at  datetime
+  updated_at  datetime
+}
+
+Table conversion_history {
+  id          int           [pk, increment]
+  profile_id  int           [not null]
+  type        nvarchar(15)  [note: 'Numeral / Color / Time / JsonXml / Url']
+  input_text  text          [note: 'nvarchar(MAX)']
+  output_text text          [note: 'nvarchar(MAX)']
+  metadata    text          [note: 'nvarchar(MAX)']
+  created_at  datetime
+}
+
+Table reminders {
+  id          int            [pk, increment]
+  profile_id  int            [not null]
+  entity_type nvarchar(20)   [not null]
+  entity_id   int
+  fire_at     datetime
+  title       nvarchar(255)  [not null]
+  body        nvarchar(1000)
+  is_fired    bit
+  platform_id int
+  created_at  datetime
+}
+
+Table notifications_log {
+  id          int           [pk, increment]
+  reminder_id int           [not null]
+  shown_at    datetime
+  user_action nvarchar(20)  [note: 'open / dismiss']
+}
+
+// ===================== СВЯЗИ =====================
+
+Ref: app_settings.profile_id      - profiles.id            // 1:1
+
+Ref: tags.profile_id              > profiles.id
+Ref: habits.profile_id            > profiles.id
+Ref: projects.profile_id          > profiles.id
+Ref: tasks.profile_id             > profiles.id
+Ref: pomodoro_presets.profile_id  > profiles.id
+Ref: pomodoro_sessions.profile_id > profiles.id
+Ref: note_categories.profile_id   > profiles.id
+Ref: notes.profile_id             > profiles.id
+Ref: cheatsheets.profile_id       > profiles.id
+Ref: conversion_history.profile_id> profiles.id
+Ref: reminders.profile_id         > profiles.id
+
+Ref: habit_schedules.habit_id     - habits.id              // 1:1
+Ref: habit_logs.habit_id          > habits.id
+Ref: habit_tags.habit_id          > habits.id
+Ref: habit_tags.tag_id            > tags.id
+
+Ref: tasks.project_id             > projects.id
+Ref: tasks.parent_task_id         > tasks.id               // подзадачи
+Ref: task_recurrences.task_id     - tasks.id               // 1:1
+Ref: task_tags.task_id            > tasks.id
+Ref: task_tags.tag_id             > tags.id
+
+Ref: pomodoro_sessions.preset_id  > pomodoro_presets.id
+
+Ref: notes.category_id            > note_categories.id
+Ref: note_attachments.note_id     > notes.id
+Ref: note_versions.note_id        > notes.id
+
+Ref: cheatsheets.category_id      > cheatsheet_categories.id
+
+Ref: notifications_log.reminder_id> reminders.id

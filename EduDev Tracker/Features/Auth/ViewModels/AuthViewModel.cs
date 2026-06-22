@@ -56,8 +56,8 @@ namespace EduDev_Tracker.Features.Auth.ViewModels
             OnPropertyChanged(nameof(ConfirmPasswordEyeIcon));
         }
 
-        public string PasswordEyeIcon => IsPasswordVisible ? "👁" : "🙈";
-        public string ConfirmPasswordEyeIcon => IsConfirmPasswordVisible ? "👁" : "🙈";
+        public string PasswordEyeIcon => IsPasswordVisible ? "◉" : "○";
+        public string ConfirmPasswordEyeIcon => IsConfirmPasswordVisible ? "◉" : "○";
 
         public AuthViewModel(IAuthService authService, IOAuthService oauthService)
         {

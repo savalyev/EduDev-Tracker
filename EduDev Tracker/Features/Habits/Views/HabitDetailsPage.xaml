@@ -20,7 +20,11 @@
         </Grid.Background>
 
         <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="16">
+            <VerticalStackLayout
+                HorizontalOptions="Center"
+                MaximumWidthRequest="720"
+                Padding="20"
+                Spacing="16">
 
                 <!--  Шапка  -->
                 <Grid ColumnDefinitions="*, Auto">
@@ -35,7 +39,7 @@
                         Grid.Column="1"
                         Command="{Binding CloseCommand}"
                         FontFamily="Comfortaa"
-                        FontSize="13"
+                        FontSize="15"
                         Style="{StaticResource EduPrimaryButton}"
                         Text="✕ Закрыть" />
                 </Grid>
@@ -68,7 +72,7 @@
                                 TextColor="White" />
                             <Label
                                 FontFamily="Comfortaa"
-                                FontSize="12"
+                                FontSize="14"
                                 Text="{Binding Description}"
                                 TextColor="#99FFFFFF" />
                         </VerticalStackLayout>
@@ -90,7 +94,7 @@
                             <Entry
                                 BackgroundColor="#14182E"
                                 FontFamily="Comfortaa"
-                                FontSize="12"
+                                FontSize="14"
                                 Placeholder="Описание"
                                 PlaceholderColor="#99FFFFFF"
                                 Text="{Binding EditDescription}"
@@ -119,7 +123,7 @@
                                 </Border.StrokeShape>
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="12"
+                                    FontSize="14"
                                     Text="{Binding Schedule}"
                                     TextColor="#99FFFFFF" />
                             </Border>
@@ -134,7 +138,7 @@
                                 </Border.StrokeShape>
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="12"
+                                    FontSize="14"
                                     Text="{Binding TimeOfDay}"
                                     TextColor="#99FFFFFF" />
                             </Border>
@@ -149,7 +153,7 @@
                                 </Border.StrokeShape>
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="12"
+                                    FontSize="14"
                                     Text="{Binding Type}"
                                     TextColor="#99FFFFFF" />
                             </Border>
@@ -166,7 +170,7 @@
                             <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="12"
+                                    FontSize="14"
                                     Text="Текущая серия"
                                     TextColor="#99FFFFFF" />
                             </VerticalStackLayout>
@@ -180,7 +184,7 @@
                     <Button
                         Command="{Binding StartEditingCommand}"
                         Style="{StaticResource EduPrimaryButton}"
-                        Text="✏️ Редактировать" />
+                        Text="Редактировать" />
 
                     <Button
                         BorderColor="#4A5A6A"
@@ -205,7 +209,7 @@
                         FontSize="14"
                         HeightRequest="44"
                         Style="{StaticResource NoActiveEduPrimaryButton}"
-                        Text="📦 Архивировать"
+                        Text="Архивировать"
                         TextColor="#FFCC44" />
 
                     <Button
@@ -215,7 +219,7 @@
                         FontSize="14"
                         HeightRequest="44"
                         Style="{StaticResource NoActiveEduPrimaryButtonRed}"
-                        Text="🗑️ Удалить привычку" />
+                        Text="Удалить привычку" />
 
 
                 </VerticalStackLayout>
@@ -236,7 +240,7 @@
                         Grid.Column="1"
                         Command="{Binding SaveEditCommand}"
                         Style="{StaticResource EduPrimaryButton}"
-                        Text="💾 Сохранить" />
+                        Text="Сохранить" />
                 </Grid>
 
             </VerticalStackLayout>

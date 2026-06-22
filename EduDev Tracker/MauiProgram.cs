@@ -74,6 +74,7 @@ namespace EduDev_Tracker
             builder.Services.AddSingleton<ConversionRepository>();
             builder.Services.AddSingleton<ReminderRepository>();
             builder.Services.AddSingleton<DemoDataSeeder>();
+            builder.Services.AddSingleton<ActivitySeeder>();
             builder.Services.AddSingleton(AudioManager.Current);
             builder.Services.AddSingleton<BackgroundTimerService>();
 

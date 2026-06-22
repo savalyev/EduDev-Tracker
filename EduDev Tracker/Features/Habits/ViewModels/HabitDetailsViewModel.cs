@@ -34,7 +34,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
         public bool IsViewing => !isEditing;
 
-        public string FreezeButtonText => IsFrozen ? "❄️ Разморозить" : "🧊 Заморозить";
+        public string FreezeButtonText => IsFrozen ? "Разморозить" : "Заморозить";
 
         partial void OnIsFrozenChanged(bool value)
             => OnPropertyChanged(nameof(FreezeButtonText));
@@ -67,7 +67,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             TimeOfDay = schedule?.TimeOfDay ?? "—";
 
             var streak = await _habitService.GetCurrentStreakAsync(habitId);
-            StreakText = streak > 0 ? $"🔥 {streak}" : "—";
+            StreakText = streak > 0 ? $"{streak}" : "—";
 
             Icon = _habit.Icon ?? "habit_icon.png";
 

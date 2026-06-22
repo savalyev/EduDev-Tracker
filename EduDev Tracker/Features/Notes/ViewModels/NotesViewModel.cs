@@ -591,15 +591,37 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         [ObservableProperty] private bool _isPreviewMode;
         [ObservableProperty] private string _markdownHtml = string.Empty;
 
+        private static string? _cachedMarkedJs;
+
         [RelayCommand]
-        private void TogglePreview()
+        private async Task TogglePreview()
         {
             IsPreviewMode = !IsPreviewMode;
             if (IsPreviewMode)
-                MarkdownHtml = BuildHtml(EditContent);
+            {
+                var markedJs = await LoadMarkedJsAsync();
+                MarkdownHtml = BuildHtml(EditContent, markedJs);
+            }
         }
 
-        private static string BuildHtml(string markdown)
+        private static async Task<string> LoadMarkedJsAsync()
+        {
+            if (_cachedMarkedJs is not null) return _cachedMarkedJs;
+            try
+            {
+                using var stream = await FileSystem.OpenAppPackageFileAsync("marked.min.js");
+                using var reader = new StreamReader(stream);
+                _cachedMarkedJs = await reader.ReadToEndAsync();
+                return _cachedMarkedJs;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[LoadMarkedJs] {ex}");
+                return string.Empty;
+            }
+        }
+
+        private static string BuildHtml(string markdown, string markedJs)
         {
             var escaped = markdown
                 .Replace("\\", "\\\\")
@@ -607,40 +629,42 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
                 .Replace("$", "\\$");
 
             return @"<!DOCTYPE html>
-                <html>
-                <head>
-                  <meta charset='utf-8'/>
-                  <meta name='viewport' content='width=device-width, initial-scale=1'/>
-                  <script src='https://cdn.jsdelivr.net/npm/marked/marked.min.js'></script>
-                  <style>
-                    body { font-family: -apple-system, sans-serif; font-size: 15px;
-                           line-height: 1.7; color: #E8EAF0; background: #0F1117;
-                           padding: 16px; margin: 0; }
-                    h1,h2,h3 { color: #fff; margin-top: 20px; }
-                    h1 { font-size: 22px; border-bottom: 1px solid #252D40; padding-bottom: 8px; }
-                    h2 { font-size: 18px; }
-                    code { background: #1C2333; color: #4F8EF7; padding: 2px 6px;
-                           border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; }
-                    pre { background: #1C2333; border: 1px solid #252D40;
-                          border-radius: 8px; padding: 12px; overflow-x: auto; }
-                    pre code { background: none; padding: 0; }
-                    blockquote { border-left: 3px solid #4F8EF7; margin: 0;
-                                 padding-left: 12px; color: #8892A4; }
-                    a { color: #4F8EF7; }
-                    hr { border: none; border-top: 1px solid #252D40; }
-                    ul,ol { padding-left: 20px; }
-                    li { margin-bottom: 4px; }
-                    p { margin: 8px 0; }
-                  </style>
-                </head>
-                <body>
-                  <div id='content'></div>
-                  <script>
-                    const md = `MARKDOWN_CONTENT`;
-                    document.getElementById('content').innerHTML = marked.parse(md);
-                  </script>
-                </body>
-                </html>".Replace("MARKDOWN_CONTENT", escaped);
+<html>
+<head>
+  <meta charset='utf-8'/>
+  <meta name='viewport' content='width=device-width, initial-scale=1'/>
+  <script>MARKED_JS</script>
+  <style>
+    body { font-family: -apple-system, sans-serif; font-size: 15px;
+           line-height: 1.7; color: #E8EAF0; background: #0F1117;
+           padding: 16px; margin: 0; }
+    h1,h2,h3 { color: #fff; margin-top: 20px; }
+    h1 { font-size: 22px; border-bottom: 1px solid #252D40; padding-bottom: 8px; }
+    h2 { font-size: 18px; }
+    code { background: #1C2333; color: #4F8EF7; padding: 2px 6px;
+           border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; }
+    pre { background: #1C2333; border: 1px solid #252D40;
+          border-radius: 8px; padding: 12px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    blockquote { border-left: 3px solid #4F8EF7; margin: 0;
+                 padding-left: 12px; color: #8892A4; }
+    a { color: #4F8EF7; }
+    hr { border: none; border-top: 1px solid #252D40; }
+    ul,ol { padding-left: 20px; }
+    li { margin-bottom: 4px; }
+    p { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <div id='content'></div>
+  <script>
+    const md = `MARKDOWN_CONTENT`;
+    document.getElementById('content').innerHTML = marked.parse(md);
+  </script>
+</body>
+</html>"
+                .Replace("MARKED_JS", markedJs)
+                .Replace("MARKDOWN_CONTENT", escaped);
         }
 
         [ObservableProperty] private string _newCategoryName = string.Empty;

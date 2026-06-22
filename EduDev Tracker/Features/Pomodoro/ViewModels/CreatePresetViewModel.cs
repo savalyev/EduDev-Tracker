@@ -93,7 +93,7 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
                 {
                     items.Add(new CyclePreviewItem
                     {
-                        Label = $"🟢 {WorkMinutes}м",
+                        Label = $"● {WorkMinutes}м",
                         BadgeColor = Color.FromArgb("#0D2A2E"),
                         TextColor = Color.FromArgb("#2DD4BF")
                     });
@@ -102,7 +102,7 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
                     {
                         items.Add(new CyclePreviewItem
                         {
-                            Label = $"🔵 {ShortBreakMin}м",
+                            Label = $"◦ {ShortBreakMin}м",
                             BadgeColor = Color.FromArgb("#0D1E3A"),
                             TextColor = Color.FromArgb("#60A5FA")
                         });
@@ -110,7 +110,7 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
                 }
                 items.Add(new CyclePreviewItem
                 {
-                    Label = $"🟣 {LongBreakMin}м",
+                    Label = $"— {LongBreakMin}м",
                     BadgeColor = Color.FromArgb("#1A0D3A"),
                     TextColor = Color.FromArgb("#A78BFA")
                 });

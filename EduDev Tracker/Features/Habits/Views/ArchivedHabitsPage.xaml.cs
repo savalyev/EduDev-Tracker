@@ -18,6 +18,13 @@ public partial class ArchivedHabitsPage : AnimatedModalPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _vm.LoadAsync();
+        try
+        {
+            await _vm.LoadAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[ArchivedHabitsPage.OnAppearing] {ex}");
+        }
     }
 }

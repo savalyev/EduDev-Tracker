@@ -44,7 +44,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                     StatusKey     = task.Status.ToString(),
                     HasReminder   = task.ReminderAt.HasValue && task.ReminderAt.Value > DateTime.Now,
                     ReminderLabel = task.ReminderAt.HasValue && task.ReminderAt.Value > DateTime.Now
-                                        ? "🔔 " + FormatReminder(task.ReminderAt.Value)
+                                        ? FormatReminder(task.ReminderAt.Value)
                                         : ""
                 };
             } catch(Exception ex)

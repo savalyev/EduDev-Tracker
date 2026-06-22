@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace EduDev_Tracker.Services.Converters
@@ -240,19 +241,38 @@ namespace EduDev_Tracker.Services.Converters
                 return new ConversionResult(false, "", "Введите JSON");
             try
             {
-                var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
-                if (dict == null) return new ConversionResult(false, "", "Не удалось распарсить JSON");
-
-                var root = new XElement("root");
-                foreach (var kv in dict)
-                    root.Add(new XElement(kv.Key, kv.Value.ToString()));
-
+                var doc = JsonDocument.Parse(json);
+                var root = JsonNodeToXml("root", doc.RootElement);
                 return new ConversionResult(true, root.ToString());
             }
             catch (Exception ex)
             {
                 return new ConversionResult(false, "", ex.Message);
             }
+        }
+
+        private static XElement JsonNodeToXml(string tagName, JsonElement element)
+        {
+            var name = XmlConvert.EncodeLocalName(
+                string.IsNullOrEmpty(tagName) ? "_" : tagName);
+            var el = new XElement(name);
+            switch (element.ValueKind)
+            {
+                case JsonValueKind.Object:
+                    foreach (var prop in element.EnumerateObject())
+                        el.Add(JsonNodeToXml(prop.Name, prop.Value));
+                    break;
+                case JsonValueKind.Array:
+                    foreach (var item in element.EnumerateArray())
+                        el.Add(JsonNodeToXml("item", item));
+                    break;
+                case JsonValueKind.Null:
+                    break;
+                default:
+                    el.Value = element.ToString();
+                    break;
+            }
+            return el;
         }
 
         public ConversionResult XmlToJson(string xml)
@@ -262,10 +282,8 @@ namespace EduDev_Tracker.Services.Converters
             try
             {
                 var doc = XDocument.Parse(xml);
-                var dict = doc.Root!.Elements()
-                    .ToDictionary(e => e.Name.LocalName, e => (object)e.Value);
-
-                var json = JsonSerializer.Serialize(dict,
+                var obj = XmlNodeToJson(doc.Root!);
+                var json = JsonSerializer.Serialize(obj,
                     new JsonSerializerOptions { WriteIndented = true });
                 return new ConversionResult(true, json);
             }
@@ -273,6 +291,21 @@ namespace EduDev_Tracker.Services.Converters
             {
                 return new ConversionResult(false, "", ex.Message);
             }
+        }
+
+        private static object? XmlNodeToJson(XElement element)
+        {
+            var children = element.Elements().ToList();
+            if (children.Count == 0)
+                return element.Value;
+
+            var dict = new Dictionary<string, object?>();
+            foreach (var group in children.GroupBy(e => e.Name.LocalName))
+            {
+                var items = group.Select(e => XmlNodeToJson(e)).ToList();
+                dict[group.Key] = items.Count == 1 ? items[0] : (object)items;
+            }
+            return dict;
         }
 
         public ConversionResult UrlEncode(string input)

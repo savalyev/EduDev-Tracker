@@ -6,14 +6,32 @@
     <Color x:Key="EduBackground">#40101428</Color>
     <Color x:Key="EduCardBorder">#66FFFFFF</Color>
     <Color x:Key="EduPrimaryText">White</Color>
-    <Color x:Key="EduSecondaryText">#99FFFFFF</Color>
-    <Color x:Key="EduAccent">#019301</Color>
-    <Color x:Key="EduButtonBackground">#2B2B2E</Color>
+    <Color x:Key="EduSecondaryText">#94A3B8</Color>
+    <Color x:Key="EduMutedText">#8892A4</Color>
+    <Color x:Key="EduAccent">#5B5FEF</Color>
+    <Color x:Key="EduButtonBackground">#5B5FEF</Color>
     <Color x:Key="EduDarkOverlay">#171C30</Color>
 
     <Color x:Key="CheckboxUnselectedBg">#14182E</Color>
     <Color x:Key="CheckboxSelectedBg">#4F6EF7</Color>
     <Color x:Key="CheckboxBorderColor">#FFFFFF</Color>
-    <Color x:Key="CheckboxTextColor">#99FFFFFF</Color>
+    <Color x:Key="CheckboxTextColor">#94A3B8</Color>
     <Color x:Key="CheckboxTextSelectedColor">#FFFFFF</Color>
+
+    <!--  Семантические токены поверхностей  -->
+    <Color x:Key="EduSurface">#111827</Color>
+    <Color x:Key="EduSurfaceAlt">#0F172A</Color>
+    <Color x:Key="EduSurfaceElevated">#1A2235</Color>
+
+    <!--  Семантические токены границ  -->
+    <Color x:Key="EduBorder">#1E293B</Color>
+    <Color x:Key="EduBorderStrong">#495061</Color>
+
+    <!--  Семантические токены статусов  -->
+    <Color x:Key="EduDanger">#EF4444</Color>
+    <Color x:Key="EduDangerSurface">#2A1020</Color>
+    <Color x:Key="EduSuccess">#27AE60</Color>
+    <Color x:Key="EduWarning">#E67E22</Color>
+    <Color x:Key="EduInfo">#4F8EF7</Color>
+    <Color x:Key="EduTeal">#2DD4BF</Color>
 </ResourceDictionary>

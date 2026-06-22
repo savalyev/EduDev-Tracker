@@ -24,7 +24,7 @@
             <VerticalStackLayout Spacing="4">
                 <!--  Логотип/иконка  -->
                 <Border
-                    BackgroundColor="#1E293B"
+                    BackgroundColor="{StaticResource EduBorder}"
                     HeightRequest="48"
                     HorizontalOptions="Start"
                     StrokeShape="RoundRectangle 14"
@@ -44,7 +44,7 @@
                 <Label
                     FontSize="12"
                     Text="Твой инструмент продуктивности"
-                    TextColor="#475569" />
+                    TextColor="{StaticResource EduMutedText}" />
             </VerticalStackLayout>
         </Grid>
     </Shell.FlyoutHeader>
@@ -56,7 +56,7 @@
             <Grid Padding="12,4" ColumnDefinitions="44,*">
                 <!--  Иконка с подсветкой при выборе  -->
                 <Border
-                    BackgroundColor="#1E293B"
+                    BackgroundColor="{StaticResource EduBorder}"
                     HeightRequest="36"
                     StrokeShape="RoundRectangle 10"
                     StrokeThickness="0"
@@ -74,7 +74,7 @@
                     Margin="8,0,0,0"
                     FontSize="14"
                     Text="{Binding Title}"
-                    TextColor="#CBD5E1"
+                    TextColor="{StaticResource EduPrimaryText}"
                     VerticalOptions="Center" />
             </Grid>
         </DataTemplate>
@@ -162,7 +162,7 @@
             <BoxView
                 Grid.Row="0"
                 HeightRequest="1"
-                Color="#1E293B" />
+                Color="{StaticResource EduBorder}" />
 
             <VerticalStackLayout
                 Grid.Row="1"
@@ -172,12 +172,12 @@
                     FontSize="12"
                     HorizontalOptions="Center"
                     Text="EduDev Tracker v1.0"
-                    TextColor="#334155" />
+                    TextColor="{StaticResource EduMutedText}" />
                 <Label
                     FontSize="11"
                     HorizontalOptions="Center"
                     Text="by svvvlyxv"
-                    TextColor="#1E293B" />
+                    TextColor="{StaticResource EduMutedText}" />
             </VerticalStackLayout>
         </Grid>
     </Shell.FlyoutFooter>

@@ -151,7 +151,6 @@ namespace EduDev_Tracker.Data
 
             if (v < 2)
             {
-                await TryAddColumnAsync("profiles", "AvatarUrl", "TEXT");
                 await TryAddColumnAsync("profiles", "OAuthProvider", "TEXT");
                 await TryAddColumnAsync("profiles", "OAuthId", "TEXT");
             }
@@ -169,13 +168,22 @@ namespace EduDev_Tracker.Data
         {
             try
             {
-                await _connection!.ExecuteAsync($"ALTER TABLE {table} ADD COLUMN {column} {type}");
+                // Сначала проверяем наличие колонки — иначе ALTER кидает исключение
+                // (ловится, но шумит в отладке при включённом "break on CLR exceptions").
+                var cols = await _connection!.QueryAsync<TableColumnInfo>($"PRAGMA table_info({table})");
+                if (cols.Any(c => string.Equals(c.name, column, StringComparison.OrdinalIgnoreCase)))
+                    return;
+
+                await _connection.ExecuteAsync($"ALTER TABLE {table} ADD COLUMN {column} {type}");
             }
-            catch
+            catch (Exception ex)
             {
-                // Колонка уже существует — игнорируем
+                System.Diagnostics.Debug.WriteLine($"[Migrate] {table}.{column}: {ex.Message}");
             }
         }
+
+        // Строка результата PRAGMA table_info (нужно только имя колонки)
+        private class TableColumnInfo { public string name { get; set; } = ""; }
 
         public Task RunInTransactionAsync(Action<SQLiteConnection> action)
             => Connection.RunInTransactionAsync(action);

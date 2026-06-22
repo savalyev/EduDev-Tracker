@@ -21,14 +21,14 @@
                 <Setter Property="Padding" Value="16" />
             </Style>
             <Style x:Key="SectionTitle" TargetType="Label">
-                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontSize" Value="17" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="TextColor" Value="#F1F5F9" />
                 <Setter Property="Margin" Value="0,0,0,10" />
             </Style>
             <Style x:Key="MutedLabel" TargetType="Label">
                 <Setter Property="FontSize" Value="13" />
-                <Setter Property="TextColor" Value="#64748B" />
+                <Setter Property="TextColor" Value="#8892A4" />
             </Style>
             <!--  Кнопка-пилюля (период)  -->
             <Style x:Key="PillBtn" TargetType="Button">
@@ -578,8 +578,8 @@
                                     <Button
                                         Command="{Binding SelectFormatCommand}"
                                         CommandParameter="csv"
-                                        Style="{Binding IsCsvSelected, Converter={StaticResource BoolToFormatStyleConverter}}"
-                                        Text="CSV" />
+                                        Style="{Binding IsExcelSelected, Converter={StaticResource BoolToFormatStyleConverter}}"
+                                        Text="Excel" />
                                 </HorizontalStackLayout>
                             </Grid>
 
@@ -991,8 +991,8 @@
                                 Grid.Column="1"
                                 Command="{Binding SelectFormatCommand}"
                                 CommandParameter="csv"
-                                Style="{Binding IsCsvSelected, Converter={StaticResource BoolToFormatStyleConverter}}"
-                                Text="CSV" />
+                                Style="{Binding IsExcelSelected, Converter={StaticResource BoolToFormatStyleConverter}}"
+                                Text="Excel" />
                         </Grid>
                         <Button
                             BackgroundColor="#2DD4BF"

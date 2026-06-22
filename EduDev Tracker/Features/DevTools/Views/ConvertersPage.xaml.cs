@@ -14,8 +14,15 @@ public partial class ConvertersPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _vm.InitializeAsync();
-        UpdateLayout(Width);
+        try
+        {
+            await _vm.InitializeAsync();
+            UpdateLayout(Width);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[ConvertersPage.OnAppearing] {ex}");
+        }
     }
 
     protected override void OnSizeAllocated(double width, double height)

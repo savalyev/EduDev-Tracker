@@ -152,6 +152,7 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
         private void ConvertNumeralDebounced()
         {
             _debounce?.Stop();
+            _debounce?.Dispose();
             _debounce = new System.Timers.Timer(300) { AutoReset = false };
             _debounce.Elapsed += async (_, _) =>
             {
@@ -201,6 +202,7 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
         private void DoConvertColorDebounced()
         {
             _debounce?.Stop();
+            _debounce?.Dispose();
             _debounce = new System.Timers.Timer(300) { AutoReset = false };
             _debounce.Elapsed += async (_, _) =>
                 await MainThread.InvokeOnMainThreadAsync(DoConvertColor);
@@ -215,6 +217,20 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
                 ColorPreview = Color.FromArgb("#1E293B");
                 HasColorError = false; ColorError = "";
                 return;
+            }
+
+            // Частичный HEX — не ошибка, просто ещё вводят (допустимые длины: 3 или 6 без #)
+            var trimmed = ColorInput.Trim();
+            if (trimmed.StartsWith('#'))
+            {
+                var hexLen = trimmed.TrimStart('#').Length;
+                if (hexLen is not (3 or 6))
+                {
+                    ColorHex = ColorRgb = ColorHsl = "—";
+                    ColorPreview = Color.FromArgb("#1E293B");
+                    HasColorError = false; ColorError = "";
+                    return;
+                }
             }
 
             var r = _service.ConvertColor(ColorInput);
@@ -264,6 +280,7 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
         private void DoJsonXmlDebounced()
         {
             _debounce?.Stop();
+            _debounce?.Dispose();
             _debounce = new System.Timers.Timer(400) { AutoReset = false };
             _debounce.Elapsed += async (_, _) =>
                 await MainThread.InvokeOnMainThreadAsync(DoFormatJsonXml);
@@ -331,7 +348,8 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
 
             HasJsonXmlError = false; JsonXmlError = "";
             JsonXmlOutput = r.Output;
-            await SaveAsync(type, JsonXmlInput[..Math.Min(50, JsonXmlInput.Length)], r.Output[..Math.Min(80, r.Output.Length)]);
+            var outText = r.Output ?? "";
+            await SaveAsync(type, JsonXmlInput[..Math.Min(50, JsonXmlInput.Length)], outText[..Math.Min(80, outText.Length)]);
         }
 
         [RelayCommand]
@@ -347,7 +365,8 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
             IsJsonMode = false;
             _suppressModeDebounce = false;
 
-            await SaveAsync(ConversionType.JsonXml, "JSON→XML", r.Output[..Math.Min(80, r.Output.Length)]);
+            var xmlOut = r.Output ?? "";
+            await SaveAsync(ConversionType.JsonXml, "JSON→XML", xmlOut[..Math.Min(80, xmlOut.Length)]);
         }
 
         [RelayCommand]
@@ -363,7 +382,8 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
             IsJsonMode = true;
             _suppressModeDebounce = false;
 
-            await SaveAsync(ConversionType.JsonXml, "XML→JSON", r.Output[..Math.Min(80, r.Output.Length)]);
+            var jsonOut = r.Output ?? "";
+            await SaveAsync(ConversionType.JsonXml, "XML→JSON", jsonOut[..Math.Min(80, jsonOut.Length)]);
         }
 
         [RelayCommand]
@@ -395,6 +415,7 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
         private void DoUrlAutoDebounced()
         {
             _debounce?.Stop();
+            _debounce?.Dispose();
             _debounce = new System.Timers.Timer(400) { AutoReset = false };
             _debounce.Elapsed += async (_, _) =>
                 await MainThread.InvokeOnMainThreadAsync(async () =>
@@ -477,12 +498,12 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
 
         private static string TypeIcon(ConversionType t) => t switch
         {
-            ConversionType.Numeral => "🔢",
-            ConversionType.Color => "🎨",
-            ConversionType.Time => "🕐",
-            ConversionType.JsonXml => "📄",
-            ConversionType.Url => "🔗",
-            _ => "⚙️"
+            ConversionType.Numeral => "NUM",
+            ConversionType.Color => "CLR",
+            ConversionType.Time => "TZ",
+            ConversionType.JsonXml => "XML",
+            ConversionType.Url => "URL",
+            _ => "···"
         };
 
         private static string TypeLabel(ConversionType t) => t switch

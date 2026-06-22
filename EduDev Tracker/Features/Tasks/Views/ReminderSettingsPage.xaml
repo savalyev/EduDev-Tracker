@@ -84,8 +84,9 @@
                     StrokeThickness="1">
                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
                         <Label
-                            FontSize="20"
-                            Text="🔔"
+                            FontSize="14"
+                            Text="✓"
+                            TextColor="#4ADE80"
                             VerticalOptions="Center" />
                         <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
                             <Label
@@ -134,8 +135,9 @@
                         <!--  Дата  -->
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" Padding="0,10">
                             <Label
-                                FontSize="20"
-                                Text="📅"
+                                FontSize="14"
+                                Text="Дата:"
+                                TextColor="{StaticResource EduSecondaryText}"
                                 VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
@@ -161,8 +163,9 @@
                         <!--  Время  -->
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" Padding="0,10">
                             <Label
-                                FontSize="20"
-                                Text="🕐"
+                                FontSize="14"
+                                Text="Время:"
+                                TextColor="{StaticResource EduSecondaryText}"
                                 VerticalOptions="Center" />
                             <Label
                                 Grid.Column="1"
@@ -199,8 +202,9 @@
                     </Border.GestureRecognizers>
                     <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
                         <Label
-                            FontSize="18"
-                            Text="🔔"
+                            FontSize="14"
+                            Text="→"
+                            TextColor="#4ADE80"
                             VerticalOptions="Center" />
                         <Label
                             FontAttributes="Bold"

@@ -95,7 +95,7 @@
                                 FontSize="13"
                                 LineBreakMode="TailTruncation"
                                 Text="{Binding UserEmail}"
-                                TextColor="#64748B" />
+                                TextColor="{StaticResource EduMutedText}" />
 
                             <!--  Бейдж типа аккаунта  -->
                             <Border
@@ -114,7 +114,7 @@
                             <Label
                                 FontSize="13"
                                 Text="{Binding MemberSince, StringFormat='Участник с {0}'}"
-                                TextColor="#334155" />
+                                TextColor="{StaticResource EduMutedText}" />
                         </VerticalStackLayout>
                     </Grid>
                 </Border>
@@ -132,8 +132,8 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Padding="16,20"
-                        BackgroundColor="#0F1729"
-                        Stroke="#1E293B"
+                        BackgroundColor="{StaticResource EduSurfaceAlt}"
+                        Stroke="{StaticResource EduBorder}"
                         StrokeShape="RoundRectangle 14"
                         StrokeThickness="1">
                         <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
@@ -143,7 +143,7 @@
                                 FontSize="28"
                                 HorizontalOptions="Center"
                                 Text="{Binding HabitsCount}"
-                                TextColor="#10B981" />
+                                TextColor="{StaticResource EduSuccess}" />
                             <Label
                                 FontFamily="Comfortaa"
                                 FontSize="14"
@@ -159,8 +159,8 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         Padding="16,20"
-                        BackgroundColor="#0F1729"
-                        Stroke="#1E293B"
+                        BackgroundColor="{StaticResource EduSurfaceAlt}"
+                        Stroke="{StaticResource EduBorder}"
                         StrokeShape="RoundRectangle 14"
                         StrokeThickness="1">
                         <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
@@ -170,7 +170,7 @@
                                 FontSize="28"
                                 HorizontalOptions="Center"
                                 Text="{Binding TasksCount}"
-                                TextColor="#3B82F6" />
+                                TextColor="{StaticResource EduInfo}" />
                             <Label
                                 FontFamily="Comfortaa"
                                 FontSize="14"
@@ -186,8 +186,8 @@
                         Grid.Row="{OnIdiom Phone=1, Default=0}"
                         Grid.Column="{OnIdiom Phone=0, Default=2}"
                         Padding="16,20"
-                        BackgroundColor="#0F1729"
-                        Stroke="#1E293B"
+                        BackgroundColor="{StaticResource EduSurfaceAlt}"
+                        Stroke="{StaticResource EduBorder}"
                         StrokeShape="RoundRectangle 14"
                         StrokeThickness="1">
                         <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
@@ -213,8 +213,8 @@
                         Grid.Row="{OnIdiom Phone=1, Default=0}"
                         Grid.Column="{OnIdiom Phone=1, Default=3}"
                         Padding="16,20"
-                        BackgroundColor="#0F1729"
-                        Stroke="#1E293B"
+                        BackgroundColor="{StaticResource EduSurfaceAlt}"
+                        Stroke="{StaticResource EduBorder}"
                         StrokeShape="RoundRectangle 14"
                         StrokeThickness="1">
                         <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
@@ -224,7 +224,7 @@
                                 FontSize="28"
                                 HorizontalOptions="Center"
                                 Text="{Binding PomodoroCount}"
-                                TextColor="#F59E0B" />
+                                TextColor="{StaticResource EduWarning}" />
                             <Label
                                 FontFamily="Comfortaa"
                                 FontSize="14"
@@ -271,7 +271,7 @@
                                 WidthRequest="110" />
                         </Grid>
 
-                        <BoxView BackgroundColor="#1E293B" HeightRequest="1" />
+                        <BoxView BackgroundColor="{StaticResource EduBorder}" HeightRequest="1" />
 
                         <!--  Умные напоминания  -->
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,10">
@@ -283,7 +283,7 @@
                                 <Label
                                     FontSize="13"
                                     Text="Напоминания в оптимальное время"
-                                    TextColor="#475569" />
+                                    TextColor="{StaticResource EduMutedText}" />
                             </VerticalStackLayout>
                             <Switch
                                 Grid.Column="1"
@@ -293,7 +293,7 @@
                                 VerticalOptions="Center" />
                         </Grid>
 
-                        <BoxView BackgroundColor="#1E293B" HeightRequest="1" />
+                        <BoxView BackgroundColor="{StaticResource EduBorder}" HeightRequest="1" />
 
                         <!--  Звук и вибрация  -->
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,10">
@@ -305,7 +305,7 @@
                                 <Label
                                     FontSize="13"
                                     Text="Звуки таймера и уведомлений"
-                                    TextColor="#475569" />
+                                    TextColor="{StaticResource EduMutedText}" />
                             </VerticalStackLayout>
                             <Switch
                                 Grid.Column="1"
@@ -323,7 +323,7 @@
                     Grid.Row="4"
                     Margin="0,0,0,16"
                     Padding="0,16"
-                    BackgroundColor="#1A0808"
+                    BackgroundColor="{StaticResource EduDangerSurface}"
                     Stroke="#7F1D1D"
                     StrokeShape="RoundRectangle 14"
                     StrokeThickness="1">
@@ -336,7 +336,7 @@
                         FontSize="15"
                         HorizontalOptions="Center"
                         Text="Выйти из аккаунта"
-                        TextColor="#EF4444"
+                        TextColor="{StaticResource EduDanger}"
                         VerticalOptions="Center" />
                 </Border>
 

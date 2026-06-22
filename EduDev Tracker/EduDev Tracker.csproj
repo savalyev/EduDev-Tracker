@@ -89,6 +89,7 @@
 		<PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
 		<PackageReference Include="SQLiteNetExtensions.Async" Version="2.1.0" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
+		<PackageReference Include="ClosedXML" Version="0.103.2" />
 	</ItemGroup>
 
 	<ItemGroup>

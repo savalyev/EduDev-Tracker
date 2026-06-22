@@ -15,7 +15,14 @@ public partial class ProfilePage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.InitializeAsync();
+        try
+        {
+            await _viewModel.InitializeAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[ProfilePage.OnAppearing] {ex}");
+        }
     }
 
     private void OnMenuTapped(object sender, TappedEventArgs e)

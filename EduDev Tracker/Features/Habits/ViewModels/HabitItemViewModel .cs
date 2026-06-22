@@ -36,10 +36,10 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         public string Icon => _habit.Icon ?? "default_icon.png";
         public bool IsActive => !_habit.IsArchived && !_habit.IsFrozen;
         public string Schedule => ParseDaysMask(_habitSchedule.DayMask);
-        public string TimeOfDay => _habitSchedule.TimeOfDay;
+        public string TimeOfDay => _habitSchedule.TimeOfDay ?? "-";
         public string Type => _habit.TypeString;
         public string TodayProgressText => ParseProgress();
-        public string StreakText => _currentStreak > 0 ? $"🔥 {_currentStreak}" : "-";
+        public string StreakText => _currentStreak > 0 ? $"{_currentStreak}" : "-";
 
         [ObservableProperty]
         private bool isCompleted;

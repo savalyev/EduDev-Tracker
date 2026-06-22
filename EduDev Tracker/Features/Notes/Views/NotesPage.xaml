@@ -21,8 +21,8 @@
             <Color x:Key="AccentBlueMuted">#2A4A8A</Color>
             <Color x:Key="AccentGreen">#019301</Color>
             <Color x:Key="TextPrimary">#E8EAF0</Color>
-            <Color x:Key="TextSecondary">#8892A4</Color>
-            <Color x:Key="TextMuted">#4A5568</Color>
+            <Color x:Key="TextSecondary">#94A3B8</Color>
+            <Color x:Key="TextMuted">#64748B</Color>
             <Color x:Key="BorderColor">#252D40</Color>
             <Color x:Key="PinnedAccent">#F59E0B</Color>
             <Color x:Key="DangerColor">#EF4444</Color>
@@ -49,7 +49,7 @@
             </Style>
 
             <Style x:Key="MutedStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="13" />
                 <Setter Property="TextColor" Value="{StaticResource TextMuted}" />
             </Style>
 
@@ -321,7 +321,7 @@
                             <Border Style="{StaticResource CategoryChipStyle}">
                                 <Label
                                     FontSize="12"
-                                    Text="📌 Закреплённые"
+                                    Text="Закреплённые"
                                     TextColor="{StaticResource TextPrimary}" />
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding ShowPinnedCommand}" />
@@ -422,7 +422,7 @@
                                             Margin="0,0,4,0"
                                             FontSize="11"
                                             IsVisible="{Binding IsPinned}"
-                                            Text="📌"
+                                            Text="●"
                                             VerticalOptions="Center" />
                                         <Label
                                             Grid.Column="1"
@@ -440,7 +440,7 @@
 
                                     <Label
                                         Grid.Row="1"
-                                        FontSize="12"
+                                        FontSize="13"
                                         LineBreakMode="TailTruncation"
                                         MaxLines="2"
                                         Text="{Binding Content}"
@@ -463,9 +463,10 @@
                             Spacing="8"
                             VerticalOptions="Center">
                             <Label
-                                FontSize="40"
+                                FontSize="14"
                                 HorizontalOptions="Center"
-                                Text="📝" />
+                                Text="—"
+                                TextColor="{StaticResource EduMutedText}" />
                             <Label
                                 FontAttributes="Bold"
                                 FontSize="16"
@@ -513,28 +514,28 @@
                         Grid.Column="1"
                         Command="{Binding TogglePinCommand}"
                         Style="{StaticResource ToolbarBtnStyle}"
-                        Text="📌 Закрепить"
+                        Text="Закрепить"
                         VerticalOptions="Center" />
                     <Button
                         Grid.Column="2"
                         Command="{Binding ShowVersionsCommand}"
                         Style="{StaticResource ToolbarBtnStyle}"
-                        Text="🕐 Версии"
+                        Text="Версии"
                         VerticalOptions="Center" />
                     <Button
                         Grid.Column="3"
                         Command="{Binding SaveNoteCommand}"
                         Style="{StaticResource AccentBtnStyle}"
-                        Text="💾 Сохранить"
+                        Text="Сохранить"
                         VerticalOptions="Center" />
                     <Button
                         Grid.Column="4"
                         BackgroundColor="#2A1A1A"
                         Command="{Binding DeleteNoteCommand}"
                         CornerRadius="8"
-                        FontSize="16"
+                        FontSize="13"
                         HeightRequest="44"
-                        Text="🗑"
+                        Text="Удалить"
                         TextColor="#E05555"
                         ToolTipProperties.Text="Удалить заметку"
                         WidthRequest="40" />
@@ -620,7 +621,7 @@
                                 Command="{Binding InsertMdCommand}"
                                 CommandParameter="link"
                                 Style="{StaticResource MdBtnStyle}"
-                                Text="🔗 Link" />
+                                Text="Link" />
                             <Button
                                 Command="{Binding InsertMdCommand}"
                                 CommandParameter="code"
@@ -648,7 +649,7 @@
                                 Command="{Binding AddAttachmentCommand}"
                                 FontSize="16"
                                 Style="{StaticResource MdBtnStyle}"
-                                Text="📎" />
+                                Text="Прикрепить" />
                             <Button
                                 Command="{Binding TogglePreviewCommand}"
                                 Style="{StaticResource ToolbarBtnStyle}"
@@ -706,9 +707,10 @@
                 Spacing="12"
                 VerticalOptions="Center">
                 <Label
-                    FontSize="56"
+                    FontSize="14"
                     HorizontalOptions="Center"
-                    Text="✏️" />
+                    Text="—"
+                    TextColor="{StaticResource EduMutedText}" />
                 <Label
                     FontAttributes="Bold"
                     FontSize="18"
@@ -825,7 +827,7 @@
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesViewModel}}, Path=DeleteAttachmentCommand}"
                                                     CommandParameter="{Binding .}"
                                                     FontSize="14"
-                                                    Text="🗑"
+                                                    Text="Удалить"
                                                     TextColor="#E05555" />
                                             </Grid>
                                         </Border>
@@ -1025,7 +1027,7 @@
                         <Border Style="{StaticResource CategoryChipStyle}">
                             <Label
                                 FontSize="12"
-                                Text="📌 Закреплённые"
+                                Text="Закреплённые"
                                 TextColor="{StaticResource TextPrimary}" />
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPinnedCommand}" />
@@ -1121,7 +1123,7 @@
                                             Margin="0,0,4,0"
                                             FontSize="11"
                                             IsVisible="{Binding IsPinned}"
-                                            Text="📌"
+                                            Text="●"
                                             VerticalOptions="Center" />
                                         <Label
                                             Grid.Column="1"
@@ -1138,7 +1140,7 @@
 
                                     <Label
                                         Grid.Row="1"
-                                        FontSize="12"
+                                        FontSize="13"
                                         LineBreakMode="TailTruncation"
                                         MaxLines="2"
                                         Text="{Binding Content}"
@@ -1233,7 +1235,7 @@
                                 Command="{Binding InsertMdCommand}"
                                 CommandParameter="link"
                                 Style="{StaticResource MdBtnStyle}"
-                                Text="🔗 Link" />
+                                Text="Link" />
                             <Button
                                 Command="{Binding InsertMdCommand}"
                                 CommandParameter="code"
@@ -1261,7 +1263,7 @@
                                 Command="{Binding AddAttachmentCommand}"
                                 FontSize="16"
                                 Style="{StaticResource MdBtnStyle}"
-                                Text="📎" />
+                                Text="Прикрепить" />
                             <Button
                                 Command="{Binding TogglePreviewCommand}"
                                 Style="{StaticResource ToolbarBtnStyle}"

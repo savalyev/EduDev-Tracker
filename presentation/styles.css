@@ -1,0 +1,619 @@
+/* ===== EduDev Tracker — презентация (белая тема, читаемость с ТВ) ===== */
+
+:root {
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
+    --ink: #0f172a;
+    --ink-soft: #475569;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --teal: #2dd4bf;
+    --teal-dk: #0e9f8e;
+    --indigo: #5b5fef;
+    --indigo-dk: #4042c7;
+    /* базовый кегль масштабируется от ширины экрана → подходит любому ТВ */
+    --fs-base: clamp(1.15rem, 1.5vw, 2rem);
+    --fs-h1: clamp(2.4rem, 4.4vw, 5rem);
+    --fs-h2: clamp(2rem, 3.6vw, 3.6rem);
+    --fs-lead: clamp(1.3rem, 2vw, 2.2rem);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", "Roboto", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size: var(--fs-base);
+    line-height: 1.45;
+    overflow: hidden;
+}
+
+
+/* ---------- Дека слайдов: горизонтальный пейджинг ---------- */
+
+.deck {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    transition: transform .5s cubic-bezier(.22, .61, .36, 1);
+    will-change: transform;
+}
+
+.slide {
+    flex: 0 0 100vw;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: clamp(28px, 4vh, 70px) clamp(32px, 5vw, 110px);
+}
+
+.slide__inner {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.slide__title {
+    font-size: var(--fs-h2);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    margin-bottom: clamp(20px, 3vh, 44px);
+    padding-bottom: .35em;
+    border-bottom: 4px solid var(--teal);
+    display: inline-block;
+}
+
+
+/* ---------- Слайд 1: титул ---------- */
+
+.title {
+    text-align: center;
+    display: grid;
+    gap: clamp(14px, 2.2vh, 30px);
+}
+
+.title__org {
+    color: var(--muted);
+    font-size: var(--fs-lead);
+}
+
+.title__brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4em;
+}
+
+.title__logo {
+    font-size: clamp(2.6rem, 5vw, 5rem);
+    color: var(--teal-dk);
+    line-height: 1;
+}
+
+.title__brandname {
+    font-size: clamp(2.6rem, 5.4vw, 5.4rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    background: linear-gradient(90deg, var(--teal-dk), var(--indigo));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.title__theme {
+    font-size: var(--fs-h1);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    line-height: 1.12;
+}
+
+.title__code {
+    display: inline-block;
+    justify-self: center;
+    font-size: var(--fs-lead);
+    color: var(--indigo-dk);
+    font-weight: 700;
+    background: #eef0ff;
+    border: 2px solid #d9dcff;
+    border-radius: 999px;
+    padding: .35em 1.1em;
+}
+
+.title__people {
+    display: flex;
+    gap: clamp(24px, 6vw, 90px);
+    justify-content: center;
+    margin-top: clamp(8px, 1.5vh, 20px);
+}
+
+.person__role {
+    color: var(--muted);
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.person__name {
+    font-size: var(--fs-lead);
+    font-weight: 700;
+}
+
+.title__year {
+    color: var(--muted);
+    font-size: var(--fs-lead);
+    font-weight: 600;
+}
+
+
+/* ---------- Карточки / две колонки ---------- */
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(20px, 2.5vw, 40px);
+}
+
+.card {
+    background: var(--bg-soft);
+    border: 2px solid var(--line);
+    border-radius: 22px;
+    padding: clamp(22px, 3vh, 44px);
+}
+
+.card--accent {
+    background: linear-gradient(135deg, #effdfb, #eef0ff);
+    border-color: #c9f3ee;
+}
+
+.card__label {
+    display: inline-block;
+    font-weight: 800;
+    font-size: 1.05em;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--teal-dk);
+    margin-bottom: .6em;
+}
+
+.card__label--alt {
+    color: var(--indigo-dk);
+}
+
+.card__lead {
+    font-size: var(--fs-lead);
+    line-height: 1.4;
+}
+
+.bullets {
+    list-style: none;
+    display: grid;
+    gap: .7em;
+}
+
+.bullets li {
+    position: relative;
+    padding-left: 1.6em;
+    font-size: var(--fs-lead);
+}
+
+.bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .55em;
+    width: .7em;
+    height: .7em;
+    border-radius: 50%;
+    background: var(--teal);
+}
+
+
+/* ---------- Слайд 3: аудитория + модули ---------- */
+
+.audience {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(14px, 1.6vw, 26px);
+    margin-bottom: clamp(18px, 2.4vh, 34px);
+}
+
+.aud {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: .6em;
+    align-items: center;
+    background: linear-gradient(135deg, #eef0ff, #f8fafc);
+    border: 2px solid #dfe3ff;
+    border-radius: 18px;
+    padding: clamp(12px, 1.6vh, 22px) clamp(16px, 1.6vw, 26px);
+}
+
+.aud__ico {
+    grid-row: 1 / 3;
+    font-size: clamp(1.8rem, 3vw, 3rem);
+}
+
+.aud b {
+    font-size: clamp(1.2rem, 1.8vw, 1.9rem);
+}
+
+.aud span:last-child {
+    color: var(--muted);
+    font-size: .92em;
+}
+
+.modules {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(12px, 1.4vw, 22px);
+}
+
+.mod {
+    background: var(--bg-soft);
+    border: 2px solid var(--line);
+    border-radius: 18px;
+    padding: clamp(14px, 2vh, 26px);
+    transition: transform .15s ease, border-color .15s ease;
+}
+
+.mod:hover {
+    transform: translateY(-4px);
+    border-color: var(--teal);
+}
+
+.mod__ico {
+    font-size: clamp(1.6rem, 2.6vw, 2.6rem);
+}
+
+.mod h3 {
+    font-size: clamp(1.15rem, 1.7vw, 1.8rem);
+    margin: .25em 0 .15em;
+}
+
+.mod p {
+    color: var(--ink-soft);
+    font-size: clamp(.95rem, 1.15vw, 1.3rem);
+}
+
+
+/* ---------- Слайд 4: инструменты ---------- */
+
+.tools {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(14px, 1.6vw, 26px);
+}
+
+.tool {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 1vw, 20px);
+    background: var(--bg-soft);
+    border: 2px solid var(--line);
+    border-radius: 18px;
+    padding: clamp(14px, 1.8vh, 24px) clamp(16px, 1.4vw, 26px);
+}
+
+.tool__badge {
+    flex: 0 0 auto;
+    width: clamp(48px, 4vw, 78px);
+    height: clamp(48px, 4vw, 78px);
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 800;
+}
+
+.tool__badge svg {
+    width: 62%;
+    height: 62%;
+}
+
+.tool__name {
+    font-weight: 700;
+    font-size: clamp(1.05rem, 1.5vw, 1.7rem);
+    line-height: 1.15;
+}
+
+.tool__sub {
+    color: var(--muted);
+    font-size: clamp(.85rem, 1vw, 1.15rem);
+}
+
+
+/* ---------- Слайды-диаграммы ---------- */
+
+
+/* отдаём диаграмме максимум места: меньше отступов, шире контейнер */
+
+
+/* flex со stretch (вместо grid/center) — чтобы контент тянулся на всю высоту
+   и диаграмма всегда вписывалась ЦЕЛИКОМ, без обрезки */
+
+.slide--diagram {
+    padding: clamp(14px, 2.2vh, 36px) clamp(18px, 2.6vw, 56px);
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.slide--diagram .slide__inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-width: 1840px;
+}
+
+.slide--diagram .slide__title {
+    font-size: clamp(1.55rem, 2.7vw, 2.8rem);
+    margin-bottom: clamp(8px, 1.2vh, 18px);
+}
+
+.figure {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.figure__frame {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    background: var(--bg-soft);
+    border: 2px solid var(--line);
+    border-radius: 22px;
+    padding: clamp(6px, 1vh, 14px);
+    display: grid;
+    place-items: center;
+    cursor: zoom-in;
+    overflow: hidden;
+}
+
+.figure__frame:hover {
+    border-color: var(--indigo);
+}
+
+.diagram {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.figure__hint {
+    position: absolute;
+    right: 16px;
+    bottom: 14px;
+    background: rgba(15, 23, 42, .82);
+    color: #fff;
+    font-size: clamp(.8rem, 1vw, 1.05rem);
+    padding: .35em .8em;
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+figcaption {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: clamp(.95rem, 1.3vw, 1.4rem);
+    margin-top: clamp(6px, 1vh, 12px);
+}
+
+
+/* ---------- Прогресс-бар ---------- */
+
+.progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: var(--line);
+    z-index: 30;
+}
+
+.progress__bar {
+    height: 100%;
+    width: 12.5%;
+    background: linear-gradient(90deg, var(--teal), var(--indigo));
+    transition: width .5s cubic-bezier(.22, .61, .36, 1);
+}
+
+
+/* ---------- Навигация ---------- */
+
+.nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    width: clamp(48px, 4vw, 72px);
+    height: clamp(48px, 4vw, 72px);
+    border: 2px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    border-radius: 50%;
+    font-size: clamp(1.6rem, 2.4vw, 2.6rem);
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .1);
+    transition: background .15s, transform .15s, opacity .15s;
+}
+
+.nav:hover {
+    background: var(--bg-soft);
+    transform: translateY(-50%) scale(1.06);
+}
+
+.nav:disabled {
+    opacity: .25;
+    cursor: default;
+}
+
+.nav--prev {
+    left: clamp(12px, 2vw, 34px);
+}
+
+.nav--next {
+    right: clamp(12px, 2vw, 34px);
+}
+
+.hud {
+    position: fixed;
+    left: 20px;
+    right: 0;
+    bottom: clamp(14px, 2.4vh, 30px);
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.dots {
+    display: flex;
+    gap: 12px;
+    pointer-events: auto;
+}
+
+.dot {
+    width: clamp(11px, 1vw, 15px);
+    height: clamp(11px, 1vw, 15px);
+    border-radius: 50%;
+    background: #cbd5e1;
+    border: none;
+    cursor: pointer;
+    transition: transform .15s, background .15s;
+}
+
+.dot:hover {
+    transform: scale(1.25);
+}
+
+.dot.is-active {
+    background: var(--indigo);
+    transform: scale(1.3);
+}
+
+.counter {
+    color: var(--muted);
+    font-weight: 700;
+    font-size: clamp(.95rem, 1.2vw, 1.3rem);
+}
+
+
+/* ---------- Лайтбокс диаграмм ---------- */
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(248, 250, 252, .98);
+    display: grid;
+    place-items: center;
+}
+
+.lightbox[hidden] {
+    display: none;
+}
+
+.lightbox__stage {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: none;
+}
+
+.lightbox__stage.is-grabbing {
+    cursor: grabbing;
+}
+
+.lightbox__img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 0;
+    user-select: none;
+    -webkit-user-drag: none;
+    max-width: none;
+    max-height: none;
+}
+
+.lightbox__bar {
+    position: absolute;
+    bottom: clamp(18px, 3vh, 36px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    background: #fff;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    padding: 8px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, .15);
+}
+
+.lightbox__bar button {
+    min-width: clamp(48px, 4vw, 64px);
+    height: clamp(48px, 4vw, 64px);
+    border: none;
+    background: var(--bg-soft);
+    border-radius: 999px;
+    font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.lightbox__bar button:hover {
+    background: #e9eefc;
+}
+
+.lightbox__tip {
+    position: absolute;
+    top: clamp(16px, 3vh, 30px);
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--muted);
+    font-size: clamp(.9rem, 1.1vw, 1.2rem);
+}
+
+
+/* ---------- Адаптив для узких/портретных экранов ---------- */
+
+@media (max-aspect-ratio: 1/1),
+(max-width: 900px) {
+    .two-col,
+    .audience,
+    .modules,
+    .tools {
+        grid-template-columns: 1fr;
+    }
+    .modules {
+        grid-template-columns: 1fr 1fr;
+    }
+    .tools {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .deck,
+    .progress__bar {
+        transition: none;
+    }
+}

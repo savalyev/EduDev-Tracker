@@ -276,17 +276,19 @@
                                 Style="{StaticResource EduCardSubtitleLabel}"
                                 Text="{Binding TasksCountText}" />
 
-                            <CollectionView
+                            <!--  Группы задач: BindableLayout вместо CollectionView (нативный краш WinUI при CollectionView в ScrollView)  -->
+                            <VerticalStackLayout
                                 Grid.Row="2"
-                                IsGrouped="True"
-                                ItemsSource="{Binding GroupedTasks}"
-                                SelectionMode="None">
-
-                                <CollectionView.GroupHeaderTemplate>
+                                BindableLayout.ItemsSource="{Binding GroupedTasks}"
+                                Spacing="0">
+                                <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="vm:TaskGroup">
-                                        <Grid Padding="0,12,0,6">
-                                            <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-                                                <!--  Иконка группы  -->
+                                        <VerticalStackLayout Spacing="6">
+                                            <!--  Шапка группы  -->
+                                            <HorizontalStackLayout
+                                                Padding="0,12,0,6"
+                                                Spacing="8"
+                                                VerticalOptions="Center">
                                                 <BoxView
                                                     BackgroundColor="{Binding GroupColor}"
                                                     CornerRadius="4"
@@ -296,175 +298,167 @@
                                                 <Label
                                                     FontAttributes="Bold"
                                                     FontFamily="Comfortaa"
-                                                    FontSize="13"
+                                                    FontSize="15"
                                                     Text="{Binding GroupTitle}"
-                                                    TextColor="#AAAAAA"
+                                                    TextColor="#94A3B8"
                                                     VerticalOptions="Center" />
                                             </HorizontalStackLayout>
-                                        </Grid>
+
+                                            <!--  Элементы группы (TaskGroup сам является источником)  -->
+                                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding}" Spacing="6">
+                                                <BindableLayout.ItemTemplate>
+                                                    <DataTemplate x:DataType="vm:TaskItemViewModel">
+                                                        <Border
+                                                            Background="#10172A"
+                                                            Stroke="#495061"
+                                                            StrokeThickness="1">
+                                                            <Border.GestureRecognizers>
+                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
+                                                            </Border.GestureRecognizers>
+                                                            <Border.StrokeShape>
+                                                                <RoundRectangle CornerRadius="14" />
+                                                            </Border.StrokeShape>
+
+                                                            <Grid
+                                                                Padding="12,10"
+                                                                ColumnDefinitions="Auto, *, Auto"
+                                                                ColumnSpacing="12"
+                                                                RowDefinitions="Auto">
+
+                                                                <!--  Чекбокс (checkbox-заменитель)  -->
+                                                                <Border
+                                                                    Grid.Column="0"
+                                                                    BackgroundColor="#0D1525"
+                                                                    HeightRequest="28"
+                                                                    Stroke="#5B5FEF"
+                                                                    StrokeThickness="1.5"
+                                                                    VerticalOptions="Center"
+                                                                    WidthRequest="28">
+                                                                    <Border.StrokeShape>
+                                                                        <RoundRectangle CornerRadius="6" />
+                                                                    </Border.StrokeShape>
+                                                                    <Border.GestureRecognizers>
+                                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=ToggleTaskCommand}" CommandParameter="{Binding TaskId}" />
+                                                                    </Border.GestureRecognizers>
+                                                                    <!--  Галочка при IsCompleted = True  -->
+                                                                    <Label
+                                                                        FontFamily="Comfortaa"
+                                                                        FontSize="14"
+                                                                        HorizontalOptions="Center"
+                                                                        IsVisible="{Binding IsCompleted}"
+                                                                        Text="✓"
+                                                                        TextColor="#5B5FEF"
+                                                                        VerticalOptions="Center" />
+                                                                </Border>
+
+                                                                <!--  Основная инфо  -->
+                                                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                                                    <Label
+                                                                        FontFamily="Comfortaa"
+                                                                        FontSize="14"
+                                                                        LineBreakMode="TailTruncation"
+                                                                        Text="{Binding Title}"
+                                                                        TextColor="White">
+                                                                        <Label.Triggers>
+                                                                            <DataTrigger
+                                                                                Binding="{Binding IsCompleted}"
+                                                                                TargetType="Label"
+                                                                                Value="True">
+                                                                                <Setter Property="TextDecorations" Value="Strikethrough" />
+                                                                                <Setter Property="TextColor" Value="#667788" />
+                                                                            </DataTrigger>
+                                                                        </Label.Triggers>
+                                                                    </Label>
+
+                                                                    <!--  Теги: приоритет + категория + дедлайн  -->
+                                                                    <HorizontalStackLayout Margin="0,4,0,0" Spacing="4">
+
+                                                                        <!--  Приоритет  -->
+                                                                        <Border
+                                                                            Margin="0,0,4,4"
+                                                                            Padding="6,2"
+                                                                            BackgroundColor="{Binding PriorityBgColor}"
+                                                                            Stroke="{Binding PriorityBorderColor}"
+                                                                            StrokeThickness="1">
+                                                                            <Border.StrokeShape>
+                                                                                <RoundRectangle CornerRadius="10" />
+                                                                            </Border.StrokeShape>
+                                                                            <Label
+                                                                                FontFamily="Comfortaa"
+                                                                                FontSize="14"
+                                                                                Text="{Binding PriorityLabel}"
+                                                                                TextColor="#FFFFFF" />
+                                                                        </Border>
+
+                                                                        <!--  Категория  -->
+                                                                        <Border
+                                                                            Margin="0,0,4,4"
+                                                                            Padding="6,2"
+                                                                            Background="#182333"
+                                                                            Stroke="#4A5A6A"
+                                                                            StrokeThickness="1">
+                                                                            <Border.StrokeShape>
+                                                                                <RoundRectangle CornerRadius="10" />
+                                                                            </Border.StrokeShape>
+                                                                            <Label
+                                                                                FontFamily="Comfortaa"
+                                                                                FontSize="14"
+                                                                                Text="{Binding CategoryName}"
+                                                                                TextColor="#94A3B8" />
+                                                                        </Border>
+
+                                                                        <!--  Дедлайн  -->
+                                                                        <Border
+                                                                            Margin="0,0,4,4"
+                                                                            Padding="6,2"
+                                                                            BackgroundColor="{Binding DeadlineBgColor}"
+                                                                            Stroke="{StaticResource EduBorderStrong}"
+                                                                            StrokeThickness="1">
+                                                                            <Border.StrokeShape>
+                                                                                <RoundRectangle CornerRadius="10" />
+                                                                            </Border.StrokeShape>
+                                                                            <Label
+                                                                                FontFamily="Comfortaa"
+                                                                                FontSize="14"
+                                                                                Text="{Binding DeadlineText}"
+                                                                                TextColor="{Binding DeadlineTextColor}"
+                                                                                VerticalOptions="Center" />
+                                                                        </Border>
+                                                                    </HorizontalStackLayout>
+                                                                </VerticalStackLayout>
+
+                                                                <!--  Действия  -->
+                                                                <HorizontalStackLayout
+                                                                    Grid.Column="2"
+                                                                    IsVisible="{OnIdiom Phone=False,
+                                                                                        Default=True}"
+                                                                    Spacing="6"
+                                                                    VerticalOptions="Center">
+                                                                    <Button
+                                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenReminderCommand}"
+                                                                        CommandParameter="{Binding TaskId}"
+                                                                        Style="{StaticResource EduFilterButton}"
+                                                                        Text="Напоминание" />
+                                                                    <Button
+                                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=EditTaskCommand}"
+                                                                        CommandParameter="{Binding TaskId}"
+                                                                        Style="{StaticResource EduFilterButton}"
+                                                                        Text="Редактировать" />
+                                                                    <Button
+                                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=DeleteTaskCommand}"
+                                                                        CommandParameter="{Binding TaskId}"
+                                                                        Style="{StaticResource EduFilterButton}"
+                                                                        Text="Удалить" />
+                                                                </HorizontalStackLayout>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </BindableLayout.ItemTemplate>
+                                            </VerticalStackLayout>
+                                        </VerticalStackLayout>
                                     </DataTemplate>
-                                </CollectionView.GroupHeaderTemplate>
-
-                                <CollectionView.ItemsLayout>
-                                    <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
-                                </CollectionView.ItemsLayout>
-
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:TaskItemViewModel">
-                                        <Border
-                                            Background="#10172A"
-                                            Stroke="#495061"
-                                            StrokeThickness="1">
-                                            <Border.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenTaskDetailsCommand}" CommandParameter="{Binding TaskId}" />
-                                            </Border.GestureRecognizers>
-                                            <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="14" />
-                                            </Border.StrokeShape>
-
-                                            <Grid
-                                                Padding="12,10"
-                                                ColumnDefinitions="Auto, *, Auto"
-                                                ColumnSpacing="12"
-                                                RowDefinitions="Auto">
-
-                                                <!--  Чекбокс (checkbox-заменитель)  -->
-                                                <Border
-                                                    Grid.Column="0"
-                                                    BackgroundColor="#0D1525"
-                                                    HeightRequest="28"
-                                                    Stroke="#5B5FEF"
-                                                    StrokeThickness="1.5"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="28">
-                                                    <Border.StrokeShape>
-                                                        <RoundRectangle CornerRadius="6" />
-                                                    </Border.StrokeShape>
-                                                    <Border.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=ToggleTaskCommand}" CommandParameter="{Binding TaskId}" />
-                                                    </Border.GestureRecognizers>
-                                                    <!--  Галочка при IsCompleted = True  -->
-                                                    <Label
-                                                        FontFamily="Comfortaa"
-                                                        FontSize="14"
-                                                        HorizontalOptions="Center"
-                                                        IsVisible="{Binding IsCompleted}"
-                                                        Text="✓"
-                                                        TextColor="#5B5FEF"
-                                                        VerticalOptions="Center" />
-                                                </Border>
-
-                                                <!--  Основная инфо  -->
-                                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                                                    <Label
-                                                        FontFamily="Comfortaa"
-                                                        FontSize="14"
-                                                        LineBreakMode="TailTruncation"
-                                                        Text="{Binding Title}"
-                                                        TextColor="White">
-                                                        <Label.Triggers>
-                                                            <DataTrigger
-                                                                Binding="{Binding IsCompleted}"
-                                                                TargetType="Label"
-                                                                Value="True">
-                                                                <Setter Property="TextDecorations" Value="Strikethrough" />
-                                                                <Setter Property="TextColor" Value="#667788" />
-                                                            </DataTrigger>
-                                                        </Label.Triggers>
-                                                    </Label>
-
-                                                    <!--  Теги: приоритет + категория + дедлайн  -->
-                                                    <HorizontalStackLayout Margin="0,4,0,0" Spacing="4">
-
-                                                        <!--  Приоритет  -->
-                                                        <Border
-                                                            Margin="0,0,4,4"
-                                                            Padding="6,2"
-                                                            BackgroundColor="{Binding PriorityBgColor}"
-                                                            Stroke="{Binding PriorityBorderColor}"
-                                                            StrokeThickness="1">
-                                                            <Border.StrokeShape>
-                                                                <RoundRectangle CornerRadius="10" />
-                                                            </Border.StrokeShape>
-                                                            <Label
-                                                                FontFamily="Comfortaa"
-                                                                FontSize="12"
-                                                                Text="{Binding PriorityLabel}"
-                                                                TextColor="#FFFFFF" />
-                                                        </Border>
-
-                                                        <!--  Категория  -->
-                                                        <Border
-                                                            Margin="0,0,4,4"
-                                                            Padding="6,2"
-                                                            Background="#182333"
-                                                            Stroke="#4A5A6A"
-                                                            StrokeThickness="1">
-                                                            <Border.StrokeShape>
-                                                                <RoundRectangle CornerRadius="10" />
-                                                            </Border.StrokeShape>
-                                                            <Label
-                                                                FontFamily="Comfortaa"
-                                                                FontSize="12"
-                                                                Text="{Binding CategoryName}"
-                                                                TextColor="#99FFFFFF" />
-                                                        </Border>
-
-                                                        <!--  Дедлайн  -->
-                                                        <Border
-                                                            Margin="0,0,4,4"
-                                                            Padding="6,2"
-                                                            BackgroundColor="{Binding DeadlineBgColor}"
-                                                            Stroke="#4A5A6A"
-                                                            StrokeThickness="1">
-                                                            <Border.StrokeShape>
-                                                                <RoundRectangle CornerRadius="10" />
-                                                            </Border.StrokeShape>
-                                                            <HorizontalStackLayout Spacing="3">
-                                                                <Label
-                                                                    FontFamily="Comfortaa"
-                                                                    FontSize="12"
-                                                                    Text="📅"
-                                                                    VerticalOptions="Center" />
-                                                                <Label
-                                                                    FontFamily="Comfortaa"
-                                                                    FontSize="12"
-                                                                    Text="{Binding DeadlineText}"
-                                                                    TextColor="{Binding DeadlineTextColor}"
-                                                                    VerticalOptions="Center" />
-                                                            </HorizontalStackLayout>
-                                                        </Border>
-                                                    </HorizontalStackLayout>
-                                                </VerticalStackLayout>
-
-                                                <!--  Действия  -->
-                                                <HorizontalStackLayout
-                                                    Grid.Column="2"
-                                                    IsVisible="{OnIdiom Phone=False,
-                                                                        Default=True}"
-                                                    Spacing="6"
-                                                    VerticalOptions="Center">
-                                                    <Button
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=OpenReminderCommand}"
-                                                        CommandParameter="{Binding TaskId}"
-                                                        Style="{StaticResource EduFilterButton}"
-                                                        Text="Напоминание" />
-                                                    <Button
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=EditTaskCommand}"
-                                                        CommandParameter="{Binding TaskId}"
-                                                        Style="{StaticResource EduFilterButton}"
-                                                        Text="Редактировать" />
-                                                    <Button
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TasksViewModel}}, Path=DeleteTaskCommand}"
-                                                        CommandParameter="{Binding TaskId}"
-                                                        Style="{StaticResource EduFilterButton}"
-                                                        Text="Удалить" />
-                                                </HorizontalStackLayout>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
                         </Grid>
                     </Border>
 
@@ -490,6 +484,7 @@
                             <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto">
                                 <Button
                                     Grid.Column="0"
+                                    BackgroundColor="#5B5FEF"
                                     Command="{Binding PrevMonthCommand}"
                                     HeightRequest="36"
                                     Style="{StaticResource EduFilterButton}"
@@ -506,6 +501,7 @@
                                     VerticalOptions="Center" />
                                 <Button
                                     Grid.Column="2"
+                                    BackgroundColor="#5B5FEF"
                                     Command="{Binding NextMonthCommand}"
                                     HeightRequest="36"
                                     Style="{StaticResource EduFilterButton}"
@@ -527,59 +523,64 @@
                                     <Label
                                         Grid.Column="0"
                                         FontFamily="Comfortaa"
-                                        FontSize="13"
+                                        FontSize="15"
                                         HorizontalTextAlignment="Center"
                                         Text="Пн"
-                                        TextColor="#99FFFFFF" />
+                                        TextColor="#94A3B8" />
                                     <Label
                                         Grid.Column="1"
                                         FontFamily="Comfortaa"
-                                        FontSize="13"
+                                        FontSize="15"
                                         HorizontalTextAlignment="Center"
                                         Text="Вт"
-                                        TextColor="#99FFFFFF" />
+                                        TextColor="#94A3B8" />
                                     <Label
                                         Grid.Column="2"
                                         FontFamily="Comfortaa"
-                                        FontSize="13"
+                                        FontSize="15"
                                         HorizontalTextAlignment="Center"
                                         Text="Ср"
-                                        TextColor="#99FFFFFF" />
+                                        TextColor="#94A3B8" />
                                     <Label
                                         Grid.Column="3"
                                         FontFamily="Comfortaa"
-                                        FontSize="13"
+                                        FontSize="15"
                                         HorizontalTextAlignment="Center"
                                         Text="Чт"
-                                        TextColor="#99FFFFFF" />
+                                        TextColor="#94A3B8" />
                                     <Label
                                         Grid.Column="4"
                                         FontFamily="Comfortaa"
-                                        FontSize="13"
+                                        FontSize="15"
                                         HorizontalTextAlignment="Center"
                                         Text="Пт"
-                                        TextColor="#99FFFFFF" />
+                                        TextColor="#94A3B8" />
                                     <Label
                                         Grid.Column="5"
                                         FontFamily="Comfortaa"
-                                        FontSize="13"
+                                        FontSize="15"
                                         HorizontalTextAlignment="Center"
                                         Text="Сб"
                                         TextColor="#6699FF" />
                                     <Label
                                         Grid.Column="6"
                                         FontFamily="Comfortaa"
-                                        FontSize="13"
+                                        FontSize="15"
                                         HorizontalTextAlignment="Center"
                                         Text="Вс"
                                         TextColor="#FF6B6B" />
                                 </Grid>
 
-                                <!--  Сетка дней месяца  -->
+                                <!--
+                                    Сетка дней месяца. HeightRequest ограничивает высоту (6 строк) —
+                                    иначе CollectionView в ScrollView мерится бесконечной высотой и роняет рендер WinUI (0xc000027b)
+                                -->
                                 <CollectionView
                                     Grid.Row="1"
+                                    HeightRequest="340"
                                     ItemsSource="{Binding CalendarDays}"
-                                    SelectionMode="None">
+                                    SelectionMode="None"
+                                    VerticalOptions="Start">
                                     <CollectionView.ItemsLayout>
                                         <GridItemsLayout
                                             HorizontalItemSpacing="4"
@@ -684,15 +685,12 @@
                                         TextColor="White" />
                                     <Label
                                         FontFamily="Comfortaa"
-                                        FontSize="12"
+                                        FontSize="14"
                                         IsVisible="{Binding TasksForSelectedDay.Count, Converter={StaticResource ZeroConverter}}"
                                         Text="Задачи на этот день представлены ниже"
-                                        TextColor="#99FFFFFF" />
-                                    <CollectionView ItemsSource="{Binding TasksForSelectedDay}" SelectionMode="None">
-                                        <CollectionView.ItemsLayout>
-                                            <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
-                                        </CollectionView.ItemsLayout>
-                                        <CollectionView.ItemTemplate>
+                                        TextColor="#94A3B8" />
+                                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding TasksForSelectedDay}" Spacing="6">
+                                        <BindableLayout.ItemTemplate>
                                             <DataTemplate x:DataType="vm:TaskItemViewModel">
                                                 <Border
                                                     Padding="10,8"
@@ -723,13 +721,13 @@
                                                                 </Border.StrokeShape>
                                                                 <Label
                                                                     FontFamily="Comfortaa"
-                                                                    FontSize="12"
+                                                                    FontSize="14"
                                                                     Text="{Binding PriorityLabel}"
                                                                     TextColor="White" />
                                                             </Border>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="13"
+                                                                FontSize="15"
                                                                 Text="{Binding DeadlineText}"
                                                                 TextColor="{Binding DeadlineTextColor}"
                                                                 VerticalOptions="Center" />
@@ -737,8 +735,8 @@
                                                     </VerticalStackLayout>
                                                 </Border>
                                             </DataTemplate>
-                                        </CollectionView.ItemTemplate>
-                                    </CollectionView>
+                                        </BindableLayout.ItemTemplate>
+                                    </VerticalStackLayout>
                                 </VerticalStackLayout>
                             </Border>
                         </Grid>
@@ -808,16 +806,13 @@
                                                 </Border.StrokeShape>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="13"
+                                                    FontSize="15"
                                                     Text="{Binding OpenCount}"
                                                     TextColor="#CC88FF" />
                                             </Border>
                                         </HorizontalStackLayout>
-                                        <CollectionView ItemsSource="{Binding OpenTasks}" SelectionMode="None">
-                                            <CollectionView.ItemsLayout>
-                                                <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
-                                            </CollectionView.ItemsLayout>
-                                            <CollectionView.ItemTemplate>
+                                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding OpenTasks}" Spacing="6">
+                                            <BindableLayout.ItemTemplate>
                                                 <DataTemplate x:DataType="vm:TaskItemViewModel">
                                                     <Border
                                                         Padding="10,8"
@@ -848,22 +843,22 @@
                                                                     </Border.StrokeShape>
                                                                     <Label
                                                                         FontFamily="Comfortaa"
-                                                                        FontSize="12"
+                                                                        FontSize="14"
                                                                         Text="{Binding PriorityLabel}"
                                                                         TextColor="White" />
                                                                 </Border>
                                                                 <Label
                                                                     FontFamily="Comfortaa"
-                                                                    FontSize="12"
+                                                                    FontSize="14"
                                                                     Text="{Binding DeadlineText}"
-                                                                    TextColor="#99FFFFFF"
+                                                                    TextColor="#94A3B8"
                                                                     VerticalOptions="Center" />
                                                             </HorizontalStackLayout>
                                                         </VerticalStackLayout>
                                                     </Border>
                                                 </DataTemplate>
-                                            </CollectionView.ItemTemplate>
-                                        </CollectionView>
+                                            </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
 
@@ -906,16 +901,13 @@
                                                 </Border.StrokeShape>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="13"
+                                                    FontSize="15"
                                                     Text="{Binding InProgressCount}"
                                                     TextColor="#FFAA44" />
                                             </Border>
                                         </HorizontalStackLayout>
-                                        <CollectionView ItemsSource="{Binding InProgressTasks}" SelectionMode="None">
-                                            <CollectionView.ItemsLayout>
-                                                <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
-                                            </CollectionView.ItemsLayout>
-                                            <CollectionView.ItemTemplate>
+                                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding InProgressTasks}" Spacing="6">
+                                            <BindableLayout.ItemTemplate>
                                                 <DataTemplate x:DataType="vm:TaskItemViewModel">
                                                     <Border
                                                         Padding="10,8"
@@ -946,22 +938,22 @@
                                                                     </Border.StrokeShape>
                                                                     <Label
                                                                         FontFamily="Comfortaa"
-                                                                        FontSize="12"
+                                                                        FontSize="14"
                                                                         Text="{Binding PriorityLabel}"
                                                                         TextColor="White" />
                                                                 </Border>
                                                                 <Label
                                                                     FontFamily="Comfortaa"
-                                                                    FontSize="12"
+                                                                    FontSize="14"
                                                                     Text="{Binding DeadlineText}"
-                                                                    TextColor="#99FFFFFF"
+                                                                    TextColor="#94A3B8"
                                                                     VerticalOptions="Center" />
                                                             </HorizontalStackLayout>
                                                         </VerticalStackLayout>
                                                     </Border>
                                                 </DataTemplate>
-                                            </CollectionView.ItemTemplate>
-                                        </CollectionView>
+                                            </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
 
@@ -1004,16 +996,13 @@
                                                 </Border.StrokeShape>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="13"
+                                                    FontSize="15"
                                                     Text="{Binding DoneCount}"
                                                     TextColor="#44AAFF" />
                                             </Border>
                                         </HorizontalStackLayout>
-                                        <CollectionView ItemsSource="{Binding DoneTasks}" SelectionMode="None">
-                                            <CollectionView.ItemsLayout>
-                                                <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
-                                            </CollectionView.ItemsLayout>
-                                            <CollectionView.ItemTemplate>
+                                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding DoneTasks}" Spacing="6">
+                                            <BindableLayout.ItemTemplate>
                                                 <DataTemplate x:DataType="vm:TaskItemViewModel">
                                                     <Border
                                                         Padding="10,8"
@@ -1044,22 +1033,43 @@
                                                                     </Border.StrokeShape>
                                                                     <Label
                                                                         FontFamily="Comfortaa"
-                                                                        FontSize="12"
+                                                                        FontSize="14"
                                                                         Text="{Binding PriorityLabel}"
                                                                         TextColor="White" />
                                                                 </Border>
                                                                 <Label
                                                                     FontFamily="Comfortaa"
-                                                                    FontSize="12"
+                                                                    FontSize="14"
                                                                     Text="{Binding DeadlineText}"
-                                                                    TextColor="#99FFFFFF"
+                                                                    TextColor="#94A3B8"
                                                                     VerticalOptions="Center" />
                                                             </HorizontalStackLayout>
                                                         </VerticalStackLayout>
                                                     </Border>
                                                 </DataTemplate>
-                                            </CollectionView.ItemTemplate>
-                                        </CollectionView>
+                                            </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
+
+                                        <!--  Подгрузить ещё выполненные  -->
+                                        <VerticalStackLayout IsVisible="{Binding DoneHasMore}" Spacing="6">
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding DonePageInfo}"
+                                                TextColor="#64748B" />
+                                            <Button
+                                                Command="{Binding LoadMoreDoneCommand}"
+                                                FontFamily="Comfortaa"
+                                                FontSize="15"
+                                                BackgroundColor="#0D1F12"
+                                                BorderColor="#27AE60"
+                                                BorderWidth="1"
+                                                CornerRadius="10"
+                                                HeightRequest="36"
+                                                Text="Загрузить ещё 15 →"
+                                                TextColor="#44CC77" />
+                                        </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
 
@@ -1102,16 +1112,13 @@
                                                 </Border.StrokeShape>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="13"
+                                                    FontSize="15"
                                                     Text="{Binding CancelledCount}"
                                                     TextColor="Red" />
                                             </Border>
                                         </HorizontalStackLayout>
-                                        <CollectionView ItemsSource="{Binding CancelledTasks}" SelectionMode="None">
-                                            <CollectionView.ItemsLayout>
-                                                <LinearItemsLayout ItemSpacing="6" Orientation="Vertical" />
-                                            </CollectionView.ItemsLayout>
-                                            <CollectionView.ItemTemplate>
+                                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding CancelledTasks}" Spacing="6">
+                                            <BindableLayout.ItemTemplate>
                                                 <DataTemplate x:DataType="vm:TaskItemViewModel">
                                                     <Border
                                                         Padding="10,8"
@@ -1143,22 +1150,43 @@
                                                                     </Border.StrokeShape>
                                                                     <Label
                                                                         FontFamily="Comfortaa"
-                                                                        FontSize="13"
+                                                                        FontSize="15"
                                                                         Text="{Binding PriorityLabel}"
                                                                         TextColor="White" />
                                                                 </Border>
                                                                 <Label
                                                                     FontFamily="Comfortaa"
-                                                                    FontSize="12"
+                                                                    FontSize="14"
                                                                     Text="{Binding DeadlineText}"
-                                                                    TextColor="#99FFFFFF"
+                                                                    TextColor="#94A3B8"
                                                                     VerticalOptions="Center" />
                                                             </HorizontalStackLayout>
                                                         </VerticalStackLayout>
                                                     </Border>
                                                 </DataTemplate>
-                                            </CollectionView.ItemTemplate>
-                                        </CollectionView>
+                                            </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
+
+                                        <!--  Подгрузить ещё отменённые  -->
+                                        <VerticalStackLayout IsVisible="{Binding CancelledHasMore}" Spacing="6">
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CancelledPageInfo}"
+                                                TextColor="#64748B" />
+                                            <Button
+                                                Command="{Binding LoadMoreCancelledCommand}"
+                                                FontFamily="Comfortaa"
+                                                FontSize="15"
+                                                BackgroundColor="#1A0D0D"
+                                                BorderColor="#C0392B"
+                                                BorderWidth="1"
+                                                CornerRadius="10"
+                                                HeightRequest="36"
+                                                Text="Загрузить ещё 15 →"
+                                                TextColor="#FF6666" />
+                                        </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
                             </Grid>

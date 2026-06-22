@@ -30,7 +30,7 @@
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="Opacity" Value="0.4" />
-                            <Setter Property="BackgroundColor" Value="#1A1A2A" />
+                            <Setter Property="BackgroundColor" Value="{StaticResource EduSurfaceAlt}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -60,12 +60,12 @@
         x:Key="EduDarkButtonSelection"
         BasedOn="{StaticResource EduBaseButton}"
         TargetType="Button">
-        <Setter Property="BackgroundColor" Value="#14182E" />
+        <Setter Property="BackgroundColor" Value="{StaticResource EduSurfaceAlt}" />
         <Setter Property="BorderColor" Value="#FFFFFF" />
         <Setter Property="BorderWidth" Value="1" />
         <Setter Property="FontSize" Value="15" />
-        <Setter Property="CornerRadius" Value="15" />
-        <Setter Property="TextColor" Value="#99FFFFFF" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="TextColor" Value="{StaticResource EduSecondaryText}" />
     </Style>
 
     <Style
@@ -83,7 +83,7 @@
         x:Key="NoActiveEduPrimaryButton"
         BasedOn="{StaticResource EduBaseButton}"
         TargetType="Button">
-        <Setter Property="BackgroundColor" Value="#14182E" />
+        <Setter Property="BackgroundColor" Value="{StaticResource EduSurfaceAlt}" />
         <Setter Property="FontSize" Value="17" />
         <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
         <Setter Property="CornerRadius" Value="15" />
@@ -94,7 +94,7 @@
         x:Key="NoActiveEduPrimaryButtonRed"
         BasedOn="{StaticResource EduBaseButton}"
         TargetType="Button">
-        <Setter Property="BackgroundColor" Value="#2A1020" />
+        <Setter Property="BackgroundColor" Value="{StaticResource EduDangerSurface}" />
         <Setter Property="FontSize" Value="17" />
         <Setter Property="TextColor" Value="#FF6B8A" />
         <Setter Property="CornerRadius" Value="15" />
@@ -105,8 +105,8 @@
         x:Key="EduFilterButton"
         BasedOn="{StaticResource EduBaseButton}"
         TargetType="Button">
-        <Setter Property="BackgroundColor" Value="#14182E" />
-        <Setter Property="TextColor" Value="#99FFFFFF" />
+        <Setter Property="BackgroundColor" Value="{StaticResource EduSurfaceAlt}" />
+        <Setter Property="TextColor" Value="{StaticResource EduSecondaryText}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="CornerRadius" Value="8" />
         <Setter Property="Padding" Value="14,10" />

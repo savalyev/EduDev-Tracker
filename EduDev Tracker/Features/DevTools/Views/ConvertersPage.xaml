@@ -24,12 +24,12 @@
 
         <Style x:Key="SectionLabel" TargetType="Label">
             <Setter Property="FontSize" Value="14" />
-            <Setter Property="TextColor" Value="#64748B" />
+            <Setter Property="TextColor" Value="#8892A4" />
             <Setter Property="Margin" Value="0,0,0,8" />
         </Style>
 
         <Style x:Key="ResultLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontSize" Value="18" />
             <Setter Property="FontAttributes" Value="Bold" />
             <Setter Property="TextColor" Value="#F1F5F9" />
         </Style>
@@ -48,7 +48,7 @@
 
         <Style x:Key="InputEntry" TargetType="Entry">
             <Setter Property="TextColor" Value="#F1F5F9" />
-            <Setter Property="PlaceholderColor" Value="#475569" />
+            <Setter Property="PlaceholderColor" Value="#64748B" />
             <Setter Property="BackgroundColor" Value="Transparent" />
             <Setter Property="FontSize" Value="15" />
             <Setter Property="HeightRequest" Value="48" />
@@ -63,7 +63,7 @@
         </Style>
 
         <Style x:Key="ErrorLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontSize" Value="15" />
             <Setter Property="TextColor" Value="#EF4444" />
             <Setter Property="Margin" Value="4,4,0,0" />
         </Style>
@@ -72,12 +72,13 @@
             <Setter Property="CornerRadius" Value="12" />
             <Setter Property="HeightRequest" Value="44" />
             <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextColor" Value="White" />
             <Setter Property="Padding" Value="16,0" />
         </Style>
 
         <Style x:Key="CopyBtn" TargetType="Button">
             <Setter Property="BackgroundColor" Value="Transparent" />
-            <Setter Property="TextColor" Value="#64748B" />
+            <Setter Property="TextColor" Value="#8892A4" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="Padding" Value="4" />
             <Setter Property="WidthRequest" Value="40" />
@@ -106,9 +107,9 @@
                     Text="Конвертеры"
                     TextColor="#F1F5F9" />
                 <Label
-                    FontSize="13"
+                    FontSize="15"
                     Text="Набор инструментов для разработчиков и студентов: системы счисления, цвета, часовые пояса, JSON/XML и URL/encode/decode в одном модуле."
-                    TextColor="#64748B" />
+                    TextColor="#F1F5F9" />
             </VerticalStackLayout>
 
             <!--  Левая колонка: табы + конвертер  -->
@@ -839,9 +840,10 @@
                                 IsVisible="{Binding HasHistory, Converter={StaticResource InvertBoolConverter}}"
                                 Spacing="8">
                                 <Label
-                                    FontSize="28"
+                                    FontSize="14"
                                     HorizontalTextAlignment="Center"
-                                    Text="🕐" />
+                                    Text="—"
+                                    TextColor="{StaticResource EduMutedText}" />
                                 <Label
                                     FontSize="13"
                                     HorizontalTextAlignment="Center"
@@ -900,15 +902,15 @@
                                                     HorizontalOptions="End"
                                                     Spacing="2">
                                                     <Label
-                                                        FontSize="10"
+                                                        FontSize="12"
                                                         HorizontalTextAlignment="End"
                                                         Text="{Binding TypeLabel}"
-                                                        TextColor="#64748B" />
+                                                        TextColor="#94A3B8" />
                                                     <Label
-                                                        FontSize="10"
+                                                        FontSize="12"
                                                         HorizontalTextAlignment="End"
                                                         Text="{Binding TimeAgo}"
-                                                        TextColor="#334155" />
+                                                        TextColor="#94A3B8" />
                                                 </VerticalStackLayout>
                                             </Grid>
                                         </Border>
@@ -1052,7 +1054,7 @@
                                 TextColor="#F1F5F9" />
                             <Border Style="{StaticResource InputBorder}">
                                 <Entry
-                                    Keyboard="Numeric"
+                                    Keyboard="Default"
                                     Placeholder="Введи число (255, 0xFF, 0b1010...)"
                                     Style="{StaticResource InputEntry}"
                                     Text="{Binding NumeralInput}" />
@@ -1434,9 +1436,9 @@
                                                 </VerticalStackLayout>
                                                 <Label
                                                     Grid.Column="2"
-                                                    FontSize="10"
+                                                    FontSize="12"
                                                     Text="{Binding TimeAgo}"
-                                                    TextColor="#475569"
+                                                    TextColor="#94A3B8"
                                                     VerticalOptions="Center" />
                                             </Grid>
                                         </Border>

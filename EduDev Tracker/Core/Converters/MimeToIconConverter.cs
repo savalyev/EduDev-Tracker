@@ -18,25 +18,25 @@ namespace EduDev_Tracker.Core.Converters
         {
             var mime = value as string ?? string.Empty;
 
-            if (mime.StartsWith("image/")) return "🖼️";
-            if (mime.StartsWith("video/")) return "🎬";
-            if (mime.StartsWith("audio/")) return "🎵";
-            if (mime == "application/pdf") return "📄";
+            if (mime.StartsWith("image/")) return "IMG";
+            if (mime.StartsWith("video/")) return "VID";
+            if (mime.StartsWith("audio/")) return "AUD";
+            if (mime == "application/pdf") return "PDF";
             if (mime.Contains("word") ||
-                mime.Contains("document")) return "📝";
+                mime.Contains("document")) return "DOC";
             if (mime.Contains("sheet") ||
                 mime.Contains("excel") ||
-                mime.Contains("csv")) return "📊";
+                mime.Contains("csv")) return "XLS";
             if (mime.Contains("presentation") ||
-                mime.Contains("powerpoint")) return "📑";
+                mime.Contains("powerpoint")) return "PPT";
             if (mime == "application/zip" ||
                 mime == "application/x-rar-compressed" ||
-                mime == "application/x-7z-compressed") return "🗜️";
-            if (mime.StartsWith("text/")) return "📃";
+                mime == "application/x-7z-compressed") return "ZIP";
+            if (mime.StartsWith("text/")) return "TXT";
             if (mime.Contains("json") ||
-                mime.Contains("xml")) return "🔧";
+                mime.Contains("xml")) return "XML";
 
-            return "📎"; // по умолчанию
+            return "FILE";
         }
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

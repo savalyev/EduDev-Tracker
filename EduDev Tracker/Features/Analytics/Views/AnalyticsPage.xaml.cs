@@ -31,7 +31,8 @@ public partial class AnalyticsPage : ContentPage
     {
         base.OnAppearing();
         UpdateLayout(Width);
-        await _vm.InitializeAsync();
+        try { await _vm.InitializeAsync(); }
+        catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"[Analytics] {ex}"); }
     }
 
     protected override void OnSizeAllocated(double width, double height)
@@ -42,6 +43,7 @@ public partial class AnalyticsPage : ContentPage
 
     private void UpdateLayout(double width)
     {
+        if (width <= 0) return;
         bool desktop = width >= 768;
         DesktopLayout.IsVisible = desktop;
         MobileLayout.IsVisible = !desktop;

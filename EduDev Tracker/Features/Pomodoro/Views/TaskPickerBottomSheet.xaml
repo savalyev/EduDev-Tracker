@@ -37,7 +37,8 @@
             <Grid ColumnDefinitions="Auto,*">
                 <Label
                     Margin="0,0,8,0"
-                    Text="🔍"
+                    Text="Поиск:"
+                    TextColor="{StaticResource EduMutedText}"
                     VerticalOptions="Center" />
                 <Entry
                     x:Name="SearchEntry"
@@ -62,9 +63,10 @@
                     Spacing="8"
                     VerticalOptions="Center">
                     <Label
-                        FontSize="32"
+                        FontSize="14"
                         HorizontalTextAlignment="Center"
-                        Text="📝" />
+                        Text="—"
+                        TextColor="{StaticResource EduMutedText}" />
                     <Label
                         FontSize="14"
                         HorizontalTextAlignment="Center"

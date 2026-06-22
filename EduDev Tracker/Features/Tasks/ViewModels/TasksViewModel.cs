@@ -108,11 +108,11 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 .Where(t => t.DueAt is null && t.Status != TaskStatus.Done)
                 .ToList();
 
-            AddGroup("🔴 ПРОСРОЧЕНО", "#C0392B", overdue);
-            AddGroup($"📅 Сегодня — {DateTime.Today:d MMMM}", "#5B5FEF", today);
-            AddGroup($"📅 Завтра — {DateTime.Today.AddDays(1):d MMMM}", "#4A5A6A", tomorrow);
-            AddGroup("📅 Позже", "#4A5A6A", later);
-            AddGroup("📋 Без срока", "#4A5A6A", noDate);
+            AddGroup("ПРОСРОЧЕНО", "#C0392B", overdue);
+            AddGroup($"Сегодня — {DateTime.Today:d MMMM}", "#5B5FEF", today);
+            AddGroup($"Завтра — {DateTime.Today.AddDays(1):d MMMM}", "#4A5A6A", tomorrow);
+            AddGroup("Позже", "#4A5A6A", later);
+            AddGroup("Без срока", "#4A5A6A", noDate);
         }
 
         private void AddGroup(string title, string color, List<TaskItem> items)
@@ -135,15 +135,26 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             System.Diagnostics.Debug.WriteLine($"[AddGroup] '{title}' added OK");
         }
 
+        private const int KanbanPageSize = 15;
+
         public ObservableCollection<TaskItemViewModel> OpenTasks { get; } = new();
         public ObservableCollection<TaskItemViewModel> InProgressTasks { get; } = new();
         public ObservableCollection<TaskItemViewModel> DoneTasks { get; } = new();
         public ObservableCollection<TaskItemViewModel> CancelledTasks { get; } = new();
 
+        private List<TaskItemViewModel> _allDoneVms = new();
+        private List<TaskItemViewModel> _allCancelledVms = new();
+        private int _doneOffset;
+        private int _cancelledOffset;
+
         [ObservableProperty] private string openCount = "0";
         [ObservableProperty] private string inProgressCount = "0";
         [ObservableProperty] private string doneCount = "0";
         [ObservableProperty] private string cancelledCount = "0";
+        [ObservableProperty] private bool doneHasMore;
+        [ObservableProperty] private bool cancelledHasMore;
+        [ObservableProperty] private string donePageInfo = string.Empty;
+        [ObservableProperty] private string cancelledPageInfo = string.Empty;
 
         private void RebuildKanban(IEnumerable<TaskItem> tasks)
         {
@@ -152,6 +163,11 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             DoneTasks.Clear();
             CancelledTasks.Clear();
 
+            _allDoneVms.Clear();
+            _allCancelledVms.Clear();
+            _doneOffset = 0;
+            _cancelledOffset = 0;
+
             foreach (var task in tasks)
             {
                 var vm = TaskItemViewModel.FromModel(task);
@@ -159,16 +175,47 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 {
                     case TaskStatus.Open: OpenTasks.Add(vm); break;
                     case TaskStatus.InProgress: InProgressTasks.Add(vm); break;
-                    case TaskStatus.Done: DoneTasks.Add(vm); break;
-                    case TaskStatus.Cancelled: CancelledTasks.Add(vm); break;
+                    case TaskStatus.Done: _allDoneVms.Add(vm); break;
+                    case TaskStatus.Cancelled: _allCancelledVms.Add(vm); break;
                 }
             }
 
+            LoadDonePage();
+            LoadCancelledPage();
+
             OpenCount = OpenTasks.Count.ToString();
             InProgressCount = InProgressTasks.Count.ToString();
-            DoneCount = DoneTasks.Count.ToString();
-            CancelledCount = CancelledTasks.Count.ToString();
+            DoneCount = _allDoneVms.Count.ToString();
+            CancelledCount = _allCancelledVms.Count.ToString();
         }
+
+        private void LoadDonePage()
+        {
+            var batch = _allDoneVms.Skip(_doneOffset).Take(KanbanPageSize).ToList();
+            foreach (var vm in batch) DoneTasks.Add(vm);
+            _doneOffset += batch.Count;
+            DoneHasMore = _doneOffset < _allDoneVms.Count;
+            DonePageInfo = DoneHasMore
+                ? $"Показано {_doneOffset} из {_allDoneVms.Count}"
+                : string.Empty;
+        }
+
+        private void LoadCancelledPage()
+        {
+            var batch = _allCancelledVms.Skip(_cancelledOffset).Take(KanbanPageSize).ToList();
+            foreach (var vm in batch) CancelledTasks.Add(vm);
+            _cancelledOffset += batch.Count;
+            CancelledHasMore = _cancelledOffset < _allCancelledVms.Count;
+            CancelledPageInfo = CancelledHasMore
+                ? $"Показано {_cancelledOffset} из {_allCancelledVms.Count}"
+                : string.Empty;
+        }
+
+        [RelayCommand]
+        private void LoadMoreDone() => LoadDonePage();
+
+        [RelayCommand]
+        private void LoadMoreCancelled() => LoadCancelledPage();
 
         [ObservableProperty]
         private DateTime? selectedCalendarDate;

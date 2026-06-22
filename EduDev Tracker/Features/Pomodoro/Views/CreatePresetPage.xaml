@@ -168,7 +168,7 @@
                             <Label
                                 Margin="0"
                                 Style="{StaticResource FieldLabel}"
-                                Text="🟢  Рабочий интервал" />
+                                Text="Рабочий интервал" />
                             <Label
                                 FontSize="13"
                                 Text="Время сфокусированной работы"
@@ -228,7 +228,7 @@
                             <Label
                                 Margin="0"
                                 Style="{StaticResource FieldLabel}"
-                                Text="🔵  Короткий перерыв" />
+                                Text="Короткий перерыв" />
                             <Label
                                 FontSize="13"
                                 Text="Отдых между рабочими интервалами"
@@ -286,7 +286,7 @@
                             <Label
                                 Margin="0"
                                 Style="{StaticResource FieldLabel}"
-                                Text="🟣  Длинный перерыв" />
+                                Text="Длинный перерыв" />
                             <Label
                                 FontSize="13"
                                 Text="После N рабочих циклов"
@@ -338,7 +338,7 @@
                             <Label
                                 Margin="0"
                                 Style="{StaticResource FieldLabel}"
-                                Text="🔁  Циклов до длинного перерыва" />
+                                Text="Циклов до длинного перерыва" />
                             <Label
                                 FontSize="13"
                                 Text="{Binding CyclesDescription}"

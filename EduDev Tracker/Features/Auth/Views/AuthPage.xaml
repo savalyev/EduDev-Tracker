@@ -22,8 +22,8 @@
             <Color x:Key="BorderDefault">#1E2D45</Color>
             <Color x:Key="BorderFocus">#4F8EF7</Color>
             <Color x:Key="TextPrimary">#E8EAF0</Color>
-            <Color x:Key="TextSecondary">#8892A4</Color>
-            <Color x:Key="TextMuted">#4A5568</Color>
+            <Color x:Key="TextSecondary">#94A3B8</Color>
+            <Color x:Key="TextMuted">#64748B</Color>
             <Color x:Key="ErrorColor">#EF4444</Color>
             <Color x:Key="ChipBg">#1A2540</Color>
             <Color x:Key="ChipBorder">#2A3D60</Color>
@@ -66,7 +66,7 @@
 
             <!--  МЕТКА ПОЛЯ  -->
             <Style x:Key="LabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="13" />
                 <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
                 <Setter Property="Margin" Value="0,0,0,4" />
             </Style>

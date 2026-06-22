@@ -12,6 +12,11 @@
                 <ResourceDictionary Source="/Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="Comfortaa" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="TextColor" Value="{StaticResource EduPrimaryText}" />
+            </Style>
             <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
             <converters:MimeToIconConverter x:Key="MimeToIconConverter" />
             <converters:FileSizeConverter x:Key="FileSizeConverter" />

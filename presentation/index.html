@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduDev Tracker — Защита курсового проекта</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <!-- Прогресс-бар -->
+    <div class="progress">
+        <div class="progress__bar" id="progressBar"></div>
+    </div>
+
+    <main class="deck" id="deck">
+
+        <!-- ░░░ Слайд 1 — Титул ░░░ -->
+        <section class="slide slide--title" data-slide>
+            <div class="slide__inner title">
+                <div class="title__org">Частное учреждение образования «Колледж бизнеса и права»</div>
+
+                <div class="title__brand">
+                    <span class="title__logo">⛬</span>
+                    <span class="title__brandname">EduDev Tracker</span>
+                </div>
+
+                <h1 class="title__theme">Разработка программного средства<br />для управления личной продуктивностью</h1>
+                <div class="title__code">Курсовой проект</div>
+
+                <div class="title__people">
+                    <div class="person">
+                        <div class="person__role">Разработчик</div>
+                        <div class="person__name">Ильюкевич К.А.</div>
+                    </div>
+                    <div class="person">
+                        <div class="person__role">Руководитель</div>
+                        <div class="person__name">Сидоренко В.О.</div>
+                    </div>
+                </div>
+
+                <div class="title__year">2026</div>
+            </div>
+        </section>
+
+        <!-- ░░░ Слайд 2 — Цель + актуальность ░░░ -->
+        <section class="slide" data-slide>
+            <div class="slide__inner">
+                <h2 class="slide__title">Цель и актуальность</h2>
+                <div class="two-col">
+                    <div class="card card--accent">
+                        <div class="card__label">Цель</div>
+                        <p class="card__lead">
+                            Создать приложение <b>EduDev Tracker</b> для повышения личной продуктивности за счёт объединения в одной системе инструментов управления привычками, задачами, заметками, Pomodoro-сессиями, справочными материалами и напоминаниями.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <div class="card__label card__label--alt">Актуальность</div>
+                        <ul class="bullets">
+                            <li>Пользователям нужно удобное цифровое средство самоорганизации.</li>
+                            <li>Разрозненные приложения → постоянное переключение и дублирование данных.</li>
+                            <li>Ручное ведение записей — ошибки и потеря времени.</li>
+                            <li>Единая система централизует планирование и анализ деятельности.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ░░░ Слайд 3 — Основные функции (гибрид) ░░░ -->
+        <section class="slide" data-slide>
+            <div class="slide__inner">
+                <h2 class="slide__title">Основные функции</h2>
+
+                <div class="audience">
+                </div>
+
+                <div class="modules">
+                    <div class="mod"><span class="mod__ico">🔥</span>
+                        <h3>Привычки</h3>
+                        <p>расписание, напоминания, аналитика</p>
+                    </div>
+                    <div class="mod"><span class="mod__ico">✅</span>
+                        <h3>Задачи</h3>
+                        <p>дедлайны, приоритеты, календарь, канбан, повторения</p>
+                    </div>
+                    <div class="mod"><span class="mod__ico">📝</span>
+                        <h3>Заметки</h3>
+                        <p>markdown, поиск, версии, экспорт</p>
+                    </div>
+                    <div class="mod"><span class="mod__ico">⏱️</span>
+                        <h3>Pomodoro</h3>
+                        <p>циклы, привязка к задачам, пресеты</p>
+                    </div>
+                    <div class="mod"><span class="mod__ico">🛠️</span>
+                        <h3>Dev-инструменты</h3>
+                        <p>конвертеры (СС, цвета, время, JSON/XML, URL), шпаргалки</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ░░░ Слайд 4 — Инструменты разработки ░░░ -->
+        <section class="slide" data-slide>
+            <div class="slide__inner">
+                <h2 class="slide__title">Инструменты разработки</h2>
+                <div class="tools" id="tools" `>
+                    <!-- наполняется из app.js (inline-SVG, оффлайн) -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ░░░ Слайд 5 — ДВИ ░░░ -->
+        <section class="slide slide--diagram" data-slide>
+            <div class="slide__inner">
+                <h2 class="slide__title">Диаграмма вариантов использования</h2>
+                <figure class="figure">
+                    <div class="figure__frame">
+                        <img class="diagram" src="assets/diagrams/dvi.svg" alt="Диаграмма вариантов использования" />
+                        <span class="figure__hint">нажмите, чтобы увеличить</span>
+                    </div>
+                    <figcaption>Рисунок 1 — Диаграмма вариантов использования (ДВИ)</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ░░░ Слайд 6 — ЕРД ░░░ -->
+        <section class="slide slide--diagram" data-slide>
+            <div class="slide__inner">
+                <h2 class="slide__title">Диаграмма «Сущность-связь»</h2>
+                <figure class="figure">
+                    <div class="figure__frame">
+                        <img class="diagram" src="assets/diagrams/erd.svg" alt="Диаграмма сущность-связь" />
+                        <span class="figure__hint">нажмите, чтобы увеличить</span>
+                    </div>
+                    <figcaption>Рисунок 2 — Диаграмма «Сущность-связь» (ЕРД)</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ░░░ Слайд 7 — Юзер-флоу ░░░ -->
+        <section class="slide slide--diagram" data-slide>
+            <div class="slide__inner">
+                <h2 class="slide__title">Путь пользователя</h2>
+                <figure class="figure">
+                    <div class="figure__frame">
+                        <img class="diagram" src="assets/diagrams/userflow.svg" alt="Диаграмма пути пользователя" />
+                        <span class="figure__hint">нажмите, чтобы увеличить</span>
+                    </div>
+                    <figcaption>Рисунок 3 — Диаграмма пути пользователя (User-flow)</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ░░░ Слайд 8 — Схема БД ░░░ -->
+        <section class="slide slide--diagram" data-slide>
+            <div class="slide__inner">
+                <h2 class="slide__title">Схема базы данных</h2>
+                <figure class="figure">
+                    <div class="figure__frame">
+                        <img class="diagram" src="assets/diagrams/db-schema.svg" alt="Логическая схема базы данных" />
+                        <span class="figure__hint">нажмите, чтобы увеличить</span>
+                    </div>
+                    <figcaption>Рисунок 4 — Логическая схема базы данных (22 таблицы, SQLite)</figcaption>
+                </figure>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Навигация -->
+    <button class="nav nav--prev" id="prevBtn" aria-label="Назад">‹</button>
+    <button class="nav nav--next" id="nextBtn" aria-label="Вперёд">›</button>
+
+    <div class="hud">
+        <div class="dots" id="dots"></div>
+        <div class="counter"><span id="curNum">1</span> / <span id="totalNum">8</span></div>
+    </div>
+
+    <!-- Лайтбокс для диаграмм -->
+    <div class="lightbox" id="lightbox" hidden>
+        <div class="lightbox__stage" id="lbStage">
+            <img class="lightbox__img" id="lbImg" alt="" />
+        </div>
+        <div class="lightbox__bar">
+            <button data-zoom="out" aria-label="Уменьшить">−</button>
+            <button data-zoom="reset" aria-label="Сбросить">1:1</button>
+            <button data-zoom="in" aria-label="Увеличить">+</button>
+            <button data-zoom="close" aria-label="Закрыть">✕</button>
+        </div>
+        <div class="lightbox__tip">колесо — зум · перетащить — двигать · Esc — закрыть</div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

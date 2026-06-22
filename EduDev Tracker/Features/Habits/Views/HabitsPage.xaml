@@ -187,20 +187,20 @@
                                 </BindableLayout.ItemTemplate>
                             </FlexLayout>
 
-                            <CollectionView
+                            <!--  BindableLayout вместо CollectionView: список (CollectionView в ScrollView)
+                                  роняет рендер WinUI (0xc000027b) при нескольких высоких карточках.
+                                  x:Name сохранён — code-behind (FadeToAsync, ChildAdded) работает как раньше.  -->
+                            <VerticalStackLayout
                                 x:Name="HabitsCollectionView"
                                 Grid.Row="4"
                                 Margin="0,12,0,0"
-                                ItemsSource="{Binding Habits}"
-                                SelectionMode="None">
-                                <CollectionView.ItemsLayout>
-                                    <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
-                                </CollectionView.ItemsLayout>
-                                <CollectionView.ItemTemplate>
+                                Spacing="8"
+                                BindableLayout.ItemsSource="{Binding Habits}">
+                                <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="vm:HabitItemViewModel">
                                         <Border
-                                            Background="#10172A"
-                                            Stroke="#495061"
+                                            Background="{StaticResource EduSurfaceAlt}"
+                                            Stroke="{StaticResource EduBorderStrong}"
                                             StrokeThickness="1">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HabitsViewModel}}, Path=OpenHabitDetailsCommand}" CommandParameter="{Binding HabitId}" />
@@ -226,7 +226,7 @@
                                                     <Border.StrokeShape>
                                                         <RoundRectangle CornerRadius="14" />
                                                     </Border.StrokeShape>
-                                                    <Image Aspect="Fill" Source="{Binding Icon}" />
+                                                    <Image Aspect="Fill" Source="default_icon.png" />
                                                 </Border>
 
                                                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
@@ -238,58 +238,58 @@
                                                         TextColor="White" />
                                                     <Label
                                                         FontFamily="Comfortaa"
-                                                        FontSize="12"
+                                                        FontSize="15"
                                                         LineBreakMode="TailTruncation"
                                                         Text="{Binding Description}"
-                                                        TextColor="#99FFFFFF" />
+                                                        TextColor="{StaticResource EduSecondaryText}" />
                                                     <FlexLayout
                                                         Margin="0,4,0,0"
                                                         Direction="Row"
                                                         Wrap="Wrap">
                                                         <Border
                                                             Margin="0,0,4,4"
-                                                            Padding="8,4"
-                                                            Background="#182333"
-                                                            Stroke="#4A5A6A"
+                                                            Padding="10,5"
+                                                            Background="{StaticResource EduBorder}"
+                                                            Stroke="{StaticResource EduBorderStrong}"
                                                             StrokeThickness="1">
                                                             <Border.StrokeShape>
                                                                 <RoundRectangle CornerRadius="10" />
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="12"
+                                                                FontSize="14"
                                                                 Text="{Binding Schedule}"
-                                                                TextColor="#99FFFFFF" />
+                                                                TextColor="{StaticResource EduSecondaryText}" />
                                                         </Border>
                                                         <Border
                                                             Margin="0,0,4,4"
-                                                            Padding="8,4"
-                                                            Background="#182333"
-                                                            Stroke="#4A5A6A"
+                                                            Padding="10,5"
+                                                            Background="{StaticResource EduBorder}"
+                                                            Stroke="{StaticResource EduBorderStrong}"
                                                             StrokeThickness="1">
                                                             <Border.StrokeShape>
                                                                 <RoundRectangle CornerRadius="10" />
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="12"
+                                                                FontSize="14"
                                                                 Text="{Binding TimeOfDay}"
-                                                                TextColor="#99FFFFFF" />
+                                                                TextColor="{StaticResource EduSecondaryText}" />
                                                         </Border>
                                                         <Border
                                                             Margin="0,0,4,4"
-                                                            Padding="8,4"
-                                                            Background="#182333"
-                                                            Stroke="#4A5A6A"
+                                                            Padding="10,5"
+                                                            Background="{StaticResource EduBorder}"
+                                                            Stroke="{StaticResource EduBorderStrong}"
                                                             StrokeThickness="1">
                                                             <Border.StrokeShape>
                                                                 <RoundRectangle CornerRadius="10" />
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="12"
+                                                                FontSize="14"
                                                                 Text="{Binding Type}"
-                                                                TextColor="#99FFFFFF" />
+                                                                TextColor="{StaticResource EduSecondaryText}" />
                                                         </Border>
                                                     </FlexLayout>
                                                 </VerticalStackLayout>
@@ -298,11 +298,11 @@
                                                 <Label
                                                     Grid.Column="2"
                                                     FontFamily="Comfortaa"
-                                                    FontSize="12"
+                                                    FontSize="14"
                                                     IsVisible="{OnIdiom Phone=False,
                                                                         Default=True}"
                                                     Text="{Binding TodayProgressText}"
-                                                    TextColor="#99FFFFFF"
+                                                    TextColor="#94A3B8"
                                                     VerticalOptions="Center" />
 
                                                 <VerticalStackLayout
@@ -314,10 +314,10 @@
                                                     VerticalOptions="Center">
                                                     <Label
                                                         FontFamily="Comfortaa"
-                                                        FontSize="12"
+                                                        FontSize="14"
                                                         HorizontalOptions="End"
                                                         Text="Серия"
-                                                        TextColor="#99FFFFFF" />
+                                                        TextColor="{StaticResource EduSecondaryText}" />
                                                     <Label
                                                         FontFamily="Comfortaa"
                                                         FontSize="16"
@@ -337,8 +337,18 @@
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+
+                            <!--  Индикатор загрузки: пока список грузится (IsBusy), вместо пустоты — спиннер  -->
+                            <ActivityIndicator
+                                Grid.Row="4"
+                                Margin="0,28,0,0"
+                                Color="{StaticResource EduTeal}"
+                                HorizontalOptions="Center"
+                                IsRunning="{Binding IsBusy}"
+                                IsVisible="{Binding IsBusy}"
+                                VerticalOptions="Start" />
 
                             <Button
                                 Grid.Row="5"
@@ -374,7 +384,7 @@
                                                 <Border
                                                     Margin="0,0,6,6"
                                                     Padding="0"
-                                                    BackgroundColor="#14182E"
+                                                    BackgroundColor="{StaticResource EduSurfaceAlt}"
                                                     MinimumHeightRequest="40"
                                                     Stroke="#FFFFFF"
                                                     StrokeThickness="0.5">
@@ -438,9 +448,9 @@
                                             WidthRequest="12" />
                                         <Label
                                             FontFamily="Comfortaa"
-                                            FontSize="12"
+                                            FontSize="14"
                                             Text="Выполнено"
-                                            TextColor="#99FFFFFF"
+                                            TextColor="{StaticResource EduSecondaryText}"
                                             VerticalOptions="Center" />
                                     </HorizontalStackLayout>
                                     <HorizontalStackLayout Spacing="6">
@@ -452,9 +462,9 @@
                                             WidthRequest="12" />
                                         <Label
                                             FontFamily="Comfortaa"
-                                            FontSize="12"
+                                            FontSize="14"
                                             Text="Пропуск"
-                                            TextColor="#99FFFFFF"
+                                            TextColor="{StaticResource EduSecondaryText}"
                                             VerticalOptions="Center" />
                                     </HorizontalStackLayout>
                                 </HorizontalStackLayout>
@@ -486,9 +496,9 @@
                                                 TextColor="White" />
                                             <Label
                                                 FontFamily="Comfortaa"
-                                                FontSize="12"
+                                                FontSize="14"
                                                 Text="За последние 7 дней"
-                                                TextColor="#99FFFFFF" />
+                                                TextColor="#94A3B8" />
                                         </VerticalStackLayout>
                                     </Border>
 
@@ -507,9 +517,9 @@
                                                 TextColor="White" />
                                             <Label
                                                 FontFamily="Comfortaa"
-                                                FontSize="12"
+                                                FontSize="14"
                                                 Text="Активные привычки"
-                                                TextColor="#99FFFFFF" />
+                                                TextColor="#94A3B8" />
                                         </VerticalStackLayout>
                                     </Border>
 
@@ -528,9 +538,9 @@
                                                 TextColor="White" />
                                             <Label
                                                 FontFamily="Comfortaa"
-                                                FontSize="12"
+                                                FontSize="14"
                                                 Text="Сильные дни"
-                                                TextColor="#99FFFFFF" />
+                                                TextColor="#94A3B8" />
                                         </VerticalStackLayout>
                                     </Border>
 
@@ -549,9 +559,9 @@
                                                 TextColor="White" />
                                             <Label
                                                 FontFamily="Comfortaa"
-                                                FontSize="12"
+                                                FontSize="14"
                                                 Text="Больше всего пропусков"
-                                                TextColor="#99FFFFFF" />
+                                                TextColor="#94A3B8" />
                                         </VerticalStackLayout>
                                     </Border>
                                 </Grid>

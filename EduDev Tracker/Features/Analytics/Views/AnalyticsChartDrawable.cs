@@ -1,7 +1,7 @@
-﻿using EduDev_Tracker.Features.Analytics.Models;
+using EduDev_Tracker.Features.Analytics.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace EduDev_Tracker.Features.Analytics.Views
 {
@@ -32,55 +32,62 @@ namespace EduDev_Tracker.Features.Analytics.Views
                 canvas.DrawLine(padL, y, padL + w, y);
             }
 
-            // ── Заливка-области (stacked area chart) ──
             float stepX = n > 1 ? w / (n - 1) : w;
-            DrawArea(canvas, dirtyRect, Points, p => p.BarHeightRatio,
-                     ColorHabits, padL, padT, h, stepX);
+
+            // Общий максимум по всем трём рядам → линии сопоставимы по масштабу
+            int maxVal = 1;
+            foreach (var p in Points)
+                maxVal = Math.Max(maxVal, Math.Max(p.HabitsCount, Math.Max(p.TasksCount, p.PomodoroCount)));
+
+            // ── Три ряда ──
+            DrawSeries(canvas, Points, p => p.HabitsCount,   ColorHabits,   padL, padT, h, stepX, maxVal);
+            DrawSeries(canvas, Points, p => p.TasksCount,    ColorTasks,    padL, padT, h, stepX, maxVal);
+            DrawSeries(canvas, Points, p => p.PomodoroCount, ColorPomodoro, padL, padT, h, stepX, maxVal);
 
             // ── Подписи дней ──
-            canvas.FontSize = 10;
-            canvas.FontColor = Color.FromArgb("#475569");
+            canvas.FontSize = 11;
+            canvas.FontColor = Color.FromArgb("#94A3B8");
             for (int i = 0; i < n; i++)
             {
                 float x = padL + i * stepX;
-                canvas.DrawString(Points[i].DayLabel, x - 10, padT + h + 4, 20, 16,
+                canvas.DrawString(Points[i].DayLabel, x - 12, padT + h + 6, 24, 16,
                                   HorizontalAlignment.Center, VerticalAlignment.Top);
             }
         }
 
-        private static void DrawArea(ICanvas canvas, RectF rect,
-            List<DayProductivityPoint> pts, Func<DayProductivityPoint, double> valFn,
-            Color color, float padL, float padT, float h, float stepX)
+        private static void DrawSeries(ICanvas canvas, List<DayProductivityPoint> pts,
+            Func<DayProductivityPoint, int> valFn, Color color,
+            float padL, float padT, float h, float stepX, int maxVal)
         {
             int n = pts.Count;
-            var path = new PathF();
-            path.MoveTo(padL, padT + h);
 
-            for (int i = 0; i < n; i++)
+            float Y(int i) => padT + h - (float)valFn(pts[i]) / maxVal * h;
+
+            // Лёгкая заливка под линией (даёт «area»-ощущение, не перекрывая соседей)
+            if (n > 1)
             {
-                float x = padL + i * stepX;
-                float y = padT + h - (float)(valFn(pts[i]) * h);
-                if (i == 0) path.LineTo(x, y);
-                else path.LineTo(x, y);
+                var fill = new PathF();
+                fill.MoveTo(padL, padT + h);
+                for (int i = 0; i < n; i++)
+                    fill.LineTo(padL + i * stepX, Y(i));
+                fill.LineTo(padL + (n - 1) * stepX, padT + h);
+                fill.Close();
+                canvas.FillColor = color.WithAlpha(0.10f);
+                canvas.FillPath(fill);
             }
 
-            path.LineTo(padL + (n - 1) * stepX, padT + h);
-            path.Close();
-
-            canvas.FillColor = color.WithAlpha(0.25f);
-            canvas.FillPath(path);
-
-            // Линия поверх
+            // Линия
             canvas.StrokeColor = color;
-            canvas.StrokeSize = 2;
+            canvas.StrokeSize = 3;
+            canvas.StrokeLineCap = LineCap.Round;
+            canvas.StrokeLineJoin = LineJoin.Round;
             for (int i = 1; i < n; i++)
-            {
-                float x0 = padL + (i - 1) * stepX;
-                float y0 = padT + h - (float)(valFn(pts[i - 1]) * h);
-                float x1 = padL + i * stepX;
-                float y1 = padT + h - (float)(valFn(pts[i]) * h);
-                canvas.DrawLine(x0, y0, x1, y1);
-            }
+                canvas.DrawLine(padL + (i - 1) * stepX, Y(i - 1), padL + i * stepX, Y(i));
+
+            // Точки
+            canvas.FillColor = color;
+            for (int i = 0; i < n; i++)
+                canvas.FillCircle(padL + i * stepX, Y(i), 3.5f);
         }
     }
 }

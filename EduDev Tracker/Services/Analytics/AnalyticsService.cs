@@ -1,4 +1,5 @@
-﻿using EduDev_Tracker.Data;
+﻿using ClosedXML.Excel;
+using EduDev_Tracker.Data;
 using EduDev_Tracker.Features.Analytics.Models;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,11 @@ namespace EduDev_Tracker.Services.Analytics
             var toDt = to.Date.AddDays(1).ToUniversalTime();
             var prevFromDt = prevFrom.Date.ToUniversalTime();
             var prevToDt = prevTo.Date.AddDays(1).ToUniversalTime();
+            // Pomodoro.StartedAt хранит DateTime.Now (local) → отдельный диапазон без UTC-конвертации
+            var fromLocal = from.Date;
+            var toLocal = to.Date.AddDays(1);
+            var prevFromLocal = prevFrom.Date;
+            var prevToLocal = prevTo.Date.AddDays(1);
 
             //Привычки
             int habitsCompleted = 0, habitsTotal = 0, habitsCompletedPrev = 0;
@@ -82,18 +88,18 @@ namespace EduDev_Tracker.Services.Analytics
                 pomodoroSessions = await conn.ExecuteScalarAsync<int>(
                     "SELECT COUNT(*) FROM pomodoro_sessions WHERE ProfileId=? AND Phase='Work' " +
                     "AND WasInterrupted=0 AND StartedAt BETWEEN ? AND ?",
-                    profileId, fromDt, toDt);
+                    profileId, fromLocal, toLocal);
 
                 pomodoroMinutes = await conn.ExecuteScalarAsync<int>(
                     "SELECT IFNULL(SUM(ActualMinutes),0) FROM pomodoro_sessions " +
                     "WHERE ProfileId=? AND Phase='Work' AND WasInterrupted=0 " +
                     "AND StartedAt BETWEEN ? AND ?",
-                    profileId, fromDt, toDt);
+                    profileId, fromLocal, toLocal);
 
                 pomodoroSessionsPrev = await conn.ExecuteScalarAsync<int>(
                     "SELECT COUNT(*) FROM pomodoro_sessions WHERE ProfileId=? AND Phase='Work' " +
                     "AND WasInterrupted=0 AND StartedAt BETWEEN ? AND ?",
-                    profileId, prevFromDt, prevToDt);
+                    profileId, prevFromLocal, prevToLocal);
             }
 
             // Заметки
@@ -159,6 +165,8 @@ namespace EduDev_Tracker.Services.Analytics
             var conn = _db.Connection;
             var fromDt = from.Date.ToUniversalTime();
             var toDt = to.Date.AddDays(1).ToUniversalTime();
+            var fromLocal = from.Date;
+            var toLocal = to.Date.AddDays(1);
 
             var hDict = new Dictionary<string, int>();
             var tDict = new Dictionary<string, int>();
@@ -176,22 +184,24 @@ namespace EduDev_Tracker.Services.Analytics
 
             if (module is ReportModule.All or ReportModule.Tasks)
             {
-                var rows = await conn.QueryAsync<DayStat>(
-                    "SELECT date(CompletedAt,'localtime') AS Day, COUNT(*) AS Cnt FROM tasks " +
-                    "WHERE ProfileId=? AND Status='Done' " +
-                    "AND CompletedAt BETWEEN ? AND ? GROUP BY Day",
+                // CompletedAt хранится как ticks → SQL date() даёт мусорные ключи.
+                // Тянем сами даты и группируем по дню в C#.
+                var rows = await conn.QueryAsync<DateRow>(
+                    "SELECT CompletedAt AS Dt FROM tasks " +
+                    "WHERE ProfileId=? AND Status='Done' AND CompletedAt BETWEEN ? AND ?",
                     profileId, fromDt, toDt);
-                tDict = rows.ToDictionary(x => x.Day, x => x.Cnt);
+                tDict = rows.GroupBy(r => r.Dt.ToString("yyyy-MM-dd"))
+                            .ToDictionary(g => g.Key, g => g.Count());
             }
 
             if (module is ReportModule.All or ReportModule.Pomodoro)
             {
-                var rows = await conn.QueryAsync<DayStat>(
-                    "SELECT date(StartedAt,'localtime') AS Day, COUNT(*) AS Cnt FROM pomodoro_sessions " +
-                    "WHERE ProfileId=? AND Phase='Work' AND WasInterrupted=0 " +
-                    "AND StartedAt BETWEEN ? AND ? GROUP BY Day",
-                    profileId, fromDt, toDt);
-                pDict = rows.ToDictionary(x => x.Day, x => x.Cnt);
+                var rows = await conn.QueryAsync<DateRow>(
+                    "SELECT StartedAt AS Dt FROM pomodoro_sessions " +
+                    "WHERE ProfileId=? AND Phase='Work' AND WasInterrupted=0 AND StartedAt BETWEEN ? AND ?",
+                    profileId, fromLocal, toLocal);
+                pDict = rows.GroupBy(r => r.Dt.ToString("yyyy-MM-dd"))
+                            .ToDictionary(g => g.Key, g => g.Count());
             }
 
             var dayNames = new[] { "Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб" };
@@ -225,6 +235,7 @@ namespace EduDev_Tracker.Services.Analytics
         }
 
         private class DayStat { public string Day { get; set; } = ""; public int Cnt { get; set; } }
+        private class DateRow { public DateTime Dt { get; set; } }
 
         private static List<ModuleRow> BuildModuleTable(
             int hCur, int hPrev, int days,
@@ -514,6 +525,153 @@ namespace EduDev_Tracker.Services.Analytics
             await File.WriteAllTextAsync(path, sb.ToString(),
                 new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: true)); // BOM для Excel
             return path;
+        }
+
+        public async Task<string> ExportExcelAsync(AnalyticsReport r)
+        {
+            return await Task.Run(() =>
+            {
+                using var wb = new XLWorkbook();
+                var ws = wb.Worksheets.Add("Отчёт");
+
+                var teal      = XLColor.FromHtml("#1B7A72");
+                var tealLight = XLColor.FromHtml("#D1F5F0");
+                var altRow    = XLColor.FromHtml("#F8FAFC");
+                var green     = XLColor.FromHtml("#D1FAE5");
+                var red       = XLColor.FromHtml("#FEE2E2");
+                var yellow    = XLColor.FromHtml("#FEF9C3");
+                var grayText  = XLColor.FromHtml("#64748B");
+                int row       = 1;
+
+                // Заголовок
+                var titleRange = ws.Range(row, 1, row, 6);
+                titleRange.Merge();
+                titleRange.Style.Fill.BackgroundColor    = teal;
+                titleRange.Style.Font.Bold               = true;
+                titleRange.Style.Font.FontSize           = 14;
+                titleRange.Style.Font.FontColor          = XLColor.White;
+                titleRange.Style.Alignment.Horizontal    = XLAlignmentHorizontalValues.Center;
+                ws.Cell(row, 1).Value = "EduDev Tracker — Аналитический отчёт";
+                row++;
+
+                var subRange = ws.Range(row, 1, row, 6);
+                subRange.Merge();
+                subRange.Style.Font.Italic    = true;
+                subRange.Style.Font.FontColor = grayText;
+                ws.Cell(row, 1).Value = $"Период: {r.PeriodLabel}   |   Создан: {DateTime.Now:dd.MM.yyyy HH:mm}";
+                row += 2;
+
+                // Ключевые метрики
+                row = ExcelWriteSectionHeader(ws, row, "КЛЮЧЕВЫЕ МЕТРИКИ", 3, teal);
+                row = ExcelWriteColHeaders(ws, row, tealLight, "Показатель", "Значение", "Δ к прошлому периоду");
+                var metrics = new (string Label, string Value, string Delta)[]
+                {
+                    ("Привычки выполнено",  $"{r.HabitsCompleted} / {r.HabitsTotal}",   FormatDelta(r.HabitsCompleted, r.HabitsCompletedPrev)),
+                    ("Задачи закрыто",      r.TasksClosed.ToString(),                    FormatDelta(r.TasksClosed, r.TasksClosedPrev)),
+                    ("Задачи просрочено",   r.TasksOverdue.ToString(),                   ""),
+                    ("Сессии Помодоро",     r.PomodoroSessions.ToString(),               FormatDelta(r.PomodoroSessions, r.PomodoroSessionsPrev)),
+                    ("Фокус (мин)",         r.PomodoroMinutes.ToString(),                $"{r.PomodoroMinutes / 60} ч {r.PomodoroMinutes % 60} мин"),
+                    ("Заметки создано",     r.NotesCreated.ToString(),                   FormatDelta(r.NotesCreated, r.NotesCreatedPrev)),
+                    ("Заметки закреплено",  r.NotesPinned.ToString(),                    ""),
+                };
+                for (int i = 0; i < metrics.Length; i++, row++)
+                {
+                    var bg = i % 2 == 0 ? altRow : XLColor.White;
+                    ws.Cell(row, 1).Value = metrics[i].Label;
+                    ws.Cell(row, 2).Value = metrics[i].Value;
+                    ws.Cell(row, 3).Value = metrics[i].Delta;
+                    ws.Range(row, 1, row, 3).Style.Fill.BackgroundColor = bg;
+                }
+                row++;
+
+                // Разбивка по модулям
+                row = ExcelWriteSectionHeader(ws, row, "РАЗБИВКА ПО МОДУЛЯМ", 4, teal);
+                row = ExcelWriteColHeaders(ws, row, tealLight, "Модуль", "За период", "В день", "Тренд");
+                for (int i = 0; i < r.ModuleTable.Count; i++, row++)
+                {
+                    var mrow = r.ModuleTable[i];
+                    var bg = i % 2 == 0 ? altRow : XLColor.White;
+                    var trendBg = mrow.TrendLabel.StartsWith("↑") ? green
+                                : mrow.TrendLabel.Contains("значительный") ? red
+                                : mrow.TrendLabel.StartsWith("↓") ? yellow
+                                : bg;
+                    ws.Cell(row, 1).Value = mrow.Module;
+                    ws.Cell(row, 1).Style.Font.Bold = true;
+                    ws.Cell(row, 2).Value = mrow.PeriodValue;
+                    ws.Cell(row, 3).Value = mrow.PerDayValue;
+                    ws.Cell(row, 4).Value = mrow.TrendLabel;
+                    ws.Range(row, 1, row, 3).Style.Fill.BackgroundColor = bg;
+                    ws.Cell(row, 4).Style.Fill.BackgroundColor = trendBg;
+                }
+                row++;
+
+                // Динамика по дням
+                row = ExcelWriteSectionHeader(ws, row, "ДИНАМИКА ПО ДНЯМ", 6, teal);
+                row = ExcelWriteColHeaders(ws, row, tealLight, "Дата", "День", "Привычки", "Задачи", "Помодоро", "Итого");
+                for (int i = 0; i < r.DailyChart.Count; i++, row++)
+                {
+                    var pt = r.DailyChart[i];
+                    var bg = i % 2 == 0 ? altRow : XLColor.White;
+                    ws.Cell(row, 1).Value = pt.Date.ToString("dd.MM.yyyy");
+                    ws.Cell(row, 2).Value = pt.DayLabel;
+                    ws.Cell(row, 3).Value = pt.HabitsCount;
+                    ws.Cell(row, 4).Value = pt.TasksCount;
+                    ws.Cell(row, 5).Value = pt.PomodoroCount;
+                    ws.Cell(row, 6).Value = pt.TotalScore;
+                    ws.Range(row, 1, row, 6).Style.Fill.BackgroundColor = bg;
+                    ws.Range(row, 3, row, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                }
+                row++;
+
+                // Инсайты
+                row = ExcelWriteSectionHeader(ws, row, "ИНСАЙТЫ", 6, teal);
+                foreach (var ins in r.Insights)
+                {
+                    ws.Range(row, 1, row, 6).Merge();
+                    ws.Cell(row++, 1).Value = ins;
+                }
+                row++;
+
+                // Рекомендации
+                row = ExcelWriteSectionHeader(ws, row, "РЕКОМЕНДАЦИИ", 6, teal);
+                foreach (var rec in r.Recommendations)
+                {
+                    ws.Range(row, 1, row, 6).Merge();
+                    ws.Cell(row++, 1).Value = rec;
+                }
+
+                ws.SheetView.Freeze(1, 0);
+                ws.Columns().AdjustToContents(1, 100);
+
+                var excelFileName = $"EduDev_Report_{r.From:yyyyMMdd}_{r.To:yyyyMMdd}.xlsx";
+                var excelPath = Path.Combine(FileSystem.CacheDirectory, excelFileName);
+                wb.SaveAs(excelPath);
+                return excelPath;
+            });
+        }
+
+        private static int ExcelWriteSectionHeader(IXLWorksheet ws, int row, string title, int cols, XLColor bg)
+        {
+            ws.Range(row, 1, row, cols).Merge();
+            var cell = ws.Cell(row, 1);
+            cell.Value = title;
+            cell.Style.Font.Bold            = true;
+            cell.Style.Font.FontSize        = 11;
+            cell.Style.Font.FontColor       = XLColor.White;
+            cell.Style.Fill.BackgroundColor = bg;
+            return row + 1;
+        }
+
+        private static int ExcelWriteColHeaders(IXLWorksheet ws, int row, XLColor bg, params string[] headers)
+        {
+            for (int i = 0; i < headers.Length; i++)
+            {
+                var cell = ws.Cell(row, i + 1);
+                cell.Value = headers[i];
+                cell.Style.Font.Bold            = true;
+                cell.Style.Fill.BackgroundColor = bg;
+            }
+            return row + 1;
         }
     }
 }

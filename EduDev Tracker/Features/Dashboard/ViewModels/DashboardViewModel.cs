@@ -102,11 +102,11 @@ namespace EduDev_Tracker.Features.Dashboard.ViewModels
             var hour = DateTime.Now.Hour;
             GreetingText = hour switch
             {
-                < 6 => "Доброй ночи 🌙",
-                < 12 => "Доброе утро ☀️",
-                < 17 => "Добрый день 👋",
-                < 22 => "Добрый вечер 🌆",
-                _ => "Доброй ночи 🌙"
+                < 6 => "Доброй ночи,",
+                < 12 => "Доброе утро,",
+                < 17 => "Добрый день,",
+                < 22 => "Добрый вечер,",
+                _ => "Доброй ночи,"
             };
             DateText = DateTime.Now.ToString("dddd, d MMMM",
                 new System.Globalization.CultureInfo("ru-RU"));

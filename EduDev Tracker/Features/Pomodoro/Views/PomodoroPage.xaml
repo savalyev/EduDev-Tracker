@@ -20,7 +20,7 @@
             </Style>
 
             <Style x:Key="SectionTitle" TargetType="Label">
-                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontSize" Value="17" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="TextColor" Value="#F1F5F9" />
                 <Setter Property="Margin" Value="0,0,0,12" />
@@ -28,7 +28,7 @@
 
             <Style x:Key="MutedLabel" TargetType="Label">
                 <Setter Property="FontSize" Value="13" />
-                <Setter Property="TextColor" Value="#64748B" />
+                <Setter Property="TextColor" Value="#8892A4" />
             </Style>
 
             <Style x:Key="ControlButton" TargetType="Button">
@@ -208,7 +208,7 @@
                     </Border>
 
                     <!--  Круговой таймер  -->
-                    <Border Padding="40,48" Style="{StaticResource SectionCard}">
+                    <Border Padding="24,32" Style="{StaticResource SectionCard}">
                         <VerticalStackLayout HorizontalOptions="Center" Spacing="0">
 
                             <!--  Кольцо  -->
@@ -245,24 +245,24 @@
                                         Text="{Binding TimeDisplay}"
                                         TextColor="#F1F5F9" />
                                     <Label
-                                        FontSize="12"
+                                        FontSize="13"
                                         HorizontalTextAlignment="Center"
                                         Text="{Binding CycleDisplay}"
-                                        TextColor="#475569" />
+                                        TextColor="#64748B" />
                                 </VerticalStackLayout>
                             </Grid>
 
                             <!--  Привязанная задача  -->
                             <Label
                                 Margin="0,20,0,0"
-                                FontSize="12"
+                                FontSize="13"
                                 HorizontalTextAlignment="Center"
-                                TextColor="#64748B">
+                                TextColor="#8892A4">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding LinkedTaskProject}" TextColor="#475569" />
-                                        <Span Text=" • " TextColor="#334155" />
-                                        <Span Text="{Binding LinkedTaskTitle}" TextColor="#64748B" />
+                                        <Span Text="{Binding LinkedTaskProject}" TextColor="#8892A4" />
+                                        <Span Text=" • " TextColor="#64748B" />
+                                        <Span Text="{Binding LinkedTaskTitle}" TextColor="#94A3B8" />
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
@@ -480,7 +480,7 @@
                                                 FontSize="13"
                                                 HorizontalTextAlignment="Center"
                                                 Text="{Binding DayLetter}"
-                                                TextColor="#475569" />
+                                                TextColor="#64748B" />
                                         </VerticalStackLayout>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
@@ -612,7 +612,7 @@
                                 Spacing="2"
                                 VerticalOptions="Center">
                                 <Label
-                                    FontSize="10"
+                                    FontSize="13"
                                     HorizontalTextAlignment="Center"
                                     Text="{Binding PhaseLabel}"
                                     TextColor="#64748B" />
@@ -626,15 +626,15 @@
                                     FontSize="13"
                                     HorizontalTextAlignment="Center"
                                     Text="{Binding CycleDisplay}"
-                                    TextColor="#475569" />
+                                    TextColor="#64748B" />
                             </VerticalStackLayout>
                         </Grid>
                         <Label
                             Margin="0,14,0,0"
-                            FontSize="12"
+                            FontSize="13"
                             HorizontalTextAlignment="Center"
                             Text="{Binding LinkedTaskTitle}"
-                            TextColor="#64748B" />
+                            TextColor="#8892A4" />
                         <Grid
                             Margin="0,20,0,0"
                             ColumnDefinitions="*,Auto,Auto"

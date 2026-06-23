@@ -94,7 +94,7 @@
                         Padding="16"
                         Style="{StaticResource EduCardBorder}">
 
-                        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto" RowSpacing="0">
+                        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto" RowSpacing="0">
 
                             <Label
                                 Grid.Row="0"
@@ -187,15 +187,17 @@
                                 </BindableLayout.ItemTemplate>
                             </FlexLayout>
 
-                            <!--  BindableLayout вместо CollectionView: список (CollectionView в ScrollView)
-                                  роняет рендер WinUI (0xc000027b) при нескольких высоких карточках.
-                                  x:Name сохранён — code-behind (FadeToAsync, ChildAdded) работает как раньше.  -->
+                            <!--
+                                BindableLayout вместо CollectionView: список (CollectionView в ScrollView)
+                                роняет рендер WinUI (0xc000027b) при нескольких высоких карточках.
+                                x:Name сохранён — code-behind (FadeToAsync, ChildAdded) работает как раньше.
+                            -->
                             <VerticalStackLayout
                                 x:Name="HabitsCollectionView"
                                 Grid.Row="4"
                                 Margin="0,12,0,0"
-                                Spacing="8"
-                                BindableLayout.ItemsSource="{Binding Habits}">
+                                BindableLayout.ItemsSource="{Binding Habits}"
+                                Spacing="8">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="vm:HabitItemViewModel">
                                         <Border
@@ -295,15 +297,6 @@
                                                 </VerticalStackLayout>
 
                                                 <!--  Скрываем прогресс и серию на телефоне — мало места  -->
-                                                <Label
-                                                    Grid.Column="2"
-                                                    FontFamily="Comfortaa"
-                                                    FontSize="14"
-                                                    IsVisible="{OnIdiom Phone=False,
-                                                                        Default=True}"
-                                                    Text="{Binding TodayProgressText}"
-                                                    TextColor="#94A3B8"
-                                                    VerticalOptions="Center" />
 
                                                 <VerticalStackLayout
                                                     Grid.Column="3"
@@ -344,14 +337,39 @@
                             <ActivityIndicator
                                 Grid.Row="4"
                                 Margin="0,28,0,0"
-                                Color="{StaticResource EduTeal}"
                                 HorizontalOptions="Center"
                                 IsRunning="{Binding IsBusy}"
                                 IsVisible="{Binding IsBusy}"
-                                VerticalOptions="Start" />
+                                VerticalOptions="Start"
+                                Color="{StaticResource EduTeal}" />
+
+                            <VerticalStackLayout
+                                Grid.Row="5"
+                                Margin="0,4,0,0"
+                                IsVisible="{Binding HabitsHasMore}"
+                                Spacing="4">
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding HabitsPageInfo}"
+                                    TextColor="#64748B" />
+                                <Button
+                                    BackgroundColor="{StaticResource EduButtonBackground}"
+                                    BorderColor="{StaticResource EduAccent}"
+                                    BorderWidth="1"
+                                    Command="{Binding LoadMoreHabitsCommand}"
+                                    CornerRadius="10"
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    HeightRequest="40"
+                                    Style="{StaticResource EduBaseButton}"
+                                    Text="Загрузить ещё →"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
 
                             <Button
-                                Grid.Row="5"
+                                Grid.Row="6"
                                 Margin="0,12,0,0"
                                 Command="{Binding OpenAddHabitCommand}"
                                 HeightRequest="40"

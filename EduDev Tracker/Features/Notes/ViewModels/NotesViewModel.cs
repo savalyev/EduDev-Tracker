@@ -23,7 +23,13 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         private readonly INotesService _noteService;
         private readonly int _profileId;
 
+        private const int NotesPageSize = 15;
+        private List<Note> _allNotesList = new();
+        private int _notesOffset;
+
         [ObservableProperty] private ObservableCollection<Note> _filteredNotes = new();
+        [ObservableProperty] private bool _notesHasMore;
+        [ObservableProperty] private string _notesPageInfo = string.Empty;
         [ObservableProperty] private ObservableCollection<NoteCategory> _categories = new();
         [ObservableProperty] private ObservableCollection<NoteAttachment> _selectedNoteAttachments = new();
         [ObservableProperty] private ObservableCollection<NoteVersion> _noteVersions = new();
@@ -46,7 +52,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         public bool HasSelectedNote => SelectedNote is not null;
         public bool HasNoAttachments => !SelectedNoteAttachments.Any();
         public bool HasNoVersions => !NoteVersions.Any();
-        public string NotesCountText => $"{FilteredNotes.Count} записей";
+        public string NotesCountText => $"{_allNotesList.Count} записей";
         public string WordCountText => $"Слов: {EditContent.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length}";
         public string TagsDisplay => SelectedNote?.Tags?.Any() == true
             ? string.Join(", ", SelectedNote.Tags.Select(t => $"#{t.Name}"))
@@ -87,9 +93,7 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
 
             if (!string.IsNullOrWhiteSpace(SearchQuery))
             {
-            
                 notes = await _noteService.SearchAsync(_profileId, SearchQuery);
-
             }
             else
             {
@@ -99,9 +103,26 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
             if (SelectedCategory is not null)
                 notes = notes.Where(n => n.CategoryId == SelectedCategory.Id).ToList();
 
-            FilteredNotes = new ObservableCollection<Note>(notes);
+            _allNotesList = notes;
+            _notesOffset = 0;
+            FilteredNotes.Clear();
+            LoadNotesPage();
             OnPropertyChanged(nameof(NotesCountText));
         }
+
+        private void LoadNotesPage()
+        {
+            var batch = _allNotesList.Skip(_notesOffset).Take(NotesPageSize).ToList();
+            foreach (var note in batch) FilteredNotes.Add(note);
+            _notesOffset += batch.Count;
+            NotesHasMore = _notesOffset < _allNotesList.Count;
+            NotesPageInfo = NotesHasMore
+                ? $"Показано {_notesOffset} из {_allNotesList.Count}"
+                : string.Empty;
+        }
+
+        [RelayCommand]
+        private void LoadMoreNotes() => LoadNotesPage();
 
         partial void OnSelectedNoteChanged(Note? value)
         {
@@ -330,7 +351,10 @@ namespace EduDev_Tracker.Features.Notes.ViewModels
         private async Task ShowPinnedAsync()
         {
             var notes = await _noteService.GetByProfileAsync(_profileId, false);
-            FilteredNotes = new ObservableCollection<Note>(notes.Where(n => n.IsPinned));
+            _allNotesList = notes.Where(n => n.IsPinned).ToList();
+            _notesOffset = 0;
+            FilteredNotes.Clear();
+            LoadNotesPage();
             OnPropertyChanged(nameof(NotesCountText));
         }
 

@@ -22,6 +22,10 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private readonly IHabitService _habitService;
         private readonly int _profileId;
 
+        private const int HabitsPageSize = 10;
+        private readonly List<HabitItemViewModel> _allHabitVms = new();
+        private int _habitsOffset;
+
         public ObservableCollection<HabitItemViewModel> Habits { get; } = new();
         private readonly Dictionary<int, HabitSchedule> _scheduleCache = new();
 
@@ -45,6 +49,9 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
 
         [ObservableProperty]
         private string selectedPeriod = "Сегодня";
+
+        [ObservableProperty] private bool habitsHasMore;
+        [ObservableProperty] private string habitsPageInfo = string.Empty;
 
         [ObservableProperty]
         private string analyticsCompletionRate;
@@ -82,6 +89,8 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             {
                 IsBusy = true;
                 Habits.Clear();
+                _allHabitVms.Clear();
+                _habitsOffset = 0;
                 _scheduleCache.Clear();
 
                 var allhabits = await _habitService.GetActiveAsync(_profileId);
@@ -123,14 +132,30 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                     var progress = await _habitService.GetTodayProgressAsync(habit.Id);
                     var streak = await _habitService.GetCurrentStreakAsync(habit.Id);
                     item.SetProgressSilently(progress, streak);
-                    Habits.Add(item);
+                    _allHabitVms.Add(item);
                 }
+
+                LoadHabitsPage();
             }
             finally
             {
                 IsBusy = false;
             }
         }
+
+        private void LoadHabitsPage()
+        {
+            var batch = _allHabitVms.Skip(_habitsOffset).Take(HabitsPageSize).ToList();
+            foreach (var vm in batch) Habits.Add(vm);
+            _habitsOffset += batch.Count;
+            HabitsHasMore = _habitsOffset < _allHabitVms.Count;
+            HabitsPageInfo = HabitsHasMore
+                ? $"Показано {_habitsOffset} из {_allHabitVms.Count}"
+                : string.Empty;
+        }
+
+        [RelayCommand]
+        private void LoadMoreHabits() => LoadHabitsPage();
 
         private List<Habit> FilterByPeriod(List<Habit> habits, DateTime from, DateTime to)
         {

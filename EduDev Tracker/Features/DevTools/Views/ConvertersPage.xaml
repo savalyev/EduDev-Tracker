@@ -917,6 +917,25 @@
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                             </VerticalStackLayout>
+                            <VerticalStackLayout IsVisible="{Binding HistoryHasMore}" Spacing="4" Padding="0,4,0,0">
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding HistoryPageInfo}"
+                                    TextColor="#64748B" />
+                                <Button
+                                    Command="{Binding LoadMoreHistoryCommand}"
+                                    BackgroundColor="#0F172A"
+                                    BorderColor="#2DD4BF"
+                                    BorderWidth="1"
+                                    CornerRadius="10"
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    HeightRequest="36"
+                                    Text="Загрузить ещё →"
+                                    TextColor="#2DD4BF" />
+                            </VerticalStackLayout>
                         </VerticalStackLayout>
                     </Border>
 
@@ -1444,6 +1463,25 @@
                                         </Border>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout IsVisible="{Binding HistoryHasMore}" Spacing="4" Padding="0,4,0,0">
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding HistoryPageInfo}"
+                                    TextColor="#64748B" />
+                                <Button
+                                    Command="{Binding LoadMoreHistoryCommand}"
+                                    BackgroundColor="#0F172A"
+                                    BorderColor="#2DD4BF"
+                                    BorderWidth="1"
+                                    CornerRadius="10"
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    HeightRequest="44"
+                                    Text="Загрузить ещё →"
+                                    TextColor="#2DD4BF" />
                             </VerticalStackLayout>
                             <Label
                                 FontSize="15"

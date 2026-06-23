@@ -479,6 +479,30 @@
                                 Text="Создайте первую заметку" />
                         </VerticalStackLayout>
                     </CollectionView.EmptyView>
+                    <CollectionView.Footer>
+                        <VerticalStackLayout
+                            IsVisible="{Binding NotesHasMore}"
+                            Padding="8,4,8,8"
+                            Spacing="4">
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="{Binding NotesPageInfo}"
+                                TextColor="#64748B" />
+                            <Button
+                                Command="{Binding LoadMoreNotesCommand}"
+                                BackgroundColor="#111827"
+                                BorderColor="#4F8EF7"
+                                BorderWidth="1"
+                                CornerRadius="10"
+                                FontFamily="Comfortaa"
+                                FontSize="14"
+                                HeightRequest="36"
+                                Text="Загрузить ещё →"
+                                TextColor="#4F8EF7" />
+                        </VerticalStackLayout>
+                    </CollectionView.Footer>
                 </CollectionView>
             </Grid>
 
@@ -1156,6 +1180,30 @@
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
+                    <CollectionView.Footer>
+                        <VerticalStackLayout
+                            IsVisible="{Binding NotesHasMore}"
+                            Padding="12,4,12,12"
+                            Spacing="4">
+                            <Label
+                                FontFamily="Comfortaa"
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="{Binding NotesPageInfo}"
+                                TextColor="#64748B" />
+                            <Button
+                                Command="{Binding LoadMoreNotesCommand}"
+                                BackgroundColor="#111827"
+                                BorderColor="#4F8EF7"
+                                BorderWidth="1"
+                                CornerRadius="10"
+                                FontFamily="Comfortaa"
+                                FontSize="15"
+                                HeightRequest="44"
+                                Text="Загрузить ещё →"
+                                TextColor="#4F8EF7" />
+                        </VerticalStackLayout>
+                    </CollectionView.Footer>
                 </CollectionView>
             </Grid>
 

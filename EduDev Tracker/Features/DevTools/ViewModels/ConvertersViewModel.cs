@@ -29,8 +29,14 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
 
         [ObservableProperty] private int selectedTabIndex; //вкладочки
 
+        private const int HistoryPageSize = 10;
+        private List<HistoryItemVm> _allHistoryItems = new();
+        private int _historyOffset;
+
         [ObservableProperty] private ObservableCollection<HistoryItemVm> history = new();
         [ObservableProperty] private bool hasHistory;
+        [ObservableProperty] private bool historyHasMore;
+        [ObservableProperty] private string historyPageInfo = string.Empty;
         [ObservableProperty] private string historyTitle = "История за сегодня";
 
         //числа
@@ -438,8 +444,8 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
 
         private async Task LoadHistoryAsync()
         {
-            var items = await _service.GetHistoryAsync(_profileId, 30);
-            var vms = items.Select(h => new HistoryItemVm
+            var items = await _service.GetHistoryAsync(_profileId, 500);
+            _allHistoryItems = items.Select(h => new HistoryItemVm
             {
                 Id = h.Id,
                 Type = h.Type,
@@ -450,9 +456,25 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
                 TimeAgo = FormatTimeAgo(h.CreatedAt)
             }).ToList();
 
-            History = new ObservableCollection<HistoryItemVm>(vms);
-            HasHistory = History.Count > 0;
+            _historyOffset = 0;
+            History.Clear();
+            LoadHistoryPage();
+            HasHistory = _allHistoryItems.Count > 0;
         }
+
+        private void LoadHistoryPage()
+        {
+            var batch = _allHistoryItems.Skip(_historyOffset).Take(HistoryPageSize).ToList();
+            foreach (var vm in batch) History.Add(vm);
+            _historyOffset += batch.Count;
+            HistoryHasMore = _historyOffset < _allHistoryItems.Count;
+            HistoryPageInfo = HistoryHasMore
+                ? $"Показано {_historyOffset} из {_allHistoryItems.Count}"
+                : string.Empty;
+        }
+
+        [RelayCommand]
+        private void LoadMoreHistory() => LoadHistoryPage();
 
         [RelayCommand]
         private async Task ClearTodayHistoryAsync()

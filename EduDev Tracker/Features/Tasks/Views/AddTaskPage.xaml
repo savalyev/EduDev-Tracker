@@ -387,8 +387,9 @@
 
                                     <VerticalStackLayout IsVisible="{Binding IsWeekly}" Spacing="8">
                                         <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Дни недели" />
-                                        <HorizontalStackLayout Spacing="8">
+                                        <FlexLayout Direction="Row" JustifyContent="Start" Wrap="Wrap">
                                             <Border
+                                                Margin="0,0,6,6"
                                                 Padding="8,6"
                                                 BackgroundColor="{Binding MonColor}"
                                                 Stroke="{Binding MonBorder}"
@@ -407,6 +408,7 @@
                                                     TextColor="White" />
                                             </Border>
                                             <Border
+                                                Margin="0,0,6,6"
                                                 Padding="8,6"
                                                 BackgroundColor="{Binding TueColor}"
                                                 Stroke="{Binding TueBorder}"
@@ -425,6 +427,7 @@
                                                     TextColor="White" />
                                             </Border>
                                             <Border
+                                                Margin="0,0,6,6"
                                                 Padding="8,6"
                                                 BackgroundColor="{Binding WedColor}"
                                                 Stroke="{Binding WedBorder}"
@@ -443,6 +446,7 @@
                                                     TextColor="White" />
                                             </Border>
                                             <Border
+                                                Margin="0,0,6,6"
                                                 Padding="8,6"
                                                 BackgroundColor="{Binding ThuColor}"
                                                 Stroke="{Binding ThuBorder}"
@@ -461,6 +465,7 @@
                                                     TextColor="White" />
                                             </Border>
                                             <Border
+                                                Margin="0,0,6,6"
                                                 Padding="8,6"
                                                 BackgroundColor="{Binding FriColor}"
                                                 Stroke="{Binding FriBorder}"
@@ -479,6 +484,7 @@
                                                     TextColor="White" />
                                             </Border>
                                             <Border
+                                                Margin="0,0,6,6"
                                                 Padding="8,6"
                                                 BackgroundColor="{Binding SatColor}"
                                                 Stroke="{Binding SatBorder}"
@@ -497,6 +503,7 @@
                                                     TextColor="#6699FF" />
                                             </Border>
                                             <Border
+                                                Margin="0,0,6,6"
                                                 Padding="8,6"
                                                 BackgroundColor="{Binding SunColor}"
                                                 Stroke="{Binding SunBorder}"
@@ -514,7 +521,7 @@
                                                     Text="Вс"
                                                     TextColor="#FF6B6B" />
                                             </Border>
-                                        </HorizontalStackLayout>
+                                        </FlexLayout>
                                     </VerticalStackLayout>
 
                                     <Grid

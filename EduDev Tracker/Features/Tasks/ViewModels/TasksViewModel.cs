@@ -84,27 +84,39 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
         public ObservableCollection<TaskGroup> GroupedTasks { get; } = new();
 
+        private List<TaskItem> _allFilteredListTasks = new();
+        private int _listShownCount = ListPageSize;
+        [ObservableProperty] private bool listHasMore;
+        [ObservableProperty] private string listPageInfo = string.Empty;
+
         private void RebuildGroupedList(IEnumerable<TaskItem> tasks)
         {
-            GroupedTasks.Clear();
+            _allFilteredListTasks = tasks.ToList();
+            RebuildGroupedListFromCache();
+        }
 
-            var overdue = tasks
+        private void RebuildGroupedListFromCache()
+        {
+            GroupedTasks.Clear();
+            var visible = _allFilteredListTasks.Take(_listShownCount).ToList();
+
+            var overdue = visible
                 .Where(t => t.DueAt < DateTime.Now && t.Status != TaskStatus.Done)
                 .ToList();
 
-            var today = tasks
+            var today = visible
                 .Where(t => t.DueAt?.Date == DateTime.Today && t.Status != TaskStatus.Done)
                 .ToList();
 
-            var tomorrow = tasks
+            var tomorrow = visible
                 .Where(t => t.DueAt?.Date == DateTime.Today.AddDays(1) && t.Status != TaskStatus.Done)
                 .ToList();
 
-            var later = tasks
+            var later = visible
                 .Where(t => t.DueAt?.Date > DateTime.Today.AddDays(1) && t.Status != TaskStatus.Done)
                 .ToList();
 
-            var noDate = tasks
+            var noDate = visible
                 .Where(t => t.DueAt is null && t.Status != TaskStatus.Done)
                 .ToList();
 
@@ -113,6 +125,18 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             AddGroup($"Завтра — {DateTime.Today.AddDays(1):d MMMM}", "#4A5A6A", tomorrow);
             AddGroup("Позже", "#4A5A6A", later);
             AddGroup("Без срока", "#4A5A6A", noDate);
+
+            var total = _allFilteredListTasks.Count;
+            var shown = Math.Min(_listShownCount, total);
+            ListHasMore = total > _listShownCount;
+            ListPageInfo = ListHasMore ? $"Показано {shown} из {total}" : string.Empty;
+        }
+
+        [RelayCommand]
+        private void LoadMoreList()
+        {
+            _listShownCount += ListPageSize;
+            RebuildGroupedListFromCache();
         }
 
         private void AddGroup(string title, string color, List<TaskItem> items)
@@ -136,14 +160,20 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         }
 
         private const int KanbanPageSize = 15;
+        private const int KanbanActivePageSize = 10;
+        private const int ListPageSize = 10;
 
         public ObservableCollection<TaskItemViewModel> OpenTasks { get; } = new();
         public ObservableCollection<TaskItemViewModel> InProgressTasks { get; } = new();
         public ObservableCollection<TaskItemViewModel> DoneTasks { get; } = new();
         public ObservableCollection<TaskItemViewModel> CancelledTasks { get; } = new();
 
+        private List<TaskItemViewModel> _allOpenVms = new();
+        private List<TaskItemViewModel> _allInProgressVms = new();
         private List<TaskItemViewModel> _allDoneVms = new();
         private List<TaskItemViewModel> _allCancelledVms = new();
+        private int _openOffset;
+        private int _inProgressOffset;
         private int _doneOffset;
         private int _cancelledOffset;
 
@@ -151,6 +181,10 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [ObservableProperty] private string inProgressCount = "0";
         [ObservableProperty] private string doneCount = "0";
         [ObservableProperty] private string cancelledCount = "0";
+        [ObservableProperty] private bool openHasMore;
+        [ObservableProperty] private string openPageInfo = string.Empty;
+        [ObservableProperty] private bool inProgressHasMore;
+        [ObservableProperty] private string inProgressPageInfo = string.Empty;
         [ObservableProperty] private bool doneHasMore;
         [ObservableProperty] private bool cancelledHasMore;
         [ObservableProperty] private string donePageInfo = string.Empty;
@@ -163,8 +197,12 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             DoneTasks.Clear();
             CancelledTasks.Clear();
 
+            _allOpenVms.Clear();
+            _allInProgressVms.Clear();
             _allDoneVms.Clear();
             _allCancelledVms.Clear();
+            _openOffset = 0;
+            _inProgressOffset = 0;
             _doneOffset = 0;
             _cancelledOffset = 0;
 
@@ -173,21 +211,48 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 var vm = TaskItemViewModel.FromModel(task);
                 switch (task.Status)
                 {
-                    case TaskStatus.Open: OpenTasks.Add(vm); break;
-                    case TaskStatus.InProgress: InProgressTasks.Add(vm); break;
+                    case TaskStatus.Open: _allOpenVms.Add(vm); break;
+                    case TaskStatus.InProgress: _allInProgressVms.Add(vm); break;
                     case TaskStatus.Done: _allDoneVms.Add(vm); break;
                     case TaskStatus.Cancelled: _allCancelledVms.Add(vm); break;
                 }
             }
 
+            LoadOpenPage();
+            LoadInProgressPage();
             LoadDonePage();
             LoadCancelledPage();
 
-            OpenCount = OpenTasks.Count.ToString();
-            InProgressCount = InProgressTasks.Count.ToString();
+            OpenCount = _allOpenVms.Count.ToString();
+            InProgressCount = _allInProgressVms.Count.ToString();
             DoneCount = _allDoneVms.Count.ToString();
             CancelledCount = _allCancelledVms.Count.ToString();
         }
+
+        private void LoadOpenPage()
+        {
+            var batch = _allOpenVms.Skip(_openOffset).Take(KanbanActivePageSize).ToList();
+            foreach (var vm in batch) OpenTasks.Add(vm);
+            _openOffset += batch.Count;
+            OpenHasMore = _openOffset < _allOpenVms.Count;
+            OpenPageInfo = OpenHasMore
+                ? $"Показано {_openOffset} из {_allOpenVms.Count}"
+                : string.Empty;
+        }
+
+        private void LoadInProgressPage()
+        {
+            var batch = _allInProgressVms.Skip(_inProgressOffset).Take(KanbanActivePageSize).ToList();
+            foreach (var vm in batch) InProgressTasks.Add(vm);
+            _inProgressOffset += batch.Count;
+            InProgressHasMore = _inProgressOffset < _allInProgressVms.Count;
+            InProgressPageInfo = InProgressHasMore
+                ? $"Показано {_inProgressOffset} из {_allInProgressVms.Count}"
+                : string.Empty;
+        }
+
+        [RelayCommand] private void LoadMoreOpen() => LoadOpenPage();
+        [RelayCommand] private void LoadMoreInProgress() => LoadInProgressPage();
 
         private void LoadDonePage()
         {
@@ -331,6 +396,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 .ThenBy(t => t.Priority)
                 .ToList();
 
+            _listShownCount = ListPageSize;
             RebuildGroupedList(list);
             RebuildKanban(list);
             RefreshCalendar();

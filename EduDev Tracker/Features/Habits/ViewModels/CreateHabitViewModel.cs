@@ -31,6 +31,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private string description = string.Empty;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
         private HabitTypeItem? selectedHabitType;
 
         [ObservableProperty]
@@ -108,6 +109,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                 return;
 
             OnPropertyChanged(nameof(SelectedDays));
+            SaveCommand.NotifyCanExecuteChanged();
         }
 
         private int BuildDaysMask()
@@ -138,7 +140,9 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         }
         private bool CanSave()
         {
-            return !string.IsNullOrWhiteSpace(Title);
+            return !string.IsNullOrWhiteSpace(Title)
+                && SelectedHabitType != null
+                && WeekDays.Any(d => d.IsSelected);
         }
 
         [RelayCommand]
@@ -153,6 +157,30 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         private async Task SaveAsync()
         {
             if (IsBusy) return;
+
+            var type = SelectedHabitType!.Type;
+            if (type is HabitType.Quantitative or HabitType.Time)
+            {
+                if (ParsedTargerValue <= 0)
+                {
+                    await Shell.Current.DisplayAlert(
+                        "Заполните цель",
+                        type == HabitType.Quantitative
+                            ? "Для количественной привычки укажите целевое значение (больше 0)."
+                            : "Для привычки по времени укажите целевое время (больше 0).",
+                        "Понял");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(TargetUnit))
+                {
+                    await Shell.Current.DisplayAlert(
+                        "Заполните единицу",
+                        "Укажите единицу измерения (например: км, мин, стаканов).",
+                        "Понял");
+                    return;
+                }
+            }
+
             try
             {
                 IsBusy = true;
@@ -165,7 +193,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                 var habit = await _habitService.CreateAsync(
                     profileId: _profileId,
                     title: Title,
-                    type: SelectedHabitType?.Type ?? HabitType.Binary,
+                    type: type,
                     schedule: Schedule,
                     targetUnit: TargetUnit,
                     targetValue: ParsedTargerValue,

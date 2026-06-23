@@ -264,7 +264,7 @@
                         IsVisible="{Binding IsListMode}"
                         Style="{StaticResource EduCardBorder}">
 
-                        <Grid RowDefinitions="Auto, Auto, *" RowSpacing="0">
+                        <Grid RowDefinitions="Auto, Auto, *, Auto" RowSpacing="0">
 
                             <Label
                                 Grid.Row="0"
@@ -371,7 +371,10 @@
                                                                     </Label>
 
                                                                     <!--  Теги: приоритет + категория + дедлайн  -->
-                                                                    <HorizontalStackLayout Margin="0,4,0,0" Spacing="4">
+                                                                    <FlexLayout
+                                                                        Margin="0,4,0,0"
+                                                                        Direction="Row"
+                                                                        Wrap="Wrap">
 
                                                                         <!--  Приоритет  -->
                                                                         <Border
@@ -424,7 +427,7 @@
                                                                                 TextColor="{Binding DeadlineTextColor}"
                                                                                 VerticalOptions="Center" />
                                                                         </Border>
-                                                                    </HorizontalStackLayout>
+                                                                    </FlexLayout>
                                                                 </VerticalStackLayout>
 
                                                                 <!--  Действия  -->
@@ -458,6 +461,30 @@
                                         </VerticalStackLayout>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout
+                                Grid.Row="3"
+                                IsVisible="{Binding ListHasMore}"
+                                Padding="0,8,0,0"
+                                Spacing="4">
+                                <Label
+                                    FontFamily="Comfortaa"
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding ListPageInfo}"
+                                    TextColor="#64748B" />
+                                <Button
+                                    Command="{Binding LoadMoreListCommand}"
+                                    Style="{StaticResource EduBaseButton}"
+                                    BackgroundColor="{StaticResource EduButtonBackground}"
+                                    BorderColor="{StaticResource EduAccent}"
+                                    BorderWidth="1"
+                                    CornerRadius="10"
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    HeightRequest="40"
+                                    Text="Загрузить ещё →"
+                                    TextColor="White" />
                             </VerticalStackLayout>
                         </Grid>
                     </Border>
@@ -577,7 +604,7 @@
                                 -->
                                 <CollectionView
                                     Grid.Row="1"
-                                    HeightRequest="340"
+                                    HeightRequest="{OnIdiom Phone=240, Default=340}"
                                     ItemsSource="{Binding CalendarDays}"
                                     SelectionMode="None"
                                     VerticalOptions="Start">
@@ -859,6 +886,25 @@
                                                 </DataTemplate>
                                             </BindableLayout.ItemTemplate>
                                         </VerticalStackLayout>
+                                        <VerticalStackLayout IsVisible="{Binding OpenHasMore}" Spacing="4" Padding="0,4,0,0">
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding OpenPageInfo}"
+                                                TextColor="#64748B" />
+                                            <Button
+                                                Command="{Binding LoadMoreOpenCommand}"
+                                                BackgroundColor="#1A0D2E"
+                                                BorderColor="#8E44AD"
+                                                BorderWidth="1"
+                                                CornerRadius="10"
+                                                FontFamily="Comfortaa"
+                                                FontSize="15"
+                                                HeightRequest="36"
+                                                Text="Загрузить ещё →"
+                                                TextColor="#CC88FF" />
+                                        </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
 
@@ -953,6 +999,25 @@
                                                     </Border>
                                                 </DataTemplate>
                                             </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout IsVisible="{Binding InProgressHasMore}" Spacing="4" Padding="0,4,0,0">
+                                            <Label
+                                                FontFamily="Comfortaa"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding InProgressPageInfo}"
+                                                TextColor="#64748B" />
+                                            <Button
+                                                Command="{Binding LoadMoreInProgressCommand}"
+                                                BackgroundColor="#1F1200"
+                                                BorderColor="#E67E22"
+                                                BorderWidth="1"
+                                                CornerRadius="10"
+                                                FontFamily="Comfortaa"
+                                                FontSize="15"
+                                                HeightRequest="36"
+                                                Text="Загрузить ещё →"
+                                                TextColor="#FF9944" />
                                         </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>

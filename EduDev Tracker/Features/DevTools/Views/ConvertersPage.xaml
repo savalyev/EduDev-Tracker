@@ -23,7 +23,7 @@
         <converters:BoolToStringConverter x:Key="BoolToStringConverter" />
 
         <Style x:Key="SectionLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontSize" Value="15" />
             <Setter Property="TextColor" Value="#8892A4" />
             <Setter Property="Margin" Value="0,0,0,8" />
         </Style>
@@ -184,7 +184,7 @@
                                     Text="Конвертер систем счисления"
                                     TextColor="#F1F5F9" />
                                 <Label
-                                    FontSize="13"
+                                    FontSize="15"
                                     Text="Вводишь в любой системе (0xFF, 0b1010, 255) — остальные считаются автоматически"
                                     TextColor="#64748B" />
 
@@ -201,7 +201,7 @@
                                             Text="{Binding NumeralInput}" />
                                     </Border>
                                     <Label
-                                        FontSize="13"
+                                        FontSize="15"
                                         Text="Поддерживаются целые числа (int32)"
                                         TextColor="#334155" />
                                 </VerticalStackLayout>
@@ -216,7 +216,7 @@
                                             TextColor="#F1F5F9" />
                                     </Border>
                                     <Label
-                                        FontSize="13"
+                                        FontSize="15"
                                         Text="{Binding CustomBaseLabel}"
                                         TextColor="#2DD4BF" />
                                 </VerticalStackLayout>
@@ -240,7 +240,7 @@
 
                                         <!--  BIN  -->
                                         <Label
-                                            FontSize="13"
+                                            FontSize="15"
                                             Text="BIN:"
                                             TextColor="#475569"
                                             VerticalOptions="Center" />
@@ -259,7 +259,7 @@
                                         <!--  OCT  -->
                                         <Label
                                             Grid.Row="1"
-                                            FontSize="13"
+                                            FontSize="15"
                                             Text="OCT:"
                                             TextColor="#475569"
                                             VerticalOptions="Center" />
@@ -280,7 +280,7 @@
                                         <!--  DEC  -->
                                         <Label
                                             Grid.Row="2"
-                                            FontSize="13"
+                                            FontSize="15"
                                             Text="DEC:"
                                             TextColor="#475569"
                                             VerticalOptions="Center" />
@@ -301,7 +301,7 @@
                                         <!--  HEX  -->
                                         <Label
                                             Grid.Row="3"
-                                            FontSize="13"
+                                            FontSize="15"
                                             Text="HEX:"
                                             TextColor="#475569"
                                             VerticalOptions="Center" />
@@ -322,7 +322,7 @@
                                         <!--  CUSTOM (только если основание нестандартное)  -->
                                         <Label
                                             Grid.Row="4"
-                                            FontSize="13"
+                                            FontSize="15"
                                             IsVisible="{Binding ShowNumeralCustom}"
                                             Text="{Binding CustomBase, StringFormat='B{0}:'}"
                                             TextColor="#2DD4BF"
@@ -408,7 +408,7 @@
                                                 Style="{StaticResource SectionLabel}"
                                                 Text="RGB" />
                                             <Label
-                                                FontSize="13"
+                                                FontSize="15"
                                                 HorizontalTextAlignment="Center"
                                                 Style="{StaticResource ResultValue}"
                                                 Text="{Binding ColorRgb}" />
@@ -430,7 +430,7 @@
                                                 Style="{StaticResource SectionLabel}"
                                                 Text="HSL" />
                                             <Label
-                                                FontSize="13"
+                                                FontSize="15"
                                                 HorizontalTextAlignment="Center"
                                                 Style="{StaticResource ResultValue}"
                                                 Text="{Binding ColorHsl}" />
@@ -475,7 +475,7 @@
                                         BackgroundColor="#1E293B"
                                         Command="{Binding UseNowCommand}"
                                         CornerRadius="12"
-                                        FontSize="13"
+                                        FontSize="15"
                                         HeightRequest="44"
                                         Text="Сейчас"
                                         TextColor="#94A3B8"
@@ -584,7 +584,7 @@
                                         </Border.GestureRecognizers>
                                         <Label
                                             Padding="0,10"
-                                            FontSize="13"
+                                            FontSize="15"
                                             HorizontalTextAlignment="Center"
                                             Text="JSON">
                                             <Label.TextColor>
@@ -614,7 +614,7 @@
                                         </Border.GestureRecognizers>
                                         <Label
                                             Padding="0,10"
-                                            FontSize="13"
+                                            FontSize="15"
                                             HorizontalTextAlignment="Center"
                                             Text="XML">
                                             <Label.TextColor>
@@ -666,7 +666,7 @@
                                                 Padding="4,0"
                                                 BackgroundColor="Transparent"
                                                 Command="{Binding ClearJsonXmlInputCommand}"
-                                                FontSize="13"
+                                                FontSize="15"
                                                 HeightRequest="28"
                                                 Text="✕ Очистить"
                                                 TextColor="#475569" />
@@ -681,7 +681,7 @@
                                                 AutoSize="TextChanges"
                                                 BackgroundColor="Transparent"
                                                 FontFamily="Monospace"
-                                                FontSize="13"
+                                                FontSize="15"
                                                 MinimumHeightRequest="220"
                                                 Placeholder="{Binding IsJsonMode, Converter={StaticResource BoolToStringConverter}, ConverterParameter='Вставь JSON...|Вставь XML...'}"
                                                 PlaceholderColor="#475569"
@@ -703,7 +703,7 @@
                                                 BackgroundColor="Transparent"
                                                 Command="{Binding CopyToClipboardCommand}"
                                                 CommandParameter="{Binding JsonXmlOutput}"
-                                                FontSize="13"
+                                                FontSize="15"
                                                 HeightRequest="28"
                                                 Text="⎘ Копировать"
                                                 TextColor="#2DD4BF" />
@@ -716,7 +716,7 @@
                                             StrokeThickness="1">
                                             <Label
                                                 FontFamily="Monospace"
-                                                FontSize="13"
+                                                FontSize="15"
                                                 LineBreakMode="WordWrap"
                                                 MinimumHeightRequest="220"
                                                 Text="{Binding JsonXmlOutput}"
@@ -788,7 +788,7 @@
                                     <Grid ColumnDefinitions="*,Auto">
                                         <Label
                                             FontFamily="Monospace"
-                                            FontSize="13"
+                                            FontSize="15"
                                             LineBreakMode="CharacterWrap"
                                             Text="{Binding UrlOutput}"
                                             TextColor="#2DD4BF" />
@@ -824,13 +824,13 @@
                                 <Button
                                     Grid.Column="1"
                                     Padding="10,0"
-                                    BackgroundColor="#1E293B"
-                                    Command="{Binding ClearTodayHistoryCommand}"
+                                    BackgroundColor="{StaticResource EduDangerSurface}"
+                                    Command="{Binding ClearAllHistoryCommand}"
                                     CornerRadius="10"
-                                    FontSize="13"
+                                    FontSize="15"
                                     HeightRequest="40"
-                                    Text="Очистить историю"
-                                    TextColor="#94A3B8" />
+                                    Text="Очистить всё"
+                                    TextColor="{StaticResource EduDanger}" />
                             </Grid>
 
                             <!--  EmptyView  -->
@@ -845,12 +845,12 @@
                                     Text="—"
                                     TextColor="{StaticResource EduMutedText}" />
                                 <Label
-                                    FontSize="13"
+                                    FontSize="15"
                                     HorizontalTextAlignment="Center"
                                     Text="История пуста"
                                     TextColor="#475569" />
                                 <Label
-                                    FontSize="13"
+                                    FontSize="15"
                                     HorizontalTextAlignment="Center"
                                     Text="Начни вводить данные — результаты сохранятся здесь"
                                     TextColor="#334155" />
@@ -867,7 +867,7 @@
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="vm:HistoryItemVm">
                                         <Border
-                                            Padding="12"
+                                            Padding="14"
                                             BackgroundColor="#0F172A"
                                             StrokeShape="RoundRectangle 12"
                                             StrokeThickness="0">
@@ -885,13 +885,13 @@
                                                 </Border>
                                                 <VerticalStackLayout Grid.Column="1" Spacing="2">
                                                     <Label
-                                                        FontSize="13"
+                                                        FontSize="15"
                                                         LineBreakMode="TailTruncation"
                                                         MaxLines="1"
                                                         Text="{Binding Input}"
                                                         TextColor="#F1F5F9" />
                                                     <Label
-                                                        FontSize="13"
+                                                        FontSize="15"
                                                         LineBreakMode="TailTruncation"
                                                         MaxLines="1"
                                                         Text="{Binding Output}"
@@ -929,7 +929,7 @@
                                 Text="Подсказки по использованию"
                                 TextColor="#F1F5F9" />
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 LineBreakMode="WordWrap"
                                 Text="{Binding CurrentTip}"
                                 TextColor="#94A3B8" />
@@ -939,7 +939,7 @@
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="0">
                                 <Label
-                                    FontSize="13"
+                                    FontSize="15"
                                     HorizontalTextAlignment="Center"
                                     Text="Работает офлайн"
                                     TextColor="#2DD4BF" />
@@ -980,7 +980,7 @@
                     Text="Конвертеры"
                     TextColor="#F1F5F9" />
                 <Label
-                    FontSize="13"
+                    FontSize="15"
                     Text="Инструменты разработчика"
                     TextColor="#64748B" />
             </VerticalStackLayout>
@@ -997,7 +997,7 @@
                             <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="0" />
                         </Border.GestureRecognizers>
                         <Label
-                            FontSize="13"
+                            FontSize="15"
                             Text="HEX/BIN"
                             TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=0}" />
                     </Border>
@@ -1006,7 +1006,7 @@
                             <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="1" />
                         </Border.GestureRecognizers>
                         <Label
-                            FontSize="13"
+                            FontSize="15"
                             Text="Цвет"
                             TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=1}" />
                     </Border>
@@ -1015,7 +1015,7 @@
                             <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="2" />
                         </Border.GestureRecognizers>
                         <Label
-                            FontSize="13"
+                            FontSize="15"
                             Text="Время"
                             TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=2}" />
                     </Border>
@@ -1024,7 +1024,7 @@
                             <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="3" />
                         </Border.GestureRecognizers>
                         <Label
-                            FontSize="13"
+                            FontSize="15"
                             Text="JSON/XML"
                             TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=3}" />
                     </Border>
@@ -1033,7 +1033,7 @@
                             <TapGestureRecognizer Command="{Binding SelectTabCommand}" CommandParameter="4" />
                         </Border.GestureRecognizers>
                         <Label
-                            FontSize="13"
+                            FontSize="15"
                             Text="URL"
                             TextColor="{Binding SelectedTabIndex, Converter={StaticResource TabTextConverter}, ConverterParameter=4}" />
                     </Border>
@@ -1073,7 +1073,7 @@
                                     RowDefinitions="Auto,Auto,Auto,Auto"
                                     RowSpacing="10">
                                     <Label
-                                        FontSize="13"
+                                        FontSize="15"
                                         Text="BIN:"
                                         TextColor="#475569"
                                         VerticalOptions="Center" />
@@ -1091,7 +1091,7 @@
 
                                     <Label
                                         Grid.Row="1"
-                                        FontSize="13"
+                                        FontSize="15"
                                         Text="OCT:"
                                         TextColor="#475569"
                                         VerticalOptions="Center" />
@@ -1111,7 +1111,7 @@
 
                                     <Label
                                         Grid.Row="2"
-                                        FontSize="13"
+                                        FontSize="15"
                                         Text="DEC:"
                                         TextColor="#475569"
                                         VerticalOptions="Center" />
@@ -1131,7 +1131,7 @@
 
                                     <Label
                                         Grid.Row="3"
-                                        FontSize="13"
+                                        FontSize="15"
                                         Text="HEX:"
                                         TextColor="#475569"
                                         VerticalOptions="Center" />
@@ -1191,12 +1191,12 @@
                                 Style="{StaticResource ResultValue}"
                                 Text="{Binding ColorHex}" />
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 HorizontalTextAlignment="Center"
                                 Style="{StaticResource ResultValue}"
                                 Text="{Binding ColorRgb}" />
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 HorizontalTextAlignment="Center"
                                 Style="{StaticResource ResultValue}"
                                 Text="{Binding ColorHsl}" />
@@ -1222,7 +1222,7 @@
                                     BackgroundColor="#1E293B"
                                     Command="{Binding UseNowCommand}"
                                     CornerRadius="10"
-                                    FontSize="13"
+                                    FontSize="15"
                                     HeightRequest="44"
                                     Text="Now"
                                     TextColor="#94A3B8" />
@@ -1295,7 +1295,7 @@
                                     AutoSize="TextChanges"
                                     BackgroundColor="Transparent"
                                     FontFamily="Monospace"
-                                    FontSize="13"
+                                    FontSize="15"
                                     MinimumHeightRequest="120"
                                     Placeholder="Ввод..."
                                     PlaceholderColor="#475569"
@@ -1313,7 +1313,7 @@
                                 StrokeThickness="0">
                                 <Label
                                     FontFamily="Monospace"
-                                    FontSize="13"
+                                    FontSize="15"
                                     Text="{Binding JsonXmlOutput}"
                                     TextColor="#2DD4BF" />
                             </Border>
@@ -1372,7 +1372,7 @@
                                 StrokeThickness="0">
                                 <Label
                                     FontFamily="Monospace"
-                                    FontSize="13"
+                                    FontSize="15"
                                     LineBreakMode="CharacterWrap"
                                     Text="{Binding UrlOutput}"
                                     TextColor="#2DD4BF" />
@@ -1393,13 +1393,13 @@
                                 <Button
                                     Grid.Column="1"
                                     Padding="8,0"
-                                    BackgroundColor="#1E293B"
-                                    Command="{Binding ClearTodayHistoryCommand}"
+                                    BackgroundColor="{StaticResource EduDangerSurface}"
+                                    Command="{Binding ClearAllHistoryCommand}"
                                     CornerRadius="8"
-                                    FontSize="13"
+                                    FontSize="15"
                                     HeightRequest="40"
-                                    Text="Очистить"
-                                    TextColor="#94A3B8" />
+                                    Text="Очистить всё"
+                                    TextColor="{StaticResource EduDanger}" />
                             </Grid>
                             <VerticalStackLayout
                                 BindableLayout.ItemsSource="{Binding History}"
@@ -1422,13 +1422,13 @@
                                                     VerticalOptions="Center" />
                                                 <VerticalStackLayout Grid.Column="1" Spacing="2">
                                                     <Label
-                                                        FontSize="13"
+                                                        FontSize="15"
                                                         LineBreakMode="TailTruncation"
                                                         MaxLines="1"
                                                         Text="{Binding Input}"
                                                         TextColor="#F1F5F9" />
                                                     <Label
-                                                        FontSize="13"
+                                                        FontSize="15"
                                                         LineBreakMode="TailTruncation"
                                                         MaxLines="1"
                                                         Text="{Binding Output}"
@@ -1446,7 +1446,7 @@
                                 </BindableLayout.ItemTemplate>
                             </VerticalStackLayout>
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 HorizontalTextAlignment="Center"
                                 IsVisible="{Binding HasHistory, Converter={StaticResource InvertBoolConverter}}"
                                 Text="Пока пусто"
@@ -1463,7 +1463,7 @@
                                 Text="Подсказки"
                                 TextColor="#F1F5F9" />
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 LineBreakMode="WordWrap"
                                 Text="{Binding CurrentTip}"
                                 TextColor="#94A3B8" />

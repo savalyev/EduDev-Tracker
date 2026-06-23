@@ -179,7 +179,7 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
         [RelayCommand]
         private async Task OpenDelailsDayAsync(DateTime date)
         {
-           
+            await _navigation.GoToAsync($"{nameof(HabitDayDetailsPage)}?date={date:yyyy-MM-dd}");
         }
 
 

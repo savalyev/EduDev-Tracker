@@ -61,6 +61,38 @@
                         Text="{Binding Description}"
                         TextColor="White" />
 
+                    <Label Style="{StaticResource EduCardTitle16}" Text="Иконка" />
+                    <FlexLayout
+                        AlignItems="Center"
+                        BindableLayout.ItemsSource="{Binding IconOptions}"
+                        Direction="Row"
+                        JustifyContent="Start"
+                        Wrap="Wrap">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodels:IconPickerItem">
+                                <Border
+                                    Margin="0,0,10,10"
+                                    BackgroundColor="#14182E"
+                                    HeightRequest="56"
+                                    Stroke="{Binding BorderColor}"
+                                    StrokeShape="RoundRectangle 14"
+                                    StrokeThickness="2"
+                                    WidthRequest="56">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CreateHabitViewModel}}, Path=SelectIconCommand}"
+                                            CommandParameter="{Binding FileName}" />
+                                    </Border.GestureRecognizers>
+                                    <Image
+                                        Aspect="AspectFit"
+                                        HeightRequest="36"
+                                        Source="{Binding FileName}"
+                                        WidthRequest="36" />
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+
                     <Label
                         Style="{StaticResource EduCardTitle16}"
                         Text="Тип привычки"

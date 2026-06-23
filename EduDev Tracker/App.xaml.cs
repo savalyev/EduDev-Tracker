@@ -75,11 +75,10 @@ namespace EduDev_Tracker
                     System.Diagnostics.Debug.WriteLine($"[App Init] Seed failed: {ex.Message}");
                 }
 
-                // Активность за месяц для демо — закомментировать строку ниже для отключения
                 try
                 {
                     var activitySeeder = _services.GetRequiredService<ActivitySeeder>();
-                    await activitySeeder.SeedIfNeededAsync(profileId); // ← закомментировать для отключения
+                    //await activitySeeder.SeedIfNeededAsync(profileId); // ← закомментировать для отключения
                 }
                 catch (Exception ex)
                 {

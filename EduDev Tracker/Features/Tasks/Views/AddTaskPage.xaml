@@ -92,7 +92,7 @@
                                 </Border.StrokeShape>
                                 <Entry
                                     FontFamily="Comfortaa"
-                                    FontSize="14"
+                                    FontSize="16"
                                     Focused="OnTitleFocused"
                                     MaxLength="300"
                                     Placeholder="Например: Сдать лабораторную по C#"
@@ -118,7 +118,7 @@
                                     AutoSize="TextChanges"
                                     FontFamily="Comfortaa"
                                     Focused="OnDescFocused"
-                                    FontSize="14"
+                                    FontSize="16"
                                     MinimumHeightRequest="80"
                                     Placeholder="Подробности, ссылки, заметки..."
                                     PlaceholderColor="#55FFFFFF"
@@ -143,7 +143,7 @@
                                     <DatePicker
                                         Date="{Binding DueDate}"
                                         FontFamily="Comfortaa"
-                                        FontSize="14"
+                                        FontSize="16"
                                         Format="d MMMM yyyy"
                                         HorizontalOptions="Center"
                                         MinimumDate="{Binding Today}"
@@ -163,7 +163,7 @@
                                     </Border.StrokeShape>
                                     <TimePicker
                                         FontFamily="Comfortaa"
-                                        FontSize="14"
+                                        FontSize="16"
                                         Format="HH:mm"
                                         HorizontalOptions="Center"
                                         TextColor="White"
@@ -184,7 +184,7 @@
                                 </Border.StrokeShape>
                                 <Entry
                                     FontFamily="Comfortaa"
-                                    FontSize="14"
+                                    FontSize="16"
                                     MaxLength="100"
                                     Placeholder="Учёба, Работа, Личное..."
                                     PlaceholderColor="#55FFFFFF"
@@ -272,7 +272,7 @@
                             <HorizontalStackLayout Spacing="12">
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="14"
+                                    FontSize="16"
                                     Text="Повторяемость"
                                     TextColor="White"
                                     VerticalOptions="Center" />
@@ -284,7 +284,7 @@
                                     VerticalOptions="Center" />
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="12"
+                                    FontSize="14"
                                     Text="{Binding RecurringHint}"
                                     TextColor="#99FFFFFF"
                                     VerticalOptions="Center" />
@@ -401,7 +401,7 @@
                                                 </Border.GestureRecognizers>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="12"
+                                                    FontSize="14"
                                                     HorizontalOptions="Center"
                                                     Text="Пн"
                                                     TextColor="White" />
@@ -419,7 +419,7 @@
                                                 </Border.GestureRecognizers>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="12"
+                                                    FontSize="14"
                                                     HorizontalOptions="Center"
                                                     Text="Вт"
                                                     TextColor="White" />
@@ -437,7 +437,7 @@
                                                 </Border.GestureRecognizers>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="12"
+                                                    FontSize="14"
                                                     HorizontalOptions="Center"
                                                     Text="Ср"
                                                     TextColor="White" />
@@ -455,7 +455,7 @@
                                                 </Border.GestureRecognizers>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="12"
+                                                    FontSize="14"
                                                     HorizontalOptions="Center"
                                                     Text="Чт"
                                                     TextColor="White" />
@@ -473,7 +473,7 @@
                                                 </Border.GestureRecognizers>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="12"
+                                                    FontSize="14"
                                                     HorizontalOptions="Center"
                                                     Text="Пт"
                                                     TextColor="White" />
@@ -491,7 +491,7 @@
                                                 </Border.GestureRecognizers>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="12"
+                                                    FontSize="14"
                                                     HorizontalOptions="Center"
                                                     Text="Сб"
                                                     TextColor="#6699FF" />
@@ -509,7 +509,7 @@
                                                 </Border.GestureRecognizers>
                                                 <Label
                                                     FontFamily="Comfortaa"
-                                                    FontSize="12"
+                                                    FontSize="14"
                                                     HorizontalOptions="Center"
                                                     Text="Вс"
                                                     TextColor="#FF6B6B" />
@@ -572,7 +572,7 @@
                                         <DatePicker
                                             Date="{Binding RecurrenceEndDate}"
                                             FontFamily="Comfortaa"
-                                            FontSize="14"
+                                            FontSize="16"
                                             Format="d MMMM yyyy"
                                             MinimumDate="{Binding Today}"
                                             TextColor="White" />
@@ -588,7 +588,7 @@
                                         </Border.StrokeShape>
                                         <Label
                                             FontFamily="Comfortaa"
-                                            FontSize="13"
+                                            FontSize="15"
                                             Text="{Binding RecurrenceSummary}"
                                             TextColor="#AAAAFF" />
                                     </Border>

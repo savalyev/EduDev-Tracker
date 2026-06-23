@@ -31,12 +31,10 @@ using EduDev_Tracker.Services.Notification;
 using EduDev_Tracker.Services.Pomodoro;
 using EduDev_Tracker.Services.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.LifecycleEvents;
 using Plugin.LocalNotification;
 using Plugin.Maui.Audio;
-
-
-
 
 #if WINDOWS
 using Microsoft.UI.Windowing;
@@ -77,6 +75,41 @@ namespace EduDev_Tracker
             builder.Services.AddSingleton<ActivitySeeder>();
             builder.Services.AddSingleton(AudioManager.Current);
             builder.Services.AddSingleton<BackgroundTimerService>();
+
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoBorderEntry", (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.SetBackground(null);
+
+                var states = new int[][]
+                {
+        new int[] {  Android.Resource.Attribute.StateFocused  },
+        new int[] { -Android.Resource.Attribute.StateFocused  },
+        new int[] { }
+                };
+                var colors = new int[]
+                {
+        Android.Graphics.Color.Transparent,
+        Android.Graphics.Color.Transparent,
+        Android.Graphics.Color.Transparent
+                };
+                handler.PlatformView.BackgroundTintList =
+                    new Android.Content.Res.ColorStateList(states, colors);
+
+#elif IOS || MACCATALYST
+    handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;
+    handler.PlatformView.Layer.BorderWidth = 0;
+    handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
+
+#elif WINDOWS
+    handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+    // Убираем фон и подсветку при фокусе
+    handler.PlatformView.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+        Microsoft.UI.Colors.Transparent);
+    handler.PlatformView.FocusVisualPrimaryThickness = new Microsoft.UI.Xaml.Thickness(0);
+    handler.PlatformView.FocusVisualSecondaryThickness = new Microsoft.UI.Xaml.Thickness(0);
+#endif
+            });
 
             //#if WINDOWS
             //            builder.ConfigureLifecycleEvents(events =>
@@ -135,6 +168,9 @@ namespace EduDev_Tracker
 
             services.AddTransient<ArchivedHabitsPage>();
             services.AddTransient<ArchivedHabitsViewModel>();
+
+            services.AddTransient<HabitDayDetailsPage>();
+            services.AddTransient<HabitDayDetailsViewModel>();
 
             services.AddTransient<DashboardPage>();
             services.AddTransient<DashboardViewModel>();

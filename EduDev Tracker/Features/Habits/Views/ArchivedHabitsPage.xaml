@@ -108,7 +108,7 @@
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="14" />
                                             </Border.StrokeShape>
-                                            <Image Aspect="Fill" Source="default_icon.png" />
+                                            <Image Aspect="AspectFit" Source="{Binding Icon}" />
                                         </Border>
 
                                         <VerticalStackLayout

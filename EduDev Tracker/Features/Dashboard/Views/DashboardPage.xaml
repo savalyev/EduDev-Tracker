@@ -168,9 +168,9 @@
                 <Grid
                     x:Name="CardsGrid"
                     Grid.Row="3"
-                    ColumnDefinitions="*"
+                    ColumnDefinitions="*,*,*"
                     ColumnSpacing="16"
-                    RowDefinitions="Auto,Auto,Auto"
+                    RowDefinitions="Auto"
                     RowSpacing="16">
                     <!--  Привычки  -->
                     <Border
@@ -214,35 +214,31 @@
                                 ColumnDefinitions="*,Auto"
                                 VerticalOptions="End">
 
-                                <Border Style="{StaticResource EduPrimaryButtonBorder}" WidthRequest="130">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToHabitsCommand}" />
-                                    </Border.GestureRecognizers>
-                                    <HorizontalStackLayout HorizontalOptions="Center">
-                                        <Image
-                                            Margin="0,0,8,0"
-                                            HeightRequest="13"
-                                            Source="transition_icon.png"
-                                            WidthRequest="13" />
-                                        <Label
-                                            FontFamily="Comfortaa"
-                                            FontSize="15"
-                                            Text="Перейти"
-                                            TextColor="White"
-                                            VerticalOptions="Center" />
-                                    </HorizontalStackLayout>
-                                </Border>
+                                <Button
+                                    BackgroundColor="{StaticResource EduButtonBackground}"
+                                    BorderColor="{StaticResource EduAccent}"
+                                    BorderWidth="1"
+                                    Command="{Binding GoToHabitsCommand}"
+                                    CornerRadius="12"
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Start"
+                                    Style="{StaticResource EduBaseButton}"
+                                    Text="→ Перейти"
+                                    TextColor="White"
+                                    VerticalOptions="Center"
+                                    WidthRequest="130" />
 
-                                <Image
+                                <ImageButton
                                     Grid.Column="1"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding QuickAddHabitCommand}"
                                     HeightRequest="44"
                                     Source="add_icon.png"
-                                    VerticalOptions="End"
-                                    WidthRequest="44">
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding QuickAddHabitCommand}" />
-                                    </Image.GestureRecognizers>
-                                </Image>
+                                    VerticalOptions="Center"
+                                    WidthRequest="44" />
                             </Grid>
 
                         </Grid>
@@ -251,8 +247,8 @@
                     <!--  Задачи  -->
                     <Border
                         x:Name="TasksCard"
-                        Grid.Row="1"
-                        Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.Column="1"
                         Style="{StaticResource EduCardBorder}">
                         <Grid
                             ColumnDefinitions="*,Auto"
@@ -290,35 +286,31 @@
                                 ColumnDefinitions="*,Auto"
                                 VerticalOptions="End">
 
-                                <Border Style="{StaticResource EduPrimaryButtonBorder}" WidthRequest="130">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoToTasksCommand}" />
-                                    </Border.GestureRecognizers>
-                                    <HorizontalStackLayout HorizontalOptions="Center">
-                                        <Image
-                                            Margin="0,0,8,0"
-                                            HeightRequest="13"
-                                            Source="transition_icon.png"
-                                            WidthRequest="13" />
-                                        <Label
-                                            FontFamily="Comfortaa"
-                                            FontSize="15"
-                                            Text="Перейти"
-                                            TextColor="White"
-                                            VerticalOptions="Center" />
-                                    </HorizontalStackLayout>
-                                </Border>
+                                <Button
+                                    BackgroundColor="{StaticResource EduButtonBackground}"
+                                    BorderColor="{StaticResource EduAccent}"
+                                    BorderWidth="1"
+                                    Command="{Binding GoToTasksCommand}"
+                                    CornerRadius="12"
+                                    FontFamily="Comfortaa"
+                                    FontSize="15"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Start"
+                                    Style="{StaticResource EduBaseButton}"
+                                    Text="→ Перейти"
+                                    TextColor="White"
+                                    VerticalOptions="Start"
+                                    WidthRequest="130" />
 
-                                <Image
+                                <ImageButton
                                     Grid.Column="1"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding QuickAddTaskCommand}"
                                     HeightRequest="44"
                                     Source="add_icon.png"
-                                    VerticalOptions="End"
-                                    WidthRequest="44">
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding QuickAddTaskCommand}" />
-                                    </Image.GestureRecognizers>
-                                </Image>
+                                    VerticalOptions="Center"
+                                    WidthRequest="44" />
                             </Grid>
 
                         </Grid>
@@ -327,8 +319,9 @@
                     <!--  Сегодняшние задачи  -->
                     <Border
                         x:Name="TodayTasksCard"
-                        Grid.Row="2"
-                        Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        MinimumHeightRequest="200"
                         Style="{StaticResource EduCardBorder}">
                         <Grid RowDefinitions="Auto,*">
 

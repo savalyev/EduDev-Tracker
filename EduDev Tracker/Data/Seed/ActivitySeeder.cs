@@ -78,12 +78,12 @@ namespace EduDev_Tracker.Data.Seed
             var baseDate = DateTime.UtcNow.AddDays(-30);
             var habits = new[]
             {
-                new Habit { ProfileId = profileId, Title = "Зарядка по утрам",    Icon = "sport_icon",   SortOrder = 0, CreatedAt = baseDate, UpdatedAt = baseDate },
-                new Habit { ProfileId = profileId, Title = "Читать 30 минут",     Icon = "book_icon",    SortOrder = 1, CreatedAt = baseDate, UpdatedAt = baseDate },
-                new Habit { ProfileId = profileId, Title = "Программировать 1 ч", Icon = "brain_icon",   SortOrder = 2, CreatedAt = baseDate, UpdatedAt = baseDate },
-                new Habit { ProfileId = profileId, Title = "Пить воду (1 л)",     Icon = "water_icon",   SortOrder = 3, CreatedAt = baseDate, UpdatedAt = baseDate },
-                new Habit { ProfileId = profileId, Title = "Медитация 10 мин",    Icon = "default_icon", SortOrder = 4, CreatedAt = baseDate, UpdatedAt = baseDate },
-                new Habit { ProfileId = profileId, Title = "Прогулка / пробежка", Icon = "run_icon",     SortOrder = 5, CreatedAt = baseDate, UpdatedAt = baseDate },
+                new Habit { ProfileId = profileId, Title = "Зарядка по утрам",    Icon = "sport_icon.png",   SortOrder = 0, CreatedAt = baseDate, UpdatedAt = baseDate },
+                new Habit { ProfileId = profileId, Title = "Читать 30 минут",     Icon = "book_icon.png",    SortOrder = 1, CreatedAt = baseDate, UpdatedAt = baseDate },
+                new Habit { ProfileId = profileId, Title = "Программировать 1 ч", Icon = "brain_icon.png",   SortOrder = 2, CreatedAt = baseDate, UpdatedAt = baseDate },
+                new Habit { ProfileId = profileId, Title = "Пить воду (1 л)",     Icon = "water_icon.png",   SortOrder = 3, CreatedAt = baseDate, UpdatedAt = baseDate },
+                new Habit { ProfileId = profileId, Title = "Медитация 10 мин",    Icon = "default_icon.png", SortOrder = 4, CreatedAt = baseDate, UpdatedAt = baseDate },
+                new Habit { ProfileId = profileId, Title = "Прогулка / пробежка", Icon = "run_icon.png",     SortOrder = 5, CreatedAt = baseDate, UpdatedAt = baseDate },
             };
             var ids = new int[habits.Length];
             for (int i = 0; i < habits.Length; i++)

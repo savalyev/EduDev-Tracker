@@ -467,6 +467,18 @@ namespace EduDev_Tracker.Features.DevTools.ViewModels
         }
 
         [RelayCommand]
+        private async Task ClearAllHistoryAsync()
+        {
+            bool confirm = await Shell.Current.DisplayAlertAsync(
+                "Очистить всю историю",
+                "Удалить всю историю конверсий без возможности восстановления?",
+                "Удалить всё", "Отмена");
+            if (!confirm) return;
+            await _service.ClearAllHistoryAsync(_profileId);
+            await LoadHistoryAsync();
+        }
+
+        [RelayCommand]
         private void RestoreFromHistory(HistoryItemVm item)
         {
             SelectedTabIndex = item.Type switch

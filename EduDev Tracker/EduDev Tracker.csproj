@@ -71,6 +71,7 @@
 	  <None Remove="Resources\Images\habitsIcon\book_icon.png" />
 	  <None Remove="Resources\Images\habitsIcon\brain_icon.png" />
 	  <None Remove="Resources\Images\habitsIcon\default_icon.png" />
+	  <None Remove="Resources\Images\habitsIcon\money_icon.png" />
 	  <None Remove="Resources\Images\habitsIcon\run_icon.png" />
 	  <None Remove="Resources\Images\habitsIcon\sport_icon.png" />
 	  <None Remove="Resources\Images\habitsIcon\water_icon.png" />
@@ -105,6 +106,7 @@
 	  <MauiImage Include="Resources\Images\habitsIcon\book_icon.png" />
 	  <MauiImage Include="Resources\Images\habitsIcon\brain_icon.png" />
 	  <MauiImage Include="Resources\Images\habitsIcon\default_icon.png" />
+	  <MauiImage Include="Resources\Images\habitsIcon\money_icon.png" />
 	  <MauiImage Include="Resources\Images\habitsIcon\run_icon.png" />
 	  <MauiImage Include="Resources\Images\habitsIcon\sport_icon.png" />
 	  <MauiImage Include="Resources\Images\habitsIcon\water_icon.png" />
@@ -133,6 +135,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Habits\Views\ArchivedHabitsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Habits\Views\HabitDayDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Features\Habits\Views\HabitDetailsPage.xaml">

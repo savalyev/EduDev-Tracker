@@ -269,8 +269,10 @@
                                 StrokeShape="RoundRectangle 16">
                                 <Label
                                     FontSize="12"
+                                    HorizontalOptions="Center"
                                     Text="Трекер привычек"
-                                    TextColor="{StaticResource ChipText}" />
+                                    TextColor="{StaticResource ChipText}"
+                                    VerticalOptions="Center" />
                             </Border>
                             <Border
                                 Margin="0,0,8,8"
@@ -280,8 +282,10 @@
                                 StrokeShape="RoundRectangle 16">
                                 <Label
                                     FontSize="12"
+                                    HorizontalOptions="Center"
                                     Text="Задачи и заметки"
-                                    TextColor="{StaticResource ChipText}" />
+                                    TextColor="{StaticResource ChipText}"
+                                    VerticalOptions="Center" />
                             </Border>
                             <Border
                                 Margin="0,0,8,8"
@@ -291,8 +295,10 @@
                                 StrokeShape="RoundRectangle 16">
                                 <Label
                                     FontSize="12"
+                                    HorizontalOptions="Center"
                                     Text="Помодоро-таймер"
-                                    TextColor="{StaticResource ChipText}" />
+                                    TextColor="{StaticResource ChipText}"
+                                    VerticalOptions="Center" />
                             </Border>
                             <Border
                                 Margin="0,0,8,8"
@@ -302,8 +308,10 @@
                                 StrokeShape="RoundRectangle 16">
                                 <Label
                                     FontSize="12"
+                                    HorizontalOptions="Center"
                                     Text="DEV-инструменты"
-                                    TextColor="{StaticResource ChipText}" />
+                                    TextColor="{StaticResource ChipText}"
+                                    VerticalOptions="Center" />
                             </Border>
                         </FlexLayout>
 

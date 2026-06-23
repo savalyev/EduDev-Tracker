@@ -77,6 +77,19 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             new DayItem("Вс"),
         };
 
+        public ObservableCollection<IconPickerItem> IconOptions { get; } = new()
+        {
+            new("default_icon.png", selected: true),
+            new("run_icon.png"),
+            new("water_icon.png"),
+            new("sport_icon.png"),
+            new("book_icon.png"),
+            new("brain_icon.png"),
+            new("money_icon.png"),
+        };
+
+        private string _selectedIcon = "default_icon.png";
+
         public CreateHabitViewModel(INavigationService navigation, IHabitService habitService,
             INotificationService habitNotificationService)
         {
@@ -128,6 +141,14 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             return !string.IsNullOrWhiteSpace(Title);
         }
 
+        [RelayCommand]
+        private void SelectIcon(string fileName)
+        {
+            foreach (var item in IconOptions)
+                item.IsSelected = item.FileName == fileName;
+            _selectedIcon = fileName;
+        }
+
         [RelayCommand(CanExecute = nameof(CanSave))]
         private async Task SaveAsync()
         {
@@ -148,7 +169,8 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
                     schedule: Schedule,
                     targetUnit: TargetUnit,
                     targetValue: ParsedTargerValue,
-                    description: Description
+                    description: Description,
+                    icon: _selectedIcon
                     );
                 await _habitNotificationService.ScheduleHabitNotificationAsync(habit, Schedule);
                 await _navigation.PopModalAsync();
@@ -209,5 +231,24 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
     {
         public HabitType Type {  get; set; }
         public string Title { get; set; } = "";
+    }
+
+    public partial class IconPickerItem : ObservableObject
+    {
+        public string FileName { get; }
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(BorderColor))]
+        private bool isSelected;
+
+        public Color BorderColor => IsSelected
+            ? Color.FromArgb("#5B5FEF")
+            : Color.FromArgb("#1E293B");
+
+        public IconPickerItem(string fileName, bool selected = false)
+        {
+            FileName = fileName;
+            isSelected = selected;
+        }
     }
 }

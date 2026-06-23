@@ -56,7 +56,7 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="18" />
                             </Border.StrokeShape>
-                            <Image Aspect="Fill" Source="default_icon.png" />
+                            <Image Aspect="AspectFit" Source="{Binding Icon}" />
                         </Border>
 
                         <!--  Режим просмотра  -->

@@ -32,7 +32,8 @@ namespace EduDev_Tracker.Services.Habits
             HabitSchedule schedule,
             double targetValue,
             string targetUnit,
-            string? description = null)
+            string? description = null,
+            string? icon = null)
         {
             if (string.IsNullOrWhiteSpace(title))
             {
@@ -45,6 +46,7 @@ namespace EduDev_Tracker.Services.Habits
                 Title = title.Trim(),
                 Type = type,
                 Description = description?.Trim(),
+                Icon = icon ?? "default_icon.png",
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 TargetValue = targetValue,
@@ -88,5 +90,36 @@ namespace EduDev_Tracker.Services.Habits
             => _repo.GetHabitsCompletedWeek(profileId, from, to);
         public Task<int> GetCompletedCountByDayAsync(int profileId, DateTime date)
             => _repo.GetCompletedCountByDayAsync(profileId, date);
+
+        public async Task<List<(Habit habit, bool isCompleted)>> GetHabitsWithStatusForDateAsync(int profileId, DateTime date)
+        {
+            var allHabits = await _repo.GetActiveAsync(profileId);
+            var dayMask = DayOfWeekToMask(date.DayOfWeek);
+            var result = new List<(Habit, bool)>();
+
+            foreach (var habit in allHabits)
+            {
+                var schedule = await _repo.GetScheduleAsync(habit.Id);
+                if (schedule == null || (schedule.DayMask & dayMask) == 0)
+                    continue;
+
+                var isCompleted = await _repo.IsCompletedTodayAsync(habit.Id, date);
+                result.Add((habit, isCompleted));
+            }
+
+            return result;
+        }
+
+        private static int DayOfWeekToMask(DayOfWeek dow) => dow switch
+        {
+            DayOfWeek.Monday    => 1,
+            DayOfWeek.Tuesday   => 2,
+            DayOfWeek.Wednesday => 4,
+            DayOfWeek.Thursday  => 8,
+            DayOfWeek.Friday    => 16,
+            DayOfWeek.Saturday  => 32,
+            DayOfWeek.Sunday    => 64,
+            _ => 0
+        };
     }
 }

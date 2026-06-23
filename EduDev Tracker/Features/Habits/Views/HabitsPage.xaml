@@ -226,7 +226,7 @@
                                                     <Border.StrokeShape>
                                                         <RoundRectangle CornerRadius="14" />
                                                     </Border.StrokeShape>
-                                                    <Image Aspect="Fill" Source="default_icon.png" />
+                                                    <Image Aspect="AspectFit" Source="{Binding Icon}" />
                                                 </Border>
 
                                                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
@@ -518,7 +518,7 @@
                                             <Label
                                                 FontFamily="Comfortaa"
                                                 FontSize="14"
-                                                Text="Активные привычки"
+                                                Text="Всего привычек"
                                                 TextColor="#94A3B8" />
                                         </VerticalStackLayout>
                                     </Border>

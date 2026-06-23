@@ -21,7 +21,7 @@
             </Grid.Background>
 
             <Grid
-                Padding="16"
+                Padding="20"
                 HorizontalOptions="Center"
                 MaximumWidthRequest="700"
                 RowDefinitions="Auto,Auto,Auto,Auto,Auto"
@@ -92,7 +92,7 @@
                                 TextColor="White" />
 
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 LineBreakMode="TailTruncation"
                                 Text="{Binding UserEmail}"
                                 TextColor="{StaticResource EduMutedText}" />
@@ -106,13 +106,13 @@
                                 StrokeThickness="0">
                                 <Label
                                     FontFamily="Comfortaa"
-                                    FontSize="13"
+                                    FontSize="15"
                                     Text="{Binding AccountTypeLabel}"
                                     TextColor="{Binding AccountTypeColor}" />
                             </Border>
 
                             <Label
-                                FontSize="13"
+                                FontSize="15"
                                 Text="{Binding MemberSince, StringFormat='Участник с {0}'}"
                                 TextColor="{StaticResource EduMutedText}" />
                         </VerticalStackLayout>
@@ -131,7 +131,7 @@
                     <Border
                         Grid.Row="0"
                         Grid.Column="0"
-                        Padding="16,20"
+                        Padding="20,24"
                         BackgroundColor="{StaticResource EduSurfaceAlt}"
                         Stroke="{StaticResource EduBorder}"
                         StrokeShape="RoundRectangle 14"
@@ -158,7 +158,7 @@
                     <Border
                         Grid.Row="0"
                         Grid.Column="1"
-                        Padding="16,20"
+                        Padding="20,24"
                         BackgroundColor="{StaticResource EduSurfaceAlt}"
                         Stroke="{StaticResource EduBorder}"
                         StrokeShape="RoundRectangle 14"
@@ -185,7 +185,7 @@
                     <Border
                         Grid.Row="{OnIdiom Phone=1, Default=0}"
                         Grid.Column="{OnIdiom Phone=0, Default=2}"
-                        Padding="16,20"
+                        Padding="20,24"
                         BackgroundColor="{StaticResource EduSurfaceAlt}"
                         Stroke="{StaticResource EduBorder}"
                         StrokeShape="RoundRectangle 14"
@@ -212,7 +212,7 @@
                     <Border
                         Grid.Row="{OnIdiom Phone=1, Default=0}"
                         Grid.Column="{OnIdiom Phone=1, Default=3}"
-                        Padding="16,20"
+                        Padding="20,24"
                         BackgroundColor="{StaticResource EduSurfaceAlt}"
                         Stroke="{StaticResource EduBorder}"
                         StrokeShape="RoundRectangle 14"
@@ -245,12 +245,12 @@
                             Margin="0,0,0,14"
                             FontAttributes="Bold"
                             FontFamily="Comfortaa"
-                            FontSize="17"
+                            FontSize="19"
                             Text="Настройки"
                             TextColor="White" />
 
                         <!--  Язык  -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,10">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,14">
                             <Label
                                 Grid.Column="0"
                                 FontSize="15"
@@ -261,7 +261,7 @@
                                 Grid.Column="1"
                                 BackgroundColor="Transparent"
                                 FontFamily="Comfortaa"
-                                FontSize="13"
+                                FontSize="15"
                                 HorizontalOptions="End"
                                 ItemsSource="{Binding Languages}"
                                 SelectedItem="{Binding SelectedLanguage}"
@@ -274,21 +274,21 @@
                         <BoxView BackgroundColor="{StaticResource EduBorder}" HeightRequest="1" />
 
                         <!--  Умные напоминания  -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,10">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,14">
                             <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
                                 <Label
                                     FontSize="15"
                                     Text="Умные напоминания"
                                     TextColor="White" />
                                 <Label
-                                    FontSize="13"
+                                    FontSize="15"
                                     Text="Напоминания в оптимальное время"
                                     TextColor="{StaticResource EduMutedText}" />
                             </VerticalStackLayout>
                             <Switch
                                 Grid.Column="1"
                                 IsToggled="{Binding SmartRemindersEnabled}"
-                                OnColor="#019301"
+                                OnColor="{StaticResource EduAccent}"
                                 ThumbColor="White"
                                 VerticalOptions="Center" />
                         </Grid>
@@ -296,21 +296,21 @@
                         <BoxView BackgroundColor="{StaticResource EduBorder}" HeightRequest="1" />
 
                         <!--  Звук и вибрация  -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,10">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" Padding="0,14">
                             <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
                                 <Label
                                     FontSize="15"
                                     Text="Звук и вибрация"
                                     TextColor="White" />
                                 <Label
-                                    FontSize="13"
+                                    FontSize="15"
                                     Text="Звуки таймера и уведомлений"
                                     TextColor="{StaticResource EduMutedText}" />
                             </VerticalStackLayout>
                             <Switch
                                 Grid.Column="1"
                                 IsToggled="{Binding SoundVibrationEnabled}"
-                                OnColor="#019301"
+                                OnColor="{StaticResource EduAccent}"
                                 ThumbColor="White"
                                 VerticalOptions="Center" />
                         </Grid>

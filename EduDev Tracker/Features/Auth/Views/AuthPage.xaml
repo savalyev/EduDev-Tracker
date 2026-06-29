@@ -531,13 +531,12 @@
                                     Text="Зарегистрироваться" />
                             </HorizontalStackLayout>
 
-                            <!--  OAuth  -->
+                            <!--  OAuth — вход через Google/GitHub отключён  -->
                             <Grid
                                 Margin="0,4,0,0"
                                 ColumnDefinitions="*,Auto,*"
                                 ColumnSpacing="8"
-                                IsVisible="{OnIdiom Phone=True,
-                                                    Default=False}">
+                                IsVisible="False">
                                 <BoxView
                                     Grid.Column="0"
                                     BackgroundColor="{StaticResource BorderDefault}"
@@ -558,8 +557,7 @@
                             <Grid
                                 ColumnDefinitions="*,*"
                                 ColumnSpacing="10"
-                                IsVisible="{OnIdiom Phone=True,
-                                                    Default=False}">
+                                IsVisible="False">
                                 <Border
                                     Grid.Column="0"
                                     Padding="12,10"
@@ -764,13 +762,12 @@
                                     Text="Войти" />
                             </HorizontalStackLayout>
 
-                            <!--  OAuth  -->
+                            <!--  OAuth — вход через Google/GitHub отключён  -->
                             <Grid
                                 Margin="0,4,0,0"
                                 ColumnDefinitions="*,Auto,*"
                                 ColumnSpacing="8"
-                                IsVisible="{OnIdiom Phone=True,
-                                                    Default=False}">
+                                IsVisible="False">
                                 <BoxView
                                     Grid.Column="0"
                                     BackgroundColor="{StaticResource BorderDefault}"
@@ -791,8 +788,7 @@
                             <Grid
                                 ColumnDefinitions="*,*"
                                 ColumnSpacing="10"
-                                IsVisible="{OnIdiom Phone=True,
-                                                    Default=False}">
+                                IsVisible="False">
                                 <Border
                                     Grid.Column="0"
                                     Padding="12,10"

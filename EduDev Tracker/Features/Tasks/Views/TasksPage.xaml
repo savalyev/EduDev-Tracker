@@ -36,6 +36,10 @@
                     RowSpacing="10">
                     <Grid
                         Grid.Row="0"
+                        Padding="{OnIdiom Phone='12,10',
+                                          Default='0'}"
+                        BackgroundColor="{OnIdiom Phone=#0F1629,
+                                                  Default=Transparent}"
                         ColumnDefinitions="44, *, Auto"
                         ColumnSpacing="12">
 
@@ -464,8 +468,8 @@
                             </VerticalStackLayout>
                             <VerticalStackLayout
                                 Grid.Row="3"
-                                IsVisible="{Binding ListHasMore}"
                                 Padding="0,8,0,0"
+                                IsVisible="{Binding ListHasMore}"
                                 Spacing="4">
                                 <Label
                                     FontFamily="Comfortaa"
@@ -474,15 +478,15 @@
                                     Text="{Binding ListPageInfo}"
                                     TextColor="#64748B" />
                                 <Button
-                                    Command="{Binding LoadMoreListCommand}"
-                                    Style="{StaticResource EduBaseButton}"
                                     BackgroundColor="{StaticResource EduButtonBackground}"
                                     BorderColor="{StaticResource EduAccent}"
                                     BorderWidth="1"
+                                    Command="{Binding LoadMoreListCommand}"
                                     CornerRadius="10"
                                     FontFamily="Comfortaa"
                                     FontSize="15"
                                     HeightRequest="40"
+                                    Style="{StaticResource EduBaseButton}"
                                     Text="Загрузить ещё →"
                                     TextColor="White" />
                             </VerticalStackLayout>
@@ -511,13 +515,16 @@
                             <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto">
                                 <Button
                                     Grid.Column="0"
+                                    Padding="0"
                                     BackgroundColor="#5B5FEF"
                                     Command="{Binding PrevMonthCommand}"
-                                    HeightRequest="36"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Center"
                                     Style="{StaticResource EduFilterButton}"
-                                    Text="‹"
+                                    Text="◀"
                                     TextColor="White"
-                                    WidthRequest="36" />
+                                    VerticalOptions="Center"
+                                    WidthRequest="40" />
                                 <Label
                                     Grid.Column="1"
                                     FontFamily="Comfortaa"
@@ -528,13 +535,16 @@
                                     VerticalOptions="Center" />
                                 <Button
                                     Grid.Column="2"
+                                    Padding="0"
                                     BackgroundColor="#5B5FEF"
                                     Command="{Binding NextMonthCommand}"
-                                    HeightRequest="36"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Center"
                                     Style="{StaticResource EduFilterButton}"
-                                    Text="›"
+                                    Text="▶"
                                     TextColor="White"
-                                    WidthRequest="36" />
+                                    VerticalOptions="Center"
+                                    WidthRequest="40" />
                             </Grid>
 
                             <!--  Дни недели: шапка  -->
@@ -604,7 +614,8 @@
                                 -->
                                 <CollectionView
                                     Grid.Row="1"
-                                    HeightRequest="{OnIdiom Phone=240, Default=340}"
+                                    HeightRequest="{OnIdiom Phone=240,
+                                                            Default=340}"
                                     ItemsSource="{Binding CalendarDays}"
                                     SelectionMode="None"
                                     VerticalOptions="Start">
@@ -886,7 +897,10 @@
                                                 </DataTemplate>
                                             </BindableLayout.ItemTemplate>
                                         </VerticalStackLayout>
-                                        <VerticalStackLayout IsVisible="{Binding OpenHasMore}" Spacing="4" Padding="0,4,0,0">
+                                        <VerticalStackLayout
+                                            Padding="0,4,0,0"
+                                            IsVisible="{Binding OpenHasMore}"
+                                            Spacing="4">
                                             <Label
                                                 FontFamily="Comfortaa"
                                                 FontSize="12"
@@ -894,10 +908,10 @@
                                                 Text="{Binding OpenPageInfo}"
                                                 TextColor="#64748B" />
                                             <Button
-                                                Command="{Binding LoadMoreOpenCommand}"
                                                 BackgroundColor="#1A0D2E"
                                                 BorderColor="#8E44AD"
                                                 BorderWidth="1"
+                                                Command="{Binding LoadMoreOpenCommand}"
                                                 CornerRadius="10"
                                                 FontFamily="Comfortaa"
                                                 FontSize="15"
@@ -1000,7 +1014,10 @@
                                                 </DataTemplate>
                                             </BindableLayout.ItemTemplate>
                                         </VerticalStackLayout>
-                                        <VerticalStackLayout IsVisible="{Binding InProgressHasMore}" Spacing="4" Padding="0,4,0,0">
+                                        <VerticalStackLayout
+                                            Padding="0,4,0,0"
+                                            IsVisible="{Binding InProgressHasMore}"
+                                            Spacing="4">
                                             <Label
                                                 FontFamily="Comfortaa"
                                                 FontSize="12"
@@ -1008,10 +1025,10 @@
                                                 Text="{Binding InProgressPageInfo}"
                                                 TextColor="#64748B" />
                                             <Button
-                                                Command="{Binding LoadMoreInProgressCommand}"
                                                 BackgroundColor="#1F1200"
                                                 BorderColor="#E67E22"
                                                 BorderWidth="1"
+                                                Command="{Binding LoadMoreInProgressCommand}"
                                                 CornerRadius="10"
                                                 FontFamily="Comfortaa"
                                                 FontSize="15"
@@ -1124,13 +1141,13 @@
                                                 Text="{Binding DonePageInfo}"
                                                 TextColor="#64748B" />
                                             <Button
-                                                Command="{Binding LoadMoreDoneCommand}"
-                                                FontFamily="Comfortaa"
-                                                FontSize="15"
                                                 BackgroundColor="#0D1F12"
                                                 BorderColor="#27AE60"
                                                 BorderWidth="1"
+                                                Command="{Binding LoadMoreDoneCommand}"
                                                 CornerRadius="10"
+                                                FontFamily="Comfortaa"
+                                                FontSize="15"
                                                 HeightRequest="36"
                                                 Text="Загрузить ещё 15 →"
                                                 TextColor="#44CC77" />
@@ -1241,13 +1258,13 @@
                                                 Text="{Binding CancelledPageInfo}"
                                                 TextColor="#64748B" />
                                             <Button
-                                                Command="{Binding LoadMoreCancelledCommand}"
-                                                FontFamily="Comfortaa"
-                                                FontSize="15"
                                                 BackgroundColor="#1A0D0D"
                                                 BorderColor="#C0392B"
                                                 BorderWidth="1"
+                                                Command="{Binding LoadMoreCancelledCommand}"
                                                 CornerRadius="10"
+                                                FontFamily="Comfortaa"
+                                                FontSize="15"
                                                 HeightRequest="36"
                                                 Text="Загрузить ещё 15 →"
                                                 TextColor="#FF6666" />
@@ -1260,17 +1277,5 @@
                 </Grid>
             </Grid>
         </ScrollView>
-
-        <!--  FAB: кнопка добавить задачу (только телефон)  -->
-        <Button
-            Margin="16,0,16,16"
-            Command="{Binding OpenAddTaskCommand}"
-            HeightRequest="48"
-            HorizontalOptions="Fill"
-            IsVisible="{OnIdiom Phone=True,
-                                Default=False}"
-            Style="{StaticResource EduPrimaryButton}"
-            Text="+ Новая задача"
-            VerticalOptions="End" />
     </Grid>
 </ContentPage>

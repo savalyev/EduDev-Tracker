@@ -52,7 +52,6 @@ namespace EduDev_Tracker
                     return;
                 }
 
-                // Восстанавливаем уведомления после перезапуска / перезагрузки устройства
                 try
                 {
                     var notif = _services.GetRequiredService<INotificationService>();
@@ -64,7 +63,6 @@ namespace EduDev_Tracker
                     System.Diagnostics.Debug.WriteLine($"[App Init] Reschedule failed: {ex.Message}");
                 }
 
-                // Шпаргалки: создаём один раз при первом входе профиля
                 try
                 {
                     var seeder = _services.GetRequiredService<DemoDataSeeder>();
@@ -78,7 +76,7 @@ namespace EduDev_Tracker
                 try
                 {
                     var activitySeeder = _services.GetRequiredService<ActivitySeeder>();
-                    //await activitySeeder.SeedIfNeededAsync(profileId); // ← закомментировать для отключения
+                    await activitySeeder.SeedIfNeededAsync(profileId); // ← закомментировать для отключения
                 }
                 catch (Exception ex)
                 {

@@ -27,21 +27,35 @@
                 Spacing="16">
 
                 <!--  Шапка  -->
-                <Grid ColumnDefinitions="*, Auto">
-                    <Label
+                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+                    <Border
                         Grid.Column="0"
+                        BackgroundColor="#14182E"
+                        HeightRequest="36"
+                        Stroke="#495061"
+                        StrokeThickness="1"
+                        VerticalOptions="Center"
+                        WidthRequest="36">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CloseCommand}" />
+                        </Border.GestureRecognizers>
+                        <Label
+                            FontSize="18"
+                            HorizontalOptions="Center"
+                            Text="←"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <Label
+                        Grid.Column="1"
                         FontFamily="Comfortaa"
                         FontSize="20"
                         Text="Детали привычки"
                         TextColor="White"
                         VerticalOptions="Center" />
-                    <Button
-                        Grid.Column="1"
-                        Command="{Binding CloseCommand}"
-                        FontFamily="Comfortaa"
-                        FontSize="15"
-                        Style="{StaticResource EduPrimaryButton}"
-                        Text="✕ Закрыть" />
                 </Grid>
 
                 <!--  Карточка с иконкой и названием  -->

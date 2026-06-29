@@ -91,9 +91,9 @@
                                     <RoundRectangle CornerRadius="12" />
                                 </Border.StrokeShape>
                                 <Entry
+                                    Focused="OnTitleFocused"
                                     FontFamily="Comfortaa"
                                     FontSize="16"
-                                    Focused="OnTitleFocused"
                                     MaxLength="300"
                                     Placeholder="Например: Сдать лабораторную по C#"
                                     PlaceholderColor="#55FFFFFF"
@@ -116,8 +116,8 @@
                                 </Border.StrokeShape>
                                 <Editor
                                     AutoSize="TextChanges"
-                                    FontFamily="Comfortaa"
                                     Focused="OnDescFocused"
+                                    FontFamily="Comfortaa"
                                     FontSize="16"
                                     MinimumHeightRequest="80"
                                     Placeholder="Подробности, ссылки, заметки..."
@@ -282,12 +282,6 @@
                                     OnColor="#5B5FEF"
                                     ThumbColor="White"
                                     VerticalOptions="Center" />
-                                <Label
-                                    FontFamily="Comfortaa"
-                                    FontSize="14"
-                                    Text="{Binding RecurringHint}"
-                                    TextColor="#99FFFFFF"
-                                    VerticalOptions="Center" />
                             </HorizontalStackLayout>
 
                             <Border
@@ -387,7 +381,10 @@
 
                                     <VerticalStackLayout IsVisible="{Binding IsWeekly}" Spacing="8">
                                         <Label Style="{StaticResource EduCardSubtitleLabel}" Text="Дни недели" />
-                                        <FlexLayout Direction="Row" JustifyContent="Start" Wrap="Wrap">
+                                        <FlexLayout
+                                            Direction="Row"
+                                            JustifyContent="Start"
+                                            Wrap="Wrap">
                                             <Border
                                                 Margin="0,0,6,6"
                                                 Padding="8,6"

@@ -662,25 +662,32 @@
                 Spacing="14">
 
                 <!--  Заголовок  -->
-                <Image
-                    HeightRequest="36"
-                    HorizontalOptions="Start"
-                    IsVisible="{OnIdiom Phone=True,
-                                        Default=False}"
-                    Source="menu.png"
-                    VerticalOptions="Center"
-                    WidthRequest="36">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnMenuTapped" />
-                    </Image.GestureRecognizers>
-                </Image>
+                <Grid
+                    Padding="12,10"
+                    BackgroundColor="#0F1629"
+                    ColumnDefinitions="Auto,*,Auto">
+                    <Image
+                        Grid.Column="0"
+                        HeightRequest="36"
+                        HorizontalOptions="Start"
+                        Source="menu.png"
+                        VerticalOptions="Center"
+                        WidthRequest="36">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuTapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="Аналитика"
+                        TextColor="#F1F5F9"
+                        VerticalOptions="Center" />
+                </Grid>
                 <Label
-                    FontAttributes="Bold"
-                    FontSize="20"
-                    Text="Аналитика и отчётность"
-                    TextColor="#F1F5F9" />
-                <Label
-                    Margin="0,-8,0,0"
                     FontSize="12"
                     Text="Объединённый взгляд на все модули"
                     TextColor="#64748B" />
@@ -900,6 +907,24 @@
                 <Border Style="{StaticResource SectionCard}">
                     <VerticalStackLayout Spacing="10">
                         <Label Style="{StaticResource SectionTitle}" Text="Динамика продуктивности" />
+                        <!--  Легенда  -->
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="12">
+                            <Label
+                                FontSize="12"
+                                Text="● Привычки"
+                                TextColor="#2DD4BF"
+                                VerticalOptions="Center" />
+                            <Label
+                                FontSize="12"
+                                Text="● Задачи"
+                                TextColor="#818CF8"
+                                VerticalOptions="Center" />
+                            <Label
+                                FontSize="12"
+                                Text="● Помодоро"
+                                TextColor="#F59E0B"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
                         <Border
                             BackgroundColor="#0B1120"
                             StrokeShape="RoundRectangle 12"

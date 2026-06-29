@@ -481,8 +481,8 @@
                     </CollectionView.EmptyView>
                     <CollectionView.Footer>
                         <VerticalStackLayout
-                            IsVisible="{Binding NotesHasMore}"
                             Padding="8,4,8,8"
+                            IsVisible="{Binding NotesHasMore}"
                             Spacing="4">
                             <Label
                                 FontFamily="Comfortaa"
@@ -491,10 +491,10 @@
                                 Text="{Binding NotesPageInfo}"
                                 TextColor="#64748B" />
                             <Button
-                                Command="{Binding LoadMoreNotesCommand}"
                                 BackgroundColor="#111827"
                                 BorderColor="#4F8EF7"
                                 BorderWidth="1"
+                                Command="{Binding LoadMoreNotesCommand}"
                                 CornerRadius="10"
                                 FontFamily="Comfortaa"
                                 FontSize="14"
@@ -559,9 +559,8 @@
                         CornerRadius="8"
                         FontSize="13"
                         HeightRequest="44"
-                        Text="Удалить"
-                        TextColor="#E05555"
-                        ToolTipProperties.Text="Удалить заметку"
+                        Text="🗑"
+                        TextColor="#EF4444"
                         WidthRequest="40" />
                 </Grid>
 
@@ -831,7 +830,10 @@
                                                         LineBreakMode="TailTruncation"
                                                         Text="{Binding FileName}"
                                                         TextColor="{StaticResource TextPrimary}" />
-                                                    <Label FontSize="13" Style="{StaticResource MutedStyle}" Text="{Binding SizeBytes, Converter={StaticResource FileSizeConverter}}" />
+                                                    <Label
+                                                        FontSize="13"
+                                                        Style="{StaticResource MutedStyle}"
+                                                        Text="{Binding SizeBytes, Converter={StaticResource FileSizeConverter}}" />
                                                 </VerticalStackLayout>
 
                                                 <Button
@@ -1182,8 +1184,8 @@
                     </CollectionView.ItemTemplate>
                     <CollectionView.Footer>
                         <VerticalStackLayout
-                            IsVisible="{Binding NotesHasMore}"
                             Padding="12,4,12,12"
+                            IsVisible="{Binding NotesHasMore}"
                             Spacing="4">
                             <Label
                                 FontFamily="Comfortaa"
@@ -1192,10 +1194,10 @@
                                 Text="{Binding NotesPageInfo}"
                                 TextColor="#64748B" />
                             <Button
-                                Command="{Binding LoadMoreNotesCommand}"
                                 BackgroundColor="#111827"
                                 BorderColor="#4F8EF7"
                                 BorderWidth="1"
+                                Command="{Binding LoadMoreNotesCommand}"
                                 CornerRadius="10"
                                 FontFamily="Comfortaa"
                                 FontSize="15"
@@ -1211,7 +1213,7 @@
             <Grid
                 Grid.Row="1"
                 IsVisible="{Binding MobileShowEditor}"
-                RowDefinitions="Auto,Auto,Auto,*,Auto">
+                RowDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto">
 
                 <Border
                     Grid.Row="0"
@@ -1308,11 +1310,6 @@
                                 Style="{StaticResource MdBtnStyle}"
                                 Text="#tag" />
                             <Button
-                                Command="{Binding AddAttachmentCommand}"
-                                FontSize="16"
-                                Style="{StaticResource MdBtnStyle}"
-                                Text="Прикрепить" />
-                            <Button
                                 Command="{Binding TogglePreviewCommand}"
                                 Style="{StaticResource ToolbarBtnStyle}"
                                 Text="{Binding IsPreviewMode, Converter={StaticResource BoolToPreviewLabelConverter}}" />
@@ -1356,19 +1353,47 @@
                     Text="{Binding EditTitle}"
                     TextColor="{StaticResource TextPrimary}" />
 
-                <ScrollView
+                <!--  Категория (mobile)  -->
+                <Border
                     Grid.Row="3"
+                    Margin="12,4,12,4"
+                    Padding="10,2"
+                    BackgroundColor="{StaticResource BgCard}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeShape="RoundRectangle 6">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="14"
+                            Style="{StaticResource MutedStyle}"
+                            Text="Категория"
+                            VerticalOptions="Center" />
+                        <Picker
+                            Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            FontSize="14"
+                            HorizontalOptions="End"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding Categories}"
+                            SelectedItem="{Binding SelectedNoteCategory}"
+                            TextColor="{StaticResource TextPrimary}"
+                            WidthRequest="170" />
+                    </Grid>
+                </Border>
+
+                <ScrollView
+                    Grid.Row="4"
                     Padding="12,8"
                     IsVisible="{Binding IsPreviewMode, Converter={StaticResource InverseBoolConverter}}">
                     <Editor
                         AutoSize="TextChanges"
-                        MinimumHeightRequest="300"
+                        MinimumHeightRequest="240"
                         Style="{StaticResource NoteEditorStyle}"
                         Text="{Binding EditContent}" />
                 </ScrollView>
 
                 <WebView
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="12,8"
                     IsVisible="{Binding IsPreviewMode}">
                     <WebView.Source>
@@ -1376,21 +1401,42 @@
                     </WebView.Source>
                 </WebView>
 
+                <!--  Панель действий (mobile) — иконки в одну строку, экспорт через ActionSheet  -->
                 <Border
-                    Grid.Row="4"
-                    Margin="12,8"
-                    Padding="12,6"
+                    Grid.Row="6"
+                    Margin="12,4,12,8"
+                    Padding="6"
                     BackgroundColor="{StaticResource BgSecondary}"
                     Stroke="{StaticResource BorderColor}"
                     StrokeShape="RoundRectangle 6">
-                    <Button
-                        Padding="10,4"
-                        BackgroundColor="#3A1E1E"
-                        Command="{Binding DeleteNoteCommand}"
-                        CornerRadius="6"
-                        FontSize="14"
-                        Text="Удалить"
-                        TextColor="#EF4444" />
+                    <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                        <Button
+                            Grid.Column="0"
+                            Command="{Binding TogglePinCommand}"
+                            FontSize="18"
+                            Style="{StaticResource ToolbarBtnStyle}"
+                            Text="📌" />
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding ShowVersionsCommand}"
+                            FontSize="18"
+                            Style="{StaticResource ToolbarBtnStyle}"
+                            Text="🕘" />
+                        <Button
+                            Grid.Column="2"
+                            Clicked="OnMobileExportClicked"
+                            FontSize="18"
+                            Style="{StaticResource ToolbarBtnStyle}"
+                            Text="⬇" />
+                        <Button
+                            Grid.Column="3"
+                            BackgroundColor="#3A1E1E"
+                            Command="{Binding DeleteNoteCommand}"
+                            CornerRadius="6"
+                            FontSize="18"
+                            Text="🗑"
+                            TextColor="#EF4444" />
+                    </Grid>
                 </Border>
             </Grid>
         </Grid>

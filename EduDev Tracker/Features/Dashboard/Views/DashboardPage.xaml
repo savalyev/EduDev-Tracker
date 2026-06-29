@@ -30,7 +30,13 @@
                 VerticalOptions="Start">
 
                 <!--  ══ ШАПКА: приветствие + дата + лого ═══════════════════  -->
-                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                <Grid
+                    Padding="{OnIdiom Phone='12,10',
+                                      Default='0'}"
+                    BackgroundColor="{OnIdiom Phone=#0F1629,
+                                              Default=Transparent}"
+                    ColumnDefinitions="Auto,*,Auto"
+                    ColumnSpacing="12">
 
                     <Image
                         HeightRequest="44"
@@ -79,7 +85,6 @@
 
                         <VerticalStackLayout>
                             <Label Style="{StaticResource EduCardTitle16}" Text="Прогресс недели" />
-                            <Label Style="{StaticResource EduProgressSubtitleLabel}" Text="Привычки, задачи и Помодоро" />
                         </VerticalStackLayout>
 
                         <Label

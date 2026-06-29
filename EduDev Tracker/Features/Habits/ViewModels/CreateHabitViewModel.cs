@@ -87,6 +87,8 @@ namespace EduDev_Tracker.Features.Habits.ViewModels
             new("book_icon.png"),
             new("brain_icon.png"),
             new("money_icon.png"),
+            new("smoke_icon.png"),
+            new("gigiena_icon.png"),
         };
 
         private string _selectedIcon = "default_icon.png";

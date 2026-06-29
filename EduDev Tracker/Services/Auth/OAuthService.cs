@@ -8,12 +8,18 @@ namespace EduDev_Tracker.Services.Auth
     public class OAuthService : IOAuthService
     {
         // ── Google ────────────────────────────────────────────────────────────
+        // ВНИМАНИЕ: для мобильных нужен OAuth client типа "Android" (package + SHA-1)
+        // или "iOS", созданный в Google Cloud Console. Web-клиент даёт Error 400 invalid_request
+        // на кастомную redirect-схему. После создания Android-клиента заменить эти две строки
+        // (и android:scheme в Platforms/Android/AndroidManifest.xml на новый reverse-client-id).
         private const string GoogleClientId =
             "373522612585-q752dchpnt71usppi8dq6d51ovorcc9j.apps.googleusercontent.com";
         private const string GoogleRedirectUri =
             "com.googleusercontent.apps.373522612585-q752dchpnt71usppi8dq6d51ovorcc9j:/oauth2redirect";
 
         // ── GitHub ────────────────────────────────────────────────────────────
+        // GitHubRedirectUri должен ТОЧЬ-В-ТОЧЬ совпадать с "Authorization callback URL"
+        // в настройках OAuth App на GitHub (Settings → Developer settings → OAuth Apps).
         private const string GitHubClientId = "Ov23liWdazIpMuRuOu7y";
         private const string GitHubClientSecret = "07eb9df5d9de73b5183f55e075011b112079a8c8";
         private const string GitHubRedirectUri = "com.companyname.edudevtracker://callback";

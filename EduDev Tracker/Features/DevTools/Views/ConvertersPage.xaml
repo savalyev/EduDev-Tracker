@@ -811,6 +811,32 @@
             <ScrollView Grid.Row="1" Grid.Column="1">
                 <VerticalStackLayout Spacing="16">
 
+                    <Border Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="Подсказки по использованию"
+                                TextColor="#F1F5F9" />
+                            <Label
+                                FontSize="15"
+                                LineBreakMode="WordWrap"
+                                Text="{Binding CurrentTip}"
+                                TextColor="#94A3B8" />
+                            <Border
+                                Padding="10"
+                                BackgroundColor="#0F172A"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="0">
+                                <Label
+                                    FontSize="15"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Работает офлайн"
+                                    TextColor="#2DD4BF" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
                     <!--  История конверсий  -->
                     <Border Style="{StaticResource Card}">
                         <VerticalStackLayout Spacing="12">
@@ -855,6 +881,8 @@
                                     Text="Начни вводить данные — результаты сохранятся здесь"
                                     TextColor="#334155" />
                             </VerticalStackLayout>
+
+
 
                             <!--  Список  -->
                             <BindableLayout.ItemsSource>
@@ -917,7 +945,10 @@
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                             </VerticalStackLayout>
-                            <VerticalStackLayout IsVisible="{Binding HistoryHasMore}" Spacing="4" Padding="0,4,0,0">
+                            <VerticalStackLayout
+                                Padding="0,4,0,0"
+                                IsVisible="{Binding HistoryHasMore}"
+                                Spacing="4">
                                 <Label
                                     FontFamily="Comfortaa"
                                     FontSize="12"
@@ -925,10 +956,10 @@
                                     Text="{Binding HistoryPageInfo}"
                                     TextColor="#64748B" />
                                 <Button
-                                    Command="{Binding LoadMoreHistoryCommand}"
                                     BackgroundColor="#0F172A"
                                     BorderColor="#2DD4BF"
                                     BorderWidth="1"
+                                    Command="{Binding LoadMoreHistoryCommand}"
                                     CornerRadius="10"
                                     FontFamily="Comfortaa"
                                     FontSize="15"
@@ -940,31 +971,7 @@
                     </Border>
 
                     <!--  Подсказки  -->
-                    <Border Style="{StaticResource Card}">
-                        <VerticalStackLayout Spacing="10">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="15"
-                                Text="Подсказки по использованию"
-                                TextColor="#F1F5F9" />
-                            <Label
-                                FontSize="15"
-                                LineBreakMode="WordWrap"
-                                Text="{Binding CurrentTip}"
-                                TextColor="#94A3B8" />
-                            <Border
-                                Padding="10"
-                                BackgroundColor="#0F172A"
-                                StrokeShape="RoundRectangle 10"
-                                StrokeThickness="0">
-                                <Label
-                                    FontSize="15"
-                                    HorizontalTextAlignment="Center"
-                                    Text="Работает офлайн"
-                                    TextColor="#2DD4BF" />
-                            </Border>
-                        </VerticalStackLayout>
-                    </Border>
+
 
                 </VerticalStackLayout>
             </ScrollView>
@@ -980,24 +987,32 @@
 
 
             <!--  Заголовок  -->
-            <VerticalStackLayout Margin="0,0,0,12" Spacing="2">
-                <Image
-                    HeightRequest="36"
-                    HorizontalOptions="Start"
-                    IsVisible="{OnIdiom Phone=True,
-                                        Default=False}"
-                    Source="menu.png"
-                    VerticalOptions="Center"
-                    WidthRequest="36">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnMenuTapped" />
-                    </Image.GestureRecognizers>
-                </Image>
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="22"
-                    Text="Конвертеры"
-                    TextColor="#F1F5F9" />
+            <VerticalStackLayout Margin="0,0,0,12" Spacing="8">
+                <Grid
+                    Padding="12,10"
+                    BackgroundColor="#0F1629"
+                    ColumnDefinitions="Auto,*,Auto">
+                    <Image
+                        Grid.Column="0"
+                        HeightRequest="36"
+                        HorizontalOptions="Start"
+                        Source="menu.png"
+                        VerticalOptions="Center"
+                        WidthRequest="36">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuTapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="Конвертеры"
+                        TextColor="#F1F5F9"
+                        VerticalOptions="Center" />
+                </Grid>
                 <Label
                     FontSize="15"
                     Text="Инструменты разработчика"
@@ -1230,16 +1245,32 @@
                                 FontSize="15"
                                 Text="Время и часовые пояса"
                                 TextColor="#F1F5F9" />
-                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <Border Style="{StaticResource InputBorder}">
-                                    <Entry
-                                        Placeholder="2024-01-15 10:00"
-                                        Style="{StaticResource InputEntry}"
-                                        Text="{Binding TimeInput}" />
+                            <Grid ColumnDefinitions="*,*,Auto" ColumnSpacing="8">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="8,0"
+                                    Style="{StaticResource InputBorder}">
+                                    <DatePicker
+                                        x:Name="MobileTimeDatePicker"
+                                        BackgroundColor="Transparent"
+                                        DateSelected="OnMobileTimeChanged"
+                                        Format="yyyy-MM-dd"
+                                        TextColor="#F1F5F9" />
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="8,0"
+                                    Style="{StaticResource InputBorder}">
+                                    <TimePicker
+                                        x:Name="MobileTimeTimePicker"
+                                        BackgroundColor="Transparent"
+                                        Format="HH:mm"
+                                        TextColor="#F1F5F9" />
                                 </Border>
                                 <Button
+                                    Grid.Column="2"
                                     BackgroundColor="#1E293B"
-                                    Command="{Binding UseNowCommand}"
+                                    Clicked="OnMobileUseNowClicked"
                                     CornerRadius="10"
                                     FontSize="15"
                                     HeightRequest="44"
@@ -1399,6 +1430,22 @@
                         </VerticalStackLayout>
                     </Border>
 
+                    <!--  Подсказки (мобайл)  -->
+                    <Border Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Подсказки"
+                                TextColor="#F1F5F9" />
+                            <Label
+                                FontSize="15"
+                                LineBreakMode="WordWrap"
+                                Text="{Binding CurrentTip}"
+                                TextColor="#94A3B8" />
+                        </VerticalStackLayout>
+                    </Border>
+
                     <!--  История (мобайл)  -->
                     <Border Style="{StaticResource Card}">
                         <VerticalStackLayout Spacing="10">
@@ -1464,7 +1511,10 @@
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                             </VerticalStackLayout>
-                            <VerticalStackLayout IsVisible="{Binding HistoryHasMore}" Spacing="4" Padding="0,4,0,0">
+                            <VerticalStackLayout
+                                Padding="0,4,0,0"
+                                IsVisible="{Binding HistoryHasMore}"
+                                Spacing="4">
                                 <Label
                                     FontFamily="Comfortaa"
                                     FontSize="12"
@@ -1472,10 +1522,10 @@
                                     Text="{Binding HistoryPageInfo}"
                                     TextColor="#64748B" />
                                 <Button
-                                    Command="{Binding LoadMoreHistoryCommand}"
                                     BackgroundColor="#0F172A"
                                     BorderColor="#2DD4BF"
                                     BorderWidth="1"
+                                    Command="{Binding LoadMoreHistoryCommand}"
                                     CornerRadius="10"
                                     FontFamily="Comfortaa"
                                     FontSize="15"
@@ -1489,22 +1539,6 @@
                                 IsVisible="{Binding HasHistory, Converter={StaticResource InvertBoolConverter}}"
                                 Text="Пока пусто"
                                 TextColor="#475569" />
-                        </VerticalStackLayout>
-                    </Border>
-
-                    <!--  Подсказки (мобайл)  -->
-                    <Border Style="{StaticResource Card}">
-                        <VerticalStackLayout Spacing="8">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="14"
-                                Text="Подсказки"
-                                TextColor="#F1F5F9" />
-                            <Label
-                                FontSize="15"
-                                LineBreakMode="WordWrap"
-                                Text="{Binding CurrentTip}"
-                                TextColor="#94A3B8" />
                         </VerticalStackLayout>
                     </Border>
 

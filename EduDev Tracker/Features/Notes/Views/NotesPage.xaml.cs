@@ -44,4 +44,15 @@ public partial class NotesPage : ContentPage
             Shell.Current.FlyoutIsPresented = !Shell.Current.FlyoutIsPresented;
         }
     }
+
+    // Экспорт заметки на мобиле — выбор формата через ActionSheet, дальше существующий ExportCommand
+    private async void OnMobileExportClicked(object? sender, EventArgs e)
+    {
+        var choice = await DisplayActionSheet("Экспорт заметки", "Отмена", null, ".docx", ".md", ".txt");
+        if (string.IsNullOrEmpty(choice) || choice == "Отмена") return;
+
+        var format = choice.TrimStart('.');
+        if (_vm.ExportCommand.CanExecute(format))
+            _vm.ExportCommand.Execute(format);
+    }
 }

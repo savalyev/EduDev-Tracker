@@ -280,7 +280,8 @@ namespace EduDev_Tracker.Features.Auth.ViewModels
             }
             catch (Exception ex)
             {
-                GeneralError = "Не удалось войти через Google";
+                // Показываем реальную причину — иначе на устройстве невозможно понять, что отвергает провайдер
+                GeneralError = $"Не удалось войти через Google: {ex.Message}";
                 System.Diagnostics.Debug.WriteLine($"[OAuth Google] {ex}");
                 NotifyErrorProperties();
             }
@@ -309,7 +310,8 @@ namespace EduDev_Tracker.Features.Auth.ViewModels
             }
             catch (Exception ex)
             {
-                GeneralError = "Не удалось войти через GitHub";
+                // Показываем реальную причину — иначе на устройстве невозможно понять, что отвергает провайдер
+                GeneralError = $"Не удалось войти через GitHub: {ex.Message}";
                 System.Diagnostics.Debug.WriteLine($"[OAuth GitHub] {ex}");
                 NotifyErrorProperties();
             }

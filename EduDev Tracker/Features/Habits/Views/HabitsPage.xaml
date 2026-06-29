@@ -38,6 +38,10 @@
                     RowSpacing="10">
                     <Grid
                         Grid.Row="0"
+                        Padding="{OnIdiom Phone='12,10',
+                                          Default='0'}"
+                        BackgroundColor="{OnIdiom Phone=#0F1629,
+                                                  Default=Transparent}"
                         ColumnDefinitions="44, *, Auto"
                         ColumnSpacing="12">
 
@@ -246,10 +250,11 @@
                                                         TextColor="{StaticResource EduSecondaryText}" />
                                                     <FlexLayout
                                                         Margin="0,4,0,0"
+                                                        AlignItems="Center"
                                                         Direction="Row"
                                                         Wrap="Wrap">
                                                         <Border
-                                                            Margin="0,0,4,4"
+                                                            Margin="0,0,6,4"
                                                             Padding="10,5"
                                                             Background="{StaticResource EduBorder}"
                                                             Stroke="{StaticResource EduBorderStrong}"
@@ -259,12 +264,14 @@
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="14"
+                                                                FontSize="13"
+                                                                HorizontalTextAlignment="Center"
                                                                 Text="{Binding Schedule}"
-                                                                TextColor="{StaticResource EduSecondaryText}" />
+                                                                TextColor="{StaticResource EduSecondaryText}"
+                                                                VerticalTextAlignment="Center" />
                                                         </Border>
                                                         <Border
-                                                            Margin="0,0,4,4"
+                                                            Margin="0,0,6,4"
                                                             Padding="10,5"
                                                             Background="{StaticResource EduBorder}"
                                                             Stroke="{StaticResource EduBorderStrong}"
@@ -274,12 +281,14 @@
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="14"
+                                                                FontSize="13"
+                                                                HorizontalTextAlignment="Center"
                                                                 Text="{Binding TimeOfDay}"
-                                                                TextColor="{StaticResource EduSecondaryText}" />
+                                                                TextColor="{StaticResource EduSecondaryText}"
+                                                                VerticalTextAlignment="Center" />
                                                         </Border>
                                                         <Border
-                                                            Margin="0,0,4,4"
+                                                            Margin="0,0,6,4"
                                                             Padding="10,5"
                                                             Background="{StaticResource EduBorder}"
                                                             Stroke="{StaticResource EduBorderStrong}"
@@ -289,9 +298,11 @@
                                                             </Border.StrokeShape>
                                                             <Label
                                                                 FontFamily="Comfortaa"
-                                                                FontSize="14"
+                                                                FontSize="13"
+                                                                HorizontalTextAlignment="Center"
                                                                 Text="{Binding Type}"
-                                                                TextColor="{StaticResource EduSecondaryText}" />
+                                                                TextColor="{StaticResource EduSecondaryText}"
+                                                                VerticalTextAlignment="Center" />
                                                         </Border>
                                                     </FlexLayout>
                                                 </VerticalStackLayout>
@@ -589,15 +600,5 @@
                 </Grid>
             </Grid>
         </ScrollView>
-        <Button
-            Margin="16,16,16,16"
-            Command="{Binding OpenAddHabitCommand}"
-            HeightRequest="48"
-            HorizontalOptions="Fill"
-            IsVisible="{OnIdiom Phone=True,
-                                Default=False}"
-            Style="{StaticResource EduPrimaryButton}"
-            Text="+ Добавьте ещё привычку"
-            VerticalOptions="End" />
     </Grid>
 </ContentPage>

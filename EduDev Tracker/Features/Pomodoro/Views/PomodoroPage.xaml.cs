@@ -6,7 +6,7 @@ public partial class PomodoroPage : ContentPage
 {
 	private readonly PomodoroViewModel _vm;
     private Action? _ringInvalidatedHandler;
-    private bool _isDesktop;
+    private bool? _isDesktop;
 
 	public PomodoroPage(PomodoroViewModel vm)
 	{

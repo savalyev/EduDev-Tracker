@@ -29,7 +29,13 @@
                 VerticalOptions="Start">
 
                 <!--  ══ ШАПКА ══════════════════════════════════════════════  -->
-                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                <Grid
+                    Padding="{OnIdiom Phone='12,10',
+                                      Default='0'}"
+                    BackgroundColor="{OnIdiom Phone=#0F1629,
+                                              Default=Transparent}"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="12">
                     <Image
                         HeightRequest="40"
                         HorizontalOptions="Start"
@@ -46,6 +52,8 @@
                         FontAttributes="Bold"
                         FontFamily="Comfortaa"
                         FontSize="22"
+                        HorizontalOptions="{OnIdiom Phone=Center,
+                                                    Default=Start}"
                         Text="Профиль"
                         TextColor="White"
                         VerticalOptions="Center" />

@@ -56,14 +56,12 @@ namespace EduDev_Tracker.Features.Pomodoro.Drawing
             float radius = Math.Min(cx, cy) - 14f;
             float stroke = 10f;
 
-            // 1. Фоновое кольцо
             canvas.StrokeColor = Color.FromArgb("#1E293B");
             canvas.StrokeSize = stroke;
             canvas.DrawCircle(cx, cy, radius);
 
             if (Progress <= 0.001) return;
 
-            // 2. Прогресс-дуга через PathF — не зависит от конвенций DrawArc
             float sweepAngle = (float)(Progress * 360.0);
 
             canvas.StrokeColor = GetArcColor();
@@ -83,7 +81,6 @@ namespace EduDev_Tracker.Features.Pomodoro.Drawing
             }
             canvas.DrawPath(path);
 
-            // 3. Светящийся наконечник (конец дуги = -90 + sweepAngle в экранных)
             double angleRad = ((-90.0 + sweepAngle) * Math.PI) / 180.0;
             float tipX = cx + radius * (float)Math.Cos(angleRad);
             float tipY = cy + radius * (float)Math.Sin(angleRad);

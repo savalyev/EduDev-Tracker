@@ -261,31 +261,55 @@ namespace EduDev_Tracker.Features.Pomodoro.ViewModels
                 if (IsRunning) PauseTimer();
                 else await StartTimerAsync();
             }
+            catch (Exception ex)
+            {
+                // Старт не должен молча падать — откатываем состояние, чтобы кнопка не зависла на «Пауза»
+                System.Diagnostics.Debug.WriteLine($"[ToggleTimerAsync] {ex}");
+                _timer?.Stop();
+                IsRunning = false;
+                StartPauseLabel = "Старт";
+            }
             finally { IsBusy = false; }
         }
 
         private async Task StartTimerAsync()
         {
+            // Если фаза ещё не настроена (нет пресета/нулевой остаток) — настраиваем, иначе таймер мгновенно «завершится»
+            if (_remainingSeconds <= 0)
+                SetupPhase(_currentPhase);
+            if (_remainingSeconds <= 0)
+                return; // нет валидного пресета — стартовать нечего
+
             IsRunning = true;
             StartPauseLabel = "Пауза";
             _sessionStartedAt = DateTime.Now;
 
-            int profileId = SessionService.GetProfileId();
-            _activeSession = new PomodoroSession
-            {
-                ProfileId = profileId,
-                PresetId = ActivePreset?.Id,
-                TaskId = _linkedTaskId,
-                Phase = _currentPhase,
-                StartedAt = _sessionStartedAt,
-                PlannedMinutes = _totalSeconds / 60
-            };
-            await _pomodoroService.SaveSessionAsync(_activeSession);
-
+            // Сначала запускаем отсчёт — он не должен зависеть от записи в БД
             _timer = Application.Current!.Dispatcher.CreateTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += OnTimerTick;
             _timer.Start();
+
+            // Персистим сессию отдельно: сбой БД не должен блокировать таймер
+            try
+            {
+                int profileId = SessionService.GetProfileId();
+                _activeSession = new PomodoroSession
+                {
+                    ProfileId = profileId,
+                    PresetId = ActivePreset?.Id,
+                    TaskId = _linkedTaskId,
+                    Phase = _currentPhase,
+                    StartedAt = _sessionStartedAt,
+                    PlannedMinutes = _totalSeconds / 60
+                };
+                await _pomodoroService.SaveSessionAsync(_activeSession);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[StartTimerAsync.SaveSession] {ex}");
+                _activeSession = null;
+            }
         }
 
         private void PauseTimer()

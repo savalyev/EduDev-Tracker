@@ -38,6 +38,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
 
 
         private List<TaskItem> _allTasks = new();
+        private List<TaskItem> _filteredTasks = new();
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsListMode))]
@@ -120,11 +121,17 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 .Where(t => t.DueAt is null && t.Status != TaskStatus.Done)
                 .ToList();
 
+            // Выполненные — отдельной группой внизу (не попадают в «Просрочено» и т.п.)
+            var done = visible
+                .Where(t => t.Status == TaskStatus.Done)
+                .ToList();
+
             AddGroup("ПРОСРОЧЕНО", "#C0392B", overdue);
             AddGroup($"Сегодня — {DateTime.Today:d MMMM}", "#5B5FEF", today);
             AddGroup($"Завтра — {DateTime.Today.AddDays(1):d MMMM}", "#4A5A6A", tomorrow);
             AddGroup("Позже", "#4A5A6A", later);
             AddGroup("Без срока", "#4A5A6A", noDate);
+            AddGroup("Выполнено", "#27AE60", done);
 
             var total = _allFilteredListTasks.Count;
             var shown = Math.Min(_listShownCount, total);
@@ -294,6 +301,15 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
         [RelayCommand]
         private void SelectCalendarDay(DateTime date)
         {
+            if (SelectedCalendarDate?.Date == date.Date)
+            {
+                foreach (var day in CalendarDays)
+                    day.IsSelected = false;
+                SelectedCalendarDate = null;
+                TasksForSelectedDay = new ObservableCollection<TaskItemViewModel>();
+                return;
+            }
+
             foreach (var day in CalendarDays)
                 day.IsSelected = false;
 
@@ -303,7 +319,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             SelectedCalendarDate = date;
             SelectedDayTitle = date.ToString("d MMMM yyyy", new CultureInfo("ru-RU"));
 
-            var filtered = _allTasks
+            var filtered = _filteredTasks
                 .Where(t => t.DueAt.HasValue && t.DueAt.Value.Date == date.Date)
                 .Select(TaskItemViewModel.FromModel)
                 .ToList();
@@ -351,7 +367,7 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
                 var vm = MakeDayVm(d);
                 vm.IsToday = d.Date == DateTime.Today;
 
-                var dayTasks = _allTasks.Where(t => t.DueAt?.Date == d.Date).ToList();
+                var dayTasks = _filteredTasks.Where(t => t.DueAt?.Date == d.Date).ToList();
                 vm.HasAny = dayTasks.Any();
                 vm.HasCritical = dayTasks.Any(t => t.Priority == TaskPriority.Urgent);
                 vm.HasHigh = dayTasks.Any(t => t.Priority == TaskPriority.High);
@@ -392,10 +408,13 @@ namespace EduDev_Tracker.Features.Tasks.ViewModels
             };
 
             var list = filtered
-                .OrderBy(t => t.DueAt)
+                .OrderBy(t => t.Status == TaskStatus.Done ? 1 : 0)
+                .ThenBy(t => t.DueAt == null ? 1 : 0) 
+                .ThenBy(t => t.DueAt)
                 .ThenBy(t => t.Priority)
                 .ToList();
 
+            _filteredTasks = list;
             _listShownCount = ListPageSize;
             RebuildGroupedList(list);
             RebuildKanban(list);

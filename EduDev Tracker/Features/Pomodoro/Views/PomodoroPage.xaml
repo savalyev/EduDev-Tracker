@@ -220,7 +220,7 @@
                                     Fill="Transparent"
                                     HeightRequest="240"
                                     Stroke="#1E293B"
-                                    StrokeThickness="12"
+                                    StrokeThickness="0"
                                     WidthRequest="240" />
                                 <GraphicsView
                                     x:Name="TimerRingDesktop"
@@ -541,18 +541,32 @@
                 Padding="14,12"
                 IsVisible="False"
                 Spacing="12">
-                <Image
-                    HeightRequest="36"
-                    HorizontalOptions="Start"
-                    IsVisible="{OnIdiom Phone=True,
-                                        Default=False}"
-                    Source="menu.png"
-                    VerticalOptions="Center"
-                    WidthRequest="36">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnMenuTapped" />
-                    </Image.GestureRecognizers>
-                </Image>
+                <!--  Шапка (mobile)  -->
+                <Grid
+                    Padding="12,10"
+                    BackgroundColor="#0F1629"
+                    ColumnDefinitions="Auto,*,Auto">
+                    <Image
+                        Grid.Column="0"
+                        HeightRequest="36"
+                        HorizontalOptions="Start"
+                        Source="menu.png"
+                        VerticalOptions="Center"
+                        WidthRequest="36">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuTapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        FontFamily="Comfortaa"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="Помодоро"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                </Grid>
 
                 <!--  Табы режима  -->
                 <Border Padding="6" Style="{StaticResource SectionCard}">
